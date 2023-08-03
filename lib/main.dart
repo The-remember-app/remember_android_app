@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:the_remember/pages/home.dart';
 
+import 'pages/modules/modules.dart';
+
 // main() является главной функцией с которой начинается
 // выполнение приложения
 // возвращает виджет приложения
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // указываем исходную страницу, которую мы создадим позже
-      home: HomePage(),
+      home: StartModule(),
     );
   }
 }
