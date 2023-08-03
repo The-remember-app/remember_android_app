@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
     // компоненты (виджеты).
     return Scaffold(
       // мы создаем AppBar с текстом "Home Page"
-        appBar: AppBar(title: Text("Home page 1")),
+        appBar: AppBar(title: Text("Home page 3")),
         // указываем текст в качестве тела Scaffold
         // текст предварительно вложен в Center виджет,
         // чтобы выровнять его по центру
