@@ -1,10 +1,26 @@
 ///File download from FlutterViz- Drag and drop a tools. For more details visit https://flutterviz.io/
 
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
-class writeWord extends StatelessWidget {
+import '../../../models/folder.dart';
+import '../../../models/term.dart';
+import '../unary_module.dart';
+
+class WriteWord extends StatelessWidget {
+  final Uuid moduleId;
+  final Uuid wordId;
+  final int progress;
+  final int maxProgress;
+  List<Uuid>? currTermUuid;
+
+  WriteWord(this.moduleId, this.wordId, this.progress, this.maxProgress,
+      [this.currTermUuid = null]);
+
   @override
   Widget build(BuildContext context) {
+    var moduleEntity = foldersOrModules[moduleId];
+    var wordEntity = words[wordId];
     return Scaffold(
       backgroundColor: Color(0xffffffff),
       appBar: AppBar(
@@ -16,7 +32,7 @@ class writeWord extends StatelessWidget {
           borderRadius: BorderRadius.zero,
         ),
         title: Text(
-          "module name",
+          moduleEntity?.name ?? "Похоже модуля с таким UUID не найдено",
           style: TextStyle(
             fontWeight: FontWeight.w400,
             fontStyle: FontStyle.normal,
@@ -24,10 +40,15 @@ class writeWord extends StatelessWidget {
             color: Color(0xfff9f9f9),
           ),
         ),
-        leading: Icon(
-          Icons.arrow_back,
-          color: Color(0xfff9f9f9),
-          size: 24,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Color(0xfff9f9f9),
+            size: 24,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
       body: Column(
@@ -58,7 +79,7 @@ class writeWord extends StatelessWidget {
             child: Align(
               alignment: Alignment.center,
               child: Text(
-                "Слово 1",
+                wordEntity?.term ?? "Не найдено термина с таким UUID",
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.clip,
                 style: TextStyle(
@@ -70,48 +91,70 @@ class writeWord extends StatelessWidget {
               ),
             ),
           ),
-          TextField(
-            controller: TextEditingController(),
-            obscureText: false,
-            textAlign: TextAlign.start,
-            maxLines: 1,
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontStyle: FontStyle.normal,
-              fontSize: 14,
-              color: Color(0xff000000),
-            ),
-            decoration: InputDecoration(
-              disabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4.0),
-                borderSide: BorderSide(color: Color(0xff000000), width: 1),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Align(
+              alignment: Alignment.center,
+              child: TextField(
+                onChanged: (text) {
+                  if (text == wordEntity!.definition){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                getNextLearnPage(
+                                    moduleId, null, progress, currTermUuid)
+                        ));
+                  }
+                  // print("onChanged");
+                  // print("Введенный текст: $text");
+                },
+                controller: TextEditingController(),
+                obscureText: false,
+                textAlign: TextAlign.start,
+                maxLines: 1,
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 14,
+                  color: Color(0xff000000),
+                ),
+                decoration: InputDecoration(
+                  disabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                    borderSide: BorderSide(color: Color(0xff3a57eb), width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                    borderSide: BorderSide(color: Color(0xff3a57eb), width: 1),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                    borderSide: BorderSide(color: Color(0xff3a57eb), width: 1),
+                  ),
+                  labelText: "Введите значение темина",
+                  labelStyle: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                    fontSize: 14,
+                    color: Color(0xff000000),
+                  ),
+                  hintText: "Enter Text",
+                  hintStyle: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                    fontSize: 14,
+                    color: Color(0xff000000),
+                  ),
+                  filled: true,
+                  fillColor: Color(0xfff2f2f3),
+                  isDense: false,
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                  prefixIcon:
+                      Icon(Icons.edit, color: Color(0xff212435), size: 24),
+                ),
               ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4.0),
-                borderSide: BorderSide(color: Color(0xff000000), width: 1),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4.0),
-                borderSide: BorderSide(color: Color(0xff000000), width: 1),
-              ),
-              labelText: "Введите значение темина",
-              labelStyle: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-                fontSize: 14,
-                color: Color(0xff000000),
-              ),
-              hintText: "Enter Text",
-              hintStyle: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-                fontSize: 14,
-                color: Color(0xff000000),
-              ),
-              filled: true,
-              fillColor: Color(0xfff2f2f3),
-              isDense: false,
-              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
             ),
           ),
         ],

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-class writeWordOneMoreTime extends StatelessWidget {
+class WriteWordOneMoreTime extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,10 +24,15 @@ class writeWordOneMoreTime extends StatelessWidget {
             color: Color(0xfff9f9f9),
           ),
         ),
-        leading: Icon(
-          Icons.arrow_back,
-          color: Color(0xfff9f9f9),
-          size: 24,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Color(0xfff9f9f9),
+            size: 24,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
       body: Column(

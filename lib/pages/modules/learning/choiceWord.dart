@@ -1,10 +1,110 @@
 ///File download from FlutterViz- Drag and drop a tools. For more details visit https://flutterviz.io/
 
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
-class choiceWord extends StatelessWidget {
+import '../../../models/folder.dart';
+import '../../../models/term.dart';
+import '../modules.dart';
+import '../unary_module.dart';
+
+MaterialButton getDefinitionVariable(Uuid wordId, BuildContext context,
+    Uuid targetTerm, _ChoiceWordState currWidgetClass) {
+  var word = words[wordId];
+  var buttonIsDisabled = false;
+
+  var buttonColor = Color(0xffffffff);
+  if (currWidgetClass.buttonPressed[wordId] ?? false) {
+    buttonColor;
+    if (wordId == targetTerm) {
+      buttonColor = Color(0xff00ff00);
+      word?.choose_error_counter -= 1;
+    } else {
+      buttonColor = Color(0xffff0000);
+      word?.choise_neg_error_counter += 1;
+    }
+  } else {
+    if (wordId == targetTerm &&
+        currWidgetClass.buttonPressed.values.any((isClicked) => isClicked)) {
+      buttonColor = Color(0xff00ff00);
+      word?.choose_error_counter -= 1;
+    }
+  }
+  if ( currWidgetClass.buttonPressed.values.any((isClicked) => isClicked)){
+    buttonIsDisabled = true;
+  }
+
+  return
+      // InkWell(
+      // child:
+      MaterialButton(
+    onPressed: () {
+      if (!buttonIsDisabled) {
+        currWidgetClass
+            .setState(() => currWidgetClass.buttonPressed[wordId] = true);
+      }
+    },
+    color: buttonColor,
+    elevation: 0,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.zero,
+      side: BorderSide(color: Color(0xff808080), width: 1),
+    ),
+    padding: EdgeInsets.all(16),
+    child: Text(
+      word?.definition ?? "Похоже слоа с таким UUID не существует",
+      style: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        fontStyle: FontStyle.normal,
+      ),
+    ),
+    textColor: Color(0xff000000),
+    height: 40,
+    minWidth: 140,
+  );
+  // );
+}
+
+
+class ChoiceWord extends StatefulWidget {
+  final Uuid moduleId;
+  final Uuid wordId;
+  final int progress;
+  final int maxProgress;
+  final List<Uuid> definitions;
+  List<Uuid>? currTermUuid;
+
+  ChoiceWord(this.moduleId, this.wordId, this.progress, this.maxProgress,
+      this.definitions, [this.currTermUuid = null]);
+
+  @override
+  _ChoiceWordState createState() =>
+      _ChoiceWordState(moduleId, wordId, progress, maxProgress,
+          definitions, currTermUuid);
+}
+
+class _ChoiceWordState extends State<ChoiceWord> {
+  final Uuid moduleId;
+  final Uuid wordId;
+  final int progress;
+  final int maxProgress;
+  final List<Uuid> definitions;
+  final Map<Uuid, bool> buttonPressed = Map<Uuid, bool>();
+  List<Uuid>? currTermUuid;
+
+  _ChoiceWordState(this.moduleId, this.wordId, this.progress, this.maxProgress,
+      this.definitions, [this.currTermUuid = null]) {
+    for (var definition in definitions) {
+      buttonPressed[definition] = false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    var module = foldersOrModules[moduleId];
+    var currWord = words[wordId];
+
     return Scaffold(
       backgroundColor: Color(0xffffffff),
       appBar: AppBar(
@@ -16,7 +116,7 @@ class choiceWord extends StatelessWidget {
           borderRadius: BorderRadius.zero,
         ),
         title: Text(
-          "module name",
+          module?.name ?? "По такому UUID не найдено модуля",
           style: TextStyle(
             fontWeight: FontWeight.w400,
             fontStyle: FontStyle.normal,
@@ -24,13 +124,40 @@ class choiceWord extends StatelessWidget {
             color: Color(0xfff9f9f9),
           ),
         ),
-        leading: Icon(
-          Icons.arrow_back,
-          color: Color(0xfff9f9f9),
-          size: 24,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Color(0xfff9f9f9),
+            size: 24,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
-      body: Column(
+      body:
+      GestureDetector(
+        onPanUpdate: (details) {
+          // Swiping in right direction.
+          if (details.delta.dx > 0) {
+
+          }
+
+          // Swiping in left direction.
+          if (details.delta.dx < 0) {
+            if (buttonPressed.values.any((isClicked) => isClicked)) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          getNextLearnPage(
+                              moduleId, null, progress, currTermUuid)
+                  ));
+            }
+
+          }
+        },
+        child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.max,
@@ -58,7 +185,8 @@ class choiceWord extends StatelessWidget {
             child: Align(
               alignment: Alignment.center,
               child: Text(
-                "Слово 1",
+                (currWord?.term ??
+                    "Похоже, в словаре не хватает слов, это явно ошибка"),
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.clip,
                 style: TextStyle(
@@ -70,92 +198,24 @@ class choiceWord extends StatelessWidget {
               ),
             ),
           ),
-          MaterialButton(
-            onPressed: () {},
-            color: Color(0xffffffff),
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.zero,
-              side: BorderSide(color: Color(0xff808080), width: 1),
+          Expanded(
+            flex: 1,
+            child: ListView(
+              scrollDirection: Axis.vertical,
+              padding: EdgeInsets.zero,
+              shrinkWrap: false,
+              physics: ScrollPhysics(),
+              children: definitions.map<Widget>((wordDefinitionId) {
+                return getDefinitionVariable(
+                    wordDefinitionId, context, wordId, this);
+              }).toList(),
             ),
-            padding: EdgeInsets.all(16),
-            child: Text(
-              "opt1",
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-              ),
-            ),
-            textColor: Color(0xff000000),
-            height: 40,
-            minWidth: 140,
-          ),
-          MaterialButton(
-            onPressed: () {},
-            color: Color(0xffffffff),
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.zero,
-              side: BorderSide(color: Color(0xff808080), width: 1),
-            ),
-            padding: EdgeInsets.all(16),
-            child: Text(
-              "opt2",
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-              ),
-            ),
-            textColor: Color(0xff000000),
-            height: 40,
-            minWidth: 140,
-          ),
-          MaterialButton(
-            onPressed: () {},
-            color: Color(0xffffffff),
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.zero,
-              side: BorderSide(color: Color(0xff808080), width: 1),
-            ),
-            padding: EdgeInsets.all(16),
-            child: Text(
-              "opt3",
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-              ),
-            ),
-            textColor: Color(0xff000000),
-            height: 40,
-            minWidth: 140,
-          ),
-          MaterialButton(
-            onPressed: () {},
-            color: Color(0xffffffff),
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.zero,
-              side: BorderSide(color: Color(0xff808080), width: 1),
-            ),
-            padding: EdgeInsets.all(16),
-            child: Text(
-              "opt4",
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-              ),
-            ),
-            textColor: Color(0xff000000),
-            height: 40,
-            minWidth: 140,
           ),
         ],
       ),
+      )
+
+
     );
   }
 }
