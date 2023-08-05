@@ -81,7 +81,7 @@ class WriteWord extends StatelessWidget {
                   backgroundColor: Color(0xff808080),
                   valueColor:
                       new AlwaysStoppedAnimation<Color>(Color(0xff3a57e8)),
-                  value: 0.1,
+                  value: progress.toDouble() / maxProgress.toDouble() ,
                   minHeight: 3),
             ),
             Container(
