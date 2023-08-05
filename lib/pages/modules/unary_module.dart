@@ -19,10 +19,17 @@ Widget getNextLearnPage(
   List<TermEntity>? currTermList = null,
   int progress = -1,
   List<Uuid>? currTermUuidList = null,
+  String? InputedWord = null,
+  bool? showPostScreen = null,
 ]) {
   // return choiceWord;
   // if (currTermList == null){
-  progress += 1;
+  if (showPostScreen ?? false) {
+    // return WriteWordOneMoreTime(moduleId, currentWord.id, progress, currTermList.length,);
+  } else {
+    progress += 1;
+  }
+
   if (currTermList == null && currTermUuidList != null) {
     currTermList ??= [for (var termId in currTermUuidList) words[termId]!];
   }
@@ -52,15 +59,41 @@ Widget getNextLearnPage(
   //   return UnaryModule() ;
   // }
   // }
+  var lastWord = null;
+  if (progress != 0){
+    lastWord = currTermList[progress-1];
+  }
   if (progress > 9 || progress >= currTermList.length) {
+    if (InputedWord != null && lastWord != null){
+      if (InputedWord.toLowerCase() == lastWord.definition.toLowerCase()){
+        lastWord.write_error_counter -= 1;
+      } else {
+        lastWord.write_error_counter += 1;
+      }
+    }
     return UnaryModule(moduleId);
   }
   var currentWord = currTermList[progress];
 
+  if (showPostScreen ?? false) {
+    return WriteWordOneMoreTime(
+        moduleId,
+        currentWord.id,
+        progress,
+        currTermList.length,
+        [for (var term in currTermList) term.id],
+        InputedWord ?? "", );
+  }
+  if (InputedWord != null && lastWord != null){
+    if (InputedWord.toLowerCase() == lastWord.definition.toLowerCase()){
+      lastWord.write_error_counter -= 1;
+    } else {
+      lastWord.write_error_counter += 1;
+    }
+  }
   if (currentWord.choose_error_counter == 0) {
     return WriteWord(moduleId, currentWord.id, progress, currTermList.length,
-        [for (var term in currTermList) term.id]
-    );
+        [for (var term in currTermList) term.id]);
   } else {
     var definitionDataPre = [
       for (var w in words.values)
@@ -69,7 +102,7 @@ Widget getNextLearnPage(
     definitionDataPre.shuffle();
 
     var definitionData = [
-      for (var ww in definitionDataPre )
+      for (var ww in definitionDataPre)
         if (ww.id != currentWord.id) ww.id
     ];
     definitionData = definitionData.sublist(0, 3);
@@ -230,6 +263,29 @@ class _UnaryModuleState extends State<UnaryModule> {
               padding: EdgeInsets.all(16),
               child: Text(
                 "Продолжить заучивание",
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
+              textColor: Color(0xff000000),
+              height: 40,
+              minWidth: 140,
+            ),
+            MaterialButton(
+              onPressed: () {
+                if (module != null) {}
+              },
+              color: Color(0xffffffff),
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.zero,
+                side: BorderSide(color: Color(0xff808080), width: 1),
+              ),
+              padding: EdgeInsets.all(16),
+              child: Text(
+                "Настройки заучивания",
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
