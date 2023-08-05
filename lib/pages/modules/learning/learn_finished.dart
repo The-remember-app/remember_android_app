@@ -109,6 +109,7 @@ class LearnCompleted extends StatelessWidget {
                                   if (w.module_id == moduleId) {
                                     w.choose_error_counter = 1;
                                     w.write_error_counter = 1;
+                                    w.choise_neg_error_counter = 0;
                                   }
                                 }
                                 Navigator.push(

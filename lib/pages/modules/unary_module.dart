@@ -17,7 +17,7 @@ import 'modules.dart';
 Widget getNextLearnPage(
   Uuid moduleId, [
   List<TermEntity>? currTermList = null,
-  int progress = 0,
+  int progress = -1,
   List<Uuid>? currTermUuidList = null,
 ]) {
   // return choiceWord;
@@ -62,18 +62,14 @@ Widget getNextLearnPage(
         [for (var term in currTermList) term.id]
     );
   } else {
+    var definitionDataPre = [
+      for (var w in words.values)
+        if (w.module_id == moduleId) w
+    ];
+    definitionDataPre.shuffle();
+
     var definitionData = [
-      for (var ww in [
-        for (var w in words.values)
-          if (w.module_id == moduleId) w
-      ]
-        // ..sort((term1, term2) {
-        //   if (term1.choose_error_counter == term2.choose_error_counter) {
-        //     return term1.write_error_counter.compareTo(term2.write_error_counter);
-        //   }
-        //   return term1.choose_error_counter.compareTo(term2.choose_error_counter);
-        // })
-        ..shuffle())
+      for (var ww in definitionDataPre )
         if (ww.id != currentWord.id) ww.id
     ];
     definitionData = definitionData.sublist(0, 3);
@@ -188,6 +184,7 @@ class _UnaryModuleState extends State<UnaryModule> {
                     if (w.module_id == moduleId) {
                       w.choose_error_counter = 1;
                       w.write_error_counter = 1;
+                      w.choise_neg_error_counter = 0;
                     }
                   }
                   Navigator.push(
