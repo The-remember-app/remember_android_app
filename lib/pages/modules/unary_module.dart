@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:the_remember/pages/modules/unary_folder.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../main.dart';
 import '../../models/folder.dart';
+import '../../models/module.dart';
 import '../../models/term.dart';
 import 'learning/choiceWord.dart';
 import 'learning/learn_finished.dart';
@@ -29,6 +31,7 @@ Widget getNextLearnPage(
   } else {
     progress += 1;
   }
+  var currentModule = foldersOrModules[moduleId]!;
 
   if (currTermList == null && currTermUuidList != null) {
     currTermList ??= [for (var termId in currTermUuidList) words[termId]!];
@@ -60,16 +63,18 @@ Widget getNextLearnPage(
   // }
   // }
   var lastWord = null;
-  if (progress != 0){
-    lastWord = currTermList[progress-1];
+  if (progress != 0) {
+    lastWord = currTermList[progress - 1];
+
   }
   if (progress > 9 || progress >= currTermList.length) {
-    if (InputedWord != null && lastWord != null){
-      if (InputedWord.toLowerCase() == lastWord.definition.toLowerCase()){
+    if (InputedWord != null && lastWord != null) {
+      if (InputedWord.toLowerCase() == lastWord.maybeReverseDefinitionWrite.toLowerCase()) {
         lastWord.write_error_counter -= 1;
       } else {
         lastWord.write_error_counter += 1;
       }
+      lastWord?.resetReverse();
     }
     return UnaryModule(moduleId);
   }
@@ -82,18 +87,26 @@ Widget getNextLearnPage(
         progress,
         currTermList.length,
         [for (var term in currTermList) term.id],
-        InputedWord ?? "", );
+        InputedWord ?? "",
+        currentWord.isTermReverseWrite());
   }
-  if (InputedWord != null && lastWord != null){
-    if (InputedWord.toLowerCase() == lastWord.definition.toLowerCase()){
+  if (InputedWord != null && lastWord != null) {
+    if (InputedWord.toLowerCase() == lastWord.maybeReverseDefinitionWrite.toLowerCase()) {
       lastWord.write_error_counter -= 1;
     } else {
       lastWord.write_error_counter += 1;
     }
+    lastWord?.resetReverse();
   }
   if (currentWord.choose_error_counter == 0) {
-    return WriteWord(moduleId, currentWord.id, progress, currTermList.length,
-        [for (var term in currTermList) term.id]);
+    return WriteWord(
+        moduleId,
+        currentWord.id,
+        progress,
+        currTermList.length,
+        [for (var term in currTermList) term.id],
+        currentWord.isTermReverseWrite()
+    );
   } else {
     var definitionDataPre = [
       for (var w in words.values)
@@ -108,8 +121,16 @@ Widget getNextLearnPage(
     definitionData = definitionData.sublist(0, 3);
     definitionData.add(currentWord.id);
     definitionData.shuffle();
-    return ChoiceWord(moduleId, currentWord.id, progress, currTermList.length,
-        definitionData, [for (var term in currTermList) term.id]);
+    // var r_num =
+    return ChoiceWord(
+        moduleId,
+        currentWord.id,
+        progress,
+        currTermList.length,
+        definitionData,
+        [for (var term in currTermList) term.id],
+        currentWord.isTermReverseChoice())
+    ;
   }
 }
 

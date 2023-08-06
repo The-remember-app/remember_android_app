@@ -14,11 +14,13 @@ class WriteWordOneMoreTime extends StatelessWidget {
   final int progress;
   final int maxProgress;
   List<Uuid>? currTermUuid;
-  final String UserInput ;
+  final String userInput ;
+  final bool reverseTerm;
+
 
   WriteWordOneMoreTime(
       this.moduleId, this.wordId, this.progress, this.maxProgress,
-      [this.currTermUuid = null,  this.UserInput = ""]);
+      [this.currTermUuid = null,  this.userInput = "", this.reverseTerm = false]);
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +63,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) => getNextLearnPage(
-                        moduleId, null, progress, currTermUuid, UserInput, false)));
+                        moduleId, null, progress, currTermUuid, userInput, false)));
             // }
           }
         },
@@ -229,7 +231,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => getNextLearnPage(
-                                moduleId, null, progress, currTermUuid, UserInput, false)));
+                                moduleId, null, progress, currTermUuid, userInput, false)));
                   }
                   // print("onChanged");
                   // print("Введенный текст: $text");
@@ -319,7 +321,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => getNextLearnPage(
-                                        moduleId, null, progress, currTermUuid, UserInput, false)));
+                                        moduleId, null, progress, currTermUuid, userInput, false)));
                           },
                           color: Color(0xfff9f9f9),
                           elevation: 0,

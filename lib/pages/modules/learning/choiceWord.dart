@@ -11,6 +11,7 @@ import '../unary_module.dart';
 MaterialButton getDefinitionVariable(Uuid wordId, BuildContext context,
     Uuid targetTerm, _ChoiceWordState currWidgetClass) {
   var word = words[wordId];
+  var targetTermEntity = words[targetTerm];
   var buttonIsDisabled = false;
 
   var buttonColor = Color(0xffffffff);
@@ -51,7 +52,8 @@ MaterialButton getDefinitionVariable(Uuid wordId, BuildContext context,
     ),
     padding: EdgeInsets.all(16),
     child: Text(
-      word?.definition ?? "Похоже слоа с таким UUID не существует",
+      targetTermEntity!.isTermReverseChoice() ? word!.term : word!.definition ,
+      // word?.maybeReverseDefinitionChoice ?? "Похоже слоа с таким UUID не существует",
       style: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w400,
@@ -72,10 +74,11 @@ class ChoiceWord extends StatefulWidget {
   final int maxProgress;
   final List<Uuid> definitions;
   List<Uuid>? currTermUuid;
+  final bool reverseTerm;
 
   ChoiceWord(this.moduleId, this.wordId, this.progress, this.maxProgress,
       this.definitions,
-      [this.currTermUuid = null]);
+      [this.currTermUuid = null, this.reverseTerm = false]);
 
   @override
   _ChoiceWordState createState() => _ChoiceWordState(
@@ -90,10 +93,11 @@ class _ChoiceWordState extends State<ChoiceWord> {
   final List<Uuid> definitions;
   final Map<Uuid, bool> buttonPressed = Map<Uuid, bool>();
   List<Uuid>? currTermUuid;
+  final bool reverseTerm;
 
   _ChoiceWordState(this.moduleId, this.wordId, this.progress, this.maxProgress,
       this.definitions,
-      [this.currTermUuid = null]) {
+      [this.currTermUuid = null, this.reverseTerm = false]) {
     for (var definition in definitions) {
       buttonPressed[definition] = false;
     }
@@ -161,7 +165,7 @@ class _ChoiceWordState extends State<ChoiceWord> {
                     backgroundColor: Color(0xff808080),
                     valueColor:
                         new AlwaysStoppedAnimation<Color>(Color(0xff3a57e8)),
-                    value: progress.toDouble() / maxProgress.toDouble() ,
+                    value: progress.toDouble() / maxProgress.toDouble(),
                     minHeight: 3),
               ),
               Container(
@@ -178,7 +182,7 @@ class _ChoiceWordState extends State<ChoiceWord> {
                 child: Align(
                   alignment: Alignment.center,
                   child: Text(
-                    (currWord?.term ??
+                    (currWord?.maybeReverseTermChoice ??
                         "Похоже, в словаре не хватает слов, это явно ошибка"),
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.clip,
@@ -246,15 +250,16 @@ class _ChoiceWordState extends State<ChoiceWord> {
                                             currTermUuid)));
                               }
                             },
-                            color: Color(0xfff9f9f9) ,
+                            color: Color(0xfff9f9f9),
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0),
                               side: BorderSide(
-                                  color:  (buttonPressed.values
-                                      .any((isClicked) => isClicked))? Color(0xff3a57e8):Color(0xff707070),
-                                  width: 2
-                              ),
+                                  color: (buttonPressed.values
+                                          .any((isClicked) => isClicked))
+                                      ? Color(0xff3a57e8)
+                                      : Color(0xff707070),
+                                  width: 2),
                             ),
                             padding: EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 8),
@@ -266,8 +271,10 @@ class _ChoiceWordState extends State<ChoiceWord> {
                                 fontStyle: FontStyle.normal,
                               ),
                             ),
-                            textColor:  (buttonPressed.values
-                              .any((isClicked) => isClicked)) ? Color(0xff000000)  :Color(0xff707070),
+                            textColor: (buttonPressed.values
+                                    .any((isClicked) => isClicked))
+                                ? Color(0xff000000)
+                                : Color(0xff707070),
                             height: 40,
                             minWidth: 140,
                           ),

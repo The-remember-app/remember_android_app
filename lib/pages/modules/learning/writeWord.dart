@@ -16,9 +16,10 @@ class WriteWord extends StatelessWidget {
   final int maxProgress;
   List<Uuid>? currTermUuid;
   String inputWord = "";
+  final bool reverseTerm;
 
   WriteWord(this.moduleId, this.wordId, this.progress, this.maxProgress,
-      [this.currTermUuid = null]);
+      [this.currTermUuid = null, this.reverseTerm = false]);
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +120,7 @@ class WriteWord extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(
-                          wordEntity?.term ?? "Не найдено термина с таким UUID",
+                          wordEntity?.maybeReverseTermWrite ?? "Не найдено термина с таким UUID",
                           textAlign: TextAlign.left,
                           overflow: TextOverflow.clip,
                           style: TextStyle(
@@ -141,7 +142,7 @@ class WriteWord extends StatelessWidget {
                 onChanged: (text) {
                   inputWord = text;
                   if (text.toLowerCase() ==
-                      wordEntity!.definition.toLowerCase()) {
+                      wordEntity!.maybeReverseDefinitionWrite.toLowerCase()) {
                     // words[wordId]?.write_error_counter -= 1;
 
                     Navigator.push(

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:the_remember/pages/home.dart';
 
@@ -7,6 +9,8 @@ import 'pages/modules/modules.dart';
 // выполнение приложения
 // возвращает виджет приложения
 void main() => runApp(MyApp());
+
+Random random = new Random();
 
 // В Flutter все является виджетом (кнопки,списки, текст и т.д.)
 // виджет - это отдельный компонент, который может быть отрисован
