@@ -7,9 +7,9 @@ import 'package:the_remember/pages/modules/unary_folder.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../main.dart';
-import '../../models/folder.dart';
-import '../../models/module.dart';
-import '../../models/term.dart';
+import '../../repositoris/folder_repository/local_db_data_source/folder.dart';
+import '../../repositoris/module_repository/local_db_data_source/module.dart';
+import '../../repositoris/term_repository/local_db_data_source/term.dart';
 import 'learning/choiceWord.dart';
 import 'learning/learn_finished.dart';
 import 'learning/writeWord.dart';

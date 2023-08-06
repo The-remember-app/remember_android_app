@@ -1,6 +1,6 @@
 import 'package:uuid/uuid.dart';
 
-import 'module.dart';
+import '../../module_repository/local_db_data_source/module.dart';
 
 abstract class AbstractFolder {
   final Uuid id;

@@ -1,7 +1,7 @@
 
 
-import '../main.dart';
-import 'folder.dart';
+import '../../../main.dart';
+import '../../folder_repository/local_db_data_source/folder.dart';
 
 class Module extends AbstractFolder {
 

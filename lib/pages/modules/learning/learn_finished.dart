@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../models/folder.dart';
-import '../../../models/term.dart';
+import '../../../repositoris/folder_repository/local_db_data_source/folder.dart';
+import '../../../repositoris/term_repository/local_db_data_source/term.dart';
 import '../unary_module.dart';
 
 class LearnCompleted extends StatelessWidget {

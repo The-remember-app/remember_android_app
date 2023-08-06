@@ -5,9 +5,9 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../models/folder.dart';
-import '../../models/module.dart';
-import '../../models/term.dart';
+import '../../repositoris/folder_repository/local_db_data_source/folder.dart';
+import '../../repositoris/module_repository/local_db_data_source/module.dart';
+import '../../repositoris/term_repository/local_db_data_source/term.dart';
 import 'unary_folder.dart';
 import 'unary_module.dart';
 

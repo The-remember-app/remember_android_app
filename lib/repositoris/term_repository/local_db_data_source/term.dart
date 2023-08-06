@@ -1,9 +1,9 @@
 
 import 'package:uuid/uuid.dart';
 
-import '../main.dart';
-import 'folder.dart';
-import 'module.dart';
+import '../../../main.dart';
+import '../../folder_repository/local_db_data_source/folder.dart';
+import '../../module_repository/local_db_data_source/module.dart';
 
 class TermEntity {
   final Uuid id;

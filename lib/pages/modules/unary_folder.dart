@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../models/folder.dart';
+import '../../repositoris/folder_repository/local_db_data_source/folder.dart';
 import 'modules.dart';
 
 class UnaryFolder extends StatelessWidget {
