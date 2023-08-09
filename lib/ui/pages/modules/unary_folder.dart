@@ -3,22 +3,60 @@
 ///File download from FlutterViz- Drag and drop a tools. For more details visit https://flutterviz.io/
 
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../repositoris/folder_repository/local_db_data_source/folder.dart';
+import '../../../domain_layer/data_mixins/modules/unary_folder.dart';
+import '../../../repositoris/folder_repository/local_db_data_source/folder.dart';
+import '../../../repositoris/module_repository/local_db_data_source/module.dart';
+import '../../../urils/db/abstract_entity.dart';
+import '../../../urils/db/dbMixins.dart';
+// import '../../repositoris/folder_repository/local_db_data_source/folder.dart';
+import '../../ui_templates/abstract_ui.dart';
 import 'modules.dart';
 
-class UnaryFolder extends StatelessWidget {
-  final Uuid folderId;
+class UnaryFolder extends StatefulWidget {
+  late int folderId;
 
   UnaryFolder(this.folderId);
 
   @override
+  UnaryFolderState createState() => UnaryFolderState(folderId);
+}
+
+
+class UnaryFolderState
+    extends AbstractUIStatefulWidget<UnaryFolder>
+    with OpenAndClose3<
+        CollectionSchema<FolderDbDS>,
+        CollectionSchema<ModuleDbDS>,
+        CollectionSchema<TermEntityDbDS>
+    >, UnaryFolderDbMixin
+    implements  UnaryFolderI, GetDataFromDbI
+
+{
+  late int folderId;
+
+  UnaryFolderState(this.folderId);
+
+
+  List<Widget> getFolderAndModulesUI(BuildContext context) {
+
+
+    var foldersDataUI = subFolders.map<Widget>((KeyValPair) {
+      final folder = KeyValPair;
+      return StartModule.getFolder(folder, context);
+    }).toList();
+    var modulesDataUI = currModules.map<Widget>((KeyValPair) {
+      final module = KeyValPair ;
+      return StartModule.getModule(module, context);
+    }).toList();
+    return foldersDataUI + modulesDataUI;
+  }
+
+
+  @override
   Widget build(BuildContext context) {
-    final folder = foldersOrModules[folderId];
-    Map<Uuid, AbstractFolder> data = {
-      for (var v in folderTree[folderId] ?? []) v.id: v
-    };
 
     return Scaffold(
       backgroundColor: Color(0xffffffff),
@@ -31,7 +69,7 @@ class UnaryFolder extends StatelessWidget {
           borderRadius: BorderRadius.zero,
         ),
         title: Text(
-          folder?.name ?? "Не найдено ничего по этому UUID",
+          folderEntity?.name ?? "Не найдено ничего по этому UUID",
           style: TextStyle(
             fontWeight: FontWeight.w700,
             fontStyle: FontStyle.normal,
@@ -61,12 +99,7 @@ class UnaryFolder extends StatelessWidget {
             padding: EdgeInsets.all(0),
             shrinkWrap: false,
             physics: ScrollPhysics(),
-            children: data.entries.map<Widget>((KeyValPair) {
-              final (id, folder_or_module) = (KeyValPair.key, KeyValPair.value);
-              return folder_or_module is Folder
-                  ? getFolder(folder_or_module, context)
-                  : getModule(folder_or_module, context);
-            }).toList(),
+            children: getFolderAndModulesUI(context),
           ),
           Align(
             alignment: Alignment.bottomRight,
@@ -95,4 +128,6 @@ class UnaryFolder extends StatelessWidget {
       ),
     );
   }
+
+
 }

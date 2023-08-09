@@ -1,33 +1,37 @@
 ///File download from FlutterViz- Drag and drop a tools. For more details visit https://flutterviz.io/
 
 import 'package:flutter/material.dart';
+import 'package:the_remember/repositoris/module_repository/local_db_data_source/module.dart';
+import 'package:the_remember/repositoris/term_repository/local_db_data_source/term.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../repositoris/folder_repository/local_db_data_source/folder.dart';
-import '../../../repositoris/term_repository/local_db_data_source/term.dart';
+import '../../../../repositoris/folder_repository/local_db_data_source/folder.dart';
 import '../modules.dart';
 import '../unary_module.dart';
 
-MaterialButton getDefinitionVariable(Uuid wordId, BuildContext context,
-    Uuid targetTerm, _ChoiceWordState currWidgetClass) {
-  var word = words[wordId];
-  var targetTermEntity = words[targetTerm];
+MaterialButton getDefinitionVariable(
+    TermEntityDbDS wordEntity,
+    BuildContext context,
+    TermEntityDbDS targetTermEntity,
+    _ChoiceWordState currWidgetClass) {
+  // var wordEntity = words[wordEntity];
+  // var targetTermEntity = words[targetTerm];
   var buttonIsDisabled = false;
 
   var buttonColor = Color(0xffffffff);
-  if (currWidgetClass.buttonPressed[wordId] ?? false) {
-    if (wordId == targetTerm) {
+  if (currWidgetClass.buttonPressed[wordEntity.id] ?? false) {
+    if (wordEntity.id == targetTermEntity.id) {
       buttonColor = Color(0xff00ff00);
-      word?.choose_error_counter -= 1;
+      wordEntity.choose_error_counter -= 1;
     } else {
       buttonColor = Color(0xffff0000);
-      word?.choise_neg_error_counter += 1;
+      wordEntity.choise_neg_error_counter += 1;
     }
   } else {
-    if (wordId == targetTerm &&
+    if (wordEntity.id == targetTermEntity.id &&
         currWidgetClass.buttonPressed.values.any((isClicked) => isClicked)) {
       buttonColor = Color(0xff00ff00);
-      word?.choose_error_counter += 1;
+      wordEntity.choose_error_counter += 1;
     }
   }
   if (currWidgetClass.buttonPressed.values.any((isClicked) => isClicked)) {
@@ -40,8 +44,8 @@ MaterialButton getDefinitionVariable(Uuid wordId, BuildContext context,
       MaterialButton(
     onPressed: () {
       if (!buttonIsDisabled) {
-        currWidgetClass
-            .setState(() => currWidgetClass.buttonPressed[wordId] = true);
+        currWidgetClass.setState(
+            () => currWidgetClass.buttonPressed[wordEntity.id] = true);
       }
     },
     color: buttonColor,
@@ -52,7 +56,9 @@ MaterialButton getDefinitionVariable(Uuid wordId, BuildContext context,
     ),
     padding: EdgeInsets.all(16),
     child: Text(
-      targetTermEntity!.isTermReverseChoice() ? word!.term : word!.definition ,
+      targetTermEntity.isTermReverseChoice()
+          ? wordEntity.term
+          : wordEntity.definition,
       // word?.maybeReverseDefinitionChoice ?? "Похоже слоа с таким UUID не существует",
       style: TextStyle(
         fontSize: 14,
@@ -68,45 +74,57 @@ MaterialButton getDefinitionVariable(Uuid wordId, BuildContext context,
 }
 
 class ChoiceWord extends StatefulWidget {
-  final Uuid moduleId;
-  final Uuid wordId;
+  final ModuleDbDS moduleEntity;
+  final TermEntityDbDS wordEntity;
   final int progress;
   final int maxProgress;
-  final List<Uuid> definitions;
-  List<Uuid>? currTermUuid;
+  final List<TermEntityDbDS> definitions;
+  final List<TermEntityDbDS>? currTermsList;
   final bool reverseTerm;
 
-  ChoiceWord(this.moduleId, this.wordId, this.progress, this.maxProgress,
-      this.definitions,
-      [this.currTermUuid = null, this.reverseTerm = false]);
+  ChoiceWord(this.moduleEntity, this.wordEntity, this.progress,
+      this.maxProgress, this.definitions,
+      [this.currTermsList = null, this.reverseTerm = false]);
 
   @override
   _ChoiceWordState createState() => _ChoiceWordState(
-      moduleId, wordId, progress, maxProgress, definitions, currTermUuid);
+      moduleEntity,
+      wordEntity,
+      progress,
+      maxProgress,
+      definitions,
+      currTermsList,
+    reverseTerm,
+  );
 }
 
 class _ChoiceWordState extends State<ChoiceWord> {
-  final Uuid moduleId;
-  final Uuid wordId;
+  final ModuleDbDS moduleEntity;
+  final TermEntityDbDS wordEntity;
   final int progress;
   final int maxProgress;
-  final List<Uuid> definitions;
-  final Map<Uuid, bool> buttonPressed = Map<Uuid, bool>();
-  List<Uuid>? currTermUuid;
+  final List<TermEntityDbDS> definitions;
+  final Map<int, bool> buttonPressed = Map<int, bool>();
+  List<TermEntityDbDS>? currTermsList;
   final bool reverseTerm;
 
-  _ChoiceWordState(this.moduleId, this.wordId, this.progress, this.maxProgress,
+  _ChoiceWordState(
+      this.moduleEntity,
+      this.wordEntity,
+      this.progress,
+      this.maxProgress,
       this.definitions,
-      [this.currTermUuid = null, this.reverseTerm = false]) {
+      this.currTermsList,
+      this.reverseTerm) {
     for (var definition in definitions) {
-      buttonPressed[definition] = false;
+      buttonPressed[definition.id] = false;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    var module = foldersOrModules[moduleId];
-    var currWord = words[wordId];
+    // var moduleEntity = foldersOrModules[moduleEntity];
+    // var wordEntity = words[wordEntity];
 
     return Scaffold(
         backgroundColor: Color(0xffffffff),
@@ -119,7 +137,7 @@ class _ChoiceWordState extends State<ChoiceWord> {
             borderRadius: BorderRadius.zero,
           ),
           title: Text(
-            module?.name ?? "По такому UUID не найдено модуля",
+            moduleEntity.name ?? "По такому UUID не найдено модуля",
             style: TextStyle(
               fontWeight: FontWeight.w400,
               fontStyle: FontStyle.normal,
@@ -139,18 +157,20 @@ class _ChoiceWordState extends State<ChoiceWord> {
           ),
         ),
         body: GestureDetector(
-          onPanUpdate: (details) {
+          onPanUpdate: (details) async {
             // Swiping in right direction.
             if (details.delta.dx > 0) {}
 
             // Swiping in left direction.
             if (details.delta.dx < 0) {
               if (buttonPressed.values.any((isClicked) => isClicked)) {
+
+                var nextPage = await getNextLearnPage(
+                    moduleEntity, currTermsList, progress);
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => getNextLearnPage(
-                            moduleId, null, progress, currTermUuid)));
+                        builder: (context) => nextPage));
               }
             }
           },
@@ -182,7 +202,7 @@ class _ChoiceWordState extends State<ChoiceWord> {
                 child: Align(
                   alignment: Alignment.center,
                   child: Text(
-                    (currWord?.maybeReverseTermChoice ??
+                    (wordEntity.maybeReverseTermChoice ??
                         "Похоже, в словаре не хватает слов, это явно ошибка"),
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.clip,
@@ -202,9 +222,9 @@ class _ChoiceWordState extends State<ChoiceWord> {
                   padding: EdgeInsets.zero,
                   shrinkWrap: false,
                   physics: ScrollPhysics(),
-                  children: definitions.map<Widget>((wordDefinitionId) {
+                  children: definitions.map<Widget>((wordDefinitionEntity) {
                     return getDefinitionVariable(
-                        wordDefinitionId, context, wordId, this);
+                        wordDefinitionEntity, context, wordEntity, this);
                   }).toList(),
                 ),
               ),
@@ -221,7 +241,9 @@ class _ChoiceWordState extends State<ChoiceWord> {
                         padding:
                             EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                         child: Text(
-                          "Для того, чтобы перейти к следующему термину проведите пальцем по экрану от правого края к левому или просто нажмите на кнопку",
+                          "Для того, чтобы перейти к следующему термину, "
+                              "проведите пальцем по экрану от правого края "
+                              "к левому или просто нажмите на кнопку",
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.clip,
                           style: TextStyle(
@@ -237,17 +259,18 @@ class _ChoiceWordState extends State<ChoiceWord> {
                         child: Align(
                           alignment: Alignment.center,
                           child: MaterialButton(
-                            onPressed: () {
+                            onPressed: () async {
+                              var nextPage = await getNextLearnPage(
+                                moduleEntity,
+                                currTermsList,
+                                progress,
+                              );
                               if (buttonPressed.values
                                   .any((isClicked) => isClicked)) {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => getNextLearnPage(
-                                            moduleId,
-                                            null,
-                                            progress,
-                                            currTermUuid)));
+                                        builder: (context) => nextPage));
                               }
                             },
                             color: Color(0xfff9f9f9),

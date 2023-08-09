@@ -1,21 +1,20 @@
 ///File download from FlutterViz- Drag and drop a tools. For more details visit https://flutterviz.io/
 
 import 'package:flutter/material.dart';
+import 'package:the_remember/repositoris/module_repository/local_db_data_source/module.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../repositoris/folder_repository/local_db_data_source/folder.dart';
-import '../../../repositoris/term_repository/local_db_data_source/term.dart';
+import '../../../../domain_layer/functions/words_BO.dart';
+import '../../../../repositoris/folder_repository/local_db_data_source/folder.dart';
 import '../unary_module.dart';
 
 class LearnCompleted extends StatelessWidget {
+  final ModuleDbDS moduleEntity;
 
-  final Uuid moduleId;
-
-  LearnCompleted(this.moduleId);
+  LearnCompleted(this.moduleEntity);
 
   @override
   Widget build(BuildContext context) {
-    var module = foldersOrModules[moduleId];
     return Scaffold(
       backgroundColor: Color(0xffffffff),
       appBar: AppBar(
@@ -27,7 +26,7 @@ class LearnCompleted extends StatelessWidget {
           borderRadius: BorderRadius.zero,
         ),
         title: Text(
-          module?.name ?? "Нет модуля с таким Uuid",
+          moduleEntity.name ?? "Нет модуля с таким Uuid",
           style: TextStyle(
             fontWeight: FontWeight.w400,
             fontStyle: FontStyle.normal,
@@ -53,7 +52,7 @@ class LearnCompleted extends StatelessWidget {
               child: LinearProgressIndicator(
                   backgroundColor: Color(0xff808080),
                   valueColor:
-                  new AlwaysStoppedAnimation<Color>(Color(0xff3a57e8)),
+                      new AlwaysStoppedAnimation<Color>(Color(0xff3a57e8)),
                   value: 0.1,
                   minHeight: 3),
             ),
@@ -82,7 +81,7 @@ class LearnCompleted extends StatelessWidget {
                     children: [
                       Padding(
                         padding:
-                        EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
@@ -103,20 +102,14 @@ class LearnCompleted extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.center,
                           child: MaterialButton(
-                            onPressed: () {
-                              if (module != null) {
-                                for(var w in words.values){
-                                  if (w.module_id == moduleId) {
-                                    w.choose_error_counter = 1;
-                                    w.write_error_counter = 1;
-                                    w.choise_neg_error_counter = 0;
-                                  }
-                                }
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => getNextLearnPage(module.id )));
-                              }
+                            onPressed: () async {
+                              await startLearning(moduleEntity.id);
+                              var nextPage = await  getNextLearnPage(moduleEntity);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                      nextPage ));
                             },
                             color: Color(0xfff9f9f9),
                             elevation: 0,
@@ -152,10 +145,10 @@ class LearnCompleted extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.zero,
                             side:
-                            BorderSide(color: Color(0xff808080), width: 1),
+                                BorderSide(color: Color(0xff808080), width: 1),
                           ),
                           padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           child: Text(
                             "Вернуться к модулю",
                             style: TextStyle(

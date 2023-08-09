@@ -1,17 +1,21 @@
 
 
+import 'package:isar/isar.dart';
+import 'package:uuid/uuid.dart';
+
 import '../../../main.dart';
+import '../../../urils/db/abstract_entity.dart';
+import '../../data_abstract.dart';
 import '../../folder_repository/local_db_data_source/folder.dart';
+import '../../term_repository/local_db_data_source/term.dart';
 
-class Module extends AbstractFolder {
 
-  bool is_reverce_defitition_write = false;
-  bool standart_and_reverce_write = true;
-  bool is_reverce_defitition_choice = false;
-  bool standart_and_reverce_choice = true;
 
-  Module.genId(super.name) : super.genId();
 
-  Module(super.id, super.name);
 
-}
+
+
+  // Module.genId(name) : this(Uuid(), name);
+  //
+  // Module(this.id, this.name);
+

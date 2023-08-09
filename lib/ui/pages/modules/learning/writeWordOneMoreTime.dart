@@ -1,31 +1,32 @@
 ///File download from FlutterViz- Drag and drop a tools. For more details visit https://flutterviz.io/
 
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
-
-import '../../../repositoris/folder_repository/local_db_data_source/folder.dart';
-import '../../../repositoris/term_repository/local_db_data_source/term.dart';
+import 'package:the_remember/repositoris/module_repository/local_db_data_source/module.dart';
+import 'package:the_remember/repositoris/term_repository/local_db_data_source/term.dart';
+import '../../../../repositoris/folder_repository/local_db_data_source/folder.dart';
 import '../unary_module.dart';
 
 
 class WriteWordOneMoreTime extends StatelessWidget {
-  final Uuid moduleId;
-  final Uuid wordId;
+  final ModuleDbDS moduleEntity;
+  final TermEntityDbDS wordEntity;
   final int progress;
   final int maxProgress;
-  List<Uuid>? currTermUuid;
-  final String userInput ;
+  List<TermEntityDbDS>? currTermsList;
+  final String userInput;
+
   final bool reverseTerm;
 
-
   WriteWordOneMoreTime(
-      this.moduleId, this.wordId, this.progress, this.maxProgress,
-      [this.currTermUuid = null,  this.userInput = "", this.reverseTerm = false]);
+      this.moduleEntity, this.wordEntity, this.progress, this.maxProgress,
+      [this.currTermsList = null,
+      this.userInput = "",
+      this.reverseTerm = false]);
 
   @override
   Widget build(BuildContext context) {
-    var module = foldersOrModules[moduleId];
-    var wordEntity = words[wordId];
+    // var moduleEntity = foldersOrModules[moduleEntity];
+    // var wordEntity = words[wordId];
     return Scaffold(
       backgroundColor: Color(0xffffffff),
       appBar: AppBar(
@@ -37,7 +38,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
           borderRadius: BorderRadius.zero,
         ),
         title: Text(
-          module?.name ?? "Не найден Uuid для этого модуля",
+          moduleEntity.name ?? "Не найден Uuid для этого модуля",
           style: TextStyle(
             fontWeight: FontWeight.w400,
             fontStyle: FontStyle.normal,
@@ -52,18 +53,19 @@ class WriteWordOneMoreTime extends StatelessWidget {
         ),
       ),
       body: GestureDetector(
-        onPanUpdate: (details) {
+        onPanUpdate: (details) async {
           // Swiping in right direction.
           if (details.delta.dx > 0) {}
 
           // Swiping in left direction.
           if (details.delta.dx < 0) {
             // if (buttonPressed.values.any((isClicked) => isClicked)) {
+            var nextPage = await getNextLearnPage(moduleEntity,
+                currTermsList, progress, userInput, false);
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => getNextLearnPage(
-                        moduleId, null, progress, currTermUuid, userInput, false)));
+                    builder: (context) => nextPage));
             // }
           }
         },
@@ -78,7 +80,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
                   backgroundColor: Color(0xff808080),
                   valueColor:
                       new AlwaysStoppedAnimation<Color>(Color(0xff3a57e8)),
-                  value: progress.toDouble() / maxProgress.toDouble() ,
+                  value: progress.toDouble() / maxProgress.toDouble(),
                   minHeight: 3),
             ),
             Container(
@@ -148,7 +150,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
                               child: Align(
                                 alignment: Alignment.topCenter,
                                 child: Text(
-                                  wordEntity?.term ??
+                                  wordEntity.term ??
                                       "Похоже, что по этому Uuid не найдено термина, так быть не должно...",
                                   textAlign: TextAlign.left,
                                   overflow: TextOverflow.clip,
@@ -198,7 +200,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
                             child: Align(
                               alignment: Alignment.topCenter,
                               child: Text(
-                                wordEntity?.definition ??
+                                wordEntity.definition ??
                                     "Похоже, что по этому Uuid не найдено термина, так быть не должно...",
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.clip,
@@ -221,17 +223,17 @@ class WriteWordOneMoreTime extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(10),
               child: TextField(
-                onChanged: (text) {
+                onChanged: (text) async {
                   // UserInput = text;
                   if (text.toLowerCase() ==
-                      wordEntity!.definition.toLowerCase()) {
+                      wordEntity.definition.toLowerCase()) {
                     // words[wordId]?.write_error_counter -= 1;
-
+                    var nextPage = await getNextLearnPage(moduleEntity,
+                        currTermsList, progress, userInput, false);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => getNextLearnPage(
-                                moduleId, null, progress, currTermUuid, userInput, false)));
+                            builder: (context) => nextPage));
                   }
                   // print("onChanged");
                   // print("Введенный текст: $text");
@@ -266,7 +268,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
                     fontSize: 14,
                     color: Color(0xff000000),
                   ),
-                  hintText: wordEntity?.definition ??
+                  hintText: wordEntity.definition ??
                       "Похоже, что по этому Uuid не найдено термина, так быть не должно...",
                   hintStyle: TextStyle(
                     fontWeight: FontWeight.w400,
@@ -316,12 +318,17 @@ class WriteWordOneMoreTime extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.center,
                         child: MaterialButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            var nextPage = await  getNextLearnPage(
+                              moduleEntity,
+                              currTermsList,
+                              progress,
+                              userInput,
+                              false);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => getNextLearnPage(
-                                        moduleId, null, progress, currTermUuid, userInput, false)));
+                                    builder: (context) => nextPage ));
                           },
                           color: Color(0xfff9f9f9),
                           elevation: 0,
@@ -350,14 +357,17 @@ class WriteWordOneMoreTime extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.center,
                         child: MaterialButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            var nextPage = await getNextLearnPage(
+                                moduleEntity,
+                                currTermsList,
+                                progress,
+                                wordEntity.definition,
+                                false);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => getNextLearnPage(
-                                        moduleId, null, progress, currTermUuid,
-                                        wordEntity?.definition ?? "Похоже, по этому id не найдено ни одного слова", false)));
-
+                                    builder: (context) => nextPage ));
                           },
                           color: Color(0xfff9f9f9),
                           elevation: 0,

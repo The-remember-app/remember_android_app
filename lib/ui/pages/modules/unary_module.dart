@@ -3,27 +3,32 @@
 ///File download from FlutterViz- Drag and drop a tools. For more details visit https://flutterviz.io/
 
 import 'package:flutter/material.dart';
-import 'package:the_remember/pages/modules/unary_folder.dart';
+import 'package:isar/isar.dart';
+import 'package:the_remember/repositoris/term_repository/local_db_data_source/term.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../main.dart';
-import '../../repositoris/folder_repository/local_db_data_source/folder.dart';
-import '../../repositoris/module_repository/local_db_data_source/module.dart';
-import '../../repositoris/term_repository/local_db_data_source/term.dart';
+import '../../../domain_layer/data_mixins/modules/unary_module.dart';
+import '../../../domain_layer/functions/words_BO.dart';
+import '../../../repositoris/folder_repository/local_db_data_source/folder.dart';
+import '../../../repositoris/module_repository/local_db_data_source/module.dart';
+import '../../../urils/db/abstract_entity.dart';
+import '../../../urils/db/dbMixins.dart';
+import '../../ui_states/modules/unary_module.dart';
+import '../../ui_templates/abstract_ui.dart';
 import 'learning/choiceWord.dart';
 import 'learning/learn_finished.dart';
 import 'learning/writeWord.dart';
 import 'learning/writeWordOneMoreTime.dart';
 import 'modules.dart';
 
-Widget getNextLearnPage(
-  Uuid moduleId, [
-  List<TermEntity>? currTermList = null,
+Future<Widget> getNextLearnPage(
+    ModuleDbDS moduleEntity, [
+  List<TermEntityDbDS>? currTermList = null,
   int progress = -1,
-  List<Uuid>? currTermUuidList = null,
+  // List<int>? currTermIdList = null,
   String? InputedWord = null,
   bool? showPostScreen = null,
-]) {
+]) async {
   // return choiceWord;
   // if (currTermList == null){
   if (showPostScreen ?? false) {
@@ -31,15 +36,15 @@ Widget getNextLearnPage(
   } else {
     progress += 1;
   }
-  var currentModule = foldersOrModules[moduleId]!;
+  var currentModule = moduleEntity;
 
-  if (currTermList == null && currTermUuidList != null) {
-    currTermList ??= [for (var termId in currTermUuidList) words[termId]!];
-  }
+  // if (currTermList == null && currTermIdList != null) {
+  //   currTermList ??= [for (var termId in currTermIdList) words[termId]!];
+  // }
   if (currTermList == null) {
     currTermList ??= [
-      for (var w in words.values)
-        if (w.module_id == moduleId &&
+      for (var w in (await getAllTermsFromModule(moduleEntity.id)))
+        if (
             (w.write_error_counter != 0 || w.choose_error_counter != 0))
           w
     ];
@@ -56,7 +61,8 @@ Widget getNextLearnPage(
   }
 
   if (currTermList.isEmpty) {
-    return LearnCompleted(moduleId);
+    await learnTransactionCompleted(currTermList);
+    return LearnCompleted(moduleEntity);
   }
   // if (progress >= currTermUuidList!.length){
   //   return UnaryModule() ;
@@ -76,17 +82,18 @@ Widget getNextLearnPage(
       }
       lastWord?.resetReverse();
     }
-    return UnaryModule(moduleId);
+    await learnTransactionCompleted(currTermList);
+    return UnaryModule(moduleEntity);
   }
   var currentWord = currTermList[progress];
 
   if (showPostScreen ?? false) {
     return WriteWordOneMoreTime(
-        moduleId,
-        currentWord.id,
+        moduleEntity,
+        currentWord,
         progress,
         currTermList.length,
-        [for (var term in currTermList) term.id],
+        currTermList,
         InputedWord ?? "",
         currentWord.isTermReverseWrite());
   }
@@ -100,42 +107,39 @@ Widget getNextLearnPage(
   }
   if (currentWord.choose_error_counter == 0) {
     return WriteWord(
-        moduleId,
-        currentWord.id,
+        moduleEntity,
+        currentWord,
         progress,
         currTermList.length,
-        [for (var term in currTermList) term.id],
+        currTermList,
         currentWord.isTermReverseWrite()
     );
   } else {
-    var definitionDataPre = [
-      for (var w in words.values)
-        if (w.module_id == moduleId) w
-    ];
+    var definitionDataPre = await getAllTermsFromModule(moduleEntity.id);
     definitionDataPre.shuffle();
 
     var definitionData = [
       for (var ww in definitionDataPre)
-        if (ww.id != currentWord.id) ww.id
+        if (ww.id != currentWord.id) ww
     ];
     definitionData = definitionData.sublist(0, 3);
-    definitionData.add(currentWord.id);
+    definitionData.add(currentWord);
     definitionData.shuffle();
     // var r_num =
     return ChoiceWord(
-        moduleId,
-        currentWord.id,
+        moduleEntity,
+        currentWord,
         progress,
         currTermList.length,
         definitionData,
-        [for (var term in currTermList) term.id],
-        currentWord.isTermReverseChoice())
-    ;
+        currTermList,
+        currentWord.isTermReverseChoice()
+    );
   }
 }
 
 class UnaryModule extends StatefulWidget {
-  final Uuid moduleId;
+  final ModuleDbDS moduleId;
 
   UnaryModule(this.moduleId);
 
@@ -143,16 +147,26 @@ class UnaryModule extends StatefulWidget {
   _UnaryModuleState createState() => _UnaryModuleState(moduleId);
 }
 
-class _UnaryModuleState extends State<UnaryModule> {
+class _UnaryModuleState
+    extends AbstractUIStatefulWidget<UnaryModule>
+
+    with OpenAndClose3<
+        CollectionSchema<TermEntityDbDS>,
+        CollectionSchema<ModuleDbDS>,
+        CollectionSchema<AbstractEntity>
+    >,
+UnaryModuleStateDbMixin
+    implements UnaryModuleStateI
+{
   bool pressAttention = true;
-  final Uuid moduleId;
+  late ModuleDbDS currentModuleEntity;
   bool _flag = true;
 
-  _UnaryModuleState(this.moduleId);
+  _UnaryModuleState(this.currentModuleEntity): super();
 
   @override
   Widget build(BuildContext context) {
-    final module = foldersOrModules[moduleId];
+
     return Scaffold(
       backgroundColor: Color(0xffffffff),
       appBar: AppBar(
@@ -164,7 +178,7 @@ class _UnaryModuleState extends State<UnaryModule> {
           borderRadius: BorderRadius.zero,
         ),
         title: Text(
-          module?.name ?? "На найдено модуля с таким UUID",
+          currentModuleEntity.name ?? "На найдено модуля с таким UUID",
           style: TextStyle(
             fontWeight: FontWeight.w700,
             fontStyle: FontStyle.normal,
@@ -232,19 +246,14 @@ class _UnaryModuleState extends State<UnaryModule> {
               minWidth: 140,
             ),
             MaterialButton(
-              onPressed: () {
-                if (module != null) {
-                  for (var w in words.values) {
-                    if (w.module_id == moduleId) {
-                      w.choose_error_counter = 1;
-                      w.write_error_counter = 1;
-                      w.choise_neg_error_counter = 0;
-                    }
-                  }
+              onPressed: () async {
+                if (currentModuleEntity != null) {
+                  await startLearning(currentModuleEntity.id);
+                  var nextPage = await getNextLearnPage(currentModuleEntity);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => getNextLearnPage(module.id)));
+                          builder: (context) => nextPage));
                 }
               },
               color: Color(0xffffffff),
@@ -267,12 +276,13 @@ class _UnaryModuleState extends State<UnaryModule> {
               minWidth: 140,
             ),
             MaterialButton(
-              onPressed: () {
-                if (module != null) {
+              onPressed: () async  {
+                if (currentModuleEntity != null) {
+                  var nextPage = await getNextLearnPage(currentModuleEntity);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => getNextLearnPage(module.id)));
+                          builder: (context) => nextPage));
                 }
               },
               color: Color(0xffffffff),
@@ -296,7 +306,7 @@ class _UnaryModuleState extends State<UnaryModule> {
             ),
             MaterialButton(
               onPressed: () {
-                if (module != null) {}
+                if (currentModuleEntity != null) {}
               },
               color: Color(0xffffffff),
               elevation: 0,
@@ -343,4 +353,17 @@ class _UnaryModuleState extends State<UnaryModule> {
       ),
     );
   }
+
+
+
+
+  // Future<void> saveInDatabase(activity) async {
+  //   final isar = await IzarManager.instance.openActivityDB();
+  //
+  //   // await isar.writeTxn((isar) async {
+  //   //   await isar.activities.put(activity); // insert & update
+  //   // });
+  //   await IzarManager.instance.closeIsar(isar);
+  // }
+
 }

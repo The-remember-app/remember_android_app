@@ -1,30 +1,32 @@
 ///File download from FlutterViz- Drag and drop a tools. For more details visit https://flutterviz.io/
 
 import 'package:flutter/material.dart';
+import 'package:the_remember/repositoris/module_repository/local_db_data_source/module.dart';
+import 'package:the_remember/repositoris/term_repository/local_db_data_source/term.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../repositoris/folder_repository/local_db_data_source/folder.dart';
-import '../../../repositoris/term_repository/local_db_data_source/term.dart';
+
+import '../../../../repositoris/folder_repository/local_db_data_source/folder.dart';
 import '../unary_module.dart';
 
 void changeWordStatus(Uuid wordId, bool) {}
 
 class WriteWord extends StatelessWidget {
-  final Uuid moduleId;
-  final Uuid wordId;
+  final ModuleDbDS moduleEntity;
+  final TermEntityDbDS wordEntity;
   final int progress;
   final int maxProgress;
-  List<Uuid>? currTermUuid;
+  List<TermEntityDbDS>? currTermsList;
   String inputWord = "";
   final bool reverseTerm;
 
-  WriteWord(this.moduleId, this.wordId, this.progress, this.maxProgress,
-      [this.currTermUuid = null, this.reverseTerm = false]);
+  WriteWord(this.moduleEntity, this.wordEntity, this.progress, this.maxProgress,
+      [this.currTermsList = null, this.reverseTerm = false]);
 
   @override
   Widget build(BuildContext context) {
-    var moduleEntity = foldersOrModules[moduleId];
-    var wordEntity = words[wordId];
+    // var moduleEntity = foldersOrModules[moduleId];
+    // var wordEntity = words[wordId];
     return Scaffold(
       backgroundColor: Color(0xffffffff),
       appBar: AppBar(
@@ -36,7 +38,7 @@ class WriteWord extends StatelessWidget {
           borderRadius: BorderRadius.zero,
         ),
         title: Text(
-          moduleEntity?.name ?? "Похоже модуля с таким UUID не найдено",
+          moduleEntity.name ?? "Похоже модуля с таким UUID не найдено",
           style: TextStyle(
             fontWeight: FontWeight.w400,
             fontStyle: FontStyle.normal,
@@ -56,18 +58,20 @@ class WriteWord extends StatelessWidget {
         ),
       ),
       body: GestureDetector(
-        onPanUpdate: (details) {
+        onPanUpdate: (details) async {
           // Swiping in right direction.
           if (details.delta.dx > 0) {}
 
           // Swiping in left direction.
           if (details.delta.dx < 0) {
             // if (buttonPressed.values.any((isClicked) => isClicked)) {
+            var nextPage = await getNextLearnPage(
+                moduleEntity, currTermsList, progress, inputWord, true);
+
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => getNextLearnPage(
-                        moduleId, null, progress, currTermUuid, inputWord, true)));
+                    builder: (context) => nextPage));
             // }
           }
         },
@@ -120,7 +124,7 @@ class WriteWord extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(
-                          wordEntity?.maybeReverseTermWrite ?? "Не найдено термина с таким UUID",
+                          wordEntity.maybeReverseTermWrite ?? "Не найдено термина с таким UUID",
                           textAlign: TextAlign.left,
                           overflow: TextOverflow.clip,
                           style: TextStyle(
@@ -139,17 +143,17 @@ class WriteWord extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(10),
               child: TextField(
-                onChanged: (text) {
+                onChanged: (text) async {
                   inputWord = text;
                   if (text.toLowerCase() ==
-                      wordEntity!.maybeReverseDefinitionWrite.toLowerCase()) {
+                      wordEntity.maybeReverseDefinitionWrite.toLowerCase()) {
                     // words[wordId]?.write_error_counter -= 1;
-
+                    var nextPage = await getNextLearnPage(
+                        moduleEntity, currTermsList, progress, inputWord, false);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => getNextLearnPage(
-                                moduleId, null, progress, currTermUuid, inputWord, false)));
+                            builder: (context) => nextPage));
                   }
                   // print("onChanged");
                   // print("Введенный текст: $text");
@@ -231,15 +235,16 @@ class WriteWord extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.center,
                         child: MaterialButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            var nextPage = await getNextLearnPage(
+                                moduleEntity,
+                                currTermsList,
+                                progress,
+                                inputWord, true);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => getNextLearnPage(
-                                        moduleId,
-                                        null,
-                                        progress,
-                                        currTermUuid, inputWord, true)));
+                                    builder: (context) => nextPage));
                           },
                           color: Color(0xfff9f9f9),
                           elevation: 0,
