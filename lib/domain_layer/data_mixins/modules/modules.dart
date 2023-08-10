@@ -3,6 +3,7 @@ import 'package:isar/isar.dart';
 
 import '../../../repositoris/db_data_source/folder.dart';
 import '../../../repositoris/db_data_source/module.dart';
+import '../../../repositoris/db_data_source/term.dart';
 import '../../../ui/pages/modules/modules.dart';
 import '../../../urils/db/abstract_entity.dart';
 import '../../../urils/db/dbMixins.dart';
