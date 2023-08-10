@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:math';
 
@@ -23,7 +22,6 @@ void main() async {
 Random random = new Random();
 
 Future<void> initDb() async {
-
   final Map<String, String> wordsSet = {
     "one": 'Один',
     "two": "два",
@@ -34,19 +32,22 @@ Future<void> initDb() async {
     "seven": "семь",
   };
 
-  var conn = (await OpenAndClose3.openConnStatic(
-      [  CollectionSchema<FolderDbDS>, CollectionSchema<ModuleDbDS>, CollectionSchema<TermEntityDbDS>,]));
+  var conn = (await OpenAndClose3.openConnStatic([
+    CollectionSchema<FolderDbDS>,
+    CollectionSchema<ModuleDbDS>,
+    CollectionSchema<TermEntityDbDS>,
+  ]));
 
-  conn[ConnType.term]!.writeTxnSync(()  {
+  conn[ConnType.term]!.writeTxnSync(() {
     var test = (conn[ConnType.term]!
             .collection<FolderDbDS>()
             .filter()
-    .root_folder_uuidIsNull()
-    // .root_folderIsNull()
-    // .findAllSync()
-            .root_folderIsNull()
+            .rootFolderUuidIsNull()
+            // .root_folderIsNull()
+            // .findAllSync()
+            .rootFolderIsNull()
             .foldersIsEmpty())
-    .isEmptySync();
+        .isEmptySync();
 
     if (test) {
       List<FolderDbDS> root_folders = [];
@@ -56,12 +57,14 @@ Future<void> initDb() async {
           ..name = 'Папка $i'
           ..rootFolderUuid = null);
       }
-      conn[ConnType.term]!
-          .collection<FolderDbDS>()
-          .putAllSync(root_folders);
+      conn[ConnType.term]!.collection<FolderDbDS>().putAllSync(root_folders);
 
       List<FolderDbDS> sub_folders = [];
-      var res = conn[ConnType.term]!.collection<FolderDbDS>().filter().root_folderIsNull().findAllSync();
+      var res = conn[ConnType.term]!
+          .collection<FolderDbDS>()
+          .filter()
+          .rootFolderIsNull()
+          .findAllSync();
       for (var currRootFolder in root_folders) {
         for (var i = 0; i < 2; i++) {
           sub_folders.add(FolderDbDS()
@@ -87,32 +90,35 @@ Future<void> initDb() async {
 
       List<TermEntityDbDS> terms = [];
       for (var currModule in modules) {
-        for(var keyValWord in wordsSet.entries) {
+        for (var keyValWord in wordsSet.entries) {
           terms.add(TermEntityDbDS()
             ..uuid = Uuid().toString()
-              ..term=keyValWord.key
-              ..definition=keyValWord.value
-              ..moduleUuid=currModule.uuid
-              ..chooseErrorCounter=0
-              ..writeErrorCounter=0
-              ..choisceNegErrorCounter=0
-              ..module.value = currModule
-            );
+            ..term = keyValWord.key
+            ..definition = keyValWord.value
+            ..moduleUuid = currModule.uuid
+            ..chooseErrorCounter = 0
+            ..writeErrorCounter = 0
+            ..choisceNegErrorCounter = 0
+            ..module.value = currModule);
         }
       }
 
       conn[ConnType.term]!.collection<TermEntityDbDS>().putAllSync(terms);
-
-
-
     }
-    var res12 = conn[ConnType.term]!.collection<FolderDbDS>().filter().root_folderIsNull().findAllSync();
-  print(res12);
+    var res12 = conn[ConnType.term]!
+        .collection<FolderDbDS>()
+        .filter()
+        .rootFolderIsNull()
+        .findAllSync();
+    print(res12);
   });
-  var res1 = conn[ConnType.term]!.collection<FolderDbDS>().filter().root_folderIsNull().findAllSync();
+  var res1 = conn[ConnType.term]!
+      .collection<FolderDbDS>()
+      .filter()
+      .rootFolderIsNull()
+      .findAllSync();
   print(res1);
   await OpenAndClose3.closeConnStatic(conn);
-
 }
 
 // В Flutter все является виджетом (кнопки,списки, текст и т.д.)
