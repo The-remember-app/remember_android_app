@@ -19,19 +19,19 @@ MaterialButton getDefinitionVariable(
   var buttonIsDisabled = false;
 
   var buttonColor = Color(0xffffffff);
-  if (currWidgetClass.buttonPressed[wordEntity.id] ?? false) {
-    if (wordEntity.id == targetTermEntity.id) {
+  if (currWidgetClass.buttonPressed[wordEntity.isarId] ?? false) {
+    if (wordEntity.isarId == targetTermEntity.isarId) {
       buttonColor = Color(0xff00ff00);
-      wordEntity.choose_error_counter -= 1;
+      wordEntity.chooseErrorCounter -= 1;
     } else {
       buttonColor = Color(0xffff0000);
-      wordEntity.choise_neg_error_counter += 1;
+      wordEntity.choisceNegErrorCounter += 1;
     }
   } else {
-    if (wordEntity.id == targetTermEntity.id &&
+    if (wordEntity.isarId == targetTermEntity.isarId &&
         currWidgetClass.buttonPressed.values.any((isClicked) => isClicked)) {
       buttonColor = Color(0xff00ff00);
-      wordEntity.choose_error_counter += 1;
+      wordEntity.chooseErrorCounter += 1;
     }
   }
   if (currWidgetClass.buttonPressed.values.any((isClicked) => isClicked)) {
@@ -45,7 +45,7 @@ MaterialButton getDefinitionVariable(
     onPressed: () {
       if (!buttonIsDisabled) {
         currWidgetClass.setState(
-            () => currWidgetClass.buttonPressed[wordEntity.id] = true);
+            () => currWidgetClass.buttonPressed[wordEntity.isarId] = true);
       }
     },
     color: buttonColor,
@@ -117,7 +117,7 @@ class _ChoiceWordState extends State<ChoiceWord> {
       this.currTermsList,
       this.reverseTerm) {
     for (var definition in definitions) {
-      buttonPressed[definition.id] = false;
+      buttonPressed[definition.isarId] = false;
     }
   }
 

@@ -103,7 +103,7 @@ class LearnCompleted extends StatelessWidget {
                           alignment: Alignment.center,
                           child: MaterialButton(
                             onPressed: () async {
-                              await startLearning(moduleEntity.id);
+                              await startLearning(moduleEntity.isarId);
                               var nextPage = await  getNextLearnPage(moduleEntity);
                               Navigator.push(
                                   context,

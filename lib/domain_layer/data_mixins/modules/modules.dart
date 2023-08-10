@@ -29,12 +29,12 @@ implements
     rootModules = (await conn[ConnType.term]!
         .collection<ModuleDbDS>()
         .filter()
-        .root_folderIsNull()
+        .rootFolderIsNull()
         .findAll());
     rootFolders = await conn[ConnType.term]!
         .collection<FolderDbDS>()
         .filter()
-        .root_folderIsNull()
+        .rootFolderIsNull()
         .findAll();
     closeConn();
     this.setState(() => null);

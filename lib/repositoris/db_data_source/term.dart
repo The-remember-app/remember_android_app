@@ -14,15 +14,23 @@ part 'term.g.dart';
 
 @collection
 class TermEntityDbDS  extends AbstractEntity  {
-  Id id = Isar.autoIncrement;
+  @Name("id")
+  Id get isarId => AbstractEntity.fastHash(uuid) ;
+  @Index(unique: true, replace: true, caseSensitive: false)
   late String uuid;
   late String term;
   late String definition;
-  late String module_id;
-  late int choose_error_counter;
-  late int write_error_counter;
-  late int choise_neg_error_counter;
+  @Name("module_uuid")
+  late String moduleUuid;
+  @Name("choose_error_counter")
+  late int chooseErrorCounter;
+  @Name("write_error_counter")
+  late int writeErrorCounter;
+  @Name("choice_neg_error_counter")
+  late int choisceNegErrorCounter;
+  @Name("_reverse_write")
   late bool? _reverseWrite = null;
+  @Name("_reverse_choice")
   late bool? _reverseChoice = null;
 
   final module = IsarLink<ModuleDbDS>();
@@ -77,12 +85,12 @@ class TermEntityDbDS  extends AbstractEntity  {
   bool isTermReverseWrite(){
     // var module = foldersOrModules[module_id];
     _reverseWrite ??=  random.nextBool();
-    return module.value!.standart_and_reverce_write ? _reverseWrite! : module.value!.is_reverce_defitition_write;
+    return module.value!.standardAndReverseWrite ? _reverseWrite! : module.value!.isReverseDefinitionWrite;
   }
   bool isTermReverseChoice(){
     // var module = foldersOrModules[module_id];
     _reverseChoice ??= random.nextBool();
-    return module.value!.standart_and_reverce_choice ? _reverseChoice! : module.value!.is_reverce_defitition_choice;
+    return module.value!.standardAndReverseChoice ? _reverseChoice! : module.value!.isReverseDefinitionChoice;
   }
   @ignore
   get  maybeReverseTermWrite {

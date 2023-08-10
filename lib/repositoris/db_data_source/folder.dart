@@ -9,16 +9,21 @@ part 'folder.g.dart';
 
 @collection
 class FolderDbDS extends AbstractEntity {
-  Id id = Isar.autoIncrement;
+  // get isarId => fastHash(id!);
+  @Name("id")
+  Id get isarId => AbstractEntity.fastHash(uuid) ;
+  @Index(unique: true, replace: true, caseSensitive: false)
   late String uuid;
   late String name;
-  late String? root_folder_uuid;
+  @Name("root_folder_uuid")
+  late String? rootFolderUuid;
 
-  @Backlink(to: 'root_folder')
+  @Backlink(to: 'rootFolder')
   final modules = IsarLinks<ModuleDbDS>();
-  @Backlink(to: 'root_folder')
+  @Backlink(to: 'rootFolder')
   final folders = IsarLinks<FolderDbDS>();
-  final IsarLink<FolderDbDS> root_folder = IsarLink<FolderDbDS>();
+  @Name("root_folder")
+  final rootFolder = IsarLink<FolderDbDS>();
 
 // Folder.genId(name) : this(Uuid(), name);
 //

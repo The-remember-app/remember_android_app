@@ -39,12 +39,12 @@ implements
         .collection<ModuleDbDS>()
         .filter()
         // .not().root_folderIsNull()
-        .root_folder((q) => q.idEqualTo(folderId))
+        .rootFolder((q) => q.isarIdEqualTo(folderId))
         .findAll());
     subFolders = await conn[ConnType.term]!
         .collection<FolderDbDS>()
         .filter()
-        .root_folder((q) => q.idEqualTo(folderId))
+        .rootFolder((q) => q.isarIdEqualTo(folderId))
         .findAll();
     folderEntity = await conn[ConnType.term]!
         .collection<FolderDbDS>().get(folderId);

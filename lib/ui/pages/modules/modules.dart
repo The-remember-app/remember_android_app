@@ -72,7 +72,7 @@ class StartModule extends StatefulWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => UnaryFolder(folder.id)));
+                  builder: (context) => UnaryFolder(folder.isarId)));
         },
       );
 

@@ -20,16 +20,25 @@ part 'module.g.dart';
 
 @collection
 class ModuleDbDS  extends AbstractEntity {
-  Id id = Isar.autoIncrement;
+  @Name("id")
+  Id get isarId => AbstractEntity.fastHash(uuid) ;
+  @Index(unique: true, replace: true, caseSensitive: false)
   late String uuid;
   late String name;
+  @Name("root_folder_uuid")
+  late String rootFolderUuid;
 
-  late bool is_reverce_defitition_write = false;
-  late bool standart_and_reverce_write = true;
-  late bool is_reverce_defitition_choice = false;
-  late bool standart_and_reverce_choice = true;
+  @Name("is_reverse_definition_write")
+  late bool isReverseDefinitionWrite = false;
+  @Name("standard_and_reverse_write")
+  late bool standardAndReverseWrite = true;
+  @Name("is_reverse_definition_choice")
+  late bool isReverseDefinitionChoice = false;
+  @Name("standard_and_reverse_choice")
+  late bool standardAndReverseChoice = true;
 
   @Backlink(to: 'module')
   final words = IsarLinks<TermEntityDbDS>();
-  final root_folder = IsarLink<FolderDbDS>();
+  @Name("root_folder")
+  final rootFolder = IsarLink<FolderDbDS>();
 }

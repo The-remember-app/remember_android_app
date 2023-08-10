@@ -14,26 +14,26 @@ Future<void> startLearning(int moduleId) async {
   var wordsInCurrModule = await conn
       .collection<TermEntityDbDS>()
       .filter()
-      .module((q) => q.idEqualTo(moduleId))
+      .module((q) => q.isarIdEqualTo(moduleId))
       .findAll();
 
   await conn.writeTxn(() async {
     var wordsInCurrModule = await conn
         .collection<TermEntityDbDS>()
         .filter()
-        .module((q) => q.idEqualTo(moduleId))
+        .module((q) => q.isarIdEqualTo(moduleId))
         .findAll();
     for (var w in wordsInCurrModule) {
-      w.choose_error_counter = 1;
-      w.write_error_counter = 1;
-      w.choise_neg_error_counter = 0;
+      w.chooseErrorCounter = 1;
+      w.writeErrorCounter = 1;
+      w.choisceNegErrorCounter = 0;
     }
     await conn.collection<TermEntityDbDS>().putAll(wordsInCurrModule);
   });
   var wordsInCurrModule1 = await conn
       .collection<TermEntityDbDS>()
       .filter()
-      .module((q) => q.idEqualTo(moduleId))
+      .module((q) => q.isarIdEqualTo(moduleId))
       .findAll();
   await OpenAndClose3.closeConnStatic({ConnType.term: conn});
   // .putByIndex(indexName, object);
@@ -51,7 +51,7 @@ Future<List<TermEntityDbDS>> getAllTermsFromModule(int moduleId) async {
   var wordsInCurrModule = await conn
       .collection<TermEntityDbDS>()
       .filter()
-      .module((q) => q.idEqualTo(moduleId))
+      .module((q) => q.isarIdEqualTo(moduleId))
       .findAll();
   await OpenAndClose3.closeConnStatic({ConnType.term: conn});
   return wordsInCurrModule;

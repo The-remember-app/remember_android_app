@@ -43,16 +43,16 @@ Future<Widget> getNextLearnPage(
   // }
   if (currTermList == null) {
     currTermList ??= [
-      for (var w in (await getAllTermsFromModule(moduleEntity.id)))
+      for (var w in (await getAllTermsFromModule(moduleEntity.isarId)))
         if (
-            (w.write_error_counter != 0 || w.choose_error_counter != 0))
+            (w.writeErrorCounter != 0 || w.chooseErrorCounter != 0))
           w
     ];
     currTermList.sort((term1, term2) {
-      if (term1.choose_error_counter == term2.choose_error_counter) {
-        return term1.write_error_counter.compareTo(term2.write_error_counter);
+      if (term1.chooseErrorCounter == term2.chooseErrorCounter) {
+        return term1.writeErrorCounter.compareTo(term2.writeErrorCounter);
       }
-      return term1.choose_error_counter.compareTo(term2.choose_error_counter);
+      return term1.chooseErrorCounter.compareTo(term2.chooseErrorCounter);
     });
     if (currTermList.length >= 10) {
       currTermList = currTermList.sublist(0, 10);
@@ -76,9 +76,9 @@ Future<Widget> getNextLearnPage(
   if (progress > 9 || progress >= currTermList.length) {
     if (InputedWord != null && lastWord != null) {
       if (InputedWord.toLowerCase() == lastWord.maybeReverseDefinitionWrite.toLowerCase()) {
-        lastWord.write_error_counter -= 1;
+        lastWord.writeErrorCounter -= 1;
       } else {
-        lastWord.write_error_counter += 1;
+        lastWord.writeErrorCounter += 1;
       }
       lastWord?.resetReverse();
     }
@@ -99,13 +99,13 @@ Future<Widget> getNextLearnPage(
   }
   if (InputedWord != null && lastWord != null) {
     if (InputedWord.toLowerCase() == lastWord.maybeReverseDefinitionWrite.toLowerCase()) {
-      lastWord.write_error_counter -= 1;
+      lastWord.writeErrorCounter -= 1;
     } else {
-      lastWord.write_error_counter += 1;
+      lastWord.writeErrorCounter += 1;
     }
     lastWord?.resetReverse();
   }
-  if (currentWord.choose_error_counter == 0) {
+  if (currentWord.chooseErrorCounter == 0) {
     return WriteWord(
         moduleEntity,
         currentWord,
@@ -115,12 +115,12 @@ Future<Widget> getNextLearnPage(
         currentWord.isTermReverseWrite()
     );
   } else {
-    var definitionDataPre = await getAllTermsFromModule(moduleEntity.id);
+    var definitionDataPre = await getAllTermsFromModule(moduleEntity.isarId);
     definitionDataPre.shuffle();
 
     var definitionData = [
       for (var ww in definitionDataPre)
-        if (ww.id != currentWord.id) ww
+        if (ww.isarId != currentWord.isarId) ww
     ];
     definitionData = definitionData.sublist(0, 3);
     definitionData.add(currentWord);
@@ -248,7 +248,7 @@ UnaryModuleStateDbMixin
             MaterialButton(
               onPressed: () async {
                 if (currentModuleEntity != null) {
-                  await startLearning(currentModuleEntity.id);
+                  await startLearning(currentModuleEntity.isarId);
                   var nextPage = await getNextLearnPage(currentModuleEntity);
                   Navigator.push(
                       context,

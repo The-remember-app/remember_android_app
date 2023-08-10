@@ -36,7 +36,7 @@ mixin UnaryModuleStateDbMixin
         .collection<TermEntityDbDS>()
     // .verifyLink(linkName, sourceIds, targetIds)
         .filter()
-        .module((q) => q.idEqualTo(currentModuleEntity.id))
+        .module((q) => q.isarIdEqualTo(currentModuleEntity.isarId))
 
         .findAll());
     this.setState(() => null);
