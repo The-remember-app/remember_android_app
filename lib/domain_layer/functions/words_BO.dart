@@ -1,8 +1,8 @@
 import 'package:isar/isar.dart';
-import 'package:the_remember/repositoris/module_repository/local_db_data_source/module.dart';
-import 'package:the_remember/repositoris/term_repository/local_db_data_source/term.dart';
+import 'package:the_remember/repositoris/db_data_source/module.dart';
+import 'package:the_remember/repositoris/db_data_source/term.dart';
 
-import '../../repositoris/folder_repository/local_db_data_source/folder.dart';
+import '../../repositoris/db_data_source/folder.dart';
 import '../../urils/db/dbMixins.dart';
 import '../../urils/db/engine.dart';
 

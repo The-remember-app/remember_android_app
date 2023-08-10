@@ -1,9 +1,9 @@
 ///File download from FlutterViz- Drag and drop a tools. For more details visit https://flutterviz.io/
 
 import 'package:flutter/material.dart';
-import 'package:the_remember/repositoris/module_repository/local_db_data_source/module.dart';
-import 'package:the_remember/repositoris/term_repository/local_db_data_source/term.dart';
-import '../../../../repositoris/folder_repository/local_db_data_source/folder.dart';
+import 'package:the_remember/repositoris/db_data_source/module.dart';
+import 'package:the_remember/repositoris/db_data_source/term.dart';
+import '../../../../repositoris/db_data_source/folder.dart';
 import '../unary_module.dart';
 
 

@@ -4,9 +4,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
-import 'package:the_remember/repositoris/folder_repository/local_db_data_source/folder.dart';
-import 'package:the_remember/repositoris/module_repository/local_db_data_source/module.dart';
-import 'package:the_remember/repositoris/term_repository/local_db_data_source/term.dart';
+import 'package:the_remember/repositoris/db_data_source/folder.dart';
+import 'package:the_remember/repositoris/db_data_source/module.dart';
+import 'package:the_remember/repositoris/db_data_source/term.dart';
 import 'package:the_remember/ui/pages/modules/modules.dart';
 import 'package:the_remember/urils/db/dbMixins.dart';
 import 'package:the_remember/urils/db/engine.dart';
