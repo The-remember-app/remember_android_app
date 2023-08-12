@@ -28,9 +28,9 @@ class TermEntityDbDS  extends AbstractEntity  {
   late int writeErrorCounter;
   @Name("choice_neg_error_counter")
   late int choisceNegErrorCounter;
-  @Name("_reverse_write")
+  @ignore
   late bool? _reverseWrite = null;
-  @Name("_reverse_choice")
+  @ignore
   late bool? _reverseChoice = null;
 
   final module = IsarLink<ModuleDbDS>();
