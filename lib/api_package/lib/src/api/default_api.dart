@@ -130,7 +130,7 @@ class DefaultApi {
     );
   }
 
-  /// Create Folder
+  /// Create Module
   /// 
   ///
   /// Parameters:
@@ -144,7 +144,7 @@ class DefaultApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ModuleDTO] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ModuleDTO>> createFolderModuleCreatePost({ 
+  Future<Response<ModuleDTO>> createModuleModuleCreatePost({ 
     required CreateModuleDTO createModuleDTO,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -230,7 +230,7 @@ class DefaultApi {
     );
   }
 
-  /// Create Folder
+  /// Create Term
   /// 
   ///
   /// Parameters:
@@ -244,7 +244,7 @@ class DefaultApi {
   ///
   /// Returns a [Future] containing a [Response] with a [TermDTO] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<TermDTO>> createFolderTermCreatePost({ 
+  Future<Response<TermDTO>> createTermTermCreatePost({ 
     required CreateTermDTO createTermDTO,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -503,7 +503,7 @@ class DefaultApi {
     );
   }
 
-  /// Get All Folders
+  /// Get All Module
   /// 
   ///
   /// Parameters:
@@ -516,7 +516,7 @@ class DefaultApi {
   ///
   /// Returns a [Future] containing a [Response] with a [JsonObject] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<JsonObject>> getAllFoldersModuleAllGet({ 
+  Future<Response<JsonObject>> getAllModuleModuleAllGet({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -581,7 +581,7 @@ class DefaultApi {
     );
   }
 
-  /// Get All Folders
+  /// Get All Term
   /// 
   ///
   /// Parameters:
@@ -594,7 +594,7 @@ class DefaultApi {
   ///
   /// Returns a [Future] containing a [Response] with a [JsonObject] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<JsonObject>> getAllFoldersTermAllGet({ 
+  Future<Response<JsonObject>> getAllTermTermAllGet({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -739,7 +739,7 @@ class DefaultApi {
     );
   }
 
-  /// Get One Folder
+  /// Get One Module
   /// 
   ///
   /// Parameters:
@@ -753,7 +753,7 @@ class DefaultApi {
   ///
   /// Returns a [Future] containing a [Response] with a [PersonalizeModuleDTO] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PersonalizeModuleDTO>> getOneFolderModuleModuleIdGet({ 
+  Future<Response<PersonalizeModuleDTO>> getOneModuleModuleModuleIdGet({ 
     required JsonObject moduleId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -819,7 +819,7 @@ class DefaultApi {
     );
   }
 
-  /// Get One Folder
+  /// Get One Term
   /// 
   ///
   /// Parameters:
@@ -833,7 +833,7 @@ class DefaultApi {
   ///
   /// Returns a [Future] containing a [Response] with a [PersonalizeTermDTO] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PersonalizeTermDTO>> getOneFolderTermTermIdGet({ 
+  Future<Response<PersonalizeTermDTO>> getOneTermTermTermIdGet({ 
     required JsonObject termId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,

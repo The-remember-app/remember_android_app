@@ -3,6 +3,7 @@ import 'package:isar/isar.dart';
 import 'package:uuid/uuid.dart';
 
 
+import '../../../api_package/lib/api_package.dart';
 import '../../../main.dart';
 import '../../urils/db/abstract_entity.dart';
 import 'folder.dart';
@@ -108,5 +109,18 @@ class TermEntityDbDS  extends AbstractEntity  {
   @ignore
   get  maybeReverseDefinitionChoice {
     return isTermReverseChoice() ? term : definition;
+  }
+
+  static TermEntityDbDS fromJson(PersonalizeTermDTO data){
+
+    return TermEntityDbDS()
+      ..uuid=data.id!.asString
+      ..term=data.term!.asString
+      ..definition=data.definition!.asString
+      ..moduleUuid=data.moduleId!.asString
+      ..chooseErrorCounter=data.chooseErrorCounter!.asNum.toInt()
+      ..writeErrorCounter=data.writeErrorCounter!.asNum.toInt()
+      ..choisceNegErrorCounter=data.choiceNegErrorCounter!.asNum.toInt()
+    ;
   }
 }

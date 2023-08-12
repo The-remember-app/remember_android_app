@@ -50,7 +50,7 @@ abstract class FolderDTO implements Built<FolderDTO, FolderDTOBuilder> {
   static void _defaults(FolderDTOBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<FolderDTO> get serializer => _$FolderDTOSerializer();
+  static PrimitiveSerializer<FolderDTO> get serializer => _$FolderDTOSerializer();
 }
 
 class _$FolderDTOSerializer implements PrimitiveSerializer<FolderDTO> {

@@ -1,6 +1,7 @@
 import 'package:isar/isar.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../api_package/lib/api_package.dart';
 import '../../urils/db/abstract_entity.dart';
 import 'module.dart';
 
@@ -27,6 +28,15 @@ class FolderDbDS extends AbstractEntity {
 // Folder.genId(name) : this(Uuid(), name);
 //
 // Folder(this.id, this.name);
+
+  static FolderDbDS fromJson(FolderDTO data){
+
+    return FolderDbDS()
+      ..uuid=data.id!.asString
+      ..name=data.name!.asString
+      ..rootFolderUuid=data.rootFolderId?.asString
+    ;
+  }
 }
 
 

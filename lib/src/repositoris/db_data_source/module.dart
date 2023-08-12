@@ -4,6 +4,7 @@ import 'package:isar/isar.dart';
 import 'package:uuid/uuid.dart';
 
 
+import '../../../api_package/lib/api_package.dart';
 import '../../urils/db/abstract_entity.dart';
 import 'folder.dart';
 import 'term.dart';
@@ -41,4 +42,17 @@ class ModuleDbDS  extends AbstractEntity {
   final words = IsarLinks<TermEntityDbDS>();
   @Name("root_folder")
   final rootFolder = IsarLink<FolderDbDS>();
+
+  static ModuleDbDS fromJson(PersonalizeModuleDTO data){
+
+    return ModuleDbDS()
+      ..uuid=data.id!.asString
+      ..name=data.name!.asString
+      ..rootFolderUuid=data.rootFolderId?.asString
+      ..isReverseDefinitionWrite=data.isReverseDefinitionWrite!.asBool
+      ..standardAndReverseWrite=data.standardAndReverseWrite!.asBool
+      ..isReverseDefinitionChoice=data.isReverseDefinitionChoice!.asBool
+      ..standardAndReverseChoice=data.standardAndReverseChoice!.asBool
+    ;
+  }
 }

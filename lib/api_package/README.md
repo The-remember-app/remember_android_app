@@ -65,15 +65,15 @@ All URIs are relative to *http://localhost*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 [*DefaultApi*](doc/DefaultApi.md) | [**createFolderFolderCreatePost**](doc/DefaultApi.md#createfolderfoldercreatepost) | **POST** /folder/create | Create Folder
-[*DefaultApi*](doc/DefaultApi.md) | [**createFolderModuleCreatePost**](doc/DefaultApi.md#createfoldermodulecreatepost) | **POST** /module/create | Create Folder
-[*DefaultApi*](doc/DefaultApi.md) | [**createFolderTermCreatePost**](doc/DefaultApi.md#createfoldertermcreatepost) | **POST** /term/create | Create Folder
+[*DefaultApi*](doc/DefaultApi.md) | [**createModuleModuleCreatePost**](doc/DefaultApi.md#createmodulemodulecreatepost) | **POST** /module/create | Create Module
+[*DefaultApi*](doc/DefaultApi.md) | [**createTermTermCreatePost**](doc/DefaultApi.md#createtermtermcreatepost) | **POST** /term/create | Create Term
 [*DefaultApi*](doc/DefaultApi.md) | [**createUserUserCreatePost**](doc/DefaultApi.md#createuserusercreatepost) | **POST** /user/create | Create User
 [*DefaultApi*](doc/DefaultApi.md) | [**getAllFoldersFolderAllGet**](doc/DefaultApi.md#getallfoldersfolderallget) | **GET** /folder/all | Get All Folders
-[*DefaultApi*](doc/DefaultApi.md) | [**getAllFoldersModuleAllGet**](doc/DefaultApi.md#getallfoldersmoduleallget) | **GET** /module/all | Get All Folders
-[*DefaultApi*](doc/DefaultApi.md) | [**getAllFoldersTermAllGet**](doc/DefaultApi.md#getallfolderstermallget) | **GET** /term/all | Get All Folders
+[*DefaultApi*](doc/DefaultApi.md) | [**getAllModuleModuleAllGet**](doc/DefaultApi.md#getallmodulemoduleallget) | **GET** /module/all | Get All Module
+[*DefaultApi*](doc/DefaultApi.md) | [**getAllTermTermAllGet**](doc/DefaultApi.md#getalltermtermallget) | **GET** /term/all | Get All Term
 [*DefaultApi*](doc/DefaultApi.md) | [**getOneFolderFolderFolderIdGet**](doc/DefaultApi.md#getonefolderfolderfolderidget) | **GET** /folder/{folder_id} | Get One Folder
-[*DefaultApi*](doc/DefaultApi.md) | [**getOneFolderModuleModuleIdGet**](doc/DefaultApi.md#getonefoldermodulemoduleidget) | **GET** /module/{module_id} | Get One Folder
-[*DefaultApi*](doc/DefaultApi.md) | [**getOneFolderTermTermIdGet**](doc/DefaultApi.md#getonefoldertermtermidget) | **GET** /term/{term_id} | Get One Folder
+[*DefaultApi*](doc/DefaultApi.md) | [**getOneModuleModuleModuleIdGet**](doc/DefaultApi.md#getonemodulemodulemoduleidget) | **GET** /module/{module_id} | Get One Module
+[*DefaultApi*](doc/DefaultApi.md) | [**getOneTermTermTermIdGet**](doc/DefaultApi.md#getonetermtermtermidget) | **GET** /term/{term_id} | Get One Term
 [*DefaultApi*](doc/DefaultApi.md) | [**loginForAccessTokenAuthTokenPost**](doc/DefaultApi.md#loginforaccesstokenauthtokenpost) | **POST** /auth/token | Login For Access Token
 [*DefaultApi*](doc/DefaultApi.md) | [**readUsersMeUserMeGet**](doc/DefaultApi.md#readusersmeusermeget) | **GET** /user/me/ | Read Users Me
 

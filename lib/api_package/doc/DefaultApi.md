@@ -10,15 +10,15 @@ All URIs are relative to *http://localhost*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**createFolderFolderCreatePost**](DefaultApi.md#createfolderfoldercreatepost) | **POST** /folder/create | Create Folder
-[**createFolderModuleCreatePost**](DefaultApi.md#createfoldermodulecreatepost) | **POST** /module/create | Create Folder
-[**createFolderTermCreatePost**](DefaultApi.md#createfoldertermcreatepost) | **POST** /term/create | Create Folder
+[**createModuleModuleCreatePost**](DefaultApi.md#createmodulemodulecreatepost) | **POST** /module/create | Create Module
+[**createTermTermCreatePost**](DefaultApi.md#createtermtermcreatepost) | **POST** /term/create | Create Term
 [**createUserUserCreatePost**](DefaultApi.md#createuserusercreatepost) | **POST** /user/create | Create User
 [**getAllFoldersFolderAllGet**](DefaultApi.md#getallfoldersfolderallget) | **GET** /folder/all | Get All Folders
-[**getAllFoldersModuleAllGet**](DefaultApi.md#getallfoldersmoduleallget) | **GET** /module/all | Get All Folders
-[**getAllFoldersTermAllGet**](DefaultApi.md#getallfolderstermallget) | **GET** /term/all | Get All Folders
+[**getAllModuleModuleAllGet**](DefaultApi.md#getallmodulemoduleallget) | **GET** /module/all | Get All Module
+[**getAllTermTermAllGet**](DefaultApi.md#getalltermtermallget) | **GET** /term/all | Get All Term
 [**getOneFolderFolderFolderIdGet**](DefaultApi.md#getonefolderfolderfolderidget) | **GET** /folder/{folder_id} | Get One Folder
-[**getOneFolderModuleModuleIdGet**](DefaultApi.md#getonefoldermodulemoduleidget) | **GET** /module/{module_id} | Get One Folder
-[**getOneFolderTermTermIdGet**](DefaultApi.md#getonefoldertermtermidget) | **GET** /term/{term_id} | Get One Folder
+[**getOneModuleModuleModuleIdGet**](DefaultApi.md#getonemodulemodulemoduleidget) | **GET** /module/{module_id} | Get One Module
+[**getOneTermTermTermIdGet**](DefaultApi.md#getonetermtermtermidget) | **GET** /term/{term_id} | Get One Term
 [**loginForAccessTokenAuthTokenPost**](DefaultApi.md#loginforaccesstokenauthtokenpost) | **POST** /auth/token | Login For Access Token
 [**readUsersMeUserMeGet**](DefaultApi.md#readusersmeusermeget) | **GET** /user/me/ | Read Users Me
 
@@ -66,10 +66,10 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **createFolderModuleCreatePost**
-> ModuleDTO createFolderModuleCreatePost(createModuleDTO)
+# **createModuleModuleCreatePost**
+> ModuleDTO createModuleModuleCreatePost(createModuleDTO)
 
-Create Folder
+Create Module
 
 ### Example
 ```dart
@@ -81,10 +81,10 @@ final api = ApiPackage().getDefaultApi();
 final CreateModuleDTO createModuleDTO = ; // CreateModuleDTO | 
 
 try {
-    final response = api.createFolderModuleCreatePost(createModuleDTO);
+    final response = api.createModuleModuleCreatePost(createModuleDTO);
     print(response);
 } catch on DioException (e) {
-    print('Exception when calling DefaultApi->createFolderModuleCreatePost: $e\n');
+    print('Exception when calling DefaultApi->createModuleModuleCreatePost: $e\n');
 }
 ```
 
@@ -109,10 +109,10 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **createFolderTermCreatePost**
-> TermDTO createFolderTermCreatePost(createTermDTO)
+# **createTermTermCreatePost**
+> TermDTO createTermTermCreatePost(createTermDTO)
 
-Create Folder
+Create Term
 
 ### Example
 ```dart
@@ -124,10 +124,10 @@ final api = ApiPackage().getDefaultApi();
 final CreateTermDTO createTermDTO = ; // CreateTermDTO | 
 
 try {
-    final response = api.createFolderTermCreatePost(createTermDTO);
+    final response = api.createTermTermCreatePost(createTermDTO);
     print(response);
 } catch on DioException (e) {
-    print('Exception when calling DefaultApi->createFolderTermCreatePost: $e\n');
+    print('Exception when calling DefaultApi->createTermTermCreatePost: $e\n');
 }
 ```
 
@@ -232,10 +232,10 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getAllFoldersModuleAllGet**
-> JsonObject getAllFoldersModuleAllGet()
+# **getAllModuleModuleAllGet**
+> JsonObject getAllModuleModuleAllGet()
 
-Get All Folders
+Get All Module
 
 ### Example
 ```dart
@@ -246,10 +246,10 @@ import 'package:api_package/api.dart';
 final api = ApiPackage().getDefaultApi();
 
 try {
-    final response = api.getAllFoldersModuleAllGet();
+    final response = api.getAllModuleModuleAllGet();
     print(response);
 } catch on DioException (e) {
-    print('Exception when calling DefaultApi->getAllFoldersModuleAllGet: $e\n');
+    print('Exception when calling DefaultApi->getAllModuleModuleAllGet: $e\n');
 }
 ```
 
@@ -271,10 +271,10 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getAllFoldersTermAllGet**
-> JsonObject getAllFoldersTermAllGet()
+# **getAllTermTermAllGet**
+> JsonObject getAllTermTermAllGet()
 
-Get All Folders
+Get All Term
 
 ### Example
 ```dart
@@ -285,10 +285,10 @@ import 'package:api_package/api.dart';
 final api = ApiPackage().getDefaultApi();
 
 try {
-    final response = api.getAllFoldersTermAllGet();
+    final response = api.getAllTermTermAllGet();
     print(response);
 } catch on DioException (e) {
-    print('Exception when calling DefaultApi->getAllFoldersTermAllGet: $e\n');
+    print('Exception when calling DefaultApi->getAllTermTermAllGet: $e\n');
 }
 ```
 
@@ -353,10 +353,10 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getOneFolderModuleModuleIdGet**
-> PersonalizeModuleDTO getOneFolderModuleModuleIdGet(moduleId)
+# **getOneModuleModuleModuleIdGet**
+> PersonalizeModuleDTO getOneModuleModuleModuleIdGet(moduleId)
 
-Get One Folder
+Get One Module
 
 ### Example
 ```dart
@@ -368,10 +368,10 @@ final api = ApiPackage().getDefaultApi();
 final JsonObject moduleId = ; // JsonObject | 
 
 try {
-    final response = api.getOneFolderModuleModuleIdGet(moduleId);
+    final response = api.getOneModuleModuleModuleIdGet(moduleId);
     print(response);
 } catch on DioException (e) {
-    print('Exception when calling DefaultApi->getOneFolderModuleModuleIdGet: $e\n');
+    print('Exception when calling DefaultApi->getOneModuleModuleModuleIdGet: $e\n');
 }
 ```
 
@@ -396,10 +396,10 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getOneFolderTermTermIdGet**
-> PersonalizeTermDTO getOneFolderTermTermIdGet(termId)
+# **getOneTermTermTermIdGet**
+> PersonalizeTermDTO getOneTermTermTermIdGet(termId)
 
-Get One Folder
+Get One Term
 
 ### Example
 ```dart
@@ -411,10 +411,10 @@ final api = ApiPackage().getDefaultApi();
 final JsonObject termId = ; // JsonObject | 
 
 try {
-    final response = api.getOneFolderTermTermIdGet(termId);
+    final response = api.getOneTermTermTermIdGet(termId);
     print(response);
 } catch on DioException (e) {
-    print('Exception when calling DefaultApi->getOneFolderTermTermIdGet: $e\n');
+    print('Exception when calling DefaultApi->getOneTermTermTermIdGet: $e\n');
 }
 ```
 
