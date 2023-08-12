@@ -1,10 +1,10 @@
 name: api_package
-version: 1.0.0
+version:  1.0.0+1
 description: OpenAPI API client
 homepage: homepage
 
 environment:
-  sdk: '>=2.15.0 <3.0.0'
+  sdk: '>=3.0.6 <4.0.0'
 
 dependencies:
   dio: '^5.2.0'
@@ -15,5 +15,5 @@ dependencies:
 
 dev_dependencies:
   built_value_generator: '>=8.4.0 <9.0.0'
-  build_runner: any
+  build_runner: ^2.4.6
   test: ^1.16.0

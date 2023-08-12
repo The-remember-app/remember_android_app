@@ -3,20 +3,24 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:the_remember/repositoris/db_data_source/folder.dart';
-import 'package:the_remember/repositoris/db_data_source/module.dart';
-import 'package:the_remember/repositoris/db_data_source/term.dart';
-import 'package:the_remember/ui/pages/modules/modules.dart';
-import 'package:the_remember/urils/db/dbMixins.dart';
-import 'package:the_remember/urils/db/engine.dart';
 import 'package:uuid/uuid.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:the_remember/src/repositoris/db_data_source/folder.dart';
+import 'package:the_remember/src/repositoris/db_data_source/module.dart';
+import 'package:the_remember/src/repositoris/db_data_source/term.dart';
+import 'package:the_remember/src/ui/pages/modules/modules.dart';
+import 'package:the_remember/src/urils/db/dbMixins.dart';
+import 'package:the_remember/src/urils/db/engine.dart';
+
+import 'network_processor/network_main.dart';
+
 
 // main() является главной функцией с которой начинается
 // выполнение приложения
 // возвращает виджет приложения
 void main() async {
   initDb().whenComplete(() => null);
+  networkProcessor().whenComplete(() => null);
   runApp(MyApp());
 }
 

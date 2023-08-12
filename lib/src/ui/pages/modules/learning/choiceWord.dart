@@ -1,11 +1,12 @@
 ///File download from FlutterViz- Drag and drop a tools. For more details visit https://flutterviz.io/
 
 import 'package:flutter/material.dart';
-import 'package:the_remember/repositoris/db_data_source/module.dart';
-import 'package:the_remember/repositoris/db_data_source/term.dart';
+
 import 'package:uuid/uuid.dart';
 
 import '../../../../repositoris/db_data_source/folder.dart';
+import '../../../../repositoris/db_data_source/module.dart';
+import '../../../../repositoris/db_data_source/term.dart';
 import '../modules.dart';
 import '../unary_module.dart';
 
