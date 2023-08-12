@@ -26,7 +26,7 @@ class ModuleDbDS  extends AbstractEntity {
   late String uuid;
   late String name;
   @Name("root_folder_uuid")
-  late String rootFolderUuid;
+  late String? rootFolderUuid;
 
   @Name("is_reverse_definition_write")
   late bool isReverseDefinitionWrite = false;

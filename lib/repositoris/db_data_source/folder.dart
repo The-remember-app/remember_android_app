@@ -16,7 +16,7 @@ class FolderDbDS extends AbstractEntity {
   late String uuid;
   late String name;
   @Name("root_folder_uuid")
-  late String? rootFolderUuid;
+  late String? rootFolderUuid = null;
 
   @Backlink(to: 'rootFolder')
   final modules = IsarLinks<ModuleDbDS>();

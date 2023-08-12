@@ -1,5 +1,5 @@
 name: the_remember
-description: A new Flutter project.
+description: English learning app
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -17,6 +17,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
 version: 1.0.0+1
+homepage: homepage
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
@@ -28,9 +29,15 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  uuid: ^3.0.6
   flutter:
     sdk: flutter
+  uuid: ^3.0.6
+  dio: '^5.2.0'
+  one_of: '>=1.5.0 <2.0.0'
+  one_of_serializer: '>=1.5.0 <2.0.0'
+  built_value: '>=8.4.0 <9.0.0'
+  built_collection: '>=5.1.1 <6.0.0'
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -52,6 +59,8 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
+  built_value_generator: '>=8.4.0 <9.0.0'
+  test: ^1.16.0
   flutter_lints: ^2.0.0
   isar_generator: ^3.1.0+1
   build_runner: ^2.4.6

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:the_remember/repositoris/db_data_source/folder.dart';
 import 'package:the_remember/repositoris/db_data_source/module.dart';
 import 'package:the_remember/repositoris/db_data_source/term.dart';
@@ -15,13 +16,15 @@ import 'package:uuid/uuid.dart';
 // выполнение приложения
 // возвращает виджет приложения
 void main() async {
-  await initDb();
+  initDb().whenComplete(() => null);
   runApp(MyApp());
 }
 
 Random random = new Random();
 
 Future<void> initDb() async {
+  await Future.delayed(Duration(seconds: 5));
+  final dir = await getApplicationDocumentsDirectory();
   final Map<String, String> wordsSet = {
     "one": 'Один',
     "two": "два",
@@ -32,6 +35,8 @@ Future<void> initDb() async {
     "seven": "семь",
   };
 
+
+
   var conn = (await OpenAndClose3.openConnStatic([
     CollectionSchema<FolderDbDS>,
     CollectionSchema<ModuleDbDS>,
@@ -39,23 +44,25 @@ Future<void> initDb() async {
   ]));
 
   conn[ConnType.term]!.writeTxnSync(() {
+    var data = (conn[ConnType.term]!
+        .collection<FolderDbDS>()
+        .filter()
+        .rootFolderUuidIsNull()).findAllSync();
     var test = (conn[ConnType.term]!
             .collection<FolderDbDS>()
             .filter()
-            .rootFolderUuidIsNull()
-            // .root_folderIsNull()
-            // .findAllSync()
-            .rootFolderIsNull()
-            .foldersIsEmpty())
+            .rootFolderUuidIsNull())
         .isEmptySync();
 
     if (test) {
       List<FolderDbDS> root_folders = [];
       for (var i = 0; i < 2; i++) {
         root_folders.add(FolderDbDS()
-          ..uuid = Uuid().toString()
+          ..uuid = Uuid().v4()
           ..name = 'Папка $i'
-          ..rootFolderUuid = null);
+          ..rootFolderUuid = null
+          ..rootFolder.value = null
+        );
       }
       conn[ConnType.term]!.collection<FolderDbDS>().putAllSync(root_folders);
 
@@ -68,7 +75,7 @@ Future<void> initDb() async {
       for (var currRootFolder in root_folders) {
         for (var i = 0; i < 2; i++) {
           sub_folders.add(FolderDbDS()
-            ..uuid = Uuid().toString()
+            ..uuid = Uuid().v4()
             ..name = '${currRootFolder.name}_$i'
             ..rootFolderUuid = currRootFolder.uuid
             ..rootFolder.value = currRootFolder);
@@ -81,8 +88,9 @@ Future<void> initDb() async {
       // var = ;
       for (var currFolder in <FolderDbDS?>[null] + root_folders + sub_folders) {
         modules.add(ModuleDbDS()
-          ..uuid = Uuid().toString()
+          ..uuid = (Uuid()).v4()
           ..name = 'Модуль из ${currFolder?.name ?? "корневой папки"}'
+          ..rootFolderUuid=currFolder?.uuid
           ..rootFolder.value = currFolder);
       }
 
@@ -92,7 +100,7 @@ Future<void> initDb() async {
       for (var currModule in modules) {
         for (var keyValWord in wordsSet.entries) {
           terms.add(TermEntityDbDS()
-            ..uuid = Uuid().toString()
+            ..uuid = Uuid().v4()
             ..term = keyValWord.key
             ..definition = keyValWord.value
             ..moduleUuid = currModule.uuid
