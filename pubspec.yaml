@@ -31,6 +31,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  api_package: # <- our generated library
+    path: lib/api_package
   uuid: ^3.0.6
   dio: '^5.2.0'
   one_of: '>=1.5.0 <2.0.0'
