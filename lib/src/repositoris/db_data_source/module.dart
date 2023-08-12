@@ -37,6 +37,10 @@ class ModuleDbDS  extends AbstractEntity {
   late bool isReverseDefinitionChoice = false;
   @Name("standard_and_reverse_choice")
   late bool standardAndReverseChoice = true;
+  @Name("personal_created_at")
+  late DateTime personalUpdatedAt;
+  @Name("personal_updated_at")
+  late DateTime personalCreatedAt;
 
   @Backlink(to: 'module')
   final words = IsarLinks<TermEntityDbDS>();

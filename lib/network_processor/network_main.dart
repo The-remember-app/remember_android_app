@@ -30,6 +30,42 @@ Future<void> networkProcessor() async {
       ApiPackage(dio: dio, serializers: standardSerializers);
   final DefaultApi mainApi = authApi.getDefaultApi();
   // JsonObject("string");
+  late Map<ConnType, Isar> conn;
+  late Map<String, FolderDbDS> foldersFromDb;
+  late Map<String, ModuleDbDS> modulesFromDb;
+  late Map<String, TermEntityDbDS> termsFromDb;
+
+  var coro = (() async {
+    await Future.delayed(Duration(seconds: 5));
+    conn = (await OpenAndClose3.openConnStatic([
+      CollectionSchema<FolderDbDS>,
+      CollectionSchema<ModuleDbDS>,
+      CollectionSchema<TermEntityDbDS>,
+    ]));
+
+    foldersFromDb = {
+      for (var ent in await conn[ConnType.term]!
+          .collection<FolderDbDS>()
+          .where()
+          .findAll())
+        ent.uuid: ent
+    };
+    modulesFromDb = {
+      for (var ent in await conn[ConnType.term]!
+          .collection<ModuleDbDS>()
+          .where()
+          .findAll())
+        ent.uuid: ent
+    };
+    termsFromDb = {
+      for (var ent in await conn[ConnType.term]!
+          .collection<TermEntityDbDS>()
+          .where()
+          .findAll())
+        ent.uuid: ent
+    };
+  })();
+
   final authData = await mainApi.loginForAccessTokenAuthTokenPost(
       username: JsonObject("string"), password: JsonObject("string"));
   authApi.setBearerAuth("main_api_key", authData.data!.accessToken!.asString);
@@ -45,81 +81,103 @@ Future<void> networkProcessor() async {
   final modulesCoro = mainApi.getAllModuleModuleAllGet(headers: authHeaders);
   final termsCoro = mainApi.getAllTermTermAllGet(headers: authHeaders);
 
-  foldersCoro.whenComplete(() async {
-    final folders = await foldersCoro;
+  final folders = await foldersCoro;
 
-    // const _type = FullType(FolderDTO);
-    var test = standardSerializers.deserialize(
-      folders.data!.asList[0],
-      specifiedType: const FullType(FolderDTO),
-    ) as FolderDTO;
-    // standardSerializers.serialize(, specifiedType: _type);
+  // const _type = FullType(FolderDTO);
+  var test = standardSerializers.deserialize(
+    folders.data!.asList[0],
+    specifiedType: const FullType(FolderDTO),
+  ) as FolderDTO;
+  // standardSerializers.serialize(, specifiedType: _type);
 
-    // FolderDTO.serializer.
+  // FolderDTO.serializer.
 
-    // var test = FolderDTO.serializer.deserialize(standardSerializers, folders.data!.asList[0]);
-    var foldersToDb = {
-      for(var ent in
-      [for (var folder in folders.data!.asList)
+  // var test = FolderDTO.serializer.deserialize(standardSerializers, folders.data!.asList[0]);
+  var res = await coro;
+  var foldersToDb = {
+    for (var ent in [
+      for (var folder in folders.data!.asList)
         FolderDbDS.fromJson(standardSerializers.deserialize(folder,
-            specifiedType: const FullType(FolderDTO)) as FolderDTO)])
-        ent.uuid: ent
-    };
-    for(var ent in foldersToDb.values){
-      if (ent.rootFolderUuid != null){
-        ent.rootFolder.value = foldersToDb[ent.rootFolderUuid]!;
+            specifiedType: const FullType(FolderDTO)) as FolderDTO)
+    ])
+      ent.uuid: ent
+  };
+  for (var ent in foldersToDb.values) {
+    if (ent.rootFolderUuid != null) {
+      ent.rootFolder.value = foldersToDb[ent.rootFolderUuid]!;
+    }
+  }
+
+  ModuleDbDS moduleTransform(ModuleDbDS networkModule) {
+    networkModule.rootFolder.value = foldersToDb[networkModule.rootFolderUuid];
+    if (modulesFromDb[networkModule.uuid] != null) {
+      var dbModule = modulesFromDb[networkModule.uuid]!;
+      if (networkModule.personalUpdatedAt
+          .isBefore(dbModule.personalUpdatedAt)) {
+        networkModule
+          ..isReverseDefinitionWrite = dbModule.isReverseDefinitionWrite
+          ..standardAndReverseWrite = dbModule.standardAndReverseWrite
+          ..isReverseDefinitionChoice = dbModule.isReverseDefinitionChoice
+          ..standardAndReverseChoice = dbModule.standardAndReverseChoice
+          ..personalUpdatedAt = dbModule.personalUpdatedAt;
       }
     }
+    return networkModule;
+  }
 
-    final modules = await modulesCoro;
-    var modulesToDb = {
-    for(var ent in [
+  final modules = await modulesCoro;
+  var modulesToDb = {
+    for (var ent in [
       for (var module in modules.data!.asList)
-        ModuleDbDS.fromJson(
-            standardSerializers.deserialize(module,
-            specifiedType: const FullType(PersonalizeModuleDTO)) as PersonalizeModuleDTO
-        )
+        ModuleDbDS.fromJson(standardSerializers.deserialize(module,
+                specifiedType: const FullType(PersonalizeModuleDTO))
+            as PersonalizeModuleDTO)
     ])
-      ent.uuid: ent..rootFolder.value = foldersToDb[ent.rootFolderUuid]
-    };
+      ent.uuid: moduleTransform(ent)
+  };
 
-    final terms = await termsCoro;
-    var termsToDb = [
-      for (var term in terms.data!.asList) TermEntityDbDS.fromJson(
-          standardSerializers.deserialize(term,
-          specifiedType: const FullType(PersonalizeTermDTO)) as PersonalizeTermDTO
-      )
-    ];
-    for(var t in termsToDb){
-        t.module.value = modulesToDb[t.moduleUuid]!;
+  final terms = await termsCoro;
+  var termsToDb = [
+    for (var term in terms.data!.asList)
+      TermEntityDbDS.fromJson(standardSerializers.deserialize(term,
+              specifiedType: const FullType(PersonalizeTermDTO))
+          as PersonalizeTermDTO)
+  ];
+  for (var networkTerm in termsToDb) {
+    networkTerm.module.value = modulesToDb[networkTerm.moduleUuid]!;
+    if (termsFromDb[networkTerm.uuid] != null) {
+      var dbTerm = termsFromDb[networkTerm.uuid]!;
+      if (networkTerm.personalUpdatedAt.isBefore(dbTerm.personalUpdatedAt)) {
+        networkTerm
+          ..chooseErrorCounter = dbTerm.chooseErrorCounter
+          ..writeErrorCounter = dbTerm.writeErrorCounter
+          ..choisceNegErrorCounter = dbTerm.choisceNegErrorCounter
+          ..personalUpdatedAt = dbTerm.personalUpdatedAt;
+      }
     }
+  }
 
-    var conn = (await OpenAndClose3.openConnStatic([
-      CollectionSchema<FolderDbDS>,
-      CollectionSchema<ModuleDbDS>,
-      CollectionSchema<TermEntityDbDS>,
-    ]));
-
-    conn[ConnType.term]!.writeTxnSync(() {
-       conn[ConnType.term]!.collection<FolderDbDS>().putAllSync(foldersToDb.values.toList());
-       conn[ConnType.term]!.collection<ModuleDbDS>().putAllSync(modulesToDb.values.toList());
-       conn[ConnType.term]!
-          .collection<TermEntityDbDS>()
-          .putAllSync(termsToDb);
-    });
-    var res1 = conn[ConnType.term]!
+  conn[ConnType.term]!.writeTxnSync(() {
+    conn[ConnType.term]!
         .collection<FolderDbDS>()
-        .filter()
-        .rootFolderIsNull()
-        .findAllSync();
-    print(res1);
-
-    await OpenAndClose3.closeConnStatic(conn);
+        .putAllSync(foldersToDb.values.toList());
+    conn[ConnType.term]!
+        .collection<ModuleDbDS>()
+        .putAllSync(modulesToDb.values.toList());
+    conn[ConnType.term]!.collection<TermEntityDbDS>().putAllSync(termsToDb);
   });
+  var res1 = conn[ConnType.term]!
+      .collection<FolderDbDS>()
+      .filter()
+      .rootFolderIsNull()
+      .findAllSync();
+  print(res1);
+
+  await OpenAndClose3.closeConnStatic(conn);
 
   // final folders = await mainApi.getAllFoldersFolderAllGet(headers: authHeaders);
 
-  final modules = await mainApi.getAllModuleModuleAllGet(headers: authHeaders);
-
-  final terms = await mainApi.getAllTermTermAllGet(headers: authHeaders);
+  // final modules = await mainApi.getAllModuleModuleAllGet(headers: authHeaders);
+  //
+  // final terms = await mainApi.getAllTermTermAllGet(headers: authHeaders);
 }

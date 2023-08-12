@@ -51,6 +51,7 @@ Future<void> initDb() async {
     var data = (conn[ConnType.term]!
         .collection<FolderDbDS>()
         .filter()
+
         .rootFolderUuidIsNull()).findAllSync();
     var test = (conn[ConnType.term]!
             .collection<FolderDbDS>()

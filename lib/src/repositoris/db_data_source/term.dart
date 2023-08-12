@@ -30,6 +30,12 @@ class TermEntityDbDS  extends AbstractEntity  {
   late int writeErrorCounter;
   @Name("choice_neg_error_counter")
   late int choisceNegErrorCounter;
+
+  @Name("personal_created_at")
+  late DateTime personalUpdatedAt;
+  @Name("personal_updated_at")
+  late DateTime personalCreatedAt;
+
   @ignore
   late bool? _reverseWrite = null;
   @ignore

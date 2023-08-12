@@ -145,6 +145,8 @@ class UnaryModule extends StatefulWidget {
 
   @override
   _UnaryModuleState createState() => _UnaryModuleState(moduleId);
+
+
 }
 
 class _UnaryModuleState
@@ -354,7 +356,12 @@ UnaryModuleStateDbMixin
     );
   }
 
+  @override
+  void dispose(){
+    super.dispose();
 
+
+  }
 
 
   // Future<void> saveInDatabase(activity) async {

@@ -23,6 +23,8 @@ part 'personalize_module_dto.g.dart';
 /// * [standardAndReverseWrite] 
 /// * [isReverseDefinitionChoice] 
 /// * [standardAndReverseChoice] 
+/// * [personalCreatedAt] 
+/// * [personalUpdatedAt] 
 @BuiltValue()
 abstract class PersonalizeModuleDTO implements Built<PersonalizeModuleDTO, PersonalizeModuleDTOBuilder> {
   @BuiltValueField(wireName: r'id')
@@ -57,6 +59,12 @@ abstract class PersonalizeModuleDTO implements Built<PersonalizeModuleDTO, Perso
 
   @BuiltValueField(wireName: r'standard_and_reverse_choice')
   JsonObject? get standardAndReverseChoice;
+
+  @BuiltValueField(wireName: r'personal_created_at')
+  JsonObject? get personalCreatedAt;
+
+  @BuiltValueField(wireName: r'personal_updated_at')
+  JsonObject? get personalUpdatedAt;
 
   PersonalizeModuleDTO._();
 
@@ -134,6 +142,16 @@ class _$PersonalizeModuleDTOSerializer implements PrimitiveSerializer<Personaliz
     yield r'standard_and_reverse_choice';
     yield object.standardAndReverseChoice == null ? null : serializers.serialize(
       object.standardAndReverseChoice,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'personal_created_at';
+    yield object.personalCreatedAt == null ? null : serializers.serialize(
+      object.personalCreatedAt,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'personal_updated_at';
+    yield object.personalUpdatedAt == null ? null : serializers.serialize(
+      object.personalUpdatedAt,
       specifiedType: const FullType.nullable(JsonObject),
     );
   }
@@ -246,6 +264,22 @@ class _$PersonalizeModuleDTOSerializer implements PrimitiveSerializer<Personaliz
           ) as JsonObject?;
           if (valueDes == null) continue;
           result.standardAndReverseChoice = valueDes;
+          break;
+        case r'personal_created_at':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.personalCreatedAt = valueDes;
+          break;
+        case r'personal_updated_at':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.personalUpdatedAt = valueDes;
           break;
         default:
           unhandled.add(key);

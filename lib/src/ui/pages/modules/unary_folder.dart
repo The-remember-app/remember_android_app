@@ -130,5 +130,9 @@ class UnaryFolderState
     );
   }
 
+  @override
+  void dispose() async {
+    super.dispose();
 
+  }
 }

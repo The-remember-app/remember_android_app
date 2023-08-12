@@ -19,6 +19,8 @@ Name | Type | Description | Notes
 **standardAndReverseWrite** | [**JsonObject**](.md) |  | 
 **isReverseDefinitionChoice** | [**JsonObject**](.md) |  | 
 **standardAndReverseChoice** | [**JsonObject**](.md) |  | 
+**personalCreatedAt** | [**JsonObject**](.md) |  | 
+**personalUpdatedAt** | [**JsonObject**](.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
