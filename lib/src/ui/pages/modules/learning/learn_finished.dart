@@ -15,7 +15,8 @@ class LearnCompleted extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+      child:Scaffold(
       backgroundColor: Color(0xffffffff),
       appBar: AppBar(
         elevation: 4,
@@ -34,10 +35,22 @@ class LearnCompleted extends StatelessWidget {
             color: Color(0xfff9f9f9),
           ),
         ),
-        leading: Icon(
-          Icons.arrow_back,
-          color: Color(0xfff9f9f9),
-          size: 24,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Color(0xfff9f9f9),
+            size: 24,
+          ),
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              '/module_id',
+              arguments: {
+                'moduleId': moduleEntity,
+              },
+            );
+            // Navigator.pop(context);
+          },
         ),
       ),
       body: Column(
@@ -104,12 +117,14 @@ class LearnCompleted extends StatelessWidget {
                           child: MaterialButton(
                             onPressed: () async {
                               await startLearning(moduleEntity.isarId);
-                              var nextPage = await  getNextLearnPage(moduleEntity);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                      nextPage ));
+                              var nextPage =
+                                  await getNextLearnPage(moduleEntity);
+                              await nextPage(context);
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //         nextPage ));
                             },
                             color: Color(0xfff9f9f9),
                             elevation: 0,
@@ -170,6 +185,17 @@ class LearnCompleted extends StatelessWidget {
           ),
         ],
       ),
+    ),
+    onWillPop: () async {
+      Navigator.pushNamed(
+        context,
+        '/module_id',
+        arguments: {
+          'moduleId': moduleEntity,
+        },
+      );
+    return false;
+    },
     );
   }
 }

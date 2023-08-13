@@ -28,7 +28,8 @@ class WriteWord extends StatelessWidget {
   Widget build(BuildContext context) {
     // var moduleEntity = foldersOrModules[moduleId];
     // var wordEntity = words[wordId];
-    return Scaffold(
+    return WillPopScope(
+      child:Scaffold(
       backgroundColor: Color(0xffffffff),
       appBar: AppBar(
         elevation: 4,
@@ -54,8 +55,16 @@ class WriteWord extends StatelessWidget {
             size: 24,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            // Navigator.pop(context);
+            Navigator.pushNamed(
+              context,
+              '/learning__finished_modal',
+              arguments: {
+                'moduleEntity': moduleEntity,
+              },
+            );
           },
+
         ),
       ),
       body: GestureDetector(
@@ -68,11 +77,11 @@ class WriteWord extends StatelessWidget {
             // if (buttonPressed.values.any((isClicked) => isClicked)) {
             var nextPage = await getNextLearnPage(
                 moduleEntity, currTermsList, progress, inputWord, true);
-
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => nextPage));
+            await nextPage(context);
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => nextPage));
             // }
           }
         },
@@ -151,10 +160,11 @@ class WriteWord extends StatelessWidget {
                     // words[wordId]?.write_error_counter -= 1;
                     var nextPage = await getNextLearnPage(
                         moduleEntity, currTermsList, progress, inputWord, false);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => nextPage));
+                    await nextPage(context);
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => nextPage));
                   }
                   // print("onChanged");
                   // print("Введенный текст: $text");
@@ -242,10 +252,11 @@ class WriteWord extends StatelessWidget {
                                 currTermsList,
                                 progress,
                                 inputWord, true);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => nextPage));
+                            await nextPage(context);
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => nextPage));
                           },
                           color: Color(0xfff9f9f9),
                           elevation: 0,
@@ -277,6 +288,17 @@ class WriteWord extends StatelessWidget {
           ],
         ),
       ),
+    ),
+    onWillPop: () async {
+      Navigator.pushNamed(
+        context,
+        '/module_id',
+        arguments: {
+          'moduleId': moduleEntity,
+        },
+      );
+    return false;
+    },
     );
   }
 }

@@ -162,7 +162,8 @@ implements GetDataFromDbI{
     var foldersAndModulesUI = getFolderAndModulesUI(context);
 
     // var data1 = data.entries.map<int>( (key, val) => 2 );
-    return Scaffold(
+    return WillPopScope(
+      child: Scaffold(
       backgroundColor: Color(0xffffffff),
       appBar: AppBar(
         elevation: 4,
@@ -220,6 +221,10 @@ implements GetDataFromDbI{
           ),
         ],
       ),
+    ),
+    onWillPop: () async {
+    return false;
+    },
     );
   }
 

@@ -18,40 +18,54 @@ class WriteWordOneMoreTime extends StatelessWidget {
 
   final bool reverseTerm;
 
-  WriteWordOneMoreTime(
-      this.moduleEntity, this.wordEntity, this.progress, this.maxProgress,
+  WriteWordOneMoreTime(this.moduleEntity, this.wordEntity, this.progress,
+      this.maxProgress,
       [this.currTermsList = null,
-      this.userInput = "",
-      this.reverseTerm = false]);
+        this.userInput = "",
+        this.reverseTerm = false]);
 
   @override
   Widget build(BuildContext context) {
     // var moduleEntity = foldersOrModules[moduleEntity];
     // var wordEntity = words[wordId];
-    return Scaffold(
+    return WillPopScope(
+      child:Scaffold(
       backgroundColor: Color(0xffffffff),
       appBar: AppBar(
-        elevation: 4,
-        centerTitle: false,
-        automaticallyImplyLeading: false,
-        backgroundColor: Color(0xff3a57e8),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero,
-        ),
-        title: Text(
-          moduleEntity.name ?? "Не найден Uuid для этого модуля",
-          style: TextStyle(
-            fontWeight: FontWeight.w400,
-            fontStyle: FontStyle.normal,
-            fontSize: 14,
-            color: Color(0xfff9f9f9),
+          elevation: 4,
+          centerTitle: false,
+          automaticallyImplyLeading: false,
+          backgroundColor: Color(0xff3a57e8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.zero,
           ),
-        ),
-        leading: Icon(
-          Icons.arrow_back,
-          color: Color(0xfff9f9f9),
-          size: 24,
-        ),
+          title: Text(
+            moduleEntity.name ?? "Не найден Uuid для этого модуля",
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontStyle: FontStyle.normal,
+              fontSize: 14,
+              color: Color(0xfff9f9f9),
+            ),
+          ),
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Color(0xfff9f9f9),
+              size: 24,
+            ), onPressed: () {
+            Navigator.pushNamed(
+              context,
+              '/module_id',
+              arguments: {
+                'moduleId': moduleEntity,
+              },
+            );
+            // Navigator.pop(context);
+
+
+          },
+          ),
       ),
       body: GestureDetector(
         onPanUpdate: (details) async {
@@ -63,10 +77,14 @@ class WriteWordOneMoreTime extends StatelessWidget {
             // if (buttonPressed.values.any((isClicked) => isClicked)) {
             var nextPage = await getNextLearnPage(moduleEntity,
                 currTermsList, progress, userInput, false);
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => nextPage));
+
+            await nextPage(context);
+
+
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => nextPage));
             // }
           }
         },
@@ -80,7 +98,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
               child: LinearProgressIndicator(
                   backgroundColor: Color(0xff808080),
                   valueColor:
-                      new AlwaysStoppedAnimation<Color>(Color(0xff3a57e8)),
+                  new AlwaysStoppedAnimation<Color>(Color(0xff3a57e8)),
                   value: progress.toDouble() / maxProgress.toDouble(),
                   minHeight: 3),
             ),
@@ -178,7 +196,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
                       children: [
                         Padding(
                           padding:
-                              EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                          EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
@@ -231,10 +249,12 @@ class WriteWordOneMoreTime extends StatelessWidget {
                     // words[wordId]?.write_error_counter -= 1;
                     var nextPage = await getNextLearnPage(moduleEntity,
                         currTermsList, progress, userInput, false);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => nextPage));
+
+                    await nextPage(context);
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => nextPage));
                   }
                   // print("onChanged");
                   // print("Введенный текст: $text");
@@ -281,9 +301,9 @@ class WriteWordOneMoreTime extends StatelessWidget {
                   fillColor: Color(0xfff2f2f3),
                   isDense: false,
                   contentPadding:
-                      EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                  EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                   prefixIcon:
-                      Icon(Icons.edit, color: Color(0xff212435), size: 24),
+                  Icon(Icons.edit, color: Color(0xff212435), size: 24),
                 ),
               ),
             ),
@@ -298,7 +318,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
                   children: [
                     Padding(
                       padding:
-                          EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                      EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(
@@ -320,23 +340,24 @@ class WriteWordOneMoreTime extends StatelessWidget {
                         alignment: Alignment.center,
                         child: MaterialButton(
                           onPressed: () async {
-                            var nextPage = await  getNextLearnPage(
-                              moduleEntity,
-                              currTermsList,
-                              progress,
-                              userInput,
-                              false);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => nextPage ));
+                            var nextPage = await getNextLearnPage(
+                                moduleEntity,
+                                currTermsList,
+                                progress,
+                                userInput,
+                                false);
+                            await nextPage(context);
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => nextPage ));
                           },
                           color: Color(0xfff9f9f9),
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0),
                             side:
-                                BorderSide(color: Color(0xff3a57e8), width: 2),
+                            BorderSide(color: Color(0xff3a57e8), width: 2),
                           ),
                           padding: EdgeInsets.all(16),
                           child: Text(
@@ -365,20 +386,22 @@ class WriteWordOneMoreTime extends StatelessWidget {
                                 progress,
                                 wordEntity.definition,
                                 false);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => nextPage ));
+                            await nextPage(context);
+
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => nextPage ));
                           },
                           color: Color(0xfff9f9f9),
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0),
                             side:
-                                BorderSide(color: Color(0xff3a57e8), width: 2),
+                            BorderSide(color: Color(0xff3a57e8), width: 2),
                           ),
                           padding:
-                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           child: Text(
                             "Я ответил верно, это очепятка",
                             style: TextStyle(
@@ -400,6 +423,17 @@ class WriteWordOneMoreTime extends StatelessWidget {
           ],
         ),
       ),
+    ),
+    onWillPop: () async {
+      Navigator.pushNamed(
+        context,
+        '/module_id',
+        arguments: {
+          'moduleId': moduleEntity,
+        },
+      );
+    return false;
+    },
     );
   }
 }

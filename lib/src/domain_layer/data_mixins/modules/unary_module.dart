@@ -27,6 +27,7 @@ mixin UnaryModuleStateDbMixin
         GetDataFromDbI {
   // late ModuleDbDS currentModuleEntity;
   late List<TermEntityDbDS> currentTerms = [];
+  late FolderDbDS? rootFolder = null;
 
   @override
   void completionData() async {
@@ -39,6 +40,12 @@ mixin UnaryModuleStateDbMixin
         .module((q) => q.isarIdEqualTo(currentModuleEntity.isarId))
 
         .findAll());
+    if (currentModuleEntity.rootFolderUuid != null){
+      rootFolder = (await conn[ConnType.term]!
+          .collection<FolderDbDS>()
+          .getByUuid(currentModuleEntity.rootFolderUuid!));
+    }
+
     this.setState(() => null);
     // closeConn();
   }

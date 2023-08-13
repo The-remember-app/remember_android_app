@@ -31,6 +31,7 @@ implements
   late List<FolderDbDS> subFolders = [];
   late List<ModuleDbDS> currModules = [];
   late FolderDbDS? folderEntity = null;
+  late FolderDbDS? rootFolderEntity = null;
 
   @override
   void completionData() async {
@@ -48,6 +49,11 @@ implements
         .findAll();
     folderEntity = await conn[ConnType.term]!
         .collection<FolderDbDS>().get(folderId);
+    if (folderEntity!.rootFolderUuid != null){
+      rootFolderEntity = (await conn[ConnType.term]!
+          .collection<FolderDbDS>()
+          .getByUuid(folderEntity!.rootFolderUuid!));
+    }
     this.setState(() => null);
 
   }

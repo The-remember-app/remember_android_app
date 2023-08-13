@@ -59,7 +59,8 @@ class UnaryFolderState
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
+    return WillPopScope(
+      child: Scaffold(
       backgroundColor: Color(0xffffffff),
       appBar: AppBar(
         elevation: 4,
@@ -85,7 +86,23 @@ class UnaryFolderState
             size: 24,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            if (rootFolderEntity == null){
+              Navigator.pushNamed(
+                  context,
+                  '/root_folder',
+
+              );
+            } else {
+
+              // Navigator.pop(context);
+              Navigator.pushNamed(
+                context,
+                '/folders_id',
+                arguments: {
+                  'folderId': rootFolderEntity!.isarId,
+                },
+              );
+            }
           },
         ),
         actions: [
@@ -127,6 +144,25 @@ class UnaryFolderState
           ),
         ],
       ),
+    ),
+    onWillPop: () async {
+      if (rootFolderEntity == null){
+        Navigator.pushNamed(
+          context,
+          '/root_folder',
+
+        );
+      } else {
+        Navigator.pushNamed(
+          context,
+          '/folders_id',
+          arguments: {
+            'folderId': rootFolderEntity!.isarId,
+          },
+        );
+      }
+    return false;
+    },
     );
   }
 

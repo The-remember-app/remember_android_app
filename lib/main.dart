@@ -1,8 +1,15 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
+import 'package:the_remember/src/ui/pages/modules/learning/choiceWord.dart';
+import 'package:the_remember/src/ui/pages/modules/learning/learn_finished.dart';
+import 'package:the_remember/src/ui/pages/modules/learning/writeWord.dart';
+import 'package:the_remember/src/ui/pages/modules/learning/writeWordOneMoreTime.dart';
+import 'package:the_remember/src/ui/pages/modules/unary_folder.dart';
+import 'package:the_remember/src/ui/pages/modules/unary_module.dart';
 import 'package:uuid/uuid.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:the_remember/src/repositoris/db_data_source/folder.dart';
@@ -40,7 +47,6 @@ Future<void> initDb() async {
   };
 
 
-
   var conn = (await OpenAndClose3.openConnStatic([
     CollectionSchema<FolderDbDS>,
     CollectionSchema<ModuleDbDS>,
@@ -54,9 +60,9 @@ Future<void> initDb() async {
 
         .rootFolderUuidIsNull()).findAllSync();
     var test = (conn[ConnType.term]!
-            .collection<FolderDbDS>()
-            .filter()
-            .rootFolderUuidIsNull())
+        .collection<FolderDbDS>()
+        .filter()
+        .rootFolderUuidIsNull())
         .isEmptySync();
 
     if (test) {
@@ -95,7 +101,7 @@ Future<void> initDb() async {
         modules.add(ModuleDbDS()
           ..uuid = (Uuid()).v4()
           ..name = 'Модуль из ${currFolder?.name ?? "корневой папки"}'
-          ..rootFolderUuid=currFolder?.uuid
+          ..rootFolderUuid = currFolder?.uuid
           ..rootFolder.value = currFolder);
       }
 
@@ -150,13 +156,87 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       // заголовок приложения
       // обычно виден, когда мы сворачиваем приложение
-      title: 'Json Placeholder App',
-      // настройка темы, мы ещё вернёмся к этому
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      // указываем исходную страницу, которую мы создадим позже
-      home: StartModule(),
+        title: 'Json Placeholder App',
+        // настройка темы, мы ещё вернёмся к этому
+        theme: ThemeData(primarySwatch: Colors.blue,),
+        // указываем исходную страницу, которую мы создадим позже
+        home: StartModule(),
+        onUnknownRoute: (settings) {
+          return MaterialPageRoute(
+              builder: (context) {
+                return StartModule();
+              }
+          );
+        },
+        onGenerateRoute: (settings) {
+          var args = settings.arguments as Map<String, dynamic>?;
+          if (settings.name == '/root_folder') {
+            return MaterialPageRoute(
+              settings: settings,
+              builder: (context) => StartModule(),
+            );
+          } else if (settings.name == '/module_id') {
+            return MaterialPageRoute(
+              settings: settings,
+              builder: (context) => UnaryModule(args!["moduleId"] as ModuleDbDS),
+            );
+          } else if (settings.name == '/folders_id') {
+            return MaterialPageRoute(
+              settings: settings,
+              builder: (context) => UnaryFolder(args!["folderId"] as int),
+            );
+          } else if (settings.name == '/learning__finished_modal') {
+            // TODO: сделать окно окончания изучения слов модальным
+            return MaterialPageRoute(
+              settings: settings,
+              builder: (context) =>
+                  LearnCompleted(args!["moduleEntity"] as ModuleDbDS),
+            );
+          } else if (settings.name == '/learning__choice_word') {
+            return MaterialPageRoute(
+              settings: settings,
+              builder: (context) =>
+                  ChoiceWord(
+                    args!["moduleEntity"] as ModuleDbDS,
+                    args["wordEntity"] as TermEntityDbDS,
+                    args["progress"] as int,
+                    args["maxProgress"] as int,
+                    args["definitions"] as List<TermEntityDbDS>,
+                    args["currTermsList"] as List<TermEntityDbDS>?,
+                    args["reverseTerm"] as bool,
+                  ),
+            );
+          } else if (settings.name == '/learning__write_word') {
+            return MaterialPageRoute(
+              settings: settings,
+              builder: (context) =>
+                  WriteWord(
+                    args!["moduleEntity"] as ModuleDbDS,
+                    args["wordEntity"] as TermEntityDbDS,
+                    args["progress"] as int,
+                    args["maxProgress"] as int,
+                    args["currTermsList"] as List<TermEntityDbDS>?,
+                    args["reverseTerm"] as bool,
+                  ),
+            );
+          } else if (settings.name == '/learning__double_write_word') {
+            return MaterialPageRoute(
+              settings: settings,
+              builder: (context) =>
+                  WriteWordOneMoreTime(
+                    args!["moduleEntity"] as ModuleDbDS,
+                    args["wordEntity"] as TermEntityDbDS,
+                    args["progress"] as int,
+                    args["maxProgress"] as int,
+                    args["currTermsList"] as List<TermEntityDbDS>?,
+                    args["userInput"] as String,
+                    args["reverseTerm"] as bool,
+                  ),
+            );
+          }
+        }
+
+
     );
   }
 }

@@ -127,7 +127,8 @@ class _ChoiceWordState extends State<ChoiceWord> {
     // var moduleEntity = foldersOrModules[moduleEntity];
     // var wordEntity = words[wordEntity];
 
-    return Scaffold(
+    return WillPopScope(
+      child:Scaffold(
         backgroundColor: Color(0xffffffff),
         appBar: AppBar(
           elevation: 4,
@@ -153,7 +154,18 @@ class _ChoiceWordState extends State<ChoiceWord> {
               size: 24,
             ),
             onPressed: () {
-              Navigator.pop(context);
+
+              Navigator.pushNamed(
+                context,
+                '/module_id',
+                arguments: {
+                  'moduleId': moduleEntity,
+                },
+              );
+              // Navigator.pop(context);
+
+
+
             },
           ),
         ),
@@ -168,10 +180,11 @@ class _ChoiceWordState extends State<ChoiceWord> {
 
                 var nextPage = await getNextLearnPage(
                     moduleEntity, currTermsList, progress);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => nextPage));
+                await nextPage(context);
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => nextPage));
               }
             }
           },
@@ -261,17 +274,19 @@ class _ChoiceWordState extends State<ChoiceWord> {
                           alignment: Alignment.center,
                           child: MaterialButton(
                             onPressed: () async {
-                              var nextPage = await getNextLearnPage(
+
+                              if (buttonPressed.values
+                                  .any((isClicked) => isClicked)) {
+                                var nextPage = await getNextLearnPage(
                                 moduleEntity,
                                 currTermsList,
                                 progress,
                               );
-                              if (buttonPressed.values
-                                  .any((isClicked) => isClicked)) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => nextPage));
+                                await nextPage(context);
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) => nextPage));
                               }
                             },
                             color: Color(0xfff9f9f9),
@@ -310,6 +325,17 @@ class _ChoiceWordState extends State<ChoiceWord> {
               ),
             ],
           ),
-        ));
+        )),
+    onWillPop: () async {
+      Navigator.pushNamed(
+        context,
+        '/module_id',
+        arguments: {
+          'moduleId': moduleEntity,
+        },
+      );
+    return false;
+    },
+    );
   }
 }
