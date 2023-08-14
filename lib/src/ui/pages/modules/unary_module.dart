@@ -23,8 +23,7 @@ import 'modules.dart';
 
 // Future<Widget>
 
-Future<Function(BuildContext)> getNextLearnPage(
-  ModuleDbDS moduleEntity, [
+Future<Function(BuildContext)> getNextLearnPage(ModuleDbDS moduleEntity, [
   List<TermEntityDbDS>? currTermList = null,
   int progress = -1,
   // List<int>? currTermIdList = null,
@@ -63,7 +62,8 @@ Future<Function(BuildContext)> getNextLearnPage(
   if (currTermList.isEmpty) {
     await learnTransactionCompleted(currTermList);
     // return LearnCompleted(moduleEntity);
-    return (BuildContext context) => Navigator.pushNamed(
+    return (BuildContext context) =>
+        Navigator.pushNamed(
           context,
           '/learning__finished_modal',
           arguments: {
@@ -90,7 +90,8 @@ Future<Function(BuildContext)> getNextLearnPage(
       lastWord?.resetReverse();
     }
     await learnTransactionCompleted(currTermList);
-    return (BuildContext context) => Navigator.pushNamed(
+    return (BuildContext context) =>
+        Navigator.pushNamed(
           context,
           '/module_id',
           arguments: {
@@ -102,7 +103,8 @@ Future<Function(BuildContext)> getNextLearnPage(
   var currentWord = currTermList[progress];
 
   if (showPostScreen ?? false) {
-    return (BuildContext context) => Navigator.pushNamed(
+    return (BuildContext context) =>
+        Navigator.pushNamed(
           context,
           '/learning__double_write_word',
           arguments: {
@@ -134,7 +136,8 @@ Future<Function(BuildContext)> getNextLearnPage(
     lastWord?.resetReverse();
   }
   if (currentWord.chooseErrorCounter == 0) {
-    return (BuildContext context) => Navigator.pushNamed(
+    return (BuildContext context) =>
+        Navigator.pushNamed(
           context,
           '/learning__write_word',
           arguments: {
@@ -161,7 +164,8 @@ Future<Function(BuildContext)> getNextLearnPage(
     definitionData.add(currentWord);
     definitionData.shuffle();
     // var r_num =
-    return (BuildContext context) => Navigator.pushNamed(
+    return (BuildContext context) =>
+        Navigator.pushNamed(
           context,
           '/learning__choice_word',
           arguments: {
@@ -191,7 +195,8 @@ class UnaryModule extends StatefulWidget {
 class _UnaryModuleState extends AbstractUIStatefulWidget<UnaryModule>
     with
         OpenAndClose3<CollectionSchema<TermEntityDbDS>,
-            CollectionSchema<ModuleDbDS>, CollectionSchema<AbstractEntity>>,
+            CollectionSchema<ModuleDbDS>,
+            CollectionSchema<AbstractEntity>>,
         UnaryModuleStateDbMixin
     implements
         UnaryModuleStateI {
@@ -231,12 +236,12 @@ class _UnaryModuleState extends AbstractUIStatefulWidget<UnaryModule>
             ),
             onPressed: () {
               // Navigator.pop(context);
-              if (rootFolder == null){
-              Navigator.pushNamed(
-              context,
-              '/root_folder',
+              if (rootFolder == null) {
+                Navigator.pushNamed(
+                  context,
+                  '/root_folder',
 
-              );
+                );
               } else {
                 Navigator.pushNamed(
                   context,
@@ -258,169 +263,211 @@ class _UnaryModuleState extends AbstractUIStatefulWidget<UnaryModule>
         ),
         body: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Container(
-                margin: EdgeInsets.all(10),
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                width: 200,
-                height: 200,
-                decoration: BoxDecoration(
-                  color: Color(0x1f000000),
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.zero,
-                  border: Border.all(color: Color(0x4d9e9e9e), width: 1),
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+          Container(
+          margin: EdgeInsets.all(10),
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          width: 200,
+          height: 200,
+          decoration: BoxDecoration(
+            color: Color(0x1ff8f8f8),
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.zero,
+            border: Border.all(color: Color(0x4d9e9e9e), width: 0),
+          ),
+          child: Container(
+            margin: EdgeInsets.zero,
+            padding: EdgeInsets.zero,
+            width: 200,
+            height: 100,
+            decoration: BoxDecoration(
+              color: Color(0xffeccfff),
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(20.0),
+              border: Border.all(color: Color(0xffe9c7ff), width: 1),
+            ),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                "Term",
+                textAlign: TextAlign.start,
+                overflow: TextOverflow.clip,
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 24,
+                  color: Color(0xffe83a3a),
                 ),
               ),
-              MaterialButton(
-                onPressed: () {
-                  setState(() => _flag = !_flag);
-                },
-                color: Color(0xffffffff),
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,
-                  side: BorderSide(color: Color(0xff808080), width: 1),
-                ),
-                padding: EdgeInsets.all(16),
-                child: Text(
-                  _flag ? 'Red' : 'Green',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                  ),
-                ),
-                textColor: Color(0xff000000),
-                height: 40,
-                minWidth: 140,
-              ),
-              MaterialButton(
-                onPressed: () async {
-                  if (currentModuleEntity != null) {
-                    await startLearning(currentModuleEntity.isarId);
-                    var nextPage = await getNextLearnPage(currentModuleEntity);
-                    await nextPage(context);
-                    // Navigator.push(context,
-                    //     MaterialPageRoute(builder: (context) => nextPage));
-                  }
-                },
-                color: Color(0xffffffff),
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,
-                  side: BorderSide(color: Color(0xff808080), width: 1),
-                ),
-                padding: EdgeInsets.all(16),
-                child: Text(
-                  "Запустить режим заучивания заново",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                  ),
-                ),
-                textColor: Color(0xff000000),
-                height: 40,
-                minWidth: 140,
-              ),
-              MaterialButton(
-                onPressed: () async {
-                  if (currentModuleEntity != null) {
-                    var nextPage = await getNextLearnPage(currentModuleEntity);
-                    await nextPage(context);
-                    //   Navigator.push(context,
-                    //       MaterialPageRoute(builder: (context) => nextPage));
-                    // }
-                  }
-                },
-                color: Color(0xffffffff),
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,
-                  side: BorderSide(color: Color(0xff808080), width: 1),
-                ),
-                padding: EdgeInsets.all(16),
-                child: Text(
-                  "Продолжить заучивание",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                  ),
-                ),
-                textColor: Color(0xff000000),
-                height: 40,
-                minWidth: 140,
-              ),
-              MaterialButton(
-                onPressed: () {
-                  if (currentModuleEntity != null) {}
-                },
-                color: Color(0xffffffff),
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,
-                  side: BorderSide(color: Color(0xff808080), width: 1),
-                ),
-                padding: EdgeInsets.all(16),
-                child: Text(
-                  "Настройки заучивания",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                  ),
-                ),
-                textColor: Color(0xff000000),
-                height: 40,
-                minWidth: 140,
-              ),
-              MaterialButton(
-                onPressed: () {},
-                color: Color(0xffffffff),
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,
-                  side: BorderSide(color: Color(0xff808080), width: 1),
-                ),
-                padding: EdgeInsets.all(16),
-                child: Text(
-                  "Тест",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                  ),
-                ),
-                textColor: Color(0xff000000),
-                height: 40,
-                minWidth: 140,
-              ),
-            ],
+            ),
           ),
         ),
-      ),
-      onWillPop: () async {
-        if (rootFolder == null){
-          Navigator.pushNamed(
-            context,
-            '/root_folder',
-
-          );
-        } else {
-          Navigator.pushNamed(
-            context,
-            '/folders_id',
-            arguments: {
-              'folderId': rootFolder!.isarId,
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+          child: MaterialButton(
+            onPressed: () {
+              setState(() => _flag = !_flag);
             },
-          );
-        }
-        return false;
-      },
+            color: Color(0xfffafafa),
+            // elevation: 5,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.0),
+              side: BorderSide(color: Color(0xff3a57e8), width: 1),
+            ),
+            padding: EdgeInsets.all(16),
+            child: Text(
+                _flag ? 'Red' : 'Green'
+                ,
+                style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+            fontStyle: FontStyle.normal,
+            ),
+          ),
+          textColor: Color(0xff000000),
+          height: 40,
+          minWidth: 140,
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+        child: MaterialButton(
+          onPressed: () async {
+            if (currentModuleEntity != null) {
+              await startLearning(currentModuleEntity.isarId);
+              var nextPage = await getNextLearnPage(currentModuleEntity);
+              await nextPage(context);
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => nextPage));
+            }
+          },
+          color: Color(0xfffafafa),
+          // elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            side: BorderSide(color: Color(0xff3a57e8), width: 1),
+          ),
+          padding: EdgeInsets.all(16),
+          child: Text(
+            "Запустить режим заучивания заново",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+          textColor: Color(0xff000000),
+          height: 40,
+          minWidth: 140,
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+        child: MaterialButton(
+          onPressed: () async {
+            if (currentModuleEntity != null) {
+              var nextPage = await getNextLearnPage(currentModuleEntity);
+              await nextPage(context);
+              //   Navigator.push(context,
+              //       MaterialPageRoute(builder: (context) => nextPage));
+              // }
+            }
+          },
+          color: Color(0xfffafafa),
+          // elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            side: BorderSide(color: Color(0xff3a57e8), width: 1),
+          ),
+          padding: EdgeInsets.all(16),
+          child: Text(
+            "Продолжить заучивание",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+          textColor: Color(0xff000000),
+          height: 40,
+          minWidth: 140,
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+        child: MaterialButton(
+          onPressed: () {
+            if (currentModuleEntity != null) {}
+          },
+          color: Color(0xfffafafa),
+          // elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            side: BorderSide(color: Color(0xff3a57e8), width: 1),
+          ),
+          padding: EdgeInsets.all(16),
+          child: Text(
+            "Настройки заучивания",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+          textColor: Color(0xff000000),
+          height: 40,
+          minWidth: 140,
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+        child: MaterialButton(
+          onPressed: () {},
+          color: Color(0xfffafafa),
+          // elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            side: BorderSide(color: Color(0xff3a57e8), width: 1),
+          ),
+          padding: EdgeInsets.all(16),
+          child: Text(
+            "Тест",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+          textColor: Color(0xff000000),
+          height: 40,
+          minWidth: 140,
+        ),
+      ),
+      ],
+    ),
+    ),
+    ),
+    onWillPop: () async {
+    if (rootFolder == null){
+    Navigator.pushNamed(
+    context,
+    '/root_folder',
+
+    );
+    } else {
+    Navigator.pushNamed(
+    context,
+    '/folders_id',
+    arguments: {
+    'folderId': rootFolder!.isarId,
+    },
+    );
+    }
+    return false;
+    },
     );
   }
 
