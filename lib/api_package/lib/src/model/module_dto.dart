@@ -12,25 +12,25 @@ part 'module_dto.g.dart';
 /// ModuleDTO
 ///
 /// Properties:
-/// * [id] 
 /// * [name] 
-/// * [authorId] 
 /// * [rootFolderId] 
+/// * [id] 
+/// * [authorId] 
 /// * [createdAt] 
 /// * [updatedAt] 
 @BuiltValue()
 abstract class ModuleDTO implements Built<ModuleDTO, ModuleDTOBuilder> {
-  @BuiltValueField(wireName: r'id')
-  JsonObject? get id;
-
   @BuiltValueField(wireName: r'name')
   JsonObject? get name;
 
-  @BuiltValueField(wireName: r'author_id')
-  JsonObject? get authorId;
-
   @BuiltValueField(wireName: r'root_folder_id')
   JsonObject? get rootFolderId;
+
+  @BuiltValueField(wireName: r'id')
+  JsonObject? get id;
+
+  @BuiltValueField(wireName: r'author_id')
+  JsonObject? get authorId;
 
   @BuiltValueField(wireName: r'created_at')
   JsonObject? get createdAt;
@@ -61,24 +61,24 @@ class _$ModuleDTOSerializer implements PrimitiveSerializer<ModuleDTO> {
     ModuleDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    yield r'id';
-    yield object.id == null ? null : serializers.serialize(
-      object.id,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
     yield r'name';
     yield object.name == null ? null : serializers.serialize(
       object.name,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'author_id';
-    yield object.authorId == null ? null : serializers.serialize(
-      object.authorId,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
     yield r'root_folder_id';
     yield object.rootFolderId == null ? null : serializers.serialize(
       object.rootFolderId,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'id';
+    yield object.id == null ? null : serializers.serialize(
+      object.id,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'author_id';
+    yield object.authorId == null ? null : serializers.serialize(
+      object.authorId,
       specifiedType: const FullType.nullable(JsonObject),
     );
     yield r'created_at';
@@ -114,14 +114,6 @@ class _$ModuleDTOSerializer implements PrimitiveSerializer<ModuleDTO> {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
-        case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.id = valueDes;
-          break;
         case r'name':
           final valueDes = serializers.deserialize(
             value,
@@ -130,14 +122,6 @@ class _$ModuleDTOSerializer implements PrimitiveSerializer<ModuleDTO> {
           if (valueDes == null) continue;
           result.name = valueDes;
           break;
-        case r'author_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.authorId = valueDes;
-          break;
         case r'root_folder_id':
           final valueDes = serializers.deserialize(
             value,
@@ -145,6 +129,22 @@ class _$ModuleDTOSerializer implements PrimitiveSerializer<ModuleDTO> {
           ) as JsonObject?;
           if (valueDes == null) continue;
           result.rootFolderId = valueDes;
+          break;
+        case r'id':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.id = valueDes;
+          break;
+        case r'author_id':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.authorId = valueDes;
           break;
         case r'created_at':
           final valueDes = serializers.deserialize(

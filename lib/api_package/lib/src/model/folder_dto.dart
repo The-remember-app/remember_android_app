@@ -12,29 +12,25 @@ part 'folder_dto.g.dart';
 /// FolderDTO
 ///
 /// Properties:
-/// * [id] 
 /// * [name] 
-/// * [userId] 
 /// * [rootFolderId] 
-/// * [subFolders] 
+/// * [id] 
+/// * [userId] 
 /// * [createdAt] 
 /// * [updatedAt] 
 @BuiltValue()
 abstract class FolderDTO implements Built<FolderDTO, FolderDTOBuilder> {
-  @BuiltValueField(wireName: r'id')
-  JsonObject? get id;
-
   @BuiltValueField(wireName: r'name')
   JsonObject? get name;
-
-  @BuiltValueField(wireName: r'user_id')
-  JsonObject? get userId;
 
   @BuiltValueField(wireName: r'root_folder_id')
   JsonObject? get rootFolderId;
 
-  @BuiltValueField(wireName: r'sub_folders')
-  JsonObject? get subFolders;
+  @BuiltValueField(wireName: r'id')
+  JsonObject? get id;
+
+  @BuiltValueField(wireName: r'user_id')
+  JsonObject? get userId;
 
   @BuiltValueField(wireName: r'created_at')
   JsonObject? get createdAt;
@@ -65,19 +61,9 @@ class _$FolderDTOSerializer implements PrimitiveSerializer<FolderDTO> {
     FolderDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    yield r'id';
-    yield object.id == null ? null : serializers.serialize(
-      object.id,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
     yield r'name';
     yield object.name == null ? null : serializers.serialize(
       object.name,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'user_id';
-    yield object.userId == null ? null : serializers.serialize(
-      object.userId,
       specifiedType: const FullType.nullable(JsonObject),
     );
     yield r'root_folder_id';
@@ -85,9 +71,14 @@ class _$FolderDTOSerializer implements PrimitiveSerializer<FolderDTO> {
       object.rootFolderId,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'sub_folders';
-    yield object.subFolders == null ? null : serializers.serialize(
-      object.subFolders,
+    yield r'id';
+    yield object.id == null ? null : serializers.serialize(
+      object.id,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'user_id';
+    yield object.userId == null ? null : serializers.serialize(
+      object.userId,
       specifiedType: const FullType.nullable(JsonObject),
     );
     yield r'created_at';
@@ -123,14 +114,6 @@ class _$FolderDTOSerializer implements PrimitiveSerializer<FolderDTO> {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
-        case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.id = valueDes;
-          break;
         case r'name':
           final valueDes = serializers.deserialize(
             value,
@@ -138,14 +121,6 @@ class _$FolderDTOSerializer implements PrimitiveSerializer<FolderDTO> {
           ) as JsonObject?;
           if (valueDes == null) continue;
           result.name = valueDes;
-          break;
-        case r'user_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.userId = valueDes;
           break;
         case r'root_folder_id':
           final valueDes = serializers.deserialize(
@@ -155,13 +130,21 @@ class _$FolderDTOSerializer implements PrimitiveSerializer<FolderDTO> {
           if (valueDes == null) continue;
           result.rootFolderId = valueDes;
           break;
-        case r'sub_folders':
+        case r'id':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.subFolders = valueDes;
+          result.id = valueDes;
+          break;
+        case r'user_id':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.userId = valueDes;
           break;
         case r'created_at':
           final valueDes = serializers.deserialize(

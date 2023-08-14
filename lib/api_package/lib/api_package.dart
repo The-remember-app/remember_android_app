@@ -11,13 +11,19 @@ export 'package:api_package/src/model/date.dart';
 
 export 'package:api_package/src/api/default_api.dart';
 
+export 'package:api_package/src/model/create_folder_as_tree_dto.dart';
 export 'package:api_package/src/model/create_folder_dto.dart';
+export 'package:api_package/src/model/create_module_as_tree_dto.dart';
 export 'package:api_package/src/model/create_module_dto.dart';
+export 'package:api_package/src/model/create_term_as_tree_dto.dart';
 export 'package:api_package/src/model/create_term_dto.dart';
 export 'package:api_package/src/model/create_user_dto.dart';
 export 'package:api_package/src/model/folder_dto.dart';
+export 'package:api_package/src/model/folder_with_nested_entities_dto.dart';
+export 'package:api_package/src/model/folder_with_root_entity_dto.dart';
 export 'package:api_package/src/model/http_validation_error.dart';
 export 'package:api_package/src/model/module_dto.dart';
+export 'package:api_package/src/model/module_with_nested_entities_dto.dart';
 export 'package:api_package/src/model/personalize_module_dto.dart';
 export 'package:api_package/src/model/personalize_term_dto.dart';
 export 'package:api_package/src/model/term_dto.dart';

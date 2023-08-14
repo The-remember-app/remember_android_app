@@ -12,17 +12,14 @@ part 'term_dto.g.dart';
 /// TermDTO
 ///
 /// Properties:
-/// * [id] 
 /// * [term] 
 /// * [definition] 
 /// * [moduleId] 
+/// * [id] 
 /// * [createdAt] 
 /// * [updatedAt] 
 @BuiltValue()
 abstract class TermDTO implements Built<TermDTO, TermDTOBuilder> {
-  @BuiltValueField(wireName: r'id')
-  JsonObject? get id;
-
   @BuiltValueField(wireName: r'term')
   JsonObject? get term;
 
@@ -31,6 +28,9 @@ abstract class TermDTO implements Built<TermDTO, TermDTOBuilder> {
 
   @BuiltValueField(wireName: r'module_id')
   JsonObject? get moduleId;
+
+  @BuiltValueField(wireName: r'id')
+  JsonObject? get id;
 
   @BuiltValueField(wireName: r'created_at')
   JsonObject? get createdAt;
@@ -61,11 +61,6 @@ class _$TermDTOSerializer implements PrimitiveSerializer<TermDTO> {
     TermDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    yield r'id';
-    yield object.id == null ? null : serializers.serialize(
-      object.id,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
     yield r'term';
     yield object.term == null ? null : serializers.serialize(
       object.term,
@@ -79,6 +74,11 @@ class _$TermDTOSerializer implements PrimitiveSerializer<TermDTO> {
     yield r'module_id';
     yield object.moduleId == null ? null : serializers.serialize(
       object.moduleId,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'id';
+    yield object.id == null ? null : serializers.serialize(
+      object.id,
       specifiedType: const FullType.nullable(JsonObject),
     );
     yield r'created_at';
@@ -114,14 +114,6 @@ class _$TermDTOSerializer implements PrimitiveSerializer<TermDTO> {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
-        case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.id = valueDes;
-          break;
         case r'term':
           final valueDes = serializers.deserialize(
             value,
@@ -145,6 +137,14 @@ class _$TermDTOSerializer implements PrimitiveSerializer<TermDTO> {
           ) as JsonObject?;
           if (valueDes == null) continue;
           result.moduleId = valueDes;
+          break;
+        case r'id':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.id = valueDes;
           break;
         case r'created_at':
           final valueDes = serializers.deserialize(

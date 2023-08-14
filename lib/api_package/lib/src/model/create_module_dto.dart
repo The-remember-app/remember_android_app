@@ -50,11 +50,13 @@ class _$CreateModuleDTOSerializer implements PrimitiveSerializer<CreateModuleDTO
       object.name,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'root_folder_id';
-    yield object.rootFolderId == null ? null : serializers.serialize(
-      object.rootFolderId,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
+    if (object.rootFolderId != null) {
+      yield r'root_folder_id';
+      yield serializers.serialize(
+        object.rootFolderId,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
   }
 
   @override

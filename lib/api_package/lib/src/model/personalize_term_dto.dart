@@ -12,44 +12,22 @@ part 'personalize_term_dto.g.dart';
 /// PersonalizeTermDTO
 ///
 /// Properties:
-/// * [id] 
-/// * [term] 
-/// * [definition] 
-/// * [moduleId] 
-/// * [createdAt] 
-/// * [updatedAt] 
 /// * [userId] 
-/// * [termId] 
 /// * [chooseErrorCounter] 
 /// * [writeErrorCounter] 
 /// * [choiceNegErrorCounter] 
 /// * [personalCreatedAt] 
 /// * [personalUpdatedAt] 
+/// * [term] 
+/// * [definition] 
+/// * [moduleId] 
+/// * [id] 
+/// * [createdAt] 
+/// * [updatedAt] 
 @BuiltValue()
 abstract class PersonalizeTermDTO implements Built<PersonalizeTermDTO, PersonalizeTermDTOBuilder> {
-  @BuiltValueField(wireName: r'id')
-  JsonObject? get id;
-
-  @BuiltValueField(wireName: r'term')
-  JsonObject? get term;
-
-  @BuiltValueField(wireName: r'definition')
-  JsonObject? get definition;
-
-  @BuiltValueField(wireName: r'module_id')
-  JsonObject? get moduleId;
-
-  @BuiltValueField(wireName: r'created_at')
-  JsonObject? get createdAt;
-
-  @BuiltValueField(wireName: r'updated_at')
-  JsonObject? get updatedAt;
-
   @BuiltValueField(wireName: r'user_id')
   JsonObject? get userId;
-
-  @BuiltValueField(wireName: r'term_id')
-  JsonObject? get termId;
 
   @BuiltValueField(wireName: r'choose_error_counter')
   JsonObject? get chooseErrorCounter;
@@ -65,6 +43,24 @@ abstract class PersonalizeTermDTO implements Built<PersonalizeTermDTO, Personali
 
   @BuiltValueField(wireName: r'personal_updated_at')
   JsonObject? get personalUpdatedAt;
+
+  @BuiltValueField(wireName: r'term')
+  JsonObject? get term;
+
+  @BuiltValueField(wireName: r'definition')
+  JsonObject? get definition;
+
+  @BuiltValueField(wireName: r'module_id')
+  JsonObject? get moduleId;
+
+  @BuiltValueField(wireName: r'id')
+  JsonObject? get id;
+
+  @BuiltValueField(wireName: r'created_at')
+  JsonObject? get createdAt;
+
+  @BuiltValueField(wireName: r'updated_at')
+  JsonObject? get updatedAt;
 
   PersonalizeTermDTO._();
 
@@ -89,44 +85,9 @@ class _$PersonalizeTermDTOSerializer implements PrimitiveSerializer<PersonalizeT
     PersonalizeTermDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    yield r'id';
-    yield object.id == null ? null : serializers.serialize(
-      object.id,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'term';
-    yield object.term == null ? null : serializers.serialize(
-      object.term,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'definition';
-    yield object.definition == null ? null : serializers.serialize(
-      object.definition,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'module_id';
-    yield object.moduleId == null ? null : serializers.serialize(
-      object.moduleId,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'created_at';
-    yield object.createdAt == null ? null : serializers.serialize(
-      object.createdAt,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'updated_at';
-    yield object.updatedAt == null ? null : serializers.serialize(
-      object.updatedAt,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
     yield r'user_id';
     yield object.userId == null ? null : serializers.serialize(
       object.userId,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'term_id';
-    yield object.termId == null ? null : serializers.serialize(
-      object.termId,
       specifiedType: const FullType.nullable(JsonObject),
     );
     yield r'choose_error_counter';
@@ -154,6 +115,36 @@ class _$PersonalizeTermDTOSerializer implements PrimitiveSerializer<PersonalizeT
       object.personalUpdatedAt,
       specifiedType: const FullType.nullable(JsonObject),
     );
+    yield r'term';
+    yield object.term == null ? null : serializers.serialize(
+      object.term,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'definition';
+    yield object.definition == null ? null : serializers.serialize(
+      object.definition,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'module_id';
+    yield object.moduleId == null ? null : serializers.serialize(
+      object.moduleId,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'id';
+    yield object.id == null ? null : serializers.serialize(
+      object.id,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'created_at';
+    yield object.createdAt == null ? null : serializers.serialize(
+      object.createdAt,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'updated_at';
+    yield object.updatedAt == null ? null : serializers.serialize(
+      object.updatedAt,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
   }
 
   @override
@@ -177,54 +168,6 @@ class _$PersonalizeTermDTOSerializer implements PrimitiveSerializer<PersonalizeT
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
-        case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.id = valueDes;
-          break;
-        case r'term':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.term = valueDes;
-          break;
-        case r'definition':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.definition = valueDes;
-          break;
-        case r'module_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.moduleId = valueDes;
-          break;
-        case r'created_at':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.createdAt = valueDes;
-          break;
-        case r'updated_at':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.updatedAt = valueDes;
-          break;
         case r'user_id':
           final valueDes = serializers.deserialize(
             value,
@@ -232,14 +175,6 @@ class _$PersonalizeTermDTOSerializer implements PrimitiveSerializer<PersonalizeT
           ) as JsonObject?;
           if (valueDes == null) continue;
           result.userId = valueDes;
-          break;
-        case r'term_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.termId = valueDes;
           break;
         case r'choose_error_counter':
           final valueDes = serializers.deserialize(
@@ -280,6 +215,54 @@ class _$PersonalizeTermDTOSerializer implements PrimitiveSerializer<PersonalizeT
           ) as JsonObject?;
           if (valueDes == null) continue;
           result.personalUpdatedAt = valueDes;
+          break;
+        case r'term':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.term = valueDes;
+          break;
+        case r'definition':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.definition = valueDes;
+          break;
+        case r'module_id':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.moduleId = valueDes;
+          break;
+        case r'id':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.id = valueDes;
+          break;
+        case r'created_at':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.createdAt = valueDes;
+          break;
+        case r'updated_at':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.updatedAt = valueDes;
           break;
         default:
           unhandled.add(key);

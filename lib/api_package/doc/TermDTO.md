@@ -8,10 +8,10 @@ import 'package:api_package/api.dart';
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | [**JsonObject**](.md) |  | 
 **term** | [**JsonObject**](.md) |  | 
 **definition** | [**JsonObject**](.md) |  | 
 **moduleId** | [**JsonObject**](.md) |  | 
+**id** | [**JsonObject**](.md) |  | 
 **createdAt** | [**JsonObject**](.md) |  | 
 **updatedAt** | [**JsonObject**](.md) |  | 
 

@@ -8,12 +8,6 @@ import 'package:api_package/api.dart';
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | [**JsonObject**](.md) |  | 
-**name** | [**JsonObject**](.md) |  | 
-**authorId** | [**JsonObject**](.md) |  | 
-**rootFolderId** | [**JsonObject**](.md) |  | 
-**createdAt** | [**JsonObject**](.md) |  | 
-**updatedAt** | [**JsonObject**](.md) |  | 
 **userId** | [**JsonObject**](.md) |  | 
 **isReverseDefinitionWrite** | [**JsonObject**](.md) |  | 
 **standardAndReverseWrite** | [**JsonObject**](.md) |  | 
@@ -21,6 +15,12 @@ Name | Type | Description | Notes
 **standardAndReverseChoice** | [**JsonObject**](.md) |  | 
 **personalCreatedAt** | [**JsonObject**](.md) |  | 
 **personalUpdatedAt** | [**JsonObject**](.md) |  | 
+**name** | [**JsonObject**](.md) |  | 
+**rootFolderId** | [**JsonObject**](.md) |  | 
+**id** | [**JsonObject**](.md) |  | 
+**authorId** | [**JsonObject**](.md) |  | 
+**createdAt** | [**JsonObject**](.md) |  | 
+**updatedAt** | [**JsonObject**](.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
