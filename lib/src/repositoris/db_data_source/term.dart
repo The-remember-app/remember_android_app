@@ -127,6 +127,8 @@ class TermEntityDbDS  extends AbstractEntity  {
       ..chooseErrorCounter=data.chooseErrorCounter!.asNum.toInt()
       ..writeErrorCounter=data.writeErrorCounter!.asNum.toInt()
       ..choisceNegErrorCounter=data.choiceNegErrorCounter!.asNum.toInt()
+      ..personalCreatedAt=DateTime.parse(data.personalCreatedAt!.asString)
+      ..personalUpdatedAt=DateTime.parse(data.personalUpdatedAt!.asString)
     ;
   }
 }

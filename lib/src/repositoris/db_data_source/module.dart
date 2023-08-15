@@ -57,6 +57,8 @@ class ModuleDbDS  extends AbstractEntity {
       ..standardAndReverseWrite=data.standardAndReverseWrite!.asBool
       ..isReverseDefinitionChoice=data.isReverseDefinitionChoice!.asBool
       ..standardAndReverseChoice=data.standardAndReverseChoice!.asBool
+      ..personalCreatedAt=DateTime.parse(data.personalCreatedAt!.asString)
+      ..personalUpdatedAt=DateTime.parse(data.personalUpdatedAt!.asString)
     ;
   }
 }
