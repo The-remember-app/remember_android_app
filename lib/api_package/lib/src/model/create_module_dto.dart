@@ -13,11 +13,15 @@ part 'create_module_dto.g.dart';
 ///
 /// Properties:
 /// * [name] 
+/// * [description] 
 /// * [rootFolderId] 
 @BuiltValue()
 abstract class CreateModuleDTO implements Built<CreateModuleDTO, CreateModuleDTOBuilder> {
   @BuiltValueField(wireName: r'name')
   JsonObject? get name;
+
+  @BuiltValueField(wireName: r'description')
+  JsonObject? get description;
 
   @BuiltValueField(wireName: r'root_folder_id')
   JsonObject? get rootFolderId;
@@ -27,7 +31,8 @@ abstract class CreateModuleDTO implements Built<CreateModuleDTO, CreateModuleDTO
   factory CreateModuleDTO([void updates(CreateModuleDTOBuilder b)]) = _$CreateModuleDTO;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(CreateModuleDTOBuilder b) => b;
+  static void _defaults(CreateModuleDTOBuilder b) => b
+      ..description;
 
   @BuiltValueSerializer(custom: true)
   static Serializer<CreateModuleDTO> get serializer => _$CreateModuleDTOSerializer();
@@ -50,6 +55,13 @@ class _$CreateModuleDTOSerializer implements PrimitiveSerializer<CreateModuleDTO
       object.name,
       specifiedType: const FullType.nullable(JsonObject),
     );
+    if (object.description != null) {
+      yield r'description';
+      yield serializers.serialize(
+        object.description,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
     if (object.rootFolderId != null) {
       yield r'root_folder_id';
       yield serializers.serialize(
@@ -87,6 +99,14 @@ class _$CreateModuleDTOSerializer implements PrimitiveSerializer<CreateModuleDTO
           ) as JsonObject?;
           if (valueDes == null) continue;
           result.name = valueDes;
+          break;
+        case r'description':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.description = valueDes;
           break;
         case r'root_folder_id':
           final valueDes = serializers.deserialize(

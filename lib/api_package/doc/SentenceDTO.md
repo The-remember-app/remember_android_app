@@ -1,4 +1,4 @@
-# api_package.model.TermDTO
+# api_package.model.SentenceDTO
 
 ## Load the model package
 ```dart
@@ -8,10 +8,9 @@ import 'package:api_package/api.dart';
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**term** | [**JsonObject**](.md) |  | 
-**definition** | [**JsonObject**](.md) |  | 
-**transcription** | [**JsonObject**](.md) |  | 
-**moduleId** | [**JsonObject**](.md) |  | 
+**sentence** | [**JsonObject**](.md) |  | 
+**translate** | [**JsonObject**](.md) |  | 
+**termId** | [**JsonObject**](.md) |  | 
 **id** | [**JsonObject**](.md) |  | 
 **createdAt** | [**JsonObject**](.md) |  | 
 **updatedAt** | [**JsonObject**](.md) |  | 

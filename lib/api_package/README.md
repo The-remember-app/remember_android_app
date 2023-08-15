@@ -46,14 +46,19 @@ Please follow the [installation procedure](#installation--usage) and then run th
 import 'package:api_package/api_package.dart';
 
 
-final api = ApiPackage().getDefaultApi();
-final JsonObject body = ; // JsonObject | 
+final api = ApiPackage().getAuthApi();
+final JsonObject username = ; // JsonObject | 
+final JsonObject password = ; // JsonObject | 
+final JsonObject grantType = ; // JsonObject | 
+final JsonObject scope = ; // JsonObject | 
+final JsonObject clientId = ; // JsonObject | 
+final JsonObject clientSecret = ; // JsonObject | 
 
 try {
-    final response = await api.createFolderFolderCreateAsTreePost(body);
+    final response = await api.loginForAccessTokenAuthTokenPost(username, password, grantType, scope, clientId, clientSecret);
     print(response);
 } catch on DioException (e) {
-    print("Exception when calling DefaultApi->createFolderFolderCreateAsTreePost: $e\n");
+    print("Exception when calling AuthApi->loginForAccessTokenAuthTokenPost: $e\n");
 }
 
 ```
@@ -64,22 +69,25 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-[*DefaultApi*](doc/DefaultApi.md) | [**createFolderFolderCreateAsTreePost**](doc/DefaultApi.md#createfolderfoldercreateastreepost) | **POST** /folder/create/as_tree | Create Folder
-[*DefaultApi*](doc/DefaultApi.md) | [**createFolderFolderCreatePost**](doc/DefaultApi.md#createfolderfoldercreatepost) | **POST** /folder/create | Create Folder
-[*DefaultApi*](doc/DefaultApi.md) | [**createModuleModuleCreatePost**](doc/DefaultApi.md#createmodulemodulecreatepost) | **POST** /module/create | Create Module
-[*DefaultApi*](doc/DefaultApi.md) | [**createTermTermCreatePost**](doc/DefaultApi.md#createtermtermcreatepost) | **POST** /term/create | Create Term
-[*DefaultApi*](doc/DefaultApi.md) | [**createUserUserCreatePost**](doc/DefaultApi.md#createuserusercreatepost) | **POST** /user/create | Create User
-[*DefaultApi*](doc/DefaultApi.md) | [**getAllFoldersFolderAllAsTreeGet**](doc/DefaultApi.md#getallfoldersfolderallastreeget) | **GET** /folder/all/as_tree | Get All Folders
-[*DefaultApi*](doc/DefaultApi.md) | [**getAllFoldersFolderAllGet**](doc/DefaultApi.md#getallfoldersfolderallget) | **GET** /folder/all | Get All Folders
-[*DefaultApi*](doc/DefaultApi.md) | [**getAllModuleModuleAllGet**](doc/DefaultApi.md#getallmodulemoduleallget) | **GET** /module/all | Get All Module
-[*DefaultApi*](doc/DefaultApi.md) | [**getAllTermTermAllGet**](doc/DefaultApi.md#getalltermtermallget) | **GET** /term/all | Get All Term
-[*DefaultApi*](doc/DefaultApi.md) | [**getOneFolderFolderFolderIdAsTreeGet**](doc/DefaultApi.md#getonefolderfolderfolderidastreeget) | **GET** /folder/{folder_id}/as_tree | Get One Folder
-[*DefaultApi*](doc/DefaultApi.md) | [**getOneFolderFolderFolderIdGet**](doc/DefaultApi.md#getonefolderfolderfolderidget) | **GET** /folder/{folder_id} | Get One Folder
-[*DefaultApi*](doc/DefaultApi.md) | [**getOneFolderFolderFolderIdWithParentGet**](doc/DefaultApi.md#getonefolderfolderfolderidwithparentget) | **GET** /folder/{folder_id}/with_parent | Get One Folder
-[*DefaultApi*](doc/DefaultApi.md) | [**getOneModuleModuleModuleIdGet**](doc/DefaultApi.md#getonemodulemodulemoduleidget) | **GET** /module/{module_id} | Get One Module
-[*DefaultApi*](doc/DefaultApi.md) | [**getOneTermTermTermIdGet**](doc/DefaultApi.md#getonetermtermtermidget) | **GET** /term/{term_id} | Get One Term
-[*DefaultApi*](doc/DefaultApi.md) | [**loginForAccessTokenAuthTokenPost**](doc/DefaultApi.md#loginforaccesstokenauthtokenpost) | **POST** /auth/token | Login For Access Token
-[*DefaultApi*](doc/DefaultApi.md) | [**readUsersMeUserMeGet**](doc/DefaultApi.md#readusersmeusermeget) | **GET** /user/me/ | Read Users Me
+[*AuthApi*](doc/AuthApi.md) | [**loginForAccessTokenAuthTokenPost**](doc/AuthApi.md#loginforaccesstokenauthtokenpost) | **POST** /auth/token | Login For Access Token
+[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**createFolderAsTreeFolderCreateAsTreePost**](doc/FoldersEntitiesApi.md#createfolderastreefoldercreateastreepost) | **POST** /folder/create/as_tree | Create Folder As Tree
+[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**createFolderFolderCreatePost**](doc/FoldersEntitiesApi.md#createfolderfoldercreatepost) | **POST** /folder/create | Create Folder
+[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**getAllFoldersAsTreeFolderAllAsTreeGet**](doc/FoldersEntitiesApi.md#getallfoldersastreefolderallastreeget) | **GET** /folder/all/as_tree | Get All Folders As Tree
+[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**getAllFoldersFolderAllGet**](doc/FoldersEntitiesApi.md#getallfoldersfolderallget) | **GET** /folder/all | Get All Folders
+[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**getOneFolderAsTreeFolderFolderIdAsTreeGet**](doc/FoldersEntitiesApi.md#getonefolderastreefolderfolderidastreeget) | **GET** /folder/{folder_id}/as_tree | Get One Folder As Tree
+[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**getOneFolderFolderFolderIdGet**](doc/FoldersEntitiesApi.md#getonefolderfolderfolderidget) | **GET** /folder/{folder_id} | Get One Folder
+[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**getOneFolderWithParentsFolderFolderIdWithParentGet**](doc/FoldersEntitiesApi.md#getonefolderwithparentsfolderfolderidwithparentget) | **GET** /folder/{folder_id}/with_parent | Get One Folder With Parents
+[*ModuleEntitiesApi*](doc/ModuleEntitiesApi.md) | [**createModuleModuleCreatePost**](doc/ModuleEntitiesApi.md#createmodulemodulecreatepost) | **POST** /module/create | Create Module
+[*ModuleEntitiesApi*](doc/ModuleEntitiesApi.md) | [**getAllModuleModuleAllGet**](doc/ModuleEntitiesApi.md#getallmodulemoduleallget) | **GET** /module/all | Get All Module
+[*ModuleEntitiesApi*](doc/ModuleEntitiesApi.md) | [**getOneModuleModuleModuleIdGet**](doc/ModuleEntitiesApi.md#getonemodulemodulemoduleidget) | **GET** /module/{module_id} | Get One Module
+[*SentenceEntitiesApi*](doc/SentenceEntitiesApi.md) | [**createTermSentenceCreatePost**](doc/SentenceEntitiesApi.md#createtermsentencecreatepost) | **POST** /sentence/create | Create Term
+[*SentenceEntitiesApi*](doc/SentenceEntitiesApi.md) | [**getAllTermSentenceAllGet**](doc/SentenceEntitiesApi.md#getalltermsentenceallget) | **GET** /sentence/all | Get All Term
+[*SentenceEntitiesApi*](doc/SentenceEntitiesApi.md) | [**getOneTermSentenceSentenceIdGet**](doc/SentenceEntitiesApi.md#getonetermsentencesentenceidget) | **GET** /sentence/{sentence_id} | Get One Term
+[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**createTermTermCreatePost**](doc/TermEntitiesApi.md#createtermtermcreatepost) | **POST** /term/create | Create Term
+[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getAllTermTermAllGet**](doc/TermEntitiesApi.md#getalltermtermallget) | **GET** /term/all | Get All Term
+[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getOneTermTermTermIdGet**](doc/TermEntitiesApi.md#getonetermtermtermidget) | **GET** /term/{term_id} | Get One Term
+[*UsersEntitiesApi*](doc/UsersEntitiesApi.md) | [**createUserUserCreatePost**](doc/UsersEntitiesApi.md#createuserusercreatepost) | **POST** /user/create | Create User
+[*UsersEntitiesApi*](doc/UsersEntitiesApi.md) | [**readUsersMeUserMeGet**](doc/UsersEntitiesApi.md#readusersmeusermeget) | **GET** /user/me/ | Read Users Me
 
 
 ## Documentation For Models
@@ -88,6 +96,8 @@ Class | Method | HTTP request | Description
  - [CreateFolderDTO](doc/CreateFolderDTO.md)
  - [CreateModuleAsTreeDTO](doc/CreateModuleAsTreeDTO.md)
  - [CreateModuleDTO](doc/CreateModuleDTO.md)
+ - [CreateSentenceAsTreeDTO](doc/CreateSentenceAsTreeDTO.md)
+ - [CreateSentenceDTO](doc/CreateSentenceDTO.md)
  - [CreateTermAsTreeDTO](doc/CreateTermAsTreeDTO.md)
  - [CreateTermDTO](doc/CreateTermDTO.md)
  - [CreateUserDTO](doc/CreateUserDTO.md)
@@ -99,6 +109,7 @@ Class | Method | HTTP request | Description
  - [ModuleWithNestedEntitiesDTO](doc/ModuleWithNestedEntitiesDTO.md)
  - [PersonalizeModuleDTO](doc/PersonalizeModuleDTO.md)
  - [PersonalizeTermDTO](doc/PersonalizeTermDTO.md)
+ - [SentenceDTO](doc/SentenceDTO.md)
  - [TermDTO](doc/TermDTO.md)
  - [Token](doc/Token.md)
  - [UserDTO](doc/UserDTO.md)

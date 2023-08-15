@@ -7,25 +7,20 @@ import 'package:built_value/json_object.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'module_dto.g.dart';
+part 'create_folder_as_tree_dto.g.dart';
 
-/// ModuleDTO
+/// CreateFolderAsTreeDTO
 ///
 /// Properties:
 /// * [name] 
-/// * [description] 
 /// * [rootFolderId] 
 /// * [id] 
-/// * [authorId] 
-/// * [createdAt] 
-/// * [updatedAt] 
+/// * [subFolders] 
+/// * [subModules] 
 @BuiltValue()
-abstract class ModuleDTO implements Built<ModuleDTO, ModuleDTOBuilder> {
+abstract class CreateFolderAsTreeDTO implements Built<CreateFolderAsTreeDTO, CreateFolderAsTreeDTOBuilder> {
   @BuiltValueField(wireName: r'name')
   JsonObject? get name;
-
-  @BuiltValueField(wireName: r'description')
-  JsonObject? get description;
 
   @BuiltValueField(wireName: r'root_folder_id')
   JsonObject? get rootFolderId;
@@ -33,37 +28,35 @@ abstract class ModuleDTO implements Built<ModuleDTO, ModuleDTOBuilder> {
   @BuiltValueField(wireName: r'id')
   JsonObject? get id;
 
-  @BuiltValueField(wireName: r'author_id')
-  JsonObject? get authorId;
+  @BuiltValueField(wireName: r'sub_folders')
+  JsonObject? get subFolders;
 
-  @BuiltValueField(wireName: r'created_at')
-  JsonObject? get createdAt;
+  @BuiltValueField(wireName: r'sub_modules')
+  JsonObject? get subModules;
 
-  @BuiltValueField(wireName: r'updated_at')
-  JsonObject? get updatedAt;
+  CreateFolderAsTreeDTO._();
 
-  ModuleDTO._();
-
-  factory ModuleDTO([void updates(ModuleDTOBuilder b)]) = _$ModuleDTO;
+  factory CreateFolderAsTreeDTO([void updates(CreateFolderAsTreeDTOBuilder b)]) = _$CreateFolderAsTreeDTO;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(ModuleDTOBuilder b) => b
-      ..description;
+  static void _defaults(CreateFolderAsTreeDTOBuilder b) => b
+      ..subFolders = JsonObject(<JsonObject?>[])
+      ..subModules = JsonObject(<JsonObject?>[]);
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ModuleDTO> get serializer => _$ModuleDTOSerializer();
+  static Serializer<CreateFolderAsTreeDTO> get serializer => _$CreateFolderAsTreeDTOSerializer();
 }
 
-class _$ModuleDTOSerializer implements PrimitiveSerializer<ModuleDTO> {
+class _$CreateFolderAsTreeDTOSerializer implements PrimitiveSerializer<CreateFolderAsTreeDTO> {
   @override
-  final Iterable<Type> types = const [ModuleDTO, _$ModuleDTO];
+  final Iterable<Type> types = const [CreateFolderAsTreeDTO, _$CreateFolderAsTreeDTO];
 
   @override
-  final String wireName = r'ModuleDTO';
+  final String wireName = r'CreateFolderAsTreeDTO';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    ModuleDTO object, {
+    CreateFolderAsTreeDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
     yield r'name';
@@ -71,42 +64,40 @@ class _$ModuleDTOSerializer implements PrimitiveSerializer<ModuleDTO> {
       object.name,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'description';
-    yield object.description == null ? null : serializers.serialize(
-      object.description,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'root_folder_id';
-    yield object.rootFolderId == null ? null : serializers.serialize(
-      object.rootFolderId,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'id';
-    yield object.id == null ? null : serializers.serialize(
-      object.id,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'author_id';
-    yield object.authorId == null ? null : serializers.serialize(
-      object.authorId,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'created_at';
-    yield object.createdAt == null ? null : serializers.serialize(
-      object.createdAt,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'updated_at';
-    yield object.updatedAt == null ? null : serializers.serialize(
-      object.updatedAt,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
+    if (object.rootFolderId != null) {
+      yield r'root_folder_id';
+      yield serializers.serialize(
+        object.rootFolderId,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    if (object.id != null) {
+      yield r'id';
+      yield serializers.serialize(
+        object.id,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    if (object.subFolders != null) {
+      yield r'sub_folders';
+      yield serializers.serialize(
+        object.subFolders,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    if (object.subModules != null) {
+      yield r'sub_modules';
+      yield serializers.serialize(
+        object.subModules,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
   }
 
   @override
   Object serialize(
     Serializers serializers,
-    ModuleDTO object, {
+    CreateFolderAsTreeDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
@@ -117,7 +108,7 @@ class _$ModuleDTOSerializer implements PrimitiveSerializer<ModuleDTO> {
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required ModuleDTOBuilder result,
+    required CreateFolderAsTreeDTOBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
@@ -131,14 +122,6 @@ class _$ModuleDTOSerializer implements PrimitiveSerializer<ModuleDTO> {
           ) as JsonObject?;
           if (valueDes == null) continue;
           result.name = valueDes;
-          break;
-        case r'description':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.description = valueDes;
           break;
         case r'root_folder_id':
           final valueDes = serializers.deserialize(
@@ -156,29 +139,21 @@ class _$ModuleDTOSerializer implements PrimitiveSerializer<ModuleDTO> {
           if (valueDes == null) continue;
           result.id = valueDes;
           break;
-        case r'author_id':
+        case r'sub_folders':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.authorId = valueDes;
+          result.subFolders = valueDes;
           break;
-        case r'created_at':
+        case r'sub_modules':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.createdAt = valueDes;
-          break;
-        case r'updated_at':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.updatedAt = valueDes;
+          result.subModules = valueDes;
           break;
         default:
           unhandled.add(key);
@@ -189,12 +164,12 @@ class _$ModuleDTOSerializer implements PrimitiveSerializer<ModuleDTO> {
   }
 
   @override
-  ModuleDTO deserialize(
+  CreateFolderAsTreeDTO deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = ModuleDTOBuilder();
+    final result = CreateFolderAsTreeDTOBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

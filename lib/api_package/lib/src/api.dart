@@ -9,7 +9,12 @@ import 'package:api_package/src/auth/api_key_auth.dart';
 import 'package:api_package/src/auth/basic_auth.dart';
 import 'package:api_package/src/auth/bearer_auth.dart';
 import 'package:api_package/src/auth/oauth.dart';
-import 'package:api_package/src/api/default_api.dart';
+import 'package:api_package/src/api/auth_api.dart';
+import 'package:api_package/src/api/folders_entities_api.dart';
+import 'package:api_package/src/api/module_entities_api.dart';
+import 'package:api_package/src/api/sentence_entities_api.dart';
+import 'package:api_package/src/api/term_entities_api.dart';
+import 'package:api_package/src/api/users_entities_api.dart';
 
 class ApiPackage {
   static const String basePath = r'http://localhost';
@@ -65,9 +70,39 @@ class ApiPackage {
     }
   }
 
-  /// Get DefaultApi instance, base route and serializer can be overridden by a given but be careful,
+  /// Get AuthApi instance, base route and serializer can be overridden by a given but be careful,
   /// by doing that all interceptors will not be executed
-  DefaultApi getDefaultApi() {
-    return DefaultApi(dio, serializers);
+  AuthApi getAuthApi() {
+    return AuthApi(dio, serializers);
+  }
+
+  /// Get FoldersEntitiesApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  FoldersEntitiesApi getFoldersEntitiesApi() {
+    return FoldersEntitiesApi(dio, serializers);
+  }
+
+  /// Get ModuleEntitiesApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  ModuleEntitiesApi getModuleEntitiesApi() {
+    return ModuleEntitiesApi(dio, serializers);
+  }
+
+  /// Get SentenceEntitiesApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  SentenceEntitiesApi getSentenceEntitiesApi() {
+    return SentenceEntitiesApi(dio, serializers);
+  }
+
+  /// Get TermEntitiesApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  TermEntitiesApi getTermEntitiesApi() {
+    return TermEntitiesApi(dio, serializers);
+  }
+
+  /// Get UsersEntitiesApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  UsersEntitiesApi getUsersEntitiesApi() {
+    return UsersEntitiesApi(dio, serializers);
   }
 }

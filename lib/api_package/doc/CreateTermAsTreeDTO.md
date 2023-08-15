@@ -1,4 +1,4 @@
-# api_package.model.TermDTO
+# api_package.model.CreateTermAsTreeDTO
 
 ## Load the model package
 ```dart
@@ -10,11 +10,9 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **term** | [**JsonObject**](.md) |  | 
 **definition** | [**JsonObject**](.md) |  | 
-**transcription** | [**JsonObject**](.md) |  | 
-**moduleId** | [**JsonObject**](.md) |  | 
-**id** | [**JsonObject**](.md) |  | 
-**createdAt** | [**JsonObject**](.md) |  | 
-**updatedAt** | [**JsonObject**](.md) |  | 
+**transcription** | [**JsonObject**](.md) |  | [optional] 
+**moduleId** | [**JsonObject**](.md) |  | [optional] 
+**subSentences** | [**JsonObject**](.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

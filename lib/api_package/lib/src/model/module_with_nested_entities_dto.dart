@@ -7,34 +7,35 @@ import 'package:built_value/json_object.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'term_dto.g.dart';
+part 'module_with_nested_entities_dto.g.dart';
 
-/// TermDTO
+/// ModuleWithNestedEntitiesDTO
 ///
 /// Properties:
-/// * [term] 
-/// * [definition] 
-/// * [transcription] 
-/// * [moduleId] 
+/// * [name] 
+/// * [description] 
+/// * [rootFolderId] 
 /// * [id] 
+/// * [authorId] 
 /// * [createdAt] 
 /// * [updatedAt] 
+/// * [subTerms] 
 @BuiltValue()
-abstract class TermDTO implements Built<TermDTO, TermDTOBuilder> {
-  @BuiltValueField(wireName: r'term')
-  JsonObject? get term;
+abstract class ModuleWithNestedEntitiesDTO implements Built<ModuleWithNestedEntitiesDTO, ModuleWithNestedEntitiesDTOBuilder> {
+  @BuiltValueField(wireName: r'name')
+  JsonObject? get name;
 
-  @BuiltValueField(wireName: r'definition')
-  JsonObject? get definition;
+  @BuiltValueField(wireName: r'description')
+  JsonObject? get description;
 
-  @BuiltValueField(wireName: r'transcription')
-  JsonObject? get transcription;
-
-  @BuiltValueField(wireName: r'module_id')
-  JsonObject? get moduleId;
+  @BuiltValueField(wireName: r'root_folder_id')
+  JsonObject? get rootFolderId;
 
   @BuiltValueField(wireName: r'id')
   JsonObject? get id;
+
+  @BuiltValueField(wireName: r'author_id')
+  JsonObject? get authorId;
 
   @BuiltValueField(wireName: r'created_at')
   JsonObject? get createdAt;
@@ -42,52 +43,56 @@ abstract class TermDTO implements Built<TermDTO, TermDTOBuilder> {
   @BuiltValueField(wireName: r'updated_at')
   JsonObject? get updatedAt;
 
-  TermDTO._();
+  @BuiltValueField(wireName: r'sub_terms')
+  JsonObject? get subTerms;
 
-  factory TermDTO([void updates(TermDTOBuilder b)]) = _$TermDTO;
+  ModuleWithNestedEntitiesDTO._();
+
+  factory ModuleWithNestedEntitiesDTO([void updates(ModuleWithNestedEntitiesDTOBuilder b)]) = _$ModuleWithNestedEntitiesDTO;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(TermDTOBuilder b) => b;
+  static void _defaults(ModuleWithNestedEntitiesDTOBuilder b) => b
+      ..description ;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<TermDTO> get serializer => _$TermDTOSerializer();
+  static Serializer<ModuleWithNestedEntitiesDTO> get serializer => _$ModuleWithNestedEntitiesDTOSerializer();
 }
 
-class _$TermDTOSerializer implements PrimitiveSerializer<TermDTO> {
+class _$ModuleWithNestedEntitiesDTOSerializer implements PrimitiveSerializer<ModuleWithNestedEntitiesDTO> {
   @override
-  final Iterable<Type> types = const [TermDTO, _$TermDTO];
+  final Iterable<Type> types = const [ModuleWithNestedEntitiesDTO, _$ModuleWithNestedEntitiesDTO];
 
   @override
-  final String wireName = r'TermDTO';
+  final String wireName = r'ModuleWithNestedEntitiesDTO';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    TermDTO object, {
+    ModuleWithNestedEntitiesDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    yield r'term';
-    yield object.term == null ? null : serializers.serialize(
-      object.term,
+    yield r'name';
+    yield object.name == null ? null : serializers.serialize(
+      object.name,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'definition';
-    yield object.definition == null ? null : serializers.serialize(
-      object.definition,
+    yield r'description';
+    yield object.description == null ? null : serializers.serialize(
+      object.description,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'transcription';
-    yield object.transcription == null ? null : serializers.serialize(
-      object.transcription,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'module_id';
-    yield object.moduleId == null ? null : serializers.serialize(
-      object.moduleId,
+    yield r'root_folder_id';
+    yield object.rootFolderId == null ? null : serializers.serialize(
+      object.rootFolderId,
       specifiedType: const FullType.nullable(JsonObject),
     );
     yield r'id';
     yield object.id == null ? null : serializers.serialize(
       object.id,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'author_id';
+    yield object.authorId == null ? null : serializers.serialize(
+      object.authorId,
       specifiedType: const FullType.nullable(JsonObject),
     );
     yield r'created_at';
@@ -100,12 +105,17 @@ class _$TermDTOSerializer implements PrimitiveSerializer<TermDTO> {
       object.updatedAt,
       specifiedType: const FullType.nullable(JsonObject),
     );
+    yield r'sub_terms';
+    yield object.subTerms == null ? null : serializers.serialize(
+      object.subTerms,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
   }
 
   @override
   Object serialize(
     Serializers serializers,
-    TermDTO object, {
+    ModuleWithNestedEntitiesDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
@@ -116,44 +126,36 @@ class _$TermDTOSerializer implements PrimitiveSerializer<TermDTO> {
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required TermDTOBuilder result,
+    required ModuleWithNestedEntitiesDTOBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
-        case r'term':
+        case r'name':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.term = valueDes;
+          result.name = valueDes;
           break;
-        case r'definition':
+        case r'description':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.definition = valueDes;
+          result.description = valueDes;
           break;
-        case r'transcription':
+        case r'root_folder_id':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.transcription = valueDes;
-          break;
-        case r'module_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.moduleId = valueDes;
+          result.rootFolderId = valueDes;
           break;
         case r'id':
           final valueDes = serializers.deserialize(
@@ -162,6 +164,14 @@ class _$TermDTOSerializer implements PrimitiveSerializer<TermDTO> {
           ) as JsonObject?;
           if (valueDes == null) continue;
           result.id = valueDes;
+          break;
+        case r'author_id':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.authorId = valueDes;
           break;
         case r'created_at':
           final valueDes = serializers.deserialize(
@@ -179,6 +189,14 @@ class _$TermDTOSerializer implements PrimitiveSerializer<TermDTO> {
           if (valueDes == null) continue;
           result.updatedAt = valueDes;
           break;
+        case r'sub_terms':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.subTerms = valueDes;
+          break;
         default:
           unhandled.add(key);
           unhandled.add(value);
@@ -188,12 +206,12 @@ class _$TermDTOSerializer implements PrimitiveSerializer<TermDTO> {
   }
 
   @override
-  TermDTO deserialize(
+  ModuleWithNestedEntitiesDTO deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = TermDTOBuilder();
+    final result = ModuleWithNestedEntitiesDTOBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

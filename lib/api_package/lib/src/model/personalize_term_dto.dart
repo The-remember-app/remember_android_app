@@ -20,6 +20,7 @@ part 'personalize_term_dto.g.dart';
 /// * [personalUpdatedAt] 
 /// * [term] 
 /// * [definition] 
+/// * [transcription] 
 /// * [moduleId] 
 /// * [id] 
 /// * [createdAt] 
@@ -49,6 +50,9 @@ abstract class PersonalizeTermDTO implements Built<PersonalizeTermDTO, Personali
 
   @BuiltValueField(wireName: r'definition')
   JsonObject? get definition;
+
+  @BuiltValueField(wireName: r'transcription')
+  JsonObject? get transcription;
 
   @BuiltValueField(wireName: r'module_id')
   JsonObject? get moduleId;
@@ -123,6 +127,11 @@ class _$PersonalizeTermDTOSerializer implements PrimitiveSerializer<PersonalizeT
     yield r'definition';
     yield object.definition == null ? null : serializers.serialize(
       object.definition,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'transcription';
+    yield object.transcription == null ? null : serializers.serialize(
+      object.transcription,
       specifiedType: const FullType.nullable(JsonObject),
     );
     yield r'module_id';
@@ -231,6 +240,14 @@ class _$PersonalizeTermDTOSerializer implements PrimitiveSerializer<PersonalizeT
           ) as JsonObject?;
           if (valueDes == null) continue;
           result.definition = valueDes;
+          break;
+        case r'transcription':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.transcription = valueDes;
           break;
         case r'module_id':
           final valueDes = serializers.deserialize(

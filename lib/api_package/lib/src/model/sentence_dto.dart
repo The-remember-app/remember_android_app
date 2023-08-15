@@ -7,31 +7,27 @@ import 'package:built_value/json_object.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'term_dto.g.dart';
+part 'sentence_dto.g.dart';
 
-/// TermDTO
+/// SentenceDTO
 ///
 /// Properties:
-/// * [term] 
-/// * [definition] 
-/// * [transcription] 
-/// * [moduleId] 
+/// * [sentence] 
+/// * [translate] 
+/// * [termId] 
 /// * [id] 
 /// * [createdAt] 
 /// * [updatedAt] 
 @BuiltValue()
-abstract class TermDTO implements Built<TermDTO, TermDTOBuilder> {
-  @BuiltValueField(wireName: r'term')
-  JsonObject? get term;
+abstract class SentenceDTO implements Built<SentenceDTO, SentenceDTOBuilder> {
+  @BuiltValueField(wireName: r'sentence')
+  JsonObject? get sentence;
 
-  @BuiltValueField(wireName: r'definition')
-  JsonObject? get definition;
+  @BuiltValueField(wireName: r'translate')
+  JsonObject? get translate;
 
-  @BuiltValueField(wireName: r'transcription')
-  JsonObject? get transcription;
-
-  @BuiltValueField(wireName: r'module_id')
-  JsonObject? get moduleId;
+  @BuiltValueField(wireName: r'term_id')
+  JsonObject? get termId;
 
   @BuiltValueField(wireName: r'id')
   JsonObject? get id;
@@ -42,47 +38,42 @@ abstract class TermDTO implements Built<TermDTO, TermDTOBuilder> {
   @BuiltValueField(wireName: r'updated_at')
   JsonObject? get updatedAt;
 
-  TermDTO._();
+  SentenceDTO._();
 
-  factory TermDTO([void updates(TermDTOBuilder b)]) = _$TermDTO;
+  factory SentenceDTO([void updates(SentenceDTOBuilder b)]) = _$SentenceDTO;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(TermDTOBuilder b) => b;
+  static void _defaults(SentenceDTOBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<TermDTO> get serializer => _$TermDTOSerializer();
+  static Serializer<SentenceDTO> get serializer => _$SentenceDTOSerializer();
 }
 
-class _$TermDTOSerializer implements PrimitiveSerializer<TermDTO> {
+class _$SentenceDTOSerializer implements PrimitiveSerializer<SentenceDTO> {
   @override
-  final Iterable<Type> types = const [TermDTO, _$TermDTO];
+  final Iterable<Type> types = const [SentenceDTO, _$SentenceDTO];
 
   @override
-  final String wireName = r'TermDTO';
+  final String wireName = r'SentenceDTO';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    TermDTO object, {
+    SentenceDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    yield r'term';
-    yield object.term == null ? null : serializers.serialize(
-      object.term,
+    yield r'sentence';
+    yield object.sentence == null ? null : serializers.serialize(
+      object.sentence,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'definition';
-    yield object.definition == null ? null : serializers.serialize(
-      object.definition,
+    yield r'translate';
+    yield object.translate == null ? null : serializers.serialize(
+      object.translate,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'transcription';
-    yield object.transcription == null ? null : serializers.serialize(
-      object.transcription,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'module_id';
-    yield object.moduleId == null ? null : serializers.serialize(
-      object.moduleId,
+    yield r'term_id';
+    yield object.termId == null ? null : serializers.serialize(
+      object.termId,
       specifiedType: const FullType.nullable(JsonObject),
     );
     yield r'id';
@@ -105,7 +96,7 @@ class _$TermDTOSerializer implements PrimitiveSerializer<TermDTO> {
   @override
   Object serialize(
     Serializers serializers,
-    TermDTO object, {
+    SentenceDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
@@ -116,44 +107,36 @@ class _$TermDTOSerializer implements PrimitiveSerializer<TermDTO> {
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required TermDTOBuilder result,
+    required SentenceDTOBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
-        case r'term':
+        case r'sentence':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.term = valueDes;
+          result.sentence = valueDes;
           break;
-        case r'definition':
+        case r'translate':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.definition = valueDes;
+          result.translate = valueDes;
           break;
-        case r'transcription':
+        case r'term_id':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.transcription = valueDes;
-          break;
-        case r'module_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.moduleId = valueDes;
+          result.termId = valueDes;
           break;
         case r'id':
           final valueDes = serializers.deserialize(
@@ -188,12 +171,12 @@ class _$TermDTOSerializer implements PrimitiveSerializer<TermDTO> {
   }
 
   @override
-  TermDTO deserialize(
+  SentenceDTO deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = TermDTOBuilder();
+    final result = SentenceDTOBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

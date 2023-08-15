@@ -1,4 +1,4 @@
-# api_package.model.TermDTO
+# api_package.model.CreateFolderAsTreeDTO
 
 ## Load the model package
 ```dart
@@ -8,13 +8,11 @@ import 'package:api_package/api.dart';
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**term** | [**JsonObject**](.md) |  | 
-**definition** | [**JsonObject**](.md) |  | 
-**transcription** | [**JsonObject**](.md) |  | 
-**moduleId** | [**JsonObject**](.md) |  | 
-**id** | [**JsonObject**](.md) |  | 
-**createdAt** | [**JsonObject**](.md) |  | 
-**updatedAt** | [**JsonObject**](.md) |  | 
+**name** | [**JsonObject**](.md) |  | 
+**rootFolderId** | [**JsonObject**](.md) |  | [optional] 
+**id** | [**JsonObject**](.md) |  | [optional] 
+**subFolders** | [**JsonObject**](.md) |  | [optional] [default to []]
+**subModules** | [**JsonObject**](.md) |  | [optional] [default to []]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

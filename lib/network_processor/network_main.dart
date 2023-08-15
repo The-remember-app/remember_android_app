@@ -28,7 +28,15 @@ Future<void> networkProcessor() async {
   final Dio dio = Dio(BaseOptions(baseUrl: 'http://192.168.0.105:10010'));
   final ApiPackage authApi =
       ApiPackage(dio: dio, serializers: standardSerializers);
-  final DefaultApi mainApi = authApi.getDefaultApi();
+  final AuthApi realAuthApi = authApi.getAuthApi();
+  final authData = await realAuthApi.loginForAccessTokenAuthTokenPost(
+      username: JsonObject("1"), password: JsonObject("1"));
+  authApi.setBearerAuth("Authorization", "Bearer ${authData.data!.accessToken!.asString}");
+
+
+  final FoldersEntitiesApi folderApi = authApi.getFoldersEntitiesApi();
+  final ModuleEntitiesApi moduleApi = authApi.getModuleEntitiesApi();
+  final TermEntitiesApi termApi = authApi.getTermEntitiesApi();
   // JsonObject("string");
   late Map<ConnType, Isar> conn;
   late Map<String, FolderDbDS> foldersFromDb;
@@ -66,9 +74,7 @@ Future<void> networkProcessor() async {
     };
   })();
 
-  final authData = await mainApi.loginForAccessTokenAuthTokenPost(
-      username: JsonObject("string"), password: JsonObject("string"));
-  authApi.setBearerAuth("main_api_key", authData.data!.accessToken!.asString);
+
   var authHeaders = {
     "Authorization": "Bearer ${authData.data!.accessToken!.asString}"
   };
@@ -77,9 +83,9 @@ Future<void> networkProcessor() async {
     print(authData.data);
   }
 
-  final foldersCoro = mainApi.getAllFoldersFolderAllGet(headers: authHeaders);
-  final modulesCoro = mainApi.getAllModuleModuleAllGet(headers: authHeaders);
-  final termsCoro = mainApi.getAllTermTermAllGet(headers: authHeaders);
+  final foldersCoro = folderApi.getAllFoldersFolderAllGet(headers: authHeaders);
+  final modulesCoro = moduleApi.getAllModuleModuleAllGet(headers: authHeaders);
+  final termsCoro = termApi.getAllTermTermAllGet(headers: authHeaders);
 
   final folders = await foldersCoro;
 

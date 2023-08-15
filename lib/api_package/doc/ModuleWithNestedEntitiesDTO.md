@@ -1,4 +1,4 @@
-# api_package.model.TermDTO
+# api_package.model.ModuleWithNestedEntitiesDTO
 
 ## Load the model package
 ```dart
@@ -8,13 +8,14 @@ import 'package:api_package/api.dart';
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**term** | [**JsonObject**](.md) |  | 
-**definition** | [**JsonObject**](.md) |  | 
-**transcription** | [**JsonObject**](.md) |  | 
-**moduleId** | [**JsonObject**](.md) |  | 
+**name** | [**JsonObject**](.md) |  | 
+**description** | [**JsonObject**](.md) |  | [default to ]
+**rootFolderId** | [**JsonObject**](.md) |  | 
 **id** | [**JsonObject**](.md) |  | 
+**authorId** | [**JsonObject**](.md) |  | 
 **createdAt** | [**JsonObject**](.md) |  | 
 **updatedAt** | [**JsonObject**](.md) |  | 
+**subTerms** | [**JsonObject**](.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

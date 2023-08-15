@@ -9,6 +9,7 @@ import 'package:api_package/api.dart';
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **name** | [**JsonObject**](.md) |  | 
+**description** | [**JsonObject**](.md) |  | [default to ]
 **rootFolderId** | [**JsonObject**](.md) |  | 
 **id** | [**JsonObject**](.md) |  | 
 **authorId** | [**JsonObject**](.md) |  | 

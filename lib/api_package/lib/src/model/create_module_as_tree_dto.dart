@@ -7,80 +7,97 @@ import 'package:built_value/json_object.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'create_term_dto.g.dart';
+part 'create_module_as_tree_dto.g.dart';
 
-/// CreateTermDTO
+/// CreateModuleAsTreeDTO
 ///
 /// Properties:
-/// * [term] 
-/// * [definition] 
-/// * [transcription] 
-/// * [moduleId] 
+/// * [name] 
+/// * [description] 
+/// * [rootFolderId] 
+/// * [id] 
+/// * [subTerms] 
 @BuiltValue()
-abstract class CreateTermDTO implements Built<CreateTermDTO, CreateTermDTOBuilder> {
-  @BuiltValueField(wireName: r'term')
-  JsonObject? get term;
+abstract class CreateModuleAsTreeDTO implements Built<CreateModuleAsTreeDTO, CreateModuleAsTreeDTOBuilder> {
+  @BuiltValueField(wireName: r'name')
+  JsonObject? get name;
 
-  @BuiltValueField(wireName: r'definition')
-  JsonObject? get definition;
+  @BuiltValueField(wireName: r'description')
+  JsonObject? get description;
 
-  @BuiltValueField(wireName: r'transcription')
-  JsonObject? get transcription;
+  @BuiltValueField(wireName: r'root_folder_id')
+  JsonObject? get rootFolderId;
 
-  @BuiltValueField(wireName: r'module_id')
-  JsonObject? get moduleId;
+  @BuiltValueField(wireName: r'id')
+  JsonObject? get id;
 
-  CreateTermDTO._();
+  @BuiltValueField(wireName: r'sub_terms')
+  JsonObject? get subTerms;
 
-  factory CreateTermDTO([void updates(CreateTermDTOBuilder b)]) = _$CreateTermDTO;
+  CreateModuleAsTreeDTO._();
+
+  factory CreateModuleAsTreeDTO([void updates(CreateModuleAsTreeDTOBuilder b)]) = _$CreateModuleAsTreeDTO;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(CreateTermDTOBuilder b) => b;
+  static void _defaults(CreateModuleAsTreeDTOBuilder b) => b
+      ..description
+      ..subTerms = JsonObject(<JsonObject?>[]);
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateTermDTO> get serializer => _$CreateTermDTOSerializer();
+  static Serializer<CreateModuleAsTreeDTO> get serializer => _$CreateModuleAsTreeDTOSerializer();
 }
 
-class _$CreateTermDTOSerializer implements PrimitiveSerializer<CreateTermDTO> {
+class _$CreateModuleAsTreeDTOSerializer implements PrimitiveSerializer<CreateModuleAsTreeDTO> {
   @override
-  final Iterable<Type> types = const [CreateTermDTO, _$CreateTermDTO];
+  final Iterable<Type> types = const [CreateModuleAsTreeDTO, _$CreateModuleAsTreeDTO];
 
   @override
-  final String wireName = r'CreateTermDTO';
+  final String wireName = r'CreateModuleAsTreeDTO';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    CreateTermDTO object, {
+    CreateModuleAsTreeDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    yield r'term';
-    yield object.term == null ? null : serializers.serialize(
-      object.term,
+    yield r'name';
+    yield object.name == null ? null : serializers.serialize(
+      object.name,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'definition';
-    yield object.definition == null ? null : serializers.serialize(
-      object.definition,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    if (object.transcription != null) {
-      yield r'transcription';
+    if (object.description != null) {
+      yield r'description';
       yield serializers.serialize(
-        object.transcription,
+        object.description,
         specifiedType: const FullType.nullable(JsonObject),
       );
     }
-    yield r'module_id';
-    yield object.moduleId == null ? null : serializers.serialize(
-      object.moduleId,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
+    if (object.rootFolderId != null) {
+      yield r'root_folder_id';
+      yield serializers.serialize(
+        object.rootFolderId,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    if (object.id != null) {
+      yield r'id';
+      yield serializers.serialize(
+        object.id,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    if (object.subTerms != null) {
+      yield r'sub_terms';
+      yield serializers.serialize(
+        object.subTerms,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
   }
 
   @override
   Object serialize(
     Serializers serializers,
-    CreateTermDTO object, {
+    CreateModuleAsTreeDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
@@ -91,44 +108,52 @@ class _$CreateTermDTOSerializer implements PrimitiveSerializer<CreateTermDTO> {
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required CreateTermDTOBuilder result,
+    required CreateModuleAsTreeDTOBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
-        case r'term':
+        case r'name':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.term = valueDes;
+          result.name = valueDes;
           break;
-        case r'definition':
+        case r'description':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.definition = valueDes;
+          result.description = valueDes;
           break;
-        case r'transcription':
+        case r'root_folder_id':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.transcription = valueDes;
+          result.rootFolderId = valueDes;
           break;
-        case r'module_id':
+        case r'id':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.moduleId = valueDes;
+          result.id = valueDes;
+          break;
+        case r'sub_terms':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.subTerms = valueDes;
           break;
         default:
           unhandled.add(key);
@@ -139,12 +164,12 @@ class _$CreateTermDTOSerializer implements PrimitiveSerializer<CreateTermDTO> {
   }
 
   @override
-  CreateTermDTO deserialize(
+  CreateModuleAsTreeDTO deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = CreateTermDTOBuilder();
+    final result = CreateModuleAsTreeDTOBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

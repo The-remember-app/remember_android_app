@@ -20,6 +20,7 @@ part 'personalize_module_dto.g.dart';
 /// * [personalCreatedAt] 
 /// * [personalUpdatedAt] 
 /// * [name] 
+/// * [description] 
 /// * [rootFolderId] 
 /// * [id] 
 /// * [authorId] 
@@ -51,6 +52,9 @@ abstract class PersonalizeModuleDTO implements Built<PersonalizeModuleDTO, Perso
   @BuiltValueField(wireName: r'name')
   JsonObject? get name;
 
+  @BuiltValueField(wireName: r'description')
+  JsonObject? get description;
+
   @BuiltValueField(wireName: r'root_folder_id')
   JsonObject? get rootFolderId;
 
@@ -71,7 +75,8 @@ abstract class PersonalizeModuleDTO implements Built<PersonalizeModuleDTO, Perso
   factory PersonalizeModuleDTO([void updates(PersonalizeModuleDTOBuilder b)]) = _$PersonalizeModuleDTO;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(PersonalizeModuleDTOBuilder b) => b;
+  static void _defaults(PersonalizeModuleDTOBuilder b) => b
+      ..description ;
 
   @BuiltValueSerializer(custom: true)
   static Serializer<PersonalizeModuleDTO> get serializer => _$PersonalizeModuleDTOSerializer();
@@ -127,6 +132,11 @@ class _$PersonalizeModuleDTOSerializer implements PrimitiveSerializer<Personaliz
     yield r'name';
     yield object.name == null ? null : serializers.serialize(
       object.name,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'description';
+    yield object.description == null ? null : serializers.serialize(
+      object.description,
       specifiedType: const FullType.nullable(JsonObject),
     );
     yield r'root_folder_id';
@@ -240,6 +250,14 @@ class _$PersonalizeModuleDTOSerializer implements PrimitiveSerializer<Personaliz
           ) as JsonObject?;
           if (valueDes == null) continue;
           result.name = valueDes;
+          break;
+        case r'description':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.description = valueDes;
           break;
         case r'root_folder_id':
           final valueDes = serializers.deserialize(
