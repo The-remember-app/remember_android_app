@@ -21,7 +21,6 @@ import 'package:the_remember/src/urils/db/engine.dart';
 
 import 'network_processor/network_main.dart';
 
-
 // main() является главной функцией с которой начинается
 // выполнение приложения
 // возвращает виджет приложения
@@ -46,7 +45,6 @@ Future<void> initDb() async {
     "seven": "семь",
   };
 
-
   var conn = (await OpenAndClose3.openConnStatic([
     CollectionSchema<FolderDbDS>,
     CollectionSchema<ModuleDbDS>,
@@ -55,14 +53,14 @@ Future<void> initDb() async {
 
   conn[ConnType.term]!.writeTxnSync(() {
     var data = (conn[ConnType.term]!
-        .collection<FolderDbDS>()
-        .filter()
-
-        .rootFolderUuidIsNull()).findAllSync();
+            .collection<FolderDbDS>()
+            .filter()
+            .rootFolderUuidIsNull())
+        .findAllSync();
     var test = (conn[ConnType.term]!
-        .collection<FolderDbDS>()
-        .filter()
-        .rootFolderUuidIsNull())
+            .collection<FolderDbDS>()
+            .filter()
+            .rootFolderUuidIsNull())
         .isEmptySync();
 
     if (test) {
@@ -72,8 +70,7 @@ Future<void> initDb() async {
           ..uuid = Uuid().v4()
           ..name = 'Папка $i'
           ..rootFolderUuid = null
-          ..rootFolder.value = null
-        );
+          ..rootFolder.value = null);
       }
       conn[ConnType.term]!.collection<FolderDbDS>().putAllSync(root_folders);
 
@@ -102,7 +99,9 @@ Future<void> initDb() async {
           ..uuid = (Uuid()).v4()
           ..name = 'Модуль из ${currFolder?.name ?? "корневой папки"}'
           ..rootFolderUuid = currFolder?.uuid
-          ..rootFolder.value = currFolder);
+          ..rootFolder.value = currFolder
+          ..personalUpdatedAt = DateTime.now()
+          ..personalCreatedAt = DateTime.now());
       }
 
       conn[ConnType.term]!.collection<ModuleDbDS>().putAllSync(modules);
@@ -118,7 +117,9 @@ Future<void> initDb() async {
             ..chooseErrorCounter = 0
             ..writeErrorCounter = 0
             ..choisceNegErrorCounter = 0
-            ..module.value = currModule);
+            ..module.value = currModule
+            ..personalUpdatedAt = DateTime.now()
+            ..personalCreatedAt = DateTime.now());
         }
       }
 
@@ -154,19 +155,19 @@ class MyApp extends StatelessWidget {
     // Material Design для разработки.
 
     return MaterialApp(
-      // заголовок приложения
-      // обычно виден, когда мы сворачиваем приложение
+        // заголовок приложения
+        // обычно виден, когда мы сворачиваем приложение
         title: 'Json Placeholder App',
         // настройка темы, мы ещё вернёмся к этому
-        theme: ThemeData(primarySwatch: Colors.blue,),
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
         // указываем исходную страницу, которую мы создадим позже
         home: StartModule(),
         onUnknownRoute: (settings) {
-          return MaterialPageRoute(
-              builder: (context) {
-                return StartModule();
-              }
-          );
+          return MaterialPageRoute(builder: (context) {
+            return StartModule();
+          });
         },
         onGenerateRoute: (settings) {
           var args = settings.arguments as Map<String, dynamic>?;
@@ -178,7 +179,8 @@ class MyApp extends StatelessWidget {
           } else if (settings.name == '/module_id') {
             return MaterialPageRoute(
               settings: settings,
-              builder: (context) => UnaryModule(args!["moduleId"] as ModuleDbDS),
+              builder: (context) =>
+                  UnaryModule(args!["moduleId"] as ModuleDbDS),
             );
           } else if (settings.name == '/folders_id') {
             return MaterialPageRoute(
@@ -195,48 +197,42 @@ class MyApp extends StatelessWidget {
           } else if (settings.name == '/learning__choice_word') {
             return MaterialPageRoute(
               settings: settings,
-              builder: (context) =>
-                  ChoiceWord(
-                    args!["moduleEntity"] as ModuleDbDS,
-                    args["wordEntity"] as TermEntityDbDS,
-                    args["progress"] as int,
-                    args["maxProgress"] as int,
-                    args["definitions"] as List<TermEntityDbDS>,
-                    args["currTermsList"] as List<TermEntityDbDS>?,
-                    args["reverseTerm"] as bool,
-                  ),
+              builder: (context) => ChoiceWord(
+                args!["moduleEntity"] as ModuleDbDS,
+                args["wordEntity"] as TermEntityDbDS,
+                args["progress"] as int,
+                args["maxProgress"] as int,
+                args["definitions"] as List<TermEntityDbDS>,
+                args["currTermsList"] as List<TermEntityDbDS>?,
+                args["reverseTerm"] as bool,
+              ),
             );
           } else if (settings.name == '/learning__write_word') {
             return MaterialPageRoute(
               settings: settings,
-              builder: (context) =>
-                  WriteWord(
-                    args!["moduleEntity"] as ModuleDbDS,
-                    args["wordEntity"] as TermEntityDbDS,
-                    args["progress"] as int,
-                    args["maxProgress"] as int,
-                    args["currTermsList"] as List<TermEntityDbDS>?,
-                    args["reverseTerm"] as bool,
-                  ),
+              builder: (context) => WriteWord(
+                args!["moduleEntity"] as ModuleDbDS,
+                args["wordEntity"] as TermEntityDbDS,
+                args["progress"] as int,
+                args["maxProgress"] as int,
+                args["currTermsList"] as List<TermEntityDbDS>?,
+                args["reverseTerm"] as bool,
+              ),
             );
           } else if (settings.name == '/learning__double_write_word') {
             return MaterialPageRoute(
               settings: settings,
-              builder: (context) =>
-                  WriteWordOneMoreTime(
-                    args!["moduleEntity"] as ModuleDbDS,
-                    args["wordEntity"] as TermEntityDbDS,
-                    args["progress"] as int,
-                    args["maxProgress"] as int,
-                    args["currTermsList"] as List<TermEntityDbDS>?,
-                    args["userInput"] as String,
-                    args["reverseTerm"] as bool,
-                  ),
+              builder: (context) => WriteWordOneMoreTime(
+                args!["moduleEntity"] as ModuleDbDS,
+                args["wordEntity"] as TermEntityDbDS,
+                args["progress"] as int,
+                args["maxProgress"] as int,
+                args["currTermsList"] as List<TermEntityDbDS>?,
+                args["userInput"] as String,
+                args["reverseTerm"] as bool,
+              ),
             );
           }
-        }
-
-
-    );
+        });
   }
 }

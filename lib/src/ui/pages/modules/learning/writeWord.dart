@@ -58,9 +58,9 @@ class WriteWord extends StatelessWidget {
             // Navigator.pop(context);
             Navigator.pushNamed(
               context,
-              '/learning__finished_modal',
+              '/module_id',
               arguments: {
-                'moduleEntity': moduleEntity,
+                'moduleId': moduleEntity,
               },
             );
           },

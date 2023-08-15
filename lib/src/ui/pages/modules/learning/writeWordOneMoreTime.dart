@@ -169,7 +169,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
                               child: Align(
                                 alignment: Alignment.topCenter,
                                 child: Text(
-                                  wordEntity.term ??
+                                  wordEntity.maybeReverseTermWrite ??
                                       "Похоже, что по этому Uuid не найдено термина, так быть не должно...",
                                   textAlign: TextAlign.left,
                                   overflow: TextOverflow.clip,
@@ -219,7 +219,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
                             child: Align(
                               alignment: Alignment.topCenter,
                               child: Text(
-                                wordEntity.definition ??
+                                wordEntity.maybeReverseDefinitionWrite ??
                                     "Похоже, что по этому Uuid не найдено термина, так быть не должно...",
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.clip,
@@ -245,7 +245,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
                 onChanged: (text) async {
                   // UserInput = text;
                   if (text.toLowerCase() ==
-                      wordEntity.definition.toLowerCase()) {
+                      wordEntity.maybeReverseDefinitionWrite.toLowerCase()) {
                     // words[wordId]?.write_error_counter -= 1;
                     var nextPage = await getNextLearnPage(moduleEntity,
                         currTermsList, progress, userInput, false);
@@ -289,7 +289,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
                     fontSize: 14,
                     color: Color(0xff000000),
                   ),
-                  hintText: wordEntity.definition ??
+                  hintText: wordEntity.maybeReverseDefinitionWrite ??
                       "Похоже, что по этому Uuid не найдено термина, так быть не должно...",
                   hintStyle: TextStyle(
                     fontWeight: FontWeight.w400,
@@ -384,7 +384,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
                                 moduleEntity,
                                 currTermsList,
                                 progress,
-                                wordEntity.definition,
+                                wordEntity.maybeReverseDefinitionWrite,
                                 false);
                             await nextPage(context);
 
