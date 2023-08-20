@@ -1,7 +1,10 @@
 .gitignore
 README.md
 analysis_options.yaml
+doc/AddInfoTypeEnum.md
+doc/AdditionalTermInfoDTO.md
 doc/AuthApi.md
+doc/CreateAdditionalTermInfoAsTreeDTO.md
 doc/CreateFolderAsTreeDTO.md
 doc/CreateFolderDTO.md
 doc/CreateModuleAsTreeDTO.md
@@ -19,8 +22,10 @@ doc/HTTPValidationError.md
 doc/ModuleDTO.md
 doc/ModuleEntitiesApi.md
 doc/ModuleWithNestedEntitiesDTO.md
+doc/PersonalizeFolderDTO.md
 doc/PersonalizeModuleDTO.md
 doc/PersonalizeTermDTO.md
+doc/PersonalizeTermWithAddInfoDTO.md
 doc/SentenceDTO.md
 doc/SentenceEntitiesApi.md
 doc/TermDTO.md
@@ -44,6 +49,9 @@ lib/src/auth/basic_auth.dart
 lib/src/auth/bearer_auth.dart
 lib/src/auth/oauth.dart
 lib/src/date_serializer.dart
+lib/src/model/add_info_type_enum.dart
+lib/src/model/additional_term_info_dto.dart
+lib/src/model/create_additional_term_info_as_tree_dto.dart
 lib/src/model/create_folder_as_tree_dto.dart
 lib/src/model/create_folder_dto.dart
 lib/src/model/create_module_as_tree_dto.dart
@@ -60,8 +68,10 @@ lib/src/model/folder_with_root_entity_dto.dart
 lib/src/model/http_validation_error.dart
 lib/src/model/module_dto.dart
 lib/src/model/module_with_nested_entities_dto.dart
+lib/src/model/personalize_folder_dto.dart
 lib/src/model/personalize_module_dto.dart
 lib/src/model/personalize_term_dto.dart
+lib/src/model/personalize_term_with_add_info_dto.dart
 lib/src/model/sentence_dto.dart
 lib/src/model/term_dto.dart
 lib/src/model/token.dart

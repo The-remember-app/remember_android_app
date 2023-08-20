@@ -10,7 +10,6 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **term** | [**JsonObject**](.md) |  | 
 **definition** | [**JsonObject**](.md) |  | 
-**transcription** | [**JsonObject**](.md) |  | [optional] 
 **moduleId** | [**JsonObject**](.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -14,9 +14,9 @@ part 'create_term_as_tree_dto.g.dart';
 /// Properties:
 /// * [term] 
 /// * [definition] 
-/// * [transcription] 
 /// * [moduleId] 
 /// * [subSentences] 
+/// * [termAdditionalInfoEntities] 
 @BuiltValue()
 abstract class CreateTermAsTreeDTO implements Built<CreateTermAsTreeDTO, CreateTermAsTreeDTOBuilder> {
   @BuiltValueField(wireName: r'term')
@@ -25,14 +25,14 @@ abstract class CreateTermAsTreeDTO implements Built<CreateTermAsTreeDTO, CreateT
   @BuiltValueField(wireName: r'definition')
   JsonObject? get definition;
 
-  @BuiltValueField(wireName: r'transcription')
-  JsonObject? get transcription;
-
   @BuiltValueField(wireName: r'module_id')
   JsonObject? get moduleId;
 
   @BuiltValueField(wireName: r'sub_sentences')
   JsonObject? get subSentences;
+
+  @BuiltValueField(wireName: r'term_additional_info_entities')
+  JsonObject? get termAdditionalInfoEntities;
 
   CreateTermAsTreeDTO._();
 
@@ -67,13 +67,6 @@ class _$CreateTermAsTreeDTOSerializer implements PrimitiveSerializer<CreateTermA
       object.definition,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    if (object.transcription != null) {
-      yield r'transcription';
-      yield serializers.serialize(
-        object.transcription,
-        specifiedType: const FullType.nullable(JsonObject),
-      );
-    }
     if (object.moduleId != null) {
       yield r'module_id';
       yield serializers.serialize(
@@ -85,6 +78,13 @@ class _$CreateTermAsTreeDTOSerializer implements PrimitiveSerializer<CreateTermA
       yield r'sub_sentences';
       yield serializers.serialize(
         object.subSentences,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    if (object.termAdditionalInfoEntities != null) {
+      yield r'term_additional_info_entities';
+      yield serializers.serialize(
+        object.termAdditionalInfoEntities,
         specifiedType: const FullType.nullable(JsonObject),
       );
     }
@@ -127,14 +127,6 @@ class _$CreateTermAsTreeDTOSerializer implements PrimitiveSerializer<CreateTermA
           if (valueDes == null) continue;
           result.definition = valueDes;
           break;
-        case r'transcription':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.transcription = valueDes;
-          break;
         case r'module_id':
           final valueDes = serializers.deserialize(
             value,
@@ -150,6 +142,14 @@ class _$CreateTermAsTreeDTOSerializer implements PrimitiveSerializer<CreateTermA
           ) as JsonObject?;
           if (valueDes == null) continue;
           result.subSentences = valueDes;
+          break;
+        case r'term_additional_info_entities':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.termAdditionalInfoEntities = valueDes;
           break;
         default:
           unhandled.add(key);

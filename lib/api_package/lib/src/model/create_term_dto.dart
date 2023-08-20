@@ -14,7 +14,6 @@ part 'create_term_dto.g.dart';
 /// Properties:
 /// * [term] 
 /// * [definition] 
-/// * [transcription] 
 /// * [moduleId] 
 @BuiltValue()
 abstract class CreateTermDTO implements Built<CreateTermDTO, CreateTermDTOBuilder> {
@@ -23,9 +22,6 @@ abstract class CreateTermDTO implements Built<CreateTermDTO, CreateTermDTOBuilde
 
   @BuiltValueField(wireName: r'definition')
   JsonObject? get definition;
-
-  @BuiltValueField(wireName: r'transcription')
-  JsonObject? get transcription;
 
   @BuiltValueField(wireName: r'module_id')
   JsonObject? get moduleId;
@@ -63,13 +59,6 @@ class _$CreateTermDTOSerializer implements PrimitiveSerializer<CreateTermDTO> {
       object.definition,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    if (object.transcription != null) {
-      yield r'transcription';
-      yield serializers.serialize(
-        object.transcription,
-        specifiedType: const FullType.nullable(JsonObject),
-      );
-    }
     yield r'module_id';
     yield object.moduleId == null ? null : serializers.serialize(
       object.moduleId,
@@ -113,14 +102,6 @@ class _$CreateTermDTOSerializer implements PrimitiveSerializer<CreateTermDTO> {
           ) as JsonObject?;
           if (valueDes == null) continue;
           result.definition = valueDes;
-          break;
-        case r'transcription':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.transcription = valueDes;
           break;
         case r'module_id':
           final valueDes = serializers.deserialize(

@@ -15,7 +15,7 @@ part 'folder_with_root_entity_dto.g.dart';
 /// * [name] 
 /// * [rootFolderId] 
 /// * [id] 
-/// * [userId] 
+/// * [authorId] 
 /// * [createdAt] 
 /// * [updatedAt] 
 /// * [rootFolderEntity] 
@@ -30,8 +30,8 @@ abstract class FolderWithRootEntityDTO implements Built<FolderWithRootEntityDTO,
   @BuiltValueField(wireName: r'id')
   JsonObject? get id;
 
-  @BuiltValueField(wireName: r'user_id')
-  JsonObject? get userId;
+  @BuiltValueField(wireName: r'author_id')
+  JsonObject? get authorId;
 
   @BuiltValueField(wireName: r'created_at')
   JsonObject? get createdAt;
@@ -80,9 +80,9 @@ class _$FolderWithRootEntityDTOSerializer implements PrimitiveSerializer<FolderW
       object.id,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'user_id';
-    yield object.userId == null ? null : serializers.serialize(
-      object.userId,
+    yield r'author_id';
+    yield object.authorId == null ? null : serializers.serialize(
+      object.authorId,
       specifiedType: const FullType.nullable(JsonObject),
     );
     yield r'created_at';
@@ -147,13 +147,13 @@ class _$FolderWithRootEntityDTOSerializer implements PrimitiveSerializer<FolderW
           if (valueDes == null) continue;
           result.id = valueDes;
           break;
-        case r'user_id':
+        case r'author_id':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.userId = valueDes;
+          result.authorId = valueDes;
           break;
         case r'created_at':
           final valueDes = serializers.deserialize(

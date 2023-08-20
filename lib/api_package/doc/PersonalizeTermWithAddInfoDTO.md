@@ -1,4 +1,4 @@
-# api_package.model.PersonalizeTermDTO
+# api_package.model.PersonalizeTermWithAddInfoDTO
 
 ## Load the model package
 ```dart
@@ -20,6 +20,7 @@ Name | Type | Description | Notes
 **id** | [**JsonObject**](.md) |  | 
 **createdAt** | [**JsonObject**](.md) |  | 
 **updatedAt** | [**JsonObject**](.md) |  | 
+**termAdditionalInfoEntities** | [**JsonObject**](.md) |  | [default to []]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -7,9 +7,9 @@ import 'package:built_value/json_object.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'personalize_term_dto.g.dart';
+part 'personalize_term_with_add_info_dto.g.dart';
 
-/// PersonalizeTermDTO
+/// PersonalizeTermWithAddInfoDTO
 ///
 /// Properties:
 /// * [userId] 
@@ -24,8 +24,9 @@ part 'personalize_term_dto.g.dart';
 /// * [id] 
 /// * [createdAt] 
 /// * [updatedAt] 
+/// * [termAdditionalInfoEntities] 
 @BuiltValue()
-abstract class PersonalizeTermDTO implements Built<PersonalizeTermDTO, PersonalizeTermDTOBuilder> {
+abstract class PersonalizeTermWithAddInfoDTO implements Built<PersonalizeTermWithAddInfoDTO, PersonalizeTermWithAddInfoDTOBuilder> {
   @BuiltValueField(wireName: r'user_id')
   JsonObject? get userId;
 
@@ -62,27 +63,31 @@ abstract class PersonalizeTermDTO implements Built<PersonalizeTermDTO, Personali
   @BuiltValueField(wireName: r'updated_at')
   JsonObject? get updatedAt;
 
-  PersonalizeTermDTO._();
+  @BuiltValueField(wireName: r'term_additional_info_entities')
+  JsonObject? get termAdditionalInfoEntities;
 
-  factory PersonalizeTermDTO([void updates(PersonalizeTermDTOBuilder b)]) = _$PersonalizeTermDTO;
+  PersonalizeTermWithAddInfoDTO._();
+
+  factory PersonalizeTermWithAddInfoDTO([void updates(PersonalizeTermWithAddInfoDTOBuilder b)]) = _$PersonalizeTermWithAddInfoDTO;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(PersonalizeTermDTOBuilder b) => b;
+  static void _defaults(PersonalizeTermWithAddInfoDTOBuilder b) => b
+      ..termAdditionalInfoEntities = JsonObject(<JsonObject?>[]);
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<PersonalizeTermDTO> get serializer => _$PersonalizeTermDTOSerializer();
+  static Serializer<PersonalizeTermWithAddInfoDTO> get serializer => _$PersonalizeTermWithAddInfoDTOSerializer();
 }
 
-class _$PersonalizeTermDTOSerializer implements PrimitiveSerializer<PersonalizeTermDTO> {
+class _$PersonalizeTermWithAddInfoDTOSerializer implements PrimitiveSerializer<PersonalizeTermWithAddInfoDTO> {
   @override
-  final Iterable<Type> types = const [PersonalizeTermDTO, _$PersonalizeTermDTO];
+  final Iterable<Type> types = const [PersonalizeTermWithAddInfoDTO, _$PersonalizeTermWithAddInfoDTO];
 
   @override
-  final String wireName = r'PersonalizeTermDTO';
+  final String wireName = r'PersonalizeTermWithAddInfoDTO';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    PersonalizeTermDTO object, {
+    PersonalizeTermWithAddInfoDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
     yield r'user_id';
@@ -145,12 +150,17 @@ class _$PersonalizeTermDTOSerializer implements PrimitiveSerializer<PersonalizeT
       object.updatedAt,
       specifiedType: const FullType.nullable(JsonObject),
     );
+    yield r'term_additional_info_entities';
+    yield object.termAdditionalInfoEntities == null ? null : serializers.serialize(
+      object.termAdditionalInfoEntities,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
   }
 
   @override
   Object serialize(
     Serializers serializers,
-    PersonalizeTermDTO object, {
+    PersonalizeTermWithAddInfoDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
@@ -161,7 +171,7 @@ class _$PersonalizeTermDTOSerializer implements PrimitiveSerializer<PersonalizeT
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required PersonalizeTermDTOBuilder result,
+    required PersonalizeTermWithAddInfoDTOBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
@@ -264,6 +274,14 @@ class _$PersonalizeTermDTOSerializer implements PrimitiveSerializer<PersonalizeT
           if (valueDes == null) continue;
           result.updatedAt = valueDes;
           break;
+        case r'term_additional_info_entities':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.termAdditionalInfoEntities = valueDes;
+          break;
         default:
           unhandled.add(key);
           unhandled.add(value);
@@ -273,12 +291,12 @@ class _$PersonalizeTermDTOSerializer implements PrimitiveSerializer<PersonalizeT
   }
 
   @override
-  PersonalizeTermDTO deserialize(
+  PersonalizeTermWithAddInfoDTO deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = PersonalizeTermDTOBuilder();
+    final result = PersonalizeTermWithAddInfoDTOBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

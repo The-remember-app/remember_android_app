@@ -14,6 +14,9 @@ import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:api_package/src/date_serializer.dart';
 import 'package:api_package/src/model/date.dart';
 
+import 'package:api_package/src/model/add_info_type_enum.dart';
+import 'package:api_package/src/model/additional_term_info_dto.dart';
+import 'package:api_package/src/model/create_additional_term_info_as_tree_dto.dart';
 import 'package:api_package/src/model/create_folder_as_tree_dto.dart';
 import 'package:api_package/src/model/create_folder_dto.dart';
 import 'package:api_package/src/model/create_module_as_tree_dto.dart';
@@ -29,8 +32,10 @@ import 'package:api_package/src/model/folder_with_root_entity_dto.dart';
 import 'package:api_package/src/model/http_validation_error.dart';
 import 'package:api_package/src/model/module_dto.dart';
 import 'package:api_package/src/model/module_with_nested_entities_dto.dart';
+import 'package:api_package/src/model/personalize_folder_dto.dart';
 import 'package:api_package/src/model/personalize_module_dto.dart';
 import 'package:api_package/src/model/personalize_term_dto.dart';
+import 'package:api_package/src/model/personalize_term_with_add_info_dto.dart';
 import 'package:api_package/src/model/sentence_dto.dart';
 import 'package:api_package/src/model/term_dto.dart';
 import 'package:api_package/src/model/token.dart';
@@ -40,6 +45,9 @@ import 'package:api_package/src/model/validation_error.dart';
 part 'serializers.g.dart';
 
 @SerializersFor([
+  AddInfoTypeEnum,
+  AdditionalTermInfoDTO,
+  CreateAdditionalTermInfoAsTreeDTO,
   CreateFolderAsTreeDTO,
   CreateFolderDTO,
   CreateModuleAsTreeDTO,
@@ -55,8 +63,10 @@ part 'serializers.g.dart';
   HTTPValidationError,
   ModuleDTO,
   ModuleWithNestedEntitiesDTO,
+  PersonalizeFolderDTO,
   PersonalizeModuleDTO,
   PersonalizeTermDTO,
+  PersonalizeTermWithAddInfoDTO,
   SentenceDTO,
   TermDTO,
   Token,

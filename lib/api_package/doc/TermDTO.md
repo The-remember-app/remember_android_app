@@ -10,7 +10,6 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **term** | [**JsonObject**](.md) |  | 
 **definition** | [**JsonObject**](.md) |  | 
-**transcription** | [**JsonObject**](.md) |  | 
 **moduleId** | [**JsonObject**](.md) |  | 
 **id** | [**JsonObject**](.md) |  | 
 **createdAt** | [**JsonObject**](.md) |  | 

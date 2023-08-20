@@ -76,7 +76,7 @@ abstract class PersonalizeModuleDTO implements Built<PersonalizeModuleDTO, Perso
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(PersonalizeModuleDTOBuilder b) => b
-      ..description ;
+      ..description;
 
   @BuiltValueSerializer(custom: true)
   static Serializer<PersonalizeModuleDTO> get serializer => _$PersonalizeModuleDTOSerializer();

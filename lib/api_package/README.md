@@ -47,18 +47,12 @@ import 'package:api_package/api_package.dart';
 
 
 final api = ApiPackage().getAuthApi();
-final JsonObject username = ; // JsonObject | 
-final JsonObject password = ; // JsonObject | 
-final JsonObject grantType = ; // JsonObject | 
-final JsonObject scope = ; // JsonObject | 
-final JsonObject clientId = ; // JsonObject | 
-final JsonObject clientSecret = ; // JsonObject | 
 
 try {
-    final response = await api.loginForAccessTokenAuthTokenPost(username, password, grantType, scope, clientId, clientSecret);
+    final response = await api.loginForAccessTokenAuthHealthcheckPost();
     print(response);
 } catch on DioException (e) {
-    print("Exception when calling AuthApi->loginForAccessTokenAuthTokenPost: $e\n");
+    print("Exception when calling AuthApi->loginForAccessTokenAuthHealthcheckPost: $e\n");
 }
 
 ```
@@ -69,6 +63,7 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+[*AuthApi*](doc/AuthApi.md) | [**loginForAccessTokenAuthHealthcheckPost**](doc/AuthApi.md#loginforaccesstokenauthhealthcheckpost) | **POST** /auth/healthcheck | Login For Access Token
 [*AuthApi*](doc/AuthApi.md) | [**loginForAccessTokenAuthTokenPost**](doc/AuthApi.md#loginforaccesstokenauthtokenpost) | **POST** /auth/token | Login For Access Token
 [*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**createFolderAsTreeFolderCreateAsTreePost**](doc/FoldersEntitiesApi.md#createfolderastreefoldercreateastreepost) | **POST** /folder/create/as_tree | Create Folder As Tree
 [*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**createFolderFolderCreatePost**](doc/FoldersEntitiesApi.md#createfolderfoldercreatepost) | **POST** /folder/create | Create Folder
@@ -84,7 +79,9 @@ Class | Method | HTTP request | Description
 [*SentenceEntitiesApi*](doc/SentenceEntitiesApi.md) | [**getAllTermSentenceAllGet**](doc/SentenceEntitiesApi.md#getalltermsentenceallget) | **GET** /sentence/all | Get All Term
 [*SentenceEntitiesApi*](doc/SentenceEntitiesApi.md) | [**getOneTermSentenceSentenceIdGet**](doc/SentenceEntitiesApi.md#getonetermsentencesentenceidget) | **GET** /sentence/{sentence_id} | Get One Term
 [*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**createTermTermCreatePost**](doc/TermEntitiesApi.md#createtermtermcreatepost) | **POST** /term/create | Create Term
+[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getAllAddTermInfoTermaddInfoAllGet**](doc/TermEntitiesApi.md#getalladdterminfotermaddinfoallget) | **GET** /termadd_info/all | Get All Add Term Info
 [*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getAllTermTermAllGet**](doc/TermEntitiesApi.md#getalltermtermallget) | **GET** /term/all | Get All Term
+[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getAllTermTermFromModuleModuleIdGet**](doc/TermEntitiesApi.md#getalltermtermfrommodulemoduleidget) | **GET** /term/from_module/{module_id} | Get All Term
 [*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getOneTermTermTermIdGet**](doc/TermEntitiesApi.md#getonetermtermtermidget) | **GET** /term/{term_id} | Get One Term
 [*UsersEntitiesApi*](doc/UsersEntitiesApi.md) | [**createUserUserCreatePost**](doc/UsersEntitiesApi.md#createuserusercreatepost) | **POST** /user/create | Create User
 [*UsersEntitiesApi*](doc/UsersEntitiesApi.md) | [**readUsersMeUserMeGet**](doc/UsersEntitiesApi.md#readusersmeusermeget) | **GET** /user/me/ | Read Users Me
@@ -92,6 +89,9 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
+ - [AddInfoTypeEnum](doc/AddInfoTypeEnum.md)
+ - [AdditionalTermInfoDTO](doc/AdditionalTermInfoDTO.md)
+ - [CreateAdditionalTermInfoAsTreeDTO](doc/CreateAdditionalTermInfoAsTreeDTO.md)
  - [CreateFolderAsTreeDTO](doc/CreateFolderAsTreeDTO.md)
  - [CreateFolderDTO](doc/CreateFolderDTO.md)
  - [CreateModuleAsTreeDTO](doc/CreateModuleAsTreeDTO.md)
@@ -107,8 +107,10 @@ Class | Method | HTTP request | Description
  - [HTTPValidationError](doc/HTTPValidationError.md)
  - [ModuleDTO](doc/ModuleDTO.md)
  - [ModuleWithNestedEntitiesDTO](doc/ModuleWithNestedEntitiesDTO.md)
+ - [PersonalizeFolderDTO](doc/PersonalizeFolderDTO.md)
  - [PersonalizeModuleDTO](doc/PersonalizeModuleDTO.md)
  - [PersonalizeTermDTO](doc/PersonalizeTermDTO.md)
+ - [PersonalizeTermWithAddInfoDTO](doc/PersonalizeTermWithAddInfoDTO.md)
  - [SentenceDTO](doc/SentenceDTO.md)
  - [TermDTO](doc/TermDTO.md)
  - [Token](doc/Token.md)

@@ -7,21 +7,31 @@ import 'package:built_value/json_object.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'folder_with_nested_entities_dto.g.dart';
+part 'personalize_folder_dto.g.dart';
 
-/// FolderWithNestedEntitiesDTO
+/// PersonalizeFolderDTO
 ///
 /// Properties:
+/// * [userId] 
+/// * [personalCreatedAt] 
+/// * [personalUpdatedAt] 
 /// * [name] 
 /// * [rootFolderId] 
 /// * [id] 
 /// * [authorId] 
 /// * [createdAt] 
 /// * [updatedAt] 
-/// * [subFolders] 
-/// * [subModules] 
 @BuiltValue()
-abstract class FolderWithNestedEntitiesDTO implements Built<FolderWithNestedEntitiesDTO, FolderWithNestedEntitiesDTOBuilder> {
+abstract class PersonalizeFolderDTO implements Built<PersonalizeFolderDTO, PersonalizeFolderDTOBuilder> {
+  @BuiltValueField(wireName: r'user_id')
+  JsonObject? get userId;
+
+  @BuiltValueField(wireName: r'personal_created_at')
+  JsonObject? get personalCreatedAt;
+
+  @BuiltValueField(wireName: r'personal_updated_at')
+  JsonObject? get personalUpdatedAt;
+
   @BuiltValueField(wireName: r'name')
   JsonObject? get name;
 
@@ -40,35 +50,44 @@ abstract class FolderWithNestedEntitiesDTO implements Built<FolderWithNestedEnti
   @BuiltValueField(wireName: r'updated_at')
   JsonObject? get updatedAt;
 
-  @BuiltValueField(wireName: r'sub_folders')
-  JsonObject? get subFolders;
+  PersonalizeFolderDTO._();
 
-  @BuiltValueField(wireName: r'sub_modules')
-  JsonObject? get subModules;
-
-  FolderWithNestedEntitiesDTO._();
-
-  factory FolderWithNestedEntitiesDTO([void updates(FolderWithNestedEntitiesDTOBuilder b)]) = _$FolderWithNestedEntitiesDTO;
+  factory PersonalizeFolderDTO([void updates(PersonalizeFolderDTOBuilder b)]) = _$PersonalizeFolderDTO;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(FolderWithNestedEntitiesDTOBuilder b) => b;
+  static void _defaults(PersonalizeFolderDTOBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<FolderWithNestedEntitiesDTO> get serializer => _$FolderWithNestedEntitiesDTOSerializer();
+  static Serializer<PersonalizeFolderDTO> get serializer => _$PersonalizeFolderDTOSerializer();
 }
 
-class _$FolderWithNestedEntitiesDTOSerializer implements PrimitiveSerializer<FolderWithNestedEntitiesDTO> {
+class _$PersonalizeFolderDTOSerializer implements PrimitiveSerializer<PersonalizeFolderDTO> {
   @override
-  final Iterable<Type> types = const [FolderWithNestedEntitiesDTO, _$FolderWithNestedEntitiesDTO];
+  final Iterable<Type> types = const [PersonalizeFolderDTO, _$PersonalizeFolderDTO];
 
   @override
-  final String wireName = r'FolderWithNestedEntitiesDTO';
+  final String wireName = r'PersonalizeFolderDTO';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    FolderWithNestedEntitiesDTO object, {
+    PersonalizeFolderDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
+    yield r'user_id';
+    yield object.userId == null ? null : serializers.serialize(
+      object.userId,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'personal_created_at';
+    yield object.personalCreatedAt == null ? null : serializers.serialize(
+      object.personalCreatedAt,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'personal_updated_at';
+    yield object.personalUpdatedAt == null ? null : serializers.serialize(
+      object.personalUpdatedAt,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
     yield r'name';
     yield object.name == null ? null : serializers.serialize(
       object.name,
@@ -99,22 +118,12 @@ class _$FolderWithNestedEntitiesDTOSerializer implements PrimitiveSerializer<Fol
       object.updatedAt,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'sub_folders';
-    yield object.subFolders == null ? null : serializers.serialize(
-      object.subFolders,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'sub_modules';
-    yield object.subModules == null ? null : serializers.serialize(
-      object.subModules,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
   }
 
   @override
   Object serialize(
     Serializers serializers,
-    FolderWithNestedEntitiesDTO object, {
+    PersonalizeFolderDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
@@ -125,13 +134,37 @@ class _$FolderWithNestedEntitiesDTOSerializer implements PrimitiveSerializer<Fol
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required FolderWithNestedEntitiesDTOBuilder result,
+    required PersonalizeFolderDTOBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
+        case r'user_id':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.userId = valueDes;
+          break;
+        case r'personal_created_at':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.personalCreatedAt = valueDes;
+          break;
+        case r'personal_updated_at':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.personalUpdatedAt = valueDes;
+          break;
         case r'name':
           final valueDes = serializers.deserialize(
             value,
@@ -180,22 +213,6 @@ class _$FolderWithNestedEntitiesDTOSerializer implements PrimitiveSerializer<Fol
           if (valueDes == null) continue;
           result.updatedAt = valueDes;
           break;
-        case r'sub_folders':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.subFolders = valueDes;
-          break;
-        case r'sub_modules':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.subModules = valueDes;
-          break;
         default:
           unhandled.add(key);
           unhandled.add(value);
@@ -205,12 +222,12 @@ class _$FolderWithNestedEntitiesDTOSerializer implements PrimitiveSerializer<Fol
   }
 
   @override
-  FolderWithNestedEntitiesDTO deserialize(
+  PersonalizeFolderDTO deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = FolderWithNestedEntitiesDTOBuilder();
+    final result = PersonalizeFolderDTOBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

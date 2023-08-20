@@ -9,8 +9,46 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**loginForAccessTokenAuthHealthcheckPost**](AuthApi.md#loginforaccesstokenauthhealthcheckpost) | **POST** /auth/healthcheck | Login For Access Token
 [**loginForAccessTokenAuthTokenPost**](AuthApi.md#loginforaccesstokenauthtokenpost) | **POST** /auth/token | Login For Access Token
 
+
+# **loginForAccessTokenAuthHealthcheckPost**
+> JsonObject loginForAccessTokenAuthHealthcheckPost()
+
+Login For Access Token
+
+### Example
+```dart
+import 'package:api_package/api.dart';
+
+final api = ApiPackage().getAuthApi();
+
+try {
+    final response = api.loginForAccessTokenAuthHealthcheckPost();
+    print(response);
+} catch on DioException (e) {
+    print('Exception when calling AuthApi->loginForAccessTokenAuthHealthcheckPost: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**JsonObject**](JsonObject.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **loginForAccessTokenAuthTokenPost**
 > Token loginForAccessTokenAuthTokenPost(username, password, grantType, scope, clientId, clientSecret)

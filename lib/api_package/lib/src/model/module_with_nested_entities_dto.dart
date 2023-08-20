@@ -52,7 +52,7 @@ abstract class ModuleWithNestedEntitiesDTO implements Built<ModuleWithNestedEnti
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ModuleWithNestedEntitiesDTOBuilder b) => b
-      ..description ;
+      ..description;
 
   @BuiltValueSerializer(custom: true)
   static Serializer<ModuleWithNestedEntitiesDTO> get serializer => _$ModuleWithNestedEntitiesDTOSerializer();

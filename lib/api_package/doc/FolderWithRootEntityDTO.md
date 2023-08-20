@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 **name** | [**JsonObject**](.md) |  | 
 **rootFolderId** | [**JsonObject**](.md) |  | 
 **id** | [**JsonObject**](.md) |  | 
-**userId** | [**JsonObject**](.md) |  | 
+**authorId** | [**JsonObject**](.md) |  | 
 **createdAt** | [**JsonObject**](.md) |  | 
 **updatedAt** | [**JsonObject**](.md) |  | 
 **rootFolderEntity** | [**FolderWithRootEntityDTO**](FolderWithRootEntityDTO.md) |  | 
