@@ -36,11 +36,11 @@ class UserDbDS extends AbstractEntity {
 
     return UserDbDS()
       ..uuid=data.id!.asString
-      ..username=data.id!.asString
+      ..username=data.username!.asString
       ..password=password
-      ..email=data.id!.asString
-      ..name=data.id!.asString
-      ..surname=data.id!.asString
+      ..email=data.email!.asString
+      ..name=data.name!.asString
+      ..surname=data.surname!.asString
       ..createdAt=DateTime.parse(data.createdAt!.asString)
       ..updatedAt=DateTime.parse(data.updatedAt!.asString)
       ..active=active

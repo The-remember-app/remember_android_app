@@ -43,7 +43,9 @@ mixin UnaryModuleStateDbMixin
     if (currentModuleEntity.rootFolderUuid != null){
       rootFolder = (await conn[ConnType.term]!
           .collection<FolderDbDS>()
-          .getByUuid(currentModuleEntity.rootFolderUuid!));
+          // .getByUuid(currentModuleEntity.rootFolderUuid!)
+          .getByComplexIndex([currentModuleEntity.rootFolderUuid!, currentModuleEntity.userUuid])
+      );
     }
 
     this.setState(() => null);

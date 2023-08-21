@@ -28,9 +28,27 @@ import '../src/urils/db/engine.dart';
 // }
 
 Future<void> networkProcessor(UserApiProfile? userApi) async {
-  if (userApi?.baseApi == null  ){
-    return ;
+  if (userApi?.baseApi == null && userApi?.user != null) {
+    var conn = (await OpenAndClose3.openConnStatic(
+        [CollectionSchema<HttpUtilsDbDS>, CollectionSchema<UserDbDS>]));
+
+    var serverUrlsEntities = (await conn[ConnType.server_urls]!
+        .collection<HttpUtilsDbDS>()
+        .where()
+        .findAll());
+    var user = (await conn[ConnType.user]!
+        .collection<UserDbDS>()
+        .getByUuid(userApi!.user!.uuid));
+    var serverUrls = [for (var i in serverUrlsEntities) i.httpUrl];
+
+    await OpenAndClose3.closeConnStatic(conn);
+    await loginUser(user!.username, user.password,
+        serverUrls: serverUrls, userApi: userApi);
+    return;
+  } else if (userApi?.baseApi == null) {
+    return;
   }
+  print("networkProcessor(userApi) started!!!!!!!!!!!!");
   var baseApi = userApi!.baseApi!;
   var authHeaders = userApi.authHeaders;
   // final Dio dio = Dio(BaseOptions(baseUrl: serverUrl));
@@ -41,8 +59,6 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
   //     username: JsonObject("1"), password: JsonObject("1"));
   // authApi.setBearerAuth(
   //     "Authorization", "Bearer ${authData.data!.accessToken!.asString}");
-
-
 
   final FoldersEntitiesApi folderApi = baseApi.getFoldersEntitiesApi();
   final ModuleEntitiesApi moduleApi = baseApi.getModuleEntitiesApi();
@@ -83,9 +99,6 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
         ent.uuid: ent
     };
   })();
-
-
-
 
   final foldersCoro = folderApi.getAllFoldersFolderAllGet(headers: authHeaders);
   final modulesCoro = moduleApi.getAllModuleModuleAllGet(headers: authHeaders);
@@ -193,6 +206,106 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
   // final terms = await mainApi.getAllTermTermAllGet(headers: authHeaders);
 }
 
+Future<void> getUserFromServer(
+  baseApiContainer,
+  authHeaders,
+  String username,
+  String password,
+  UserApiProfile? userApi,
+) async {
+  var conn = (await OpenAndClose3.openConnStatic([CollectionSchema<UserDbDS>]));
+
+  var user =
+      (await conn[ConnType.user]!.collection<UserDbDS>().getByUsername(username)
+      // .filter()
+      // .usernameEqualTo(username)
+      // .findAll()
+      // .where()
+      // .findAll()
+      );
+  if (user == null) {
+    var userApi = baseApiContainer.getUsersEntitiesApi();
+
+    var userFromServerData =
+        await userApi.readUsersMeUserMeGet(headers: authHeaders);
+    user =
+        UserDbDS.fromJson(userFromServerData.data as UserDTO, password, true);
+  } else if (user == userApi?.user) {
+    userApi?.userChange();
+  }
+  userApi?.user = user;
+  conn[ConnType.user]!.writeTxn(() async {
+    (await conn[ConnType.user]!
+        .collection<UserDbDS>()
+        .put(user!..active = true));
+  });
+
+  await OpenAndClose3.closeConnStatic(conn);
+}
+
+Future getAuthHeaders(
+    AuthApi realAuthApi,
+    String url,
+    ApiPackage baseApiContainer,
+    String username,
+    String password,
+    UserApiProfile? userApi,
+    Function(String?)? onErrorCallback) async {
+  Response<Token>? authData = null;
+  try {
+    authData = await realAuthApi.loginForAccessTokenAuthTokenPost(
+        username: JsonObject(username), password: JsonObject(password));
+  } catch (e) {
+    if (onErrorCallback != null) {
+      onErrorCallback(
+          "На сервере ${url} пользователя с таким логином и паролем не найдено");
+    }
+  } finally {
+    if (authData?.statusCode == 200) {
+      baseApiContainer.setBearerAuth(
+          "Authorization", "Bearer ${authData?.data!.accessToken!.asString}");
+      var authHeaders = {
+        "Authorization": "Bearer ${authData?.data!.accessToken!.asString}"
+      };
+      userApi?.baseApi = baseApiContainer;
+      userApi?.authHeaders = authHeaders;
+      if (userApi?.user == null) {
+        await getUserFromServer(
+            baseApiContainer, authHeaders, username, password, userApi);
+      } else {
+        await networkProcessor(userApi);
+      }
+    } else {
+      if (onErrorCallback != null) {
+        onErrorCallback(
+            "На сервере ${url} пользователя с таким логином и паролем не найдено");
+      }
+    }
+  }
+}
+
+Future testServerUrl(
+    String url,
+    List<bool> goodUrlFounded,
+    String username,
+    String password,
+    UserApiProfile? userApi,
+    Function(String?)? onErrorCallback) async {
+  final Dio dio = Dio(BaseOptions(baseUrl: url));
+  final ApiPackage baseApiContainer =
+      ApiPackage(dio: dio, serializers: standardSerializers);
+  final AuthApi realAuthApi = baseApiContainer.getAuthApi();
+  var healthyCheck = await realAuthApi.loginForAccessTokenAuthHealthcheckPost();
+  if (goodUrlFounded[0]) {
+    return;
+  }
+  if (healthyCheck.statusCode == 200) {
+    goodUrlFounded[0] = true;
+  }
+  await getAuthHeaders(realAuthApi, url, baseApiContainer, username, password,
+      userApi, onErrorCallback);
+}
+
 Future<void> loginUser(
   String username,
   String password, {
@@ -200,91 +313,7 @@ Future<void> loginUser(
   required UserApiProfile? userApi,
   Function(String?)? onErrorCallback = null,
 }) async {
-  bool goodUrlFounded = false;
-
-  Future<void> getUser(baseApiContainer, authHeaders) async {
-
-    var conn = (await OpenAndClose3.openConnStatic(
-        [CollectionSchema<UserDbDS>]));
-
-    var user = (await conn[ConnType.user]!
-        .collection<UserDbDS>()
-        .getByUsername(username)
-        // .filter()
-        // .usernameEqualTo(username)
-        // .findAll()
-        // .where()
-        // .findAll()
-    );
-    if (user == null){
-      var userApi = baseApiContainer.getUsersEntitiesApi();
-
-      var userFromServerData = await userApi.readUsersMeUserMeGet(headers: authHeaders);
-      user = UserDbDS.fromJson(userFromServerData.data as UserDTO, password, true);
-    } else if (user == userApi?.user) {
-      userApi?.userChange();
-    }
-    userApi?.user = user;
-    conn[ConnType.user]!.writeTxn(() async {
-      (await conn[ConnType.user]!
-          .collection<UserDbDS>().put(user!..active = true));
-    });
-
-    await OpenAndClose3.closeConnStatic(conn);
-
-
-  }
-
-  Future getAuthHeaders(AuthApi realAuthApi, String url, ApiPackage baseApiContainer) async {
-
-    Response<Token>? authData = null;
-    try {
-      authData = await realAuthApi.loginForAccessTokenAuthTokenPost(
-          username: JsonObject(username), password: JsonObject(password));
-    } catch (e) {
-      if (onErrorCallback != null) {
-        onErrorCallback(
-            "На сервере ${url} пользователя с таким логином и паролем не найдено");
-      }
-
-      } finally {
-      if (authData?.statusCode == 200) {
-        baseApiContainer.setBearerAuth(
-            "Authorization", "Bearer ${authData?.data!.accessToken!.asString}");
-        var authHeaders = {
-          "Authorization": "Bearer ${authData?.data!.accessToken!.asString}"
-        };
-        userApi?.baseApi = baseApiContainer;
-        userApi?.authHeaders = authHeaders;
-        await getUser(baseApiContainer, authHeaders);
-      } else {
-        if (onErrorCallback != null) {
-          onErrorCallback(
-              "На сервере ${url} пользователя с таким логином и паролем не найдено");
-        }
-      }
-    }
-  }
-
-  Future testUrl(url) async {
-    final Dio dio = Dio(BaseOptions(baseUrl: url));
-    final ApiPackage baseApiContainer =
-    ApiPackage(dio: dio, serializers: standardSerializers);
-    final AuthApi realAuthApi = baseApiContainer.getAuthApi();
-    var healthyCheck =
-    await realAuthApi.loginForAccessTokenAuthHealthcheckPost();
-    if (goodUrlFounded) {
-      return;
-    }
-    if (healthyCheck.statusCode == 200) {
-      goodUrlFounded = true;
-    }
-    await getAuthHeaders(realAuthApi, url, baseApiContainer);
-
-  }
-
-
-
+  List<bool> goodUrlFounded = [false];
 
   if (userApi?.baseApi == null) {
     if (serverUrls == null) {
@@ -297,27 +326,37 @@ Future<void> loginUser(
           .findAll());
       serverUrls = [for (var i in serverUrlsEntities) i.httpUrl];
 
+      await OpenAndClose3.closeConnStatic(conn);
+    } else {
+      var conn = (await OpenAndClose3.openConnStatic(
+          [CollectionSchema<HttpUtilsDbDS>]));
+
+      var serverUrlsEntities = [
+        for (var i in serverUrls) HttpUtilsDbDS()..httpUrl = i
+      ];
+      conn[ConnType.server_urls]!.writeTxnSync(
+              ()  =>
+          conn[ConnType.server_urls]!
+              .collection<HttpUtilsDbDS>()
+              .putAllSync(serverUrlsEntities)
+      );
+
+      // serverUrls = [for (var i in serverUrlsEntities) i.httpUrl];
 
       await OpenAndClose3.closeConnStatic(conn);
     }
-    serverUrls.forEach(testUrl);
-  }else if (
-  userApi?.authHeaders == null ||
-      (userApi?.authHeaders != null && userApi!.authHeaders.isEmpty) ){
-    await getAuthHeaders(await userApi!.baseApi!.getAuthApi(), "<unnamed>", userApi.baseApi!);
-
+    serverUrls.forEach(
+            (url) async => await testServerUrl(
+        url, goodUrlFounded, username, password, userApi, onErrorCallback
+            ));
+  } else if (userApi?.authHeaders == null ||
+      (userApi?.authHeaders != null && userApi!.authHeaders.isEmpty)) {
+    await getAuthHeaders(await userApi!.baseApi!.getAuthApi(), "<unnamed>",
+        userApi.baseApi!, username, password, userApi, onErrorCallback);
   } else {
-    await getUser(userApi?.baseApi, userApi?.authHeaders);
+    await getUserFromServer(
+        userApi?.baseApi, userApi?.authHeaders, username, password, userApi);
   }
-
-
-
-
-
-
-
-
-
 
   return;
 }

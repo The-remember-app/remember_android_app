@@ -11,7 +11,7 @@ part 'http_utils.g.dart';
 class HttpUtilsDbDS extends AbstractEntity {
   // get isarId => fastHash(id!);
   @Name("id")
-  late Id isarId;
+  Id get isarId => AbstractEntity.fastHash(httpUrl) ;
   @Index(unique: true, replace: true, caseSensitive: false)
   @Name("http_url")
   late String httpUrl;

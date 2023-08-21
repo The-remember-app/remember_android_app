@@ -18,8 +18,13 @@ part 'term.g.dart';
 class TermEntityDbDS  extends AbstractEntity  {
   @Name("id")
   Id get isarId => AbstractEntity.fastHash(uuid) ;
-  @Index(unique: true, replace: true, caseSensitive: false)
+  // @Index(unique: true, replace: true, caseSensitive: false)
   late String uuid;
+  @Name("user_uuid")
+  late String userUuid;
+  @Name("complex_index")
+  @Index(unique: true, replace: true, caseSensitive: false)
+  List<String> get complexIndex => [uuid, userUuid];
   late String term;
   late String definition;
   @Name("module_uuid")
@@ -125,6 +130,7 @@ class TermEntityDbDS  extends AbstractEntity  {
 
     return TermEntityDbDS()
       ..uuid=data.id!.asString
+      ..userUuid=data.userId!.asString
       ..term=data.term!.asString
       ..definition=data.definition!.asString
       ..moduleUuid=data.moduleId!.asString

@@ -80,7 +80,7 @@ Future<UserDbDS?> getUser(UserApiProfile? userApi) async {
     // } else {
     //
     // }
-    networkProcessor(userApi);
+
     var coro =  OpenAndClose3.closeConnStatic(conn);
 
 
@@ -118,6 +118,10 @@ class UserApiProfile with ChangeNotifier {
   set user(UserDbDS? user) {
     if (this._user != user) {
       this._user = user;
+      if (user != null){
+        networkProcessor(this);
+      }
+
       notifyListeners();
     }
   }

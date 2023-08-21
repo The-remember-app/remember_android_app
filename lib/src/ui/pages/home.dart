@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:the_remember/src/repositoris/db_data_source/user.dart';
 
 import '../../../main.dart';
+import '../../../network_processor/network_main.dart';
 import '../../domain_layer/data_mixins/modules/modules.dart';
 import '../../repositoris/db_data_source/folder.dart';
 import '../../repositoris/db_data_source/http_utils.dart';
@@ -109,6 +110,7 @@ class _HomePageState extends AbstractUIStatefulWidget<HomePage>
                 } else if (value != null && lastRoute != '/root_folder')  {
                   print(22222222);
                   lastRoute = '/root_folder';
+
                   await Navigator.pushNamed(
                     context,
                     '/root_folder',

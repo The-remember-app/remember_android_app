@@ -12,14 +12,21 @@ class FolderDbDS extends AbstractEntity {
   // get isarId => fastHash(id!);
   @Name("id")
   Id get isarId => AbstractEntity.fastHash(uuid) ;
-  @Index(unique: true, replace: true, caseSensitive: false)
+  // @Index(unique: true, replace: true, caseSensitive: false)
   late String uuid;
+  @Name("user_uuid")
+  late String userUuid;
+  @Name("complex_index")
+  @Index(unique: true, replace: true, caseSensitive: false)
+  List<String> get complexIndex => [uuid, userUuid];
+
   late String name;
 
   @Name("author_uuid")
   late String? authorUuid;
-  @Name("user_uuid")
-  late String userUuid;
+  // @Name("user_uuid")
+  // late String userUuid;
+
 
   @Name("root_folder_uuid")
   late String? rootFolderUuid = null;

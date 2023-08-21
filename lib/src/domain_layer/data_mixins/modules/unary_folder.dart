@@ -52,7 +52,9 @@ implements
     if (folderEntity!.rootFolderUuid != null){
       rootFolderEntity = (await conn[ConnType.term]!
           .collection<FolderDbDS>()
-          .getByUuid(folderEntity!.rootFolderUuid!));
+      .getByComplexIndex([folderEntity!.rootFolderUuid!, folderEntity!.userUuid])
+          // .getByUuid(folderEntity!.rootFolderUuid!)
+      );
     }
     this.setState(() => null);
 

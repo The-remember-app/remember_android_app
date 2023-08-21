@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
+import 'package:the_remember/src/repositoris/db_data_source/user.dart';
 
 import '../../../domain_layer/data_mixins/modules/modules.dart';
 import '../../../repositoris/db_data_source/folder.dart';
@@ -122,7 +123,8 @@ class StartModule extends StatefulWidget {
 class StartModuleState extends AbstractUIStatefulWidget<StartModule>
     with
         OpenAndClose3<CollectionSchema<FolderDbDS>,
-            CollectionSchema<ModuleDbDS>, CollectionSchema<TermEntityDbDS>>,
+            CollectionSchema<ModuleDbDS>,
+            CollectionSchema<UserDbDS>>,
         StartModuleDbMixin
     implements
         GetDataFromDbI {
@@ -215,7 +217,7 @@ class StartModuleState extends AbstractUIStatefulWidget<StartModule>
   @override
   void dispose() async {
     // streamSubscription?.cancel();
-    dispose();
+    // dispose();
     super.dispose();
   }
 }

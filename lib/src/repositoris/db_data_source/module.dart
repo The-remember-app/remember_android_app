@@ -22,9 +22,13 @@ part 'module.g.dart';
 @collection
 class ModuleDbDS  extends AbstractEntity {
   @Name("id")
-  Id get isarId => AbstractEntity.fastHash(uuid) ;
-  @Index(unique: true, replace: true, caseSensitive: false)
+  Id get isarId => AbstractEntity.fastHash(uuid + userUuid) ;
   late String uuid;
+  @Name("user_uuid")
+  late String userUuid;
+  @Name("complex_index")
+  @Index(unique: true, replace: true, caseSensitive: false)
+  List<String> get complexIndex => [uuid, userUuid];
   late String name;
   @Name("root_folder_uuid")
   late String? rootFolderUuid;
@@ -55,6 +59,7 @@ class ModuleDbDS  extends AbstractEntity {
 
     return ModuleDbDS()
       ..uuid=data.id!.asString
+      ..userUuid=data.userId!.asString
       ..name=data.name!.asString
       ..rootFolderUuid=data.rootFolderId?.asString
       ..isReverseDefinitionWrite=data.isReverseDefinitionWrite!.asBool
