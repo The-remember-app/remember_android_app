@@ -15,6 +15,7 @@ import 'package:the_remember/src/ui/pages/modules/learning/writeWord.dart';
 import 'package:the_remember/src/ui/pages/modules/learning/writeWordOneMoreTime.dart';
 import 'package:the_remember/src/ui/pages/modules/unary_folder.dart';
 import 'package:the_remember/src/ui/pages/modules/unary_module.dart';
+import 'package:the_remember/src/ui/pages/settings/MyAccountScreen.dart';
 import 'package:uuid/uuid.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:the_remember/src/repositoris/db_data_source/folder.dart';
@@ -37,48 +38,50 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-            create: (context) => UserApiProfile()
-        ),
+        ChangeNotifierProvider(create: (context) => UserApiProfile()),
         // Provider(create: (context) => SomeOtherClass()),
       ],
-      child:  MyApp(),
+      child: MyApp(),
     ),
   );
 }
 
-
 Future<UserDbDS?> getUser(UserApiProfile? userApi) async {
-  if (userApi?.user != null) {
-    return userApi!.user;
+  if (userApi?.user != null && userApi!.user!.active) {
+    return userApi.user;
   } else {
-    await Future.delayed(Duration(seconds: 5));
-    var conn =
-    (await OpenAndClose3.openConnStatic(
-        [CollectionSchema<UserDbDS>, CollectionSchema<HttpUtilsDbDS>,]));
+    // await Future.delayed(Duration(seconds: 5));
+    var conn = (await OpenAndClose3.openConnStatic([
+      CollectionSchema<UserDbDS>,
+      CollectionSchema<HttpUtilsDbDS>,
+    ]));
     var activeUsers = (await conn[ConnType.user]!
         .collection<UserDbDS>()
         .filter()
         .activeEqualTo(true)
         .findAll());
     // TODO: fix me
-    if (true || activeUsers.length > 1) {
+    if (activeUsers.length > 1 || (userApi?.user != null && !userApi!.user!.active)) {
       for (var u in activeUsers) {
         u.active = false;
       }
+      activeUsers += [userApi!.user!, userApi.user!];
       (await conn[ConnType.user]!.writeTxn(() async {
-        (await conn[ConnType.user]!
-            .collection<UserDbDS>().putAll(activeUsers));
-      }
-      )
-      );
+        (await conn[ConnType.user]!.collection<UserDbDS>().putAll(activeUsers));
+      }));
     }
-    var serverUrls = (await conn[ConnType.server_urls]!
-        .collection<HttpUtilsDbDS>()
-        .where()
-        .findAll());
-    await OpenAndClose3.closeConnStatic(conn);
-    networkProcessor([for(var i in serverUrls) i.httpUrl]);
+    // if (userApi?.baseApi == null) {
+    //   var serverUrls = (await conn[ConnType.server_urls]!
+    //       .collection<HttpUtilsDbDS>()
+    //       .where()
+    //       .findAll());
+    //   serverUrls.forEach((element) async { await networkProcessor(element.httpUrl, userApi); });
+    //   // networkProcessor([for (var i in serverUrls) i.httpUrl]);
+    // } else {
+    //
+    // }
+    networkProcessor(userApi);
+    var coro =  OpenAndClose3.closeConnStatic(conn);
 
 
     UserDbDS? currentUser;
@@ -89,12 +92,18 @@ Future<UserDbDS?> getUser(UserApiProfile? userApi) async {
     }
     return currentUser;
   }
-
 }
 
 class UserApiProfile with ChangeNotifier {
   UserDbDS? _user = null;
   ApiPackage? _baseApi = null;
+  Map<String, String> _authHeaders = {};
+
+  Map<String, String> get authHeaders => _authHeaders;
+
+  set authHeaders(Map<String, String> value) {
+    _authHeaders = value;
+  }
 
   ApiPackage? get baseApi => _baseApi;
 
@@ -107,123 +116,126 @@ class UserApiProfile with ChangeNotifier {
   }
 
   set user(UserDbDS? user) {
-    if ( this._user != user) {
+    if (this._user != user) {
       this._user = user;
       notifyListeners();
     }
+  }
+  void userChange(){
+    notifyListeners();
   }
 }
 
 Random random = new Random();
 
-Future<void> initDb() async {
-  await Future.delayed(Duration(seconds: 5));
-  final dir = await getApplicationDocumentsDirectory();
-  final Map<String, String> wordsSet = {
-    "one": 'Один',
-    "two": "два",
-    "three": 'три',
-    "four": "Четыре",
-    "five": "Пять",
-    "six": "шесть",
-    "seven": "семь",
-  };
-
-  var conn = (await OpenAndClose3.openConnStatic([
-    CollectionSchema<FolderDbDS>,
-    CollectionSchema<ModuleDbDS>,
-    CollectionSchema<TermEntityDbDS>,
-  ]));
-
-  conn[ConnType.term]!.writeTxnSync(() {
-    var data = (conn[ConnType.term]!
-            .collection<FolderDbDS>()
-            .filter()
-            .rootFolderUuidIsNull())
-        .findAllSync();
-    var test = (conn[ConnType.term]!
-            .collection<FolderDbDS>()
-            .filter()
-            .rootFolderUuidIsNull())
-        .isEmptySync();
-
-    if (test) {
-      List<FolderDbDS> root_folders = [];
-      for (var i = 0; i < 2; i++) {
-        root_folders.add(FolderDbDS()
-          ..uuid = Uuid().v4()
-          ..name = 'Папка $i'
-          ..rootFolderUuid = null
-          ..rootFolder.value = null);
-      }
-      conn[ConnType.term]!.collection<FolderDbDS>().putAllSync(root_folders);
-
-      List<FolderDbDS> sub_folders = [];
-      var res = conn[ConnType.term]!
-          .collection<FolderDbDS>()
-          .filter()
-          .rootFolderIsNull()
-          .findAllSync();
-      for (var currRootFolder in root_folders) {
-        for (var i = 0; i < 2; i++) {
-          sub_folders.add(FolderDbDS()
-            ..uuid = Uuid().v4()
-            ..name = '${currRootFolder.name}_$i'
-            ..rootFolderUuid = currRootFolder.uuid
-            ..rootFolder.value = currRootFolder);
-        }
-      }
-
-      conn[ConnType.term]!.collection<FolderDbDS>().putAllSync(sub_folders);
-
-      List<ModuleDbDS> modules = [];
-      // var = ;
-      for (var currFolder in <FolderDbDS?>[null] + root_folders + sub_folders) {
-        modules.add(ModuleDbDS()
-          ..uuid = (Uuid()).v4()
-          ..name = 'Модуль из ${currFolder?.name ?? "корневой папки"}'
-          ..rootFolderUuid = currFolder?.uuid
-          ..rootFolder.value = currFolder
-          ..personalUpdatedAt = DateTime.now()
-          ..personalCreatedAt = DateTime.now());
-      }
-
-      conn[ConnType.term]!.collection<ModuleDbDS>().putAllSync(modules);
-
-      List<TermEntityDbDS> terms = [];
-      for (var currModule in modules) {
-        for (var keyValWord in wordsSet.entries) {
-          terms.add(TermEntityDbDS()
-            ..uuid = Uuid().v4()
-            ..term = keyValWord.key
-            ..definition = keyValWord.value
-            ..moduleUuid = currModule.uuid
-            ..chooseErrorCounter = 0
-            ..writeErrorCounter = 0
-            ..choisceNegErrorCounter = 0
-            ..module.value = currModule
-            ..personalUpdatedAt = DateTime.now()
-            ..personalCreatedAt = DateTime.now());
-        }
-      }
-
-      conn[ConnType.term]!.collection<TermEntityDbDS>().putAllSync(terms);
-    }
-    var res12 = conn[ConnType.term]!
-        .collection<FolderDbDS>()
-        .filter()
-        .rootFolderIsNull()
-        .findAllSync();
-    print(res12);
-  });
-  var res1 = conn[ConnType.term]!
-      .collection<FolderDbDS>()
-      .filter()
-      .rootFolderIsNull()
-      .findAllSync();
-  print(res1);
-  await OpenAndClose3.closeConnStatic(conn);
-}
+// Future<void> initDb() async {
+//   await Future.delayed(Duration(seconds: 5));
+//   final dir = await getApplicationDocumentsDirectory();
+//   final Map<String, String> wordsSet = {
+//     "one": 'Один',
+//     "two": "два",
+//     "three": 'три',
+//     "four": "Четыре",
+//     "five": "Пять",
+//     "six": "шесть",
+//     "seven": "семь",
+//   };
+//
+//   var conn = (await OpenAndClose3.openConnStatic([
+//     CollectionSchema<FolderDbDS>,
+//     CollectionSchema<ModuleDbDS>,
+//     CollectionSchema<TermEntityDbDS>,
+//   ]));
+//
+//   conn[ConnType.term]!.writeTxnSync(() {
+//     var data = (conn[ConnType.term]!
+//             .collection<FolderDbDS>()
+//             .filter()
+//             .rootFolderUuidIsNull())
+//         .findAllSync();
+//     var test = (conn[ConnType.term]!
+//             .collection<FolderDbDS>()
+//             .filter()
+//             .rootFolderUuidIsNull())
+//         .isEmptySync();
+//
+//     if (test) {
+//       List<FolderDbDS> root_folders = [];
+//       for (var i = 0; i < 2; i++) {
+//         root_folders.add(FolderDbDS()
+//           ..uuid = Uuid().v4()
+//           ..name = 'Папка $i'
+//           ..rootFolderUuid = null
+//           ..rootFolder.value = null);
+//       }
+//       conn[ConnType.term]!.collection<FolderDbDS>().putAllSync(root_folders);
+//
+//       List<FolderDbDS> sub_folders = [];
+//       var res = conn[ConnType.term]!
+//           .collection<FolderDbDS>()
+//           .filter()
+//           .rootFolderIsNull()
+//           .findAllSync();
+//       for (var currRootFolder in root_folders) {
+//         for (var i = 0; i < 2; i++) {
+//           sub_folders.add(FolderDbDS()
+//             ..uuid = Uuid().v4()
+//             ..name = '${currRootFolder.name}_$i'
+//             ..rootFolderUuid = currRootFolder.uuid
+//             ..rootFolder.value = currRootFolder);
+//         }
+//       }
+//
+//       conn[ConnType.term]!.collection<FolderDbDS>().putAllSync(sub_folders);
+//
+//       List<ModuleDbDS> modules = [];
+//       // var = ;
+//       for (var currFolder in <FolderDbDS?>[null] + root_folders + sub_folders) {
+//         modules.add(ModuleDbDS()
+//           ..uuid = (Uuid()).v4()
+//           ..name = 'Модуль из ${currFolder?.name ?? "корневой папки"}'
+//           ..rootFolderUuid = currFolder?.uuid
+//           ..rootFolder.value = currFolder
+//           ..personalUpdatedAt = DateTime.now()
+//           ..personalCreatedAt = DateTime.now());
+//       }
+//
+//       conn[ConnType.term]!.collection<ModuleDbDS>().putAllSync(modules);
+//
+//       List<TermEntityDbDS> terms = [];
+//       for (var currModule in modules) {
+//         for (var keyValWord in wordsSet.entries) {
+//           terms.add(TermEntityDbDS()
+//             ..uuid = Uuid().v4()
+//             ..term = keyValWord.key
+//             ..definition = keyValWord.value
+//             ..moduleUuid = currModule.uuid
+//             ..chooseErrorCounter = 0
+//             ..writeErrorCounter = 0
+//             ..choisceNegErrorCounter = 0
+//             ..module.value = currModule
+//             ..personalUpdatedAt = DateTime.now()
+//             ..personalCreatedAt = DateTime.now());
+//         }
+//       }
+//
+//       conn[ConnType.term]!.collection<TermEntityDbDS>().putAllSync(terms);
+//     }
+//     var res12 = conn[ConnType.term]!
+//         .collection<FolderDbDS>()
+//         .filter()
+//         .rootFolderIsNull()
+//         .findAllSync();
+//     print(res12);
+//   });
+//   var res1 = conn[ConnType.term]!
+//       .collection<FolderDbDS>()
+//       .filter()
+//       .rootFolderIsNull()
+//       .findAllSync();
+//   print(res1);
+//   await OpenAndClose3.closeConnStatic(conn);
+// }
 
 // В Flutter все является виджетом (кнопки,списки, текст и т.д.)
 // виджет - это отдельный компонент, который может быть отрисован
@@ -238,7 +250,11 @@ class MyApp extends StatelessWidget {
     // позволяет настроить тему и использовать
     // Material Design для разработки.
 
-    return MaterialApp(
+    return
+      // Consumer<UserApiProfile>(
+      //   builder: (context, userApi, child)=>
+
+      MaterialApp(
         // заголовок приложения
         // обычно виден, когда мы сворачиваем приложение
         title: 'Json Placeholder App',
@@ -319,10 +335,15 @@ class MyApp extends StatelessWidget {
           } else if (settings.name == '/login_screen') {
             return MaterialPageRoute(
               settings: settings,
-              builder: (context) =>
-                  LoginScreen(),
+              builder: (context) => LoginScreen(),
+            );
+          } else if (settings.name == '/my_account') {
+            return MaterialPageRoute(
+              settings: settings,
+              builder: (context) => MyAccountScreen(),
             );
           }
         });
+      // );
   }
 }

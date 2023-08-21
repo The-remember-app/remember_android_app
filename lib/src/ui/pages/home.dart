@@ -24,7 +24,9 @@ import 'modules/modules.dart';
 class StatefulWrapper extends StatefulWidget {
   final Function onInit;
   final Widget child;
+
   const StatefulWrapper({required this.onInit, required this.child});
+
   @override
   _StatefulWrapperState createState() => _StatefulWrapperState();
 }
@@ -44,10 +46,9 @@ class _StatefulWrapperState extends State<StatefulWrapper> {
   }
 }
 
-
 class HomePage extends StatefulWidget {
+  HomePage() : super();
 
-  HomePage(): super();
   // StatefulWidget должен возвращать класс,
   // которые наследуется от State
   @override
@@ -62,8 +63,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends AbstractUIStatefulWidget<HomePage>
     with
         OpenAndClose3<CollectionSchema<UserDbDS>,
-            CollectionSchema<HttpUtilsDbDS>,
-            CollectionSchema<AbstractEntity>>,
+            CollectionSchema<HttpUtilsDbDS>, CollectionSchema<AbstractEntity>>,
         StartLoginingScreenDbMixin
     implements
         GetDataFromDbI {
@@ -75,69 +75,102 @@ class _HomePageState extends AbstractUIStatefulWidget<HomePage>
       dbWorkCallback!(context);
     }
 
-
     // В большинстве случаев Scaffold используется,
     // как корневой виджет для страницы или экрана
     // Scaffold позволяет вам указать AppBar, BottomNavigationBar,
     // Drawer, FloatingActionButton и другие не менее важные
     // компоненты (виджеты).
+    // var userApi =  Provider.of<UserApiProfile>(context, listen: false);
+    String? lastRoute = null;
+    return
+      Consumer<UserApiProfile>(builder: (context, userApi, child) {
+      // Future _future = getUser(userApi);
+        Future _future = getUser(userApi);
+      return
+        StatefulWrapper(
+          onInit: () {
+            //FirebaseNotifications().setUpFirebase();
+          },
+          child: FutureBuilder<UserDbDS?>(
+            future: _future.then((value) async {
+              // var pr = Provider.of<UserApiProfile>(context, listen: false);
+              var oldUser = userApi.user;
+              userApi.user = value;
+              // if (oldUser != value) {
+              print(lastRoute ?? "no lastRoute");
+                if (value == null && lastRoute != '/login_screen') {
+                  print(11111111);
+                  lastRoute = '/login_screen';
+                  await Navigator.pushNamed(
+                    context,
+                    '/login_screen',
+                    arguments: Map<String, dynamic>(),
+                  );
+                } else if (value != null && lastRoute != '/root_folder')  {
+                  print(22222222);
+                  lastRoute = '/root_folder';
+                  await Navigator.pushNamed(
+                    context,
+                    '/root_folder',
+                    arguments: Map<String, dynamic>(),
+                  );
+                }
+              // }
+              print(lastRoute ?? "no lastRoute");
 
-    return Consumer<UserApiProfile>(
-        builder: (context, userApi, child) {
-          Future _future = getUser(userApi);
+              return value;
+            }),
+            builder: (context, AsyncSnapshot<UserDbDS?> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.error != null) {
+                  return Text(snapshot.error.toString());
+                }
 
-
-          return StatefulWrapper(
-              onInit: () {
-                //FirebaseNotifications().setUpFirebase();
-              },
-              child: FutureBuilder<UserDbDS?>(
-                future: _future.then(
-                        (value) =>
-                    Provider
-                        .of<UserApiProfile>(context, listen: false)
-                        .user = value
-                ),
-                builder: (context, AsyncSnapshot<UserDbDS?> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.error != null) {
-                      return Text(snapshot.error.toString());
-                    }
-
-
-                    if (snapshot.hasData) {
-                      return StartModule();
-                    } else {
-                      return LoginScreen();
-                    }
-                  } else {
-                    return Scaffold(
-                      appBar: AppBar(),
-                      body: Container(),
-                    );
-                  }
-                },
-              ));
-        });
+                if (snapshot.hasData) {
+                  // Navigator.pushNamed(
+                  //   context,
+                  //   '/root_folder',
+                  //   arguments: Map<String, dynamic>(),
+                  // );
+                  print(22222222444444444);
+                  return StartModule();
+                } else {
+                  // Navigator.pushNamed(
+                  //   context,
+                  //   '/login_screen',
+                  //   arguments: Map<String, dynamic>(),
+                  // );
+                  print(111111113333333333);
+                  return LoginScreen();
+                }
+              } else {
+                return Scaffold(
+                  appBar: AppBar(),
+                  body: Container(),
+                );
+              }
+            },
+          ));
+    });
   }
 }
 
-    // return Scaffold(
-    //     // мы создаем AppBar с текстом "Home Page"
-    //     appBar: AppBar(title: Text("Home page")),
-    //     // указываем текст в качестве тела Scaffold
-    //     // текст предварительно вложен в Center виджет,
-    //     // чтобы выровнять его по центру
-    //     body: Center(
-    //         child: Text(
-    //       "Hello, JSON Placeholder!!!",
-    //       // Также выравниваем текст внутри самого виджета Text
-    //       textAlign: TextAlign.center,
-    //       // Theme.of(context) позволяет получить доступ к
-    //       // текущему ThemeData, который был указан в MaterialApp
-    //       // После получения ThemeData мы можем использовать
-    //       // различные его стили (например headline3, как здесь)
-    //       style: Theme.of(context).textTheme.headline3,
-    //     )));
+// return Scaffold(
+//     // мы создаем AppBar с текстом "Home Page"
+//     appBar: AppBar(title: Text("Home page")),
+//     // указываем текст в качестве тела Scaffold
+//     // текст предварительно вложен в Center виджет,
+//     // чтобы выровнять его по центру
+//     body: Center(
+//         child: Text(
+//       "Hello, JSON Placeholder!!!",
+//       // Также выравниваем текст внутри самого виджета Text
+//       textAlign: TextAlign.center,
+//       // Theme.of(context) позволяет получить доступ к
+//       // текущему ThemeData, который был указан в MaterialApp
+//       // После получения ThemeData мы можем использовать
+//       // различные его стили (например headline3, как здесь)
+//       style: Theme.of(context).textTheme.headline3,
+//     )));
 //   }
 // }

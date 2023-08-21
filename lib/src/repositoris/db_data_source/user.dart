@@ -25,14 +25,14 @@ class UserDbDS extends AbstractEntity {
   late DateTime createdAt;
   @Name("updated_at")
   late DateTime updatedAt;
-  late bool active;
+  late bool active = false;
 
 
 // Folder.genId(name) : this(Uuid(), name);
 //
 // Folder(this.id, this.name);
 
-  static UserDbDS fromJson(UserDTO data, String password){
+  static UserDbDS fromJson(UserDTO data, String password, bool active){
 
     return UserDbDS()
       ..uuid=data.id!.asString
@@ -43,6 +43,7 @@ class UserDbDS extends AbstractEntity {
       ..surname=data.id!.asString
       ..createdAt=DateTime.parse(data.createdAt!.asString)
       ..updatedAt=DateTime.parse(data.updatedAt!.asString)
+      ..active=active
     ;
   }
 }

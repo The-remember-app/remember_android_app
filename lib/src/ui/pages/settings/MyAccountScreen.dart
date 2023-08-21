@@ -1,11 +1,18 @@
 ///File download from FlutterViz- Drag and drop a tools. For more details visit https://flutterviz.io/
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../main.dart';
+import '../../ui_templates/buttom_nav_bar.dart';
 
 class MyAccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Consumer<UserApiProfile>(
+        builder: (context, userApi, child)=>
+
+      Scaffold(
       backgroundColor: Color(0xffffffff),
       appBar: AppBar(
         elevation: 4,
@@ -256,7 +263,17 @@ class MyAccountScreen extends StatelessWidget {
               ],
             ),
             MaterialButton(
-              onPressed: () {},
+              onPressed: () async {
+                userApi.user?.active = false;
+                userApi.authHeaders = Map<String, String>();
+                userApi.userChange();
+                await Navigator.pushNamed(
+                  context,
+                  '/login_screen',
+                  arguments: Map<String, dynamic>(),
+                );
+                // userApi.user = null;
+              },
               color: Color(0x343a57e8),
               elevation: 0,
               shape: RoundedRectangleBorder(
@@ -278,6 +295,8 @@ class MyAccountScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
+      bottomNavigationBar: MainBottomNavigationBar(),
+    )
+  );
   }
 }

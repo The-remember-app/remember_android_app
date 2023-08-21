@@ -40,13 +40,13 @@ implements
     this.setState(() => null);
   }
 
-  @override
-  void dispose() async {
-    // TODO: implement dispose
-
-    closeConn();
-    // super.dispose();
-  }
+  // @override
+  // void dispose() async {
+  //   // TODO: implement dispose
+  //
+  //   // closeConn();
+  //   // super.dispose();
+  // }
 
 
 }
