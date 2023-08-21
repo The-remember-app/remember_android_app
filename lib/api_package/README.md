@@ -79,7 +79,7 @@ Class | Method | HTTP request | Description
 [*SentenceEntitiesApi*](doc/SentenceEntitiesApi.md) | [**getAllTermSentenceAllGet**](doc/SentenceEntitiesApi.md#getalltermsentenceallget) | **GET** /sentence/all | Get All Term
 [*SentenceEntitiesApi*](doc/SentenceEntitiesApi.md) | [**getOneTermSentenceSentenceIdGet**](doc/SentenceEntitiesApi.md#getonetermsentencesentenceidget) | **GET** /sentence/{sentence_id} | Get One Term
 [*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**createTermTermCreatePost**](doc/TermEntitiesApi.md#createtermtermcreatepost) | **POST** /term/create | Create Term
-[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getAllAddTermInfoTermaddInfoAllGet**](doc/TermEntitiesApi.md#getalladdterminfotermaddinfoallget) | **GET** /termadd_info/all | Get All Add Term Info
+[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getAllAddTermInfoTermAddInfoAllGet**](doc/TermEntitiesApi.md#getalladdterminfotermaddinfoallget) | **GET** /term/add_info/all | Get All Add Term Info
 [*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getAllTermTermAllGet**](doc/TermEntitiesApi.md#getalltermtermallget) | **GET** /term/all | Get All Term
 [*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getAllTermTermFromModuleModuleIdGet**](doc/TermEntitiesApi.md#getalltermtermfrommodulemoduleidget) | **GET** /term/from_module/{module_id} | Get All Term
 [*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getOneTermTermTermIdGet**](doc/TermEntitiesApi.md#getonetermtermtermidget) | **GET** /term/{term_id} | Get One Term

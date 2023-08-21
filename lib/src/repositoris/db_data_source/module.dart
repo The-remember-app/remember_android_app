@@ -22,7 +22,7 @@ part 'module.g.dart';
 @collection
 class ModuleDbDS  extends AbstractEntity {
   @Name("id")
-  Id get isarId => AbstractEntity.fastHash(uuid + userUuid) ;
+  Id get isarId => AbstractEntity.fastHash(complexIndex.join("")) ;
   late String uuid;
   @Name("user_uuid")
   late String userUuid;

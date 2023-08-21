@@ -11,7 +11,7 @@ part 'folder.g.dart';
 class FolderDbDS extends AbstractEntity {
   // get isarId => fastHash(id!);
   @Name("id")
-  Id get isarId => AbstractEntity.fastHash(uuid) ;
+  Id get isarId => AbstractEntity.fastHash(complexIndex.join("")) ;
   // @Index(unique: true, replace: true, caseSensitive: false)
   late String uuid;
   @Name("user_uuid")

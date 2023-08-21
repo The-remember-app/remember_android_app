@@ -34,7 +34,7 @@ abstract class AdditionalTermInfoDTO implements Built<AdditionalTermInfoDTO, Add
   JsonObject? get dialectOrArea;
 
   @BuiltValueField(wireName: r'add_info_type')
-  AddInfoTypeEnum get addInfoType;
+  JsonObject? get addInfoType;
   // enum addInfoTypeEnum {  usual_term,  other_form,  help_phrase_with_word,  help_phrase_without_word,  abbreviation,  composite_word,  sound,  transcription,  };
 
   @BuiltValueField(wireName: r'parent_add_info_id')
@@ -58,7 +58,7 @@ abstract class AdditionalTermInfoDTO implements Built<AdditionalTermInfoDTO, Add
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AdditionalTermInfoDTOBuilder b) => b
-      ..addInfoType;
+      ..addInfoType = null;
 
   @BuiltValueSerializer(custom: true)
   static Serializer<AdditionalTermInfoDTO> get serializer => _$AdditionalTermInfoDTOSerializer();
@@ -171,9 +171,9 @@ class _$AdditionalTermInfoDTOSerializer implements PrimitiveSerializer<Additiona
         case r'add_info_type':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(AddInfoTypeEnum),
-          ) as AddInfoTypeEnum;
-          result.addInfoType;
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          result.addInfoType = valueDes;
           break;
         case r'parent_add_info_id':
           final valueDes = serializers.deserialize(

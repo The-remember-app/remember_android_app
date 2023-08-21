@@ -40,7 +40,7 @@ abstract class CreateModuleAsTreeDTO implements Built<CreateModuleAsTreeDTO, Cre
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateModuleAsTreeDTOBuilder b) => b
-      ..description
+      ..description = JsonObject("")
       ..subTerms = JsonObject(<JsonObject?>[]);
 
   @BuiltValueSerializer(custom: true)

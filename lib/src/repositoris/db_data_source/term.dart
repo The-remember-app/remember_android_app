@@ -1,12 +1,12 @@
 
 import 'package:isar/isar.dart';
+import 'package:the_remember/src/repositoris/db_data_source/term_adding_info.dart';
 import 'package:uuid/uuid.dart';
 
 
 import '../../../api_package/lib/api_package.dart';
 import '../../../main.dart';
 import '../../urils/db/abstract_entity.dart';
-import 'folder.dart';
 import 'module.dart';
 
 part 'term.g.dart';
@@ -17,7 +17,7 @@ part 'term.g.dart';
 @collection
 class TermEntityDbDS  extends AbstractEntity  {
   @Name("id")
-  Id get isarId => AbstractEntity.fastHash(uuid) ;
+  Id get isarId => AbstractEntity.fastHash(complexIndex.join("")) ;
   // @Index(unique: true, replace: true, caseSensitive: false)
   late String uuid;
   @Name("user_uuid")
@@ -51,7 +51,9 @@ class TermEntityDbDS  extends AbstractEntity  {
   late bool? _reverseChoice = null;
 
   final module = IsarLink<ModuleDbDS>();
-
+  @Backlink(to: 'termEntity')
+  @Name("adding_info_entity")
+  final addInfoEntities = IsarLinks<TermAddingInfoDbDS>();
 
   void updateReverseWrite(){
     _reverseChoice = null;

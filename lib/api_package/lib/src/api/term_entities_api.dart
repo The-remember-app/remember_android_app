@@ -135,7 +135,7 @@ class TermEntitiesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [JsonObject] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<JsonObject>> getAllAddTermInfoTermaddInfoAllGet({ 
+  Future<Response<JsonObject>> getAllAddTermInfoTermAddInfoAllGet({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -143,7 +143,7 @@ class TermEntitiesApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/termadd_info/all';
+    final _path = r'/term/add_info/all';
     final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{

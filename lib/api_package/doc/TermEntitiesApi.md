@@ -10,7 +10,7 @@ All URIs are relative to *http://localhost*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**createTermTermCreatePost**](TermEntitiesApi.md#createtermtermcreatepost) | **POST** /term/create | Create Term
-[**getAllAddTermInfoTermaddInfoAllGet**](TermEntitiesApi.md#getalladdterminfotermaddinfoallget) | **GET** /termadd_info/all | Get All Add Term Info
+[**getAllAddTermInfoTermAddInfoAllGet**](TermEntitiesApi.md#getalladdterminfotermaddinfoallget) | **GET** /term/add_info/all | Get All Add Term Info
 [**getAllTermTermAllGet**](TermEntitiesApi.md#getalltermtermallget) | **GET** /term/all | Get All Term
 [**getAllTermTermFromModuleModuleIdGet**](TermEntitiesApi.md#getalltermtermfrommodulemoduleidget) | **GET** /term/from_module/{module_id} | Get All Term
 [**getOneTermTermTermIdGet**](TermEntitiesApi.md#getonetermtermtermidget) | **GET** /term/{term_id} | Get One Term
@@ -59,8 +59,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getAllAddTermInfoTermaddInfoAllGet**
-> JsonObject getAllAddTermInfoTermaddInfoAllGet()
+# **getAllAddTermInfoTermAddInfoAllGet**
+> JsonObject getAllAddTermInfoTermAddInfoAllGet()
 
 Get All Add Term Info
 
@@ -73,10 +73,10 @@ import 'package:api_package/api.dart';
 final api = ApiPackage().getTermEntitiesApi();
 
 try {
-    final response = api.getAllAddTermInfoTermaddInfoAllGet();
+    final response = api.getAllAddTermInfoTermAddInfoAllGet();
     print(response);
 } catch on DioException (e) {
-    print('Exception when calling TermEntitiesApi->getAllAddTermInfoTermaddInfoAllGet: $e\n');
+    print('Exception when calling TermEntitiesApi->getAllAddTermInfoTermAddInfoAllGet: $e\n');
 }
 ```
 

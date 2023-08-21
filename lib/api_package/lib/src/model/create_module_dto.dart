@@ -32,7 +32,7 @@ abstract class CreateModuleDTO implements Built<CreateModuleDTO, CreateModuleDTO
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateModuleDTOBuilder b) => b
-      ..description;
+      ..description = JsonObject("");
 
   @BuiltValueSerializer(custom: true)
   static Serializer<CreateModuleDTO> get serializer => _$CreateModuleDTOSerializer();

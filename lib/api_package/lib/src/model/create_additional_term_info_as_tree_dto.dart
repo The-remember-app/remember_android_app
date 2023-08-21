@@ -50,7 +50,7 @@ abstract class CreateAdditionalTermInfoAsTreeDTO implements Built<CreateAddition
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateAdditionalTermInfoAsTreeDTOBuilder b) => b
-      ..addInfoType;
+      ..addInfoType = null;
 
   @BuiltValueSerializer(custom: true)
   static Serializer<CreateAdditionalTermInfoAsTreeDTO> get serializer => _$CreateAdditionalTermInfoAsTreeDTOSerializer();
@@ -167,7 +167,7 @@ class _$CreateAdditionalTermInfoAsTreeDTOSerializer implements PrimitiveSerializ
             value,
             specifiedType: const FullType(AddInfoTypeEnum),
           ) as AddInfoTypeEnum;
-          result.addInfoType;
+          result.addInfoType = valueDes.toBuilder();
           break;
         case r'parent_add_info_id':
           final valueDes = serializers.deserialize(

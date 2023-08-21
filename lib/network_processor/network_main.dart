@@ -11,6 +11,7 @@ import 'package:the_remember/src/repositoris/db_data_source/user.dart';
 import '../main.dart';
 import '../src/repositoris/db_data_source/folder.dart';
 import '../src/repositoris/db_data_source/http_utils.dart';
+import '../src/repositoris/db_data_source/term_adding_info.dart';
 import '../src/urils/db/dbMixins.dart';
 import '../src/urils/db/engine.dart';
 
@@ -68,6 +69,7 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
   late Map<String, FolderDbDS> foldersFromDb;
   late Map<String, ModuleDbDS> modulesFromDb;
   late Map<String, TermEntityDbDS> termsFromDb;
+  late Map<String, TermAddingInfoDbDS> addInfoTermsFromDb;
 
   var coro = (() async {
     await Future.delayed(Duration(seconds: 5));
@@ -75,26 +77,38 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
       CollectionSchema<FolderDbDS>,
       CollectionSchema<ModuleDbDS>,
       CollectionSchema<TermEntityDbDS>,
+      CollectionSchema<TermAddingInfoDbDS>,
     ]));
 
     foldersFromDb = {
       for (var ent in await conn[ConnType.term]!
           .collection<FolderDbDS>()
-          .where()
+          .filter()
+          .userUuidEqualTo(userApi!.user!.uuid)
           .findAll())
         ent.uuid: ent
     };
     modulesFromDb = {
       for (var ent in await conn[ConnType.term]!
           .collection<ModuleDbDS>()
-          .where()
+          .filter()
+          .userUuidEqualTo(userApi.user!.uuid)
           .findAll())
         ent.uuid: ent
     };
     termsFromDb = {
       for (var ent in await conn[ConnType.term]!
           .collection<TermEntityDbDS>()
-          .where()
+          .filter()
+          .userUuidEqualTo(userApi.user!.uuid)
+          .findAll())
+        ent.uuid: ent
+    };
+    addInfoTermsFromDb = {
+      for (var ent in await conn[ConnType.term]!
+          .collection<TermAddingInfoDbDS>()
+          .filter()
+          .userUuidEqualTo(userApi.user!.uuid)
           .findAll())
         ent.uuid: ent
     };
@@ -103,6 +117,8 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
   final foldersCoro = folderApi.getAllFoldersFolderAllGet(headers: authHeaders);
   final modulesCoro = moduleApi.getAllModuleModuleAllGet(headers: authHeaders);
   final termsCoro = termApi.getAllTermTermAllGet(headers: authHeaders);
+  final addInfoCoro =
+      termApi.getAllAddTermInfoTermAddInfoAllGet(headers: authHeaders);
 
   final folders = await foldersCoro;
 
@@ -161,13 +177,16 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
   };
 
   final terms = await termsCoro;
-  var termsToDb = [
-    for (var term in terms.data!.asList)
-      TermEntityDbDS.fromJson(standardSerializers.deserialize(term,
-              specifiedType: const FullType(PersonalizeTermDTO))
-          as PersonalizeTermDTO)
-  ];
-  for (var networkTerm in termsToDb) {
+  var termsToDb = {
+    for (var ent in [
+      for (var term in terms.data!.asList)
+        TermEntityDbDS.fromJson(standardSerializers.deserialize(term,
+                specifiedType: const FullType(PersonalizeTermDTO))
+            as PersonalizeTermDTO)
+    ])
+      ent.uuid: ent
+  };
+  for (var networkTerm in termsToDb.values) {
     networkTerm.module.value = modulesToDb[networkTerm.moduleUuid]!;
     if (termsFromDb[networkTerm.uuid] != null) {
       var dbTerm = termsFromDb[networkTerm.uuid]!;
@@ -181,6 +200,33 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
     }
   }
 
+  final addInfoTerms = await addInfoCoro;
+  var addInfoTermsToDb = {
+    for (var ent in [
+      for (var ait in addInfoTerms.data!.asList)
+        TermAddingInfoDbDS.fromJson(
+            standardSerializers.deserialize(
+                ait,
+                specifiedType: const FullType(AdditionalTermInfoDTO)
+                // ..["add_info_type"]=[ait["add_info_type"]],
+                //     specifiedType: const FullType(AdditionalTermInfoDTO)
+            )
+                as AdditionalTermInfoDTO,
+            userApi.user!.uuid)
+    ])
+      ent.uuid: ent
+  };
+
+  for (var networkAIT in addInfoTermsToDb.values) {
+    networkAIT.termEntity.value = termsToDb[networkAIT.termUuid]!;
+    if (addInfoTermsFromDb[networkAIT.uuid] != null) {
+      var dbAIT = addInfoTermsFromDb[networkAIT.uuid]!;
+      if (networkAIT.updatedAt.isBefore(dbAIT.updatedAt)) {
+        networkAIT = dbAIT;
+      }
+    }
+  }
+
   conn[ConnType.term]!.writeTxnSync(() {
     conn[ConnType.term]!
         .collection<FolderDbDS>()
@@ -188,12 +234,21 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
     conn[ConnType.term]!
         .collection<ModuleDbDS>()
         .putAllSync(modulesToDb.values.toList());
-    conn[ConnType.term]!.collection<TermEntityDbDS>().putAllSync(termsToDb);
+    conn[ConnType.term]!
+        .collection<TermEntityDbDS>()
+        .putAllSync(termsToDb.values.toList());
+    conn[ConnType.term]!
+        .collection<TermAddingInfoDbDS>()
+        .putAllSync(addInfoTermsToDb.values.toList());
   });
   var res1 = conn[ConnType.term]!
       .collection<FolderDbDS>()
       .filter()
       .rootFolderIsNull()
+      .findAllSync();
+  var res2 = conn[ConnType.term]!
+      .collection<TermAddingInfoDbDS>()
+      .where()
       .findAllSync();
   print(res1);
 
@@ -334,21 +389,16 @@ Future<void> loginUser(
       var serverUrlsEntities = [
         for (var i in serverUrls) HttpUtilsDbDS()..httpUrl = i
       ];
-      conn[ConnType.server_urls]!.writeTxnSync(
-              ()  =>
-          conn[ConnType.server_urls]!
-              .collection<HttpUtilsDbDS>()
-              .putAllSync(serverUrlsEntities)
-      );
+      conn[ConnType.server_urls]!.writeTxnSync(() => conn[ConnType.server_urls]!
+          .collection<HttpUtilsDbDS>()
+          .putAllSync(serverUrlsEntities));
 
       // serverUrls = [for (var i in serverUrlsEntities) i.httpUrl];
 
       await OpenAndClose3.closeConnStatic(conn);
     }
-    serverUrls.forEach(
-            (url) async => await testServerUrl(
-        url, goodUrlFounded, username, password, userApi, onErrorCallback
-            ));
+    serverUrls.forEach((url) async => await testServerUrl(
+        url, goodUrlFounded, username, password, userApi, onErrorCallback));
   } else if (userApi?.authHeaders == null ||
       (userApi?.authHeaders != null && userApi!.authHeaders.isEmpty)) {
     await getAuthHeaders(await userApi!.baseApi!.getAuthApi(), "<unnamed>",
