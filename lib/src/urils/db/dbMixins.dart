@@ -1,6 +1,8 @@
 import 'package:isar/isar.dart';
+import 'package:the_remember/src/repositoris/db_data_source/user.dart';
 
 import '../../repositoris/db_data_source/folder.dart';
+import '../../repositoris/db_data_source/http_utils.dart';
 import '../../repositoris/db_data_source/module.dart';
 import '../../repositoris/db_data_source/term.dart';
 import 'abstract_entity.dart';
@@ -63,6 +65,8 @@ T3 extends CollectionSchema<AbstractEntity>
         const (CollectionSchema<FolderDbDS>) => ConnType.folder,
         const (CollectionSchema<ModuleDbDS>) => ConnType.module,
         const (CollectionSchema<TermEntityDbDS>) => ConnType.term,
+        const (CollectionSchema<UserDbDS>) => ConnType.user,
+        const (CollectionSchema<HttpUtilsDbDS>) => ConnType.server_urls,
         const (CollectionSchema<AbstractEntity>) => null,
         _ => throw 'this type is not in in switch construction!',
       };

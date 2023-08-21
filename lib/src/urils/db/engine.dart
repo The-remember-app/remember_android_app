@@ -2,13 +2,15 @@ import 'dart:async';
 
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:the_remember/src/repositoris/db_data_source/user.dart';
 
 import '../../repositoris/db_data_source/folder.dart';
+import '../../repositoris/db_data_source/http_utils.dart';
 import '../../repositoris/db_data_source/module.dart';
 import '../../repositoris/db_data_source/term.dart';
 
 enum ConnType {
-  module, folder, term
+  module, folder, term, user, server_urls
 }
 
 class IzarManager  {
@@ -61,7 +63,12 @@ class IzarManager  {
     //   ConnType.term => _openIsar('term', [TermEntityDbDSSchema, ModuleDbDSSchema, FolderDbDSSchema]),
     //   ConnType.folder => _openIsar('folder', [TermEntityDbDSSchema, ModuleDbDSSchema, FolderDbDSSchema] ),
     // };
-    return _openIsar('term', [TermEntityDbDSSchema, ModuleDbDSSchema, FolderDbDSSchema]);
+    return _openIsar('term',
+        [TermEntityDbDSSchema,
+          ModuleDbDSSchema,
+          FolderDbDSSchema,
+          UserDbDSSchema,
+          HttpUtilsDbDSSchema]);
 
 
   }

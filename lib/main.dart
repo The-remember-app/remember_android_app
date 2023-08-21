@@ -1,9 +1,14 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
+import 'package:the_remember/src/repositoris/db_data_source/http_utils.dart';
+import 'package:the_remember/src/repositoris/db_data_source/user.dart';
+import 'package:the_remember/src/ui/pages/home.dart';
+import 'package:the_remember/src/ui/pages/login/LoginScreen.dart';
 import 'package:the_remember/src/ui/pages/modules/learning/choiceWord.dart';
 import 'package:the_remember/src/ui/pages/modules/learning/learn_finished.dart';
 import 'package:the_remember/src/ui/pages/modules/learning/writeWord.dart';
@@ -18,16 +23,95 @@ import 'package:the_remember/src/repositoris/db_data_source/term.dart';
 import 'package:the_remember/src/ui/pages/modules/modules.dart';
 import 'package:the_remember/src/urils/db/dbMixins.dart';
 import 'package:the_remember/src/urils/db/engine.dart';
+import 'package:provider/provider.dart';
 
+import 'api_package/lib/api_package.dart';
 import 'network_processor/network_main.dart';
 
 // main() является главной функцией с которой начинается
 // выполнение приложения
 // возвращает виджет приложения
 void main() async {
-  initDb().whenComplete(() => null);
-  networkProcessor().whenComplete(() => null);
-  runApp(MyApp());
+  // initDb().whenComplete(() => null);
+  // networkProcessor().whenComplete(() => null);
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (context) => UserApiProfile()
+        ),
+        // Provider(create: (context) => SomeOtherClass()),
+      ],
+      child:  MyApp(),
+    ),
+  );
+}
+
+
+Future<UserDbDS?> getUser(UserApiProfile? userApi) async {
+  if (userApi?.user != null) {
+    return userApi!.user;
+  } else {
+    await Future.delayed(Duration(seconds: 5));
+    var conn =
+    (await OpenAndClose3.openConnStatic(
+        [CollectionSchema<UserDbDS>, CollectionSchema<HttpUtilsDbDS>,]));
+    var activeUsers = (await conn[ConnType.user]!
+        .collection<UserDbDS>()
+        .filter()
+        .activeEqualTo(true)
+        .findAll());
+    // TODO: fix me
+    if (true || activeUsers.length > 1) {
+      for (var u in activeUsers) {
+        u.active = false;
+      }
+      (await conn[ConnType.user]!.writeTxn(() async {
+        (await conn[ConnType.user]!
+            .collection<UserDbDS>().putAll(activeUsers));
+      }
+      )
+      );
+    }
+    var serverUrls = (await conn[ConnType.server_urls]!
+        .collection<HttpUtilsDbDS>()
+        .where()
+        .findAll());
+    await OpenAndClose3.closeConnStatic(conn);
+    networkProcessor([for(var i in serverUrls) i.httpUrl]);
+
+
+    UserDbDS? currentUser;
+    if (activeUsers.isEmpty || activeUsers.length > 1) {
+      currentUser = null;
+    } else {
+      currentUser = activeUsers[0];
+    }
+    return currentUser;
+  }
+
+}
+
+class UserApiProfile with ChangeNotifier {
+  UserDbDS? _user = null;
+  ApiPackage? _baseApi = null;
+
+  ApiPackage? get baseApi => _baseApi;
+
+  set baseApi(ApiPackage? value) {
+    _baseApi = value;
+  }
+
+  UserDbDS? get user {
+    return _user;
+  }
+
+  set user(UserDbDS? user) {
+    if ( this._user != user) {
+      this._user = user;
+      notifyListeners();
+    }
+  }
 }
 
 Random random = new Random();
@@ -163,7 +247,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         // указываем исходную страницу, которую мы создадим позже
-        home: StartModule(),
+        home: HomePage(),
         onUnknownRoute: (settings) {
           return MaterialPageRoute(builder: (context) {
             return StartModule();
@@ -231,6 +315,12 @@ class MyApp extends StatelessWidget {
                 args["userInput"] as String,
                 args["reverseTerm"] as bool,
               ),
+            );
+          } else if (settings.name == '/login_screen') {
+            return MaterialPageRoute(
+              settings: settings,
+              builder: (context) =>
+                  LoginScreen(),
             );
           }
         });

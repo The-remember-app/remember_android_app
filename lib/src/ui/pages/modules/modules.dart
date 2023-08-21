@@ -4,15 +4,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../domain_layer/data_mixins/modules/modules.dart';
 import '../../../repositoris/db_data_source/folder.dart';
 import '../../../repositoris/db_data_source/module.dart';
 import '../../../repositoris/db_data_source/term.dart';
-import '../../../urils/db/abstract_entity.dart';
 import '../../../urils/db/dbMixins.dart';
-import '../../ui_states/modules/unary_folder.dart';
 import 'unary_folder.dart';
 import 'unary_module.dart';
 import '../../ui_templates/abstract_ui.dart';
