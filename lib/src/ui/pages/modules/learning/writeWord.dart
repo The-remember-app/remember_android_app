@@ -76,7 +76,13 @@ class WriteWord extends StatelessWidget {
           if (details.delta.dx < 0) {
             // if (buttonPressed.values.any((isClicked) => isClicked)) {
             var nextPage = await getNextLearnPage(
-                moduleEntity, currTermsList, progress, inputWord, true);
+                moduleEntity,
+                currTermList: currTermsList,
+                progress: progress,
+                InputedWord: inputWord,
+                showPostScreen: true,
+                context: context
+            );
             await nextPage(context);
             // Navigator.push(
             //     context,
@@ -159,7 +165,13 @@ class WriteWord extends StatelessWidget {
                       wordEntity.maybeReverseDefinitionWrite.toLowerCase()) {
                     // words[wordId]?.write_error_counter -= 1;
                     var nextPage = await getNextLearnPage(
-                        moduleEntity, currTermsList, progress, inputWord, false);
+                        moduleEntity,
+                      currTermList: currTermsList,
+                      progress: progress,
+                      InputedWord: inputWord,
+                      showPostScreen: false,
+                        context: context,
+                    );
                     await nextPage(context);
                     // Navigator.push(
                     //     context,
@@ -249,9 +261,12 @@ class WriteWord extends StatelessWidget {
                           onPressed: () async {
                             var nextPage = await getNextLearnPage(
                                 moduleEntity,
-                                currTermsList,
-                                progress,
-                                inputWord, true);
+                                currTermList: currTermsList,
+                                progress: progress,
+                                InputedWord: inputWord,
+                                showPostScreen: true,
+                              context: context,
+                            );
                             await nextPage(context);
                             // Navigator.push(
                             //     context,

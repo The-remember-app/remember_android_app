@@ -118,7 +118,7 @@ class LearnCompleted extends StatelessWidget {
                             onPressed: () async {
                               await startLearning(moduleEntity.isarId);
                               var nextPage =
-                                  await getNextLearnPage(moduleEntity);
+                                  await getNextLearnPage(moduleEntity, context: context,);
                               await nextPage(context);
                               // Navigator.push(
                               //     context,

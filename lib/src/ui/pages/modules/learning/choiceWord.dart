@@ -23,7 +23,7 @@ Padding getDefinitionVariable(TermEntityDbDS wordEntity, BuildContext context,
       wordEntity.chooseErrorCounter -= 1;
     } else {
       buttonColor = Color(0xffff0000);
-      wordEntity.choisceNegErrorCounter += 1;
+      wordEntity.choiceNegErrorCounter += 1;
     }
   } else {
     if (wordEntity.isarId == targetTermEntity.isarId &&
@@ -174,7 +174,12 @@ class _ChoiceWordState extends State<ChoiceWord> {
               if (details.delta.dx < 0) {
                 if (buttonPressed.values.any((isClicked) => isClicked)) {
                   var nextPage = await getNextLearnPage(
-                      moduleEntity, currTermsList, progress);
+                      moduleEntity,
+                      currTermList: currTermsList,
+                      progress: progress,
+                      context: context
+
+                  );
                   await nextPage(context);
                   // Navigator.push(
                   //     context,
@@ -284,8 +289,9 @@ class _ChoiceWordState extends State<ChoiceWord> {
                                     .any((isClicked) => isClicked)) {
                                   var nextPage = await getNextLearnPage(
                                     moduleEntity,
-                                    currTermsList,
-                                    progress,
+                                    currTermList: currTermsList,
+                                    progress: progress,
+                                    context: context,
                                   );
                                   await nextPage(context);
                                   // Navigator.push(

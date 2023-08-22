@@ -4,8 +4,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../../main.dart';
 import '../../../domain_layer/data_mixins/modules/unary_module.dart';
 import '../../../domain_layer/functions/words_BO.dart';
 import '../../../repositoris/db_data_source/folder.dart';
@@ -23,13 +25,15 @@ import 'modules.dart';
 
 // Future<Widget>
 
-Future<Function(BuildContext)> getNextLearnPage(ModuleDbDS moduleEntity, [
-  List<TermEntityDbDS>? currTermList = null,
-  int progress = -1,
-  // List<int>? currTermIdList = null,
-  String? InputedWord = null,
-  bool? showPostScreen = null,
-]) async {
+Future<Function(BuildContext)> getNextLearnPage(
+    ModuleDbDS moduleEntity, {
+      List<TermEntityDbDS>? currTermList = null,
+      int progress = -1,
+      // List<int>? currTermIdList = null,
+      String? InputedWord = null,
+      bool? showPostScreen = null,
+      BuildContext? context = null,
+    }) async {
   // return choiceWord;
   // if (currTermList == null){
   if (showPostScreen ?? false) {
@@ -60,7 +64,8 @@ Future<Function(BuildContext)> getNextLearnPage(ModuleDbDS moduleEntity, [
   }
 
   if (currTermList.isEmpty) {
-    await learnTransactionCompleted(currTermList);
+    var pr = Provider.of<UserApiProfile>(context!, listen: false);
+    await learnTransactionCompleted(currTermList, pr);
     // return LearnCompleted(moduleEntity);
     return (BuildContext context) =>
         Navigator.pushNamed(
@@ -89,7 +94,8 @@ Future<Function(BuildContext)> getNextLearnPage(ModuleDbDS moduleEntity, [
       }
       lastWord?.resetReverse();
     }
-    await learnTransactionCompleted(currTermList);
+    var pr = Provider.of<UserApiProfile>(context!, listen: false);
+    await learnTransactionCompleted(currTermList, pr);
     return (BuildContext context) =>
         Navigator.pushNamed(
           context,
@@ -338,7 +344,7 @@ class _UnaryModuleState extends AbstractUIStatefulWidget<UnaryModule>
           onPressed: () async {
             if (currentModuleEntity != null) {
               await startLearning(currentModuleEntity.isarId);
-              var nextPage = await getNextLearnPage(currentModuleEntity);
+              var nextPage = await getNextLearnPage(currentModuleEntity, context: context);
               await nextPage(context);
               // Navigator.push(context,
               //     MaterialPageRoute(builder: (context) => nextPage));
@@ -369,7 +375,7 @@ class _UnaryModuleState extends AbstractUIStatefulWidget<UnaryModule>
         child: MaterialButton(
           onPressed: () async {
             if (currentModuleEntity != null) {
-              var nextPage = await getNextLearnPage(currentModuleEntity);
+              var nextPage = await getNextLearnPage(currentModuleEntity, context: context);
               await nextPage(context);
               //   Navigator.push(context,
               //       MaterialPageRoute(builder: (context) => nextPage));

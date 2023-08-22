@@ -2,6 +2,8 @@ import 'package:isar/isar.dart';
 import 'package:the_remember/src/repositoris/db_data_source/module.dart';
 
 
+import '../../../main.dart';
+import '../../../network_processor/network_main.dart';
 import '../../repositoris/db_data_source/folder.dart';
 import '../../repositoris/db_data_source/term.dart';
 import '../../urils/db/dbMixins.dart';
@@ -27,7 +29,7 @@ Future<void> startLearning(int moduleId) async {
     for (var w in wordsInCurrModule) {
       w.chooseErrorCounter = 1;
       w.writeErrorCounter = 1;
-      w.choisceNegErrorCounter = 0;
+      w.choiceNegErrorCounter = 0;
     }
     await conn.collection<TermEntityDbDS>().putAll(wordsInCurrModule);
   });
@@ -58,7 +60,10 @@ Future<List<TermEntityDbDS>> getAllTermsFromModule(int moduleId) async {
   return wordsInCurrModule;
 }
 
-Future<void> learnTransactionCompleted(List<TermEntityDbDS> learnedData) async {
+Future<void> learnTransactionCompleted(List<TermEntityDbDS> learnedData, UserApiProfile userApi) async {
+  if (learnedData.isNotEmpty) {
+    await updatePersonalizedTerms(learnedData, userApi);
+  }
   var conn =
       (await OpenAndClose3.openConnStatic([CollectionSchema<TermEntityDbDS>]))
           .values

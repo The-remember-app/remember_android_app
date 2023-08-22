@@ -75,8 +75,14 @@ class WriteWordOneMoreTime extends StatelessWidget {
           // Swiping in left direction.
           if (details.delta.dx < 0) {
             // if (buttonPressed.values.any((isClicked) => isClicked)) {
-            var nextPage = await getNextLearnPage(moduleEntity,
-                currTermsList, progress, userInput, false);
+            var nextPage = await getNextLearnPage(
+                moduleEntity,
+                currTermList: currTermsList,
+                progress: progress,
+                InputedWord: userInput,
+                showPostScreen: false,
+              context: context,
+            );
 
             await nextPage(context);
 
@@ -247,8 +253,14 @@ class WriteWordOneMoreTime extends StatelessWidget {
                   if (text.toLowerCase() ==
                       wordEntity.maybeReverseDefinitionWrite.toLowerCase()) {
                     // words[wordId]?.write_error_counter -= 1;
-                    var nextPage = await getNextLearnPage(moduleEntity,
-                        currTermsList, progress, userInput, false);
+                    var nextPage = await getNextLearnPage(
+                        moduleEntity,
+                        currTermList: currTermsList,
+                        progress: progress,
+                      InputedWord: userInput,
+                      showPostScreen: false,
+                      context: context,
+                    );
 
                     await nextPage(context);
                     // Navigator.push(
@@ -342,10 +354,12 @@ class WriteWordOneMoreTime extends StatelessWidget {
                           onPressed: () async {
                             var nextPage = await getNextLearnPage(
                                 moduleEntity,
-                                currTermsList,
-                                progress,
-                                userInput,
-                                false);
+                                currTermList: currTermsList,
+                                progress: progress,
+                              InputedWord: userInput,
+                              showPostScreen: false,
+                              context: context,
+                            );
                             await nextPage(context);
                             // Navigator.push(
                             //     context,
@@ -382,10 +396,12 @@ class WriteWordOneMoreTime extends StatelessWidget {
                           onPressed: () async {
                             var nextPage = await getNextLearnPage(
                                 moduleEntity,
-                                currTermsList,
-                                progress,
-                                wordEntity.maybeReverseDefinitionWrite,
-                                false);
+                                currTermList:  currTermsList,
+                                progress: progress,
+                                InputedWord: wordEntity.maybeReverseDefinitionWrite,
+                                showPostScreen: false,
+                              context: context,
+                            );
                             await nextPage(context);
 
                             // Navigator.push(

@@ -72,7 +72,7 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
   late Map<String, TermAddingInfoDbDS> addInfoTermsFromDb;
 
   var coro = (() async {
-    await Future.delayed(Duration(seconds: 5));
+    // await Future.delayed(Duration(seconds: 5));
     conn = (await OpenAndClose3.openConnStatic([
       CollectionSchema<FolderDbDS>,
       CollectionSchema<ModuleDbDS>,
@@ -194,7 +194,7 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
         networkTerm
           ..chooseErrorCounter = dbTerm.chooseErrorCounter
           ..writeErrorCounter = dbTerm.writeErrorCounter
-          ..choisceNegErrorCounter = dbTerm.choisceNegErrorCounter
+          ..choiceNegErrorCounter = dbTerm.choiceNegErrorCounter
           ..personalUpdatedAt = dbTerm.personalUpdatedAt;
       }
     }
@@ -205,13 +205,11 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
     for (var ent in [
       for (var ait in addInfoTerms.data!.asList)
         TermAddingInfoDbDS.fromJson(
-            standardSerializers.deserialize(
-                ait,
+            standardSerializers.deserialize(ait,
                 specifiedType: const FullType(AdditionalTermInfoDTO)
                 // ..["add_info_type"]=[ait["add_info_type"]],
                 //     specifiedType: const FullType(AdditionalTermInfoDTO)
-            )
-                as AdditionalTermInfoDTO,
+                ) as AdditionalTermInfoDTO,
             userApi.user!.uuid)
     ])
       ent.uuid: ent
@@ -246,10 +244,10 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
       .filter()
       .rootFolderIsNull()
       .findAllSync();
-  var res2 = conn[ConnType.term]!
-      .collection<TermAddingInfoDbDS>()
-      .where()
-      .findAllSync();
+  // var res2 = conn[ConnType.term]!
+  //     .collection<TermAddingInfoDbDS>()
+  //     .where()
+  //     .findAllSync();
   print(res1);
 
   await OpenAndClose3.closeConnStatic(conn);
@@ -409,4 +407,30 @@ Future<void> loginUser(
   }
 
   return;
+}
+
+Future<void> updatePersonalizedTerms(
+    List<TermEntityDbDS> terms, UserApiProfile userApi) async {
+  if (userApi.baseApi != null) {
+    final TermEntitiesApi termApi = userApi.baseApi!.getTermEntitiesApi();
+
+    // standardSerializers.serialize(
+    //   folders.data!.asList[0],
+    //
+    // )
+    // PersonalizeTermDTO.serializer.serialize(standardSerializers, toDTOModel());
+    // PersonalizeTermDTO.serializer.
+    // var res =
+    //     await termApi.updatePersonalizeTermTermPersonalizeCreateOrUpdatePut(
+    //   body: JsonObject(<JsonObject?>[
+    //     for (var i in terms)
+    //         standardSerializers.serialize(
+    //           i.toDTO<UpdateOnlyPersonalizePartTermDTO>()
+    //       )
+    //
+    //   ]),
+    //   headers: userApi.authHeaders,
+    // );
+    // print(res);
+  }
 }
