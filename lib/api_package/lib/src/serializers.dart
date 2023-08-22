@@ -26,12 +26,18 @@ import 'package:api_package/src/model/create_sentence_dto.dart';
 import 'package:api_package/src/model/create_term_as_tree_dto.dart';
 import 'package:api_package/src/model/create_term_dto.dart';
 import 'package:api_package/src/model/create_user_dto.dart';
+import 'package:api_package/src/model/delete_only_personalize_part_folder_dto.dart';
+import 'package:api_package/src/model/delete_only_personalize_part_module_dto.dart';
+import 'package:api_package/src/model/delete_only_personalize_part_term_dto.dart';
 import 'package:api_package/src/model/folder_dto.dart';
 import 'package:api_package/src/model/folder_with_nested_entities_dto.dart';
 import 'package:api_package/src/model/folder_with_root_entity_dto.dart';
 import 'package:api_package/src/model/http_validation_error.dart';
 import 'package:api_package/src/model/module_dto.dart';
 import 'package:api_package/src/model/module_with_nested_entities_dto.dart';
+import 'package:api_package/src/model/only_personalize_part_folder_dto.dart';
+import 'package:api_package/src/model/only_personalize_part_module_dto.dart';
+import 'package:api_package/src/model/only_personalize_part_term_dto.dart';
 import 'package:api_package/src/model/personalize_folder_dto.dart';
 import 'package:api_package/src/model/personalize_module_dto.dart';
 import 'package:api_package/src/model/personalize_term_dto.dart';
@@ -39,6 +45,9 @@ import 'package:api_package/src/model/personalize_term_with_add_info_dto.dart';
 import 'package:api_package/src/model/sentence_dto.dart';
 import 'package:api_package/src/model/term_dto.dart';
 import 'package:api_package/src/model/token.dart';
+import 'package:api_package/src/model/update_only_personalize_part_folder_dto.dart';
+import 'package:api_package/src/model/update_only_personalize_part_module_dto.dart';
+import 'package:api_package/src/model/update_only_personalize_part_term_dto.dart';
 import 'package:api_package/src/model/user_dto.dart';
 import 'package:api_package/src/model/validation_error.dart';
 
@@ -57,12 +66,18 @@ part 'serializers.g.dart';
   CreateTermAsTreeDTO,
   CreateTermDTO,
   CreateUserDTO,
+  DeleteOnlyPersonalizePartFolderDTO,
+  DeleteOnlyPersonalizePartModuleDTO,
+  DeleteOnlyPersonalizePartTermDTO,
   FolderDTO,
   FolderWithNestedEntitiesDTO,
   FolderWithRootEntityDTO,
   HTTPValidationError,
   ModuleDTO,
   ModuleWithNestedEntitiesDTO,
+  OnlyPersonalizePartFolderDTO,
+  OnlyPersonalizePartModuleDTO,
+  OnlyPersonalizePartTermDTO,
   PersonalizeFolderDTO,
   PersonalizeModuleDTO,
   PersonalizeTermDTO,
@@ -70,6 +85,9 @@ part 'serializers.g.dart';
   SentenceDTO,
   TermDTO,
   Token,
+  UpdateOnlyPersonalizePartFolderDTO,
+  UpdateOnlyPersonalizePartModuleDTO,
+  UpdateOnlyPersonalizePartTermDTO,
   UserDTO,
   ValidationError,
 ])
