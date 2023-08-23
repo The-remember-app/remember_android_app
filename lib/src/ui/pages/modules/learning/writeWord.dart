@@ -305,13 +305,14 @@ class WriteWord extends StatelessWidget {
       ),
     ),
     onWillPop: () async {
-      Navigator.pushNamed(
-        context,
-        '/module_id',
-        arguments: {
-          'moduleId': moduleEntity,
-        },
+      var nextPage = await getNextLearnPage(
+          moduleEntity,
+          currTermList: currTermsList,
+          progress: currTermsList!.length,
+          context: context
+
       );
+      await nextPage(context);
     return false;
     },
     );
