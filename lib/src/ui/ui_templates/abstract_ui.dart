@@ -22,6 +22,7 @@ abstract class AbstractUIStatefulWidget<T extends StatefulWidget>
   void dispose() async {
     // streamSubscription?.cancel();
     // await IzarManager.instance.closeIsar((await _isar));
-    // super.dispose();
+    super.dispose();
   }
 }
+

@@ -11,6 +11,7 @@ import '../../urils/db/engine.dart';
 
 class UserApiProfile with ChangeNotifier {
   UserDbDS? _user = null;
+  bool _firstUserInit = true;
   ApiPackage? _baseApi = null;
   Map<String, String> _authHeaders = {};
 
@@ -31,7 +32,8 @@ class UserApiProfile with ChangeNotifier {
   }
 
   set user(UserDbDS? user) {
-    if (this._user != user) {
+    if (this._user != user || _firstUserInit) {
+      _firstUserInit = false;
       this._user = user;
       if (user != null){
         networkProcessor(this);
@@ -58,11 +60,14 @@ class UserApiProfile with ChangeNotifier {
           .filter()
           .activeEqualTo(true)
           .findAll());
-      if (activeUsers.length > 1 || (userApi?.user != null && !userApi!.user!.active)) {
+      // FIXME:
+      if (true || activeUsers.length > 1 || (userApi?.user != null && !userApi!.user!.active)) {
         for (var u in activeUsers) {
           u.active = false;
         }
-        activeUsers += [userApi!.user!, userApi.user!];
+        if (userApi?.user != null) {
+          activeUsers += [userApi!.user!, userApi.user!];
+        }
         (await conn[ConnType.user]!.writeTxn(() async {
           (await conn[ConnType.user]!.collection<UserDbDS>().putAll(activeUsers));
         }));

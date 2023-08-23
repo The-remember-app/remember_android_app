@@ -7,7 +7,7 @@ import '../../repositoris/db_data_source/user.dart';
 import '../../urils/db/abstract_entity.dart';
 import '../../urils/db/dbMixins.dart';
 import '../../urils/db/engine.dart';
-import '../pages/home.dart';
+import '../pages/await_user_screen.dart';
 
 
 
@@ -20,7 +20,7 @@ implements
         CollectionSchema<UserDbDS>,
         CollectionSchema<HttpUtilsDbDS>,
         CollectionSchema<AbstractEntity>>,
-    State<HomePage>,
+    State<AwaitUserScreen>,
     GetDataFromDbI{
   late UserDbDS? currentUser = null;
   late List<HttpUtilsDbDS> serverUrls = [];

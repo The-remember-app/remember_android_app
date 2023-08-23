@@ -33,7 +33,7 @@ import '../src/urils/db/engine.dart';
 // }
 
 Future<void> networkProcessor(UserApiProfile? userApi) async {
-  if (userApi?.baseApi == null && userApi?.user != null) {
+  if (userApi?.baseApi == null && userApi?.user == null) {
     var conn = (await OpenAndClose3.openConnStatic(
         [CollectionSchema<HttpUtilsDbDS>, CollectionSchema<UserDbDS>]));
 
@@ -362,7 +362,9 @@ Future testServerUrl(
   final ApiPackage baseApiContainer =
       ApiPackage(dio: dio, serializers: standardSerializers);
   final AuthApi realAuthApi = baseApiContainer.getAuthApi();
-  baseApiContainer.dio.interceptors.add(PrettyDioLogger());
+
+  // baseApiContainer.dio.interceptors.add(PrettyDioLogger());
+
   var healthyCheck = await realAuthApi.loginForAccessTokenAuthHealthcheckPost();
   if (goodUrlFounded[0]) {
     return;

@@ -15,6 +15,7 @@ import '../../urils/db/abstract_entity.dart';
 import '../../urils/db/dbMixins.dart';
 import '../ui_states/home.dart';
 import '../ui_templates/abstract_ui.dart';
+import '../ui_templates/wrappers/on_init_wrapper.dart';
 import 'login/LoginScreen.dart';
 import 'modules/modules.dart';
 
@@ -23,77 +24,52 @@ import 'modules/modules.dart';
 // setState(VoidCallback fn);
 // обратите внимание setState принимает другую функцию
 
-class StatefulWrapper extends StatefulWidget {
-  final Function onInit;
-  final Widget child;
 
-  const StatefulWrapper({required this.onInit, required this.child});
+
+class AwaitUserScreen extends StatefulWidget {
+  Future<UserDbDS?>? userGetter = null;
+  bool userGetterCompleted = false;
+  final Future Function(AwaitUserScreen, BuildContext) awaitUserFunc;
+
+  AwaitUserScreen(this.awaitUserFunc) : super();
 
   @override
-  _StatefulWrapperState createState() => _StatefulWrapperState();
+  _AwaitUserScreenState createState() => _AwaitUserScreenState();
 }
 
-class _StatefulWrapperState extends State<StatefulWrapper> {
-  @override
-  void initState() {
-    if (widget.onInit != null) {
-      widget.onInit();
-    }
-    super.initState();
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    return widget.child;
-  }
-}
-
-class HomePage extends StatefulWidget {
-  HomePage() : super();
-
-  // StatefulWidget должен возвращать класс,
-  // которые наследуется от State
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-// В треугольных скобках мы указываем наш StatefulWidget
-// для которого будет создано состояние
-// нижнее подчеркивание _ используется для того,
-// чтобы скрыть доступ к _HomePageState  из других файлов
-// нижнее подчеркивание аналогия private в Java / Kotlin
-class _HomePageState extends AbstractUIStatefulWidget<HomePage>
+class _AwaitUserScreenState extends AbstractUIStatefulWidget<AwaitUserScreen>
     with
         OpenAndClose3<CollectionSchema<UserDbDS>,
             CollectionSchema<HttpUtilsDbDS>, CollectionSchema<AbstractEntity>>,
         StartLoginingScreenDbMixin
-    implements
-        GetDataFromDbI {
-  // функция buil, как мы уже отметили, строит
-  // иерархию наших любимых виджетов
-  @override
-  Widget build(BuildContext context) {
-    if (dbWorkCompleted && dbWorkCallback != null) {
-      dbWorkCallback!(context);
-    }
+    implements GetDataFromDbI {
 
-    // В большинстве случаев Scaffold используется,
-    // как корневой виджет для страницы или экрана
-    // Scaffold позволяет вам указать AppBar, BottomNavigationBar,
-    // Drawer, FloatingActionButton и другие не менее важные
-    // компоненты (виджеты).
-    // var userApi =  Provider.of<UserApiProfile>(context, listen: false);
+  Future? get userGetter  => this.widget.userGetter;
+
+  _AwaitUserScreenState(): super();
+
+  @override
+  Widget build(BuildContext context){
+    // if (dbWorkCompleted && dbWorkCallback != null) {
+    //   dbWorkCallback!(context);
+    // }
+
+
     String? lastRoute = null;
     return
       Consumer<UserApiProfile>(builder: (context, userApi, child) {
+        Future _future = widget.awaitUserFunc(widget, context);
       // Future _future = getUser(userApi);
-        Future _future = UserApiProfile.getUser(userApi);
+      //   Future userGetter = UserApiProfile.getUser(userApi);
       return
-        StatefulWrapper(
-          onInit: () {
-            //FirebaseNotifications().setUpFirebase();
-          },
-          child: FutureBuilder<UserDbDS?>(
+        // StatefulOnInitWrapper(
+        //   onInit: () {
+        //     //FirebaseNotifications().setUpFirebase();
+        //   },
+        //   beforeBuild: (Widget , BuildContext ) {  },
+        //   child:
+          FutureBuilder<UserDbDS?>(
             future: _future.then((value) async {
               // var pr = Provider.of<UserApiProfile>(context, listen: false);
               var oldUser = userApi.user;
@@ -103,20 +79,20 @@ class _HomePageState extends AbstractUIStatefulWidget<HomePage>
                 if (value == null && lastRoute != '/login_screen') {
                   print(11111111);
                   lastRoute = '/login_screen';
-                  await Navigator.pushNamed(
-                    context,
-                    '/login_screen',
-                    arguments: Map<String, dynamic>(),
-                  );
+                  // await Navigator.pushNamed(
+                  //   context,
+                  //   '/login_screen',
+                  //   arguments: Map<String, dynamic>(),
+                  // );
                 } else if (value != null && lastRoute != '/root_folder')  {
                   print(22222222);
                   lastRoute = '/root_folder';
 
-                  await Navigator.pushNamed(
-                    context,
-                    '/root_folder',
-                    arguments: Map<String, dynamic>(),
-                  );
+                  // await Navigator.pushNamed(
+                  //   context,
+                  //   '/root_folder',
+                  //   arguments: Map<String, dynamic>(),
+                  // );
                 }
               // }
               print(lastRoute ?? "no lastRoute");
@@ -129,7 +105,7 @@ class _HomePageState extends AbstractUIStatefulWidget<HomePage>
                   return Text(snapshot.error.toString());
                 }
 
-                if (snapshot.hasData) {
+                if (userApi.user != null) {
                   // Navigator.pushNamed(
                   //   context,
                   //   '/root_folder',
@@ -153,7 +129,8 @@ class _HomePageState extends AbstractUIStatefulWidget<HomePage>
                 );
               }
             },
-          ));
+          // )
+        );
     });
   }
 }

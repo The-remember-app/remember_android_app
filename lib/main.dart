@@ -9,7 +9,8 @@ import 'package:openapi_generator_annotations/openapi_generator_annotations.dart
 import 'package:the_remember/src/domain_layer/providers/user_api_provider.dart';
 import 'package:the_remember/src/repositoris/db_data_source/http_utils.dart';
 import 'package:the_remember/src/repositoris/db_data_source/user.dart';
-import 'package:the_remember/src/ui/pages/home.dart';
+import 'package:the_remember/src/ui/navigation_processor.dart';
+import 'package:the_remember/src/ui/pages/await_user_screen.dart';
 import 'package:the_remember/src/ui/pages/login/LoginScreen.dart';
 import 'package:the_remember/src/ui/pages/modules/learning/choiceWord.dart';
 import 'package:the_remember/src/ui/pages/modules/learning/learn_finished.dart';
@@ -37,137 +38,23 @@ import 'network_processor/network_main.dart';
 void main() async {
   // initDb().whenComplete(() => null);
   // networkProcessor().whenComplete(() => null);
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => UserApiProfile()),
-        // Provider(create: (context) => SomeOtherClass()),
-      ],
-      child: MyApp(),
-    ),
-  );
+
+  // Future<int> testF() async{
+  //   await Future.delayed(Duration(seconds: 5));
+  //   return 5;
+  // }
+  // var resFuture = testF();
+  // var res1 = await resFuture;
+  // var res2 = await resFuture;
+  // print(res1);
+  // print(res2);
+
+  runApp( MyApp() );
 }
-
-
-
-
 
 Random random = new Random();
 
-// Future<void> initDb() async {
-//   await Future.delayed(Duration(seconds: 5));
-//   final dir = await getApplicationDocumentsDirectory();
-//   final Map<String, String> wordsSet = {
-//     "one": 'Один',
-//     "two": "два",
-//     "three": 'три',
-//     "four": "Четыре",
-//     "five": "Пять",
-//     "six": "шесть",
-//     "seven": "семь",
-//   };
-//
-//   var conn = (await OpenAndClose3.openConnStatic([
-//     CollectionSchema<FolderDbDS>,
-//     CollectionSchema<ModuleDbDS>,
-//     CollectionSchema<TermEntityDbDS>,
-//   ]));
-//
-//   conn[ConnType.term]!.writeTxnSync(() {
-//     var data = (conn[ConnType.term]!
-//             .collection<FolderDbDS>()
-//             .filter()
-//             .rootFolderUuidIsNull())
-//         .findAllSync();
-//     var test = (conn[ConnType.term]!
-//             .collection<FolderDbDS>()
-//             .filter()
-//             .rootFolderUuidIsNull())
-//         .isEmptySync();
-//
-//     if (test) {
-//       List<FolderDbDS> root_folders = [];
-//       for (var i = 0; i < 2; i++) {
-//         root_folders.add(FolderDbDS()
-//           ..uuid = Uuid().v4()
-//           ..name = 'Папка $i'
-//           ..rootFolderUuid = null
-//           ..rootFolder.value = null);
-//       }
-//       conn[ConnType.term]!.collection<FolderDbDS>().putAllSync(root_folders);
-//
-//       List<FolderDbDS> sub_folders = [];
-//       var res = conn[ConnType.term]!
-//           .collection<FolderDbDS>()
-//           .filter()
-//           .rootFolderIsNull()
-//           .findAllSync();
-//       for (var currRootFolder in root_folders) {
-//         for (var i = 0; i < 2; i++) {
-//           sub_folders.add(FolderDbDS()
-//             ..uuid = Uuid().v4()
-//             ..name = '${currRootFolder.name}_$i'
-//             ..rootFolderUuid = currRootFolder.uuid
-//             ..rootFolder.value = currRootFolder);
-//         }
-//       }
-//
-//       conn[ConnType.term]!.collection<FolderDbDS>().putAllSync(sub_folders);
-//
-//       List<ModuleDbDS> modules = [];
-//       // var = ;
-//       for (var currFolder in <FolderDbDS?>[null] + root_folders + sub_folders) {
-//         modules.add(ModuleDbDS()
-//           ..uuid = (Uuid()).v4()
-//           ..name = 'Модуль из ${currFolder?.name ?? "корневой папки"}'
-//           ..rootFolderUuid = currFolder?.uuid
-//           ..rootFolder.value = currFolder
-//           ..personalUpdatedAt = DateTime.now()
-//           ..personalCreatedAt = DateTime.now());
-//       }
-//
-//       conn[ConnType.term]!.collection<ModuleDbDS>().putAllSync(modules);
-//
-//       List<TermEntityDbDS> terms = [];
-//       for (var currModule in modules) {
-//         for (var keyValWord in wordsSet.entries) {
-//           terms.add(TermEntityDbDS()
-//             ..uuid = Uuid().v4()
-//             ..term = keyValWord.key
-//             ..definition = keyValWord.value
-//             ..moduleUuid = currModule.uuid
-//             ..chooseErrorCounter = 0
-//             ..writeErrorCounter = 0
-//             ..choisceNegErrorCounter = 0
-//             ..module.value = currModule
-//             ..personalUpdatedAt = DateTime.now()
-//             ..personalCreatedAt = DateTime.now());
-//         }
-//       }
-//
-//       conn[ConnType.term]!.collection<TermEntityDbDS>().putAllSync(terms);
-//     }
-//     var res12 = conn[ConnType.term]!
-//         .collection<FolderDbDS>()
-//         .filter()
-//         .rootFolderIsNull()
-//         .findAllSync();
-//     print(res12);
-//   });
-//   var res1 = conn[ConnType.term]!
-//       .collection<FolderDbDS>()
-//       .filter()
-//       .rootFolderIsNull()
-//       .findAllSync();
-//   print(res1);
-//   await OpenAndClose3.closeConnStatic(conn);
-// }
 
-// В Flutter все является виджетом (кнопки,списки, текст и т.д.)
-// виджет - это отдельный компонент, который может быть отрисован
-// на экране (не путать с Android виджетами)
-// Наиболее простые виджеты наследуются от StatelessWidget класса
-// и не имеют состояния
 class MyApp extends StatelessWidget {
   // функция build отвечает за построение иерархии виджетов
   @override
@@ -189,7 +76,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         // указываем исходную страницу, которую мы создадим позже
-        home: HomePage(),
+        home: navigationProcessor(),
         onUnknownRoute: (settings) {
           return MaterialPageRoute(builder: (context) {
             return StartModule();
