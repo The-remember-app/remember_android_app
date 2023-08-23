@@ -62,8 +62,9 @@ Future<List<TermEntityDbDS>> getAllTermsFromModule(int moduleId) async {
 }
 
 Future<void> learnTransactionCompleted(List<TermEntityDbDS> learnedData, UserApiProfile userApi) async {
+  var updateFuture = null;
   if (learnedData.isNotEmpty) {
-    await updatePersonalizedTerms(learnedData, userApi);
+    updateFuture = updatePersonalizedTerms(learnedData, userApi);
   }
   var conn =
       (await OpenAndClose3.openConnStatic([CollectionSchema<TermEntityDbDS>]))
@@ -74,4 +75,8 @@ Future<void> learnTransactionCompleted(List<TermEntityDbDS> learnedData, UserApi
   });
 
   await OpenAndClose3.closeConnStatic({ConnType.term: conn});
+  if (updateFuture != null){
+    await updateFuture!;
+  }
+
 }

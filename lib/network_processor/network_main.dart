@@ -41,13 +41,13 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
         .collection<HttpUtilsDbDS>()
         .where()
         .findAll());
-    var user = (await conn[ConnType.user]!
-        .collection<UserDbDS>()
-        .getByUuid(userApi!.user!.uuid));
+    // var user = (await conn[ConnType.user]!
+    //     .collection<UserDbDS>()
+    //     .getByUuid(userApi!.user!.uuid));
     var serverUrls = [for (var i in serverUrlsEntities) i.httpUrl];
 
     await OpenAndClose3.closeConnStatic(conn);
-    await loginUser(user!.username, user.password,
+    await loginUser(userApi!.user!.username, userApi.user!.password,
         serverUrls: serverUrls, userApi: userApi);
     return;
   } else if (userApi?.baseApi == null) {

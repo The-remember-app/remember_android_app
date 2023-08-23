@@ -187,13 +187,14 @@ class LearnCompleted extends StatelessWidget {
       ),
     ),
     onWillPop: () async {
-      Navigator.pushNamed(
-        context,
-        '/module_id',
-        arguments: {
-          'moduleId': moduleEntity,
-        },
+      var nextPage = await getNextLearnPage(
+          moduleEntity,
+          currTermList: [],
+          progress: 1,
+          context: context
+
       );
+      await nextPage(context);
     return false;
     },
     );
