@@ -20,20 +20,27 @@ part 'term.g.dart';
 @collection
 class TermEntityDbDS  extends AbstractEntity  {
   @Name("id")
+  @JsonKey(includeFromJson: false, includeToJson: false)
   Id get isarId => AbstractEntity.fastHash(complexIndex.join("")) ;
   // @Index(unique: true, replace: true, caseSensitive: false)
   @JsonKey(name: 'id')
   late String uuid;
+
+  @ignore
+  @JsonKey(name: 'term_id', includeFromJson: true, includeToJson: true)
+  String get term_uuid => this.uuid;
+
   @Name("user_uuid")
-  @JsonKey(name: 'user_uuid')
+  @JsonKey(name: 'user_id')
   late String userUuid;
   @Name("complex_index")
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @Index(unique: true, replace: true, caseSensitive: false)
   List<String> get complexIndex => [uuid, userUuid];
   late String term;
   late String definition;
-  @Name("module_uuid")
-  @JsonKey(name: 'module_uuid')
+  @Name("module_id")
+  @JsonKey(name: 'module_id')
   late String moduleUuid;
   @Name("choose_error_counter")
   @JsonKey(name: 'choose_error_counter')
@@ -59,13 +66,18 @@ class TermEntityDbDS  extends AbstractEntity  {
   late DateTime personalUpdatedAt ;
 
   @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
   late bool? _reverseWrite = null;
   @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
   late bool? _reverseChoice = null;
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final module = IsarLink<ModuleDbDS>();
+
   @Backlink(to: 'termEntity')
   @Name("adding_info_entity")
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final addInfoEntities = IsarLinks<TermAddingInfoDbDS>();
 
   void updateReverseWrite(){
@@ -125,18 +137,22 @@ class TermEntityDbDS  extends AbstractEntity  {
     return module.value!.standardAndReverseChoice ? _reverseChoice! : module.value!.isReverseDefinitionChoice;
   }
   @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
   get  maybeReverseTermWrite {
     return isTermReverseWrite() ? definition: term;
   }
   @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
   get  maybeReverseDefinitionWrite {
     return isTermReverseWrite() ? term : definition;
   }
   @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
   get  maybeReverseTermChoice {
     return isTermReverseChoice() ? definition: term;
   }
   @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
   get  maybeReverseDefinitionChoice {
     return isTermReverseChoice() ? term : definition;
   }
@@ -160,7 +176,10 @@ class TermEntityDbDS  extends AbstractEntity  {
   }
 
   JsonObject toJson(){
-    return JsonObject({for (var i in _$TermEntityDbDSToJson(this).entries) JsonObject(i.key) : JsonObject(i.value)});
+    return JsonObject({for (var i in _$TermEntityDbDSToJson(this).entries) i.key : i.value});
+  }
+  Map<String, dynamic> toJsonAsMap(){
+    return <String, dynamic>{for (var i in _$TermEntityDbDSToJson(this).entries) i.key : i.value};
   }
   List<dynamic> toJsonAsList(){
     return [for (var i in _$TermEntityDbDSToJson(this).entries) for(var ii in <dynamic>[i.key as dynamic, i.value]) ii];

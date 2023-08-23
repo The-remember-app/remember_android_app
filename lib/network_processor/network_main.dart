@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:the_remember/api_package/lib/api_package.dart';
 import 'package:the_remember/src/repositoris/db_data_source/module.dart';
 import 'package:the_remember/src/repositoris/db_data_source/term.dart';
@@ -320,6 +323,7 @@ Future getAuthHeaders(
       var authHeaders = {
         "Authorization": "Bearer ${authData?.data!.accessToken!.asString}"
       };
+
       userApi?.baseApi = baseApiContainer;
       userApi?.authHeaders = authHeaders;
       if (userApi?.user == null) {
@@ -348,6 +352,7 @@ Future testServerUrl(
   final ApiPackage baseApiContainer =
       ApiPackage(dio: dio, serializers: standardSerializers);
   final AuthApi realAuthApi = baseApiContainer.getAuthApi();
+  baseApiContainer.dio.interceptors.add(PrettyDioLogger());
   var healthyCheck = await realAuthApi.loginForAccessTokenAuthHealthcheckPost();
   if (goodUrlFounded[0]) {
     return;
@@ -413,24 +418,123 @@ Future<void> updatePersonalizedTerms(
     List<TermEntityDbDS> terms, UserApiProfile userApi) async {
   if (userApi.baseApi != null) {
     final TermEntitiesApi termApi = userApi.baseApi!.getTermEntitiesApi();
-
+    // standardSerializers
     // standardSerializers.serialize(
     //   folders.data!.asList[0],
     //
     // )
+    // String json = jsonEncode(list)
     // PersonalizeTermDTO.serializer.serialize(standardSerializers, toDTOModel());
     // PersonalizeTermDTO.serializer.
-    // var res =
-    //     await termApi.updatePersonalizeTermTermPersonalizeCreateOrUpdatePut(
-    //   body: JsonObject(<JsonObject?>[
-    //     for (var i in terms)
-    //         standardSerializers.serialize(
-    //           i.toDTO<UpdateOnlyPersonalizePartTermDTO>()
-    //       )
-    //
-    //   ]),
-    //   headers: userApi.authHeaders,
-    // );
-    // print(res);
+    var data1 = [
+      for (var i in terms)
+        i.toJsonAsMap()
+      // i.toDTO<UpdateOnlyPersonalizePartTermDTO>()
+      // JsonObject(standardSerializers.serialize(
+      //      i.toDTO<UpdateOnlyPersonalizePartTermDTO>()
+      // ))
+    ];
+    var data2 =  jsonEncode(
+        data1
+    );
+    var data3 = JsonObject(
+        data2
+    );
+    var res =
+        await myFunc(
+          userApi.baseApi!.dio,
+      standardSerializers,
+      body: data1,
+      headers: userApi.authHeaders,
+    );
+    print(res);
   }
+}
+
+Future<Response<JsonObject>>  myFunc(
+Dio _dio,
+Serializers _serializers,
+    {
+  List<Map<String, dynamic>>? body,
+  CancelToken? cancelToken,
+  Map<String, dynamic>? headers,
+  Map<String, dynamic>? extra,
+  ValidateStatus? validateStatus,
+  ProgressCallback? onSendProgress,
+  ProgressCallback? onReceiveProgress,
+}) async {
+  final _path = r'/term/personalize/create_or_update';
+  final _options = Options(
+    method: r'PUT',
+    headers: <String, dynamic>{
+      ...?headers,
+    },
+    extra: <String, dynamic>{
+      'secure': <Map<String, String>>[
+        {
+          'type': 'oauth2',
+          'name': 'OAuth2PasswordBearer',
+        },
+      ],
+      ...?extra,
+    },
+    contentType: 'application/json',
+    validateStatus: validateStatus,
+  );
+
+  dynamic _bodyData;
+
+  try {
+    _bodyData = body;
+
+  } catch(error, stackTrace) {
+    throw DioException(
+      requestOptions: _options.compose(
+        _dio.options,
+        _path,
+      ),
+      type: DioExceptionType.unknown,
+      error: error,
+      stackTrace: stackTrace,
+    );
+  }
+
+  final _response = await _dio.request<Object>(
+    _path,
+    data: _bodyData,
+    options: _options,
+    cancelToken: cancelToken,
+    onSendProgress: onSendProgress,
+    onReceiveProgress: onReceiveProgress,
+  );
+
+  JsonObject? _responseData;
+
+  try {
+    final rawResponse = _response.data;
+    _responseData = rawResponse == null ? null : _serializers.deserialize(
+      rawResponse,
+      specifiedType: const FullType(JsonObject),
+    ) as JsonObject;
+
+  } catch (error, stackTrace) {
+    throw DioException(
+      requestOptions: _response.requestOptions,
+      response: _response,
+      type: DioExceptionType.unknown,
+      error: error,
+      stackTrace: stackTrace,
+    );
+  }
+
+  return Response<JsonObject>(
+    data: _responseData,
+    headers: _response.headers,
+    isRedirect: _response.isRedirect,
+    requestOptions: _response.requestOptions,
+    redirects: _response.redirects,
+    statusCode: _response.statusCode,
+    statusMessage: _response.statusMessage,
+    extra: _response.extra,
+  );
 }
