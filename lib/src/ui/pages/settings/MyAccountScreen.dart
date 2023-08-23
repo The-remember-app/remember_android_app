@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../main.dart';
+import '../../../domain_layer/providers/user_api_provider.dart';
 import '../../ui_templates/buttom_nav_bar.dart';
 
 class MyAccountScreen extends StatelessWidget {

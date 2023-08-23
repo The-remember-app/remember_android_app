@@ -12,6 +12,7 @@ import 'package:the_remember/src/repositoris/db_data_source/term.dart';
 import 'package:the_remember/src/repositoris/db_data_source/user.dart';
 
 import '../main.dart';
+import '../src/domain_layer/providers/user_api_provider.dart';
 import '../src/repositoris/db_data_source/folder.dart';
 import '../src/repositoris/db_data_source/http_utils.dart';
 import '../src/repositoris/db_data_source/term_adding_info.dart';
@@ -189,6 +190,9 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
     ])
       ent.uuid: ent
   };
+
+  List<TermEntityDbDS> serverUpdatesTerm = [];
+
   for (var networkTerm in termsToDb.values) {
     networkTerm.module.value = modulesToDb[networkTerm.moduleUuid]!;
     if (termsFromDb[networkTerm.uuid] != null) {
@@ -199,9 +203,12 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
           ..writeErrorCounter = dbTerm.writeErrorCounter
           ..choiceNegErrorCounter = dbTerm.choiceNegErrorCounter
           ..personalUpdatedAt = dbTerm.personalUpdatedAt;
+      } else if (networkTerm.personalUpdatedAt.isAfter(dbTerm.personalUpdatedAt)) {
+        serverUpdatesTerm.add(dbTerm);
       }
     }
   }
+  var serverTermUpdateCoro = updatePersonalizedTerms(serverUpdatesTerm, userApi);
 
   final addInfoTerms = await addInfoCoro;
   var addInfoTermsToDb = {
@@ -254,6 +261,9 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
   print(res1);
 
   await OpenAndClose3.closeConnStatic(conn);
+  await serverTermUpdateCoro;
+
+
 
   // final folders = await mainApi.getAllFoldersFolderAllGet(headers: authHeaders);
 

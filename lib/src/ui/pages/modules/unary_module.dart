@@ -10,6 +10,7 @@ import 'package:uuid/uuid.dart';
 import '../../../../main.dart';
 import '../../../domain_layer/data_mixins/modules/unary_module.dart';
 import '../../../domain_layer/functions/words_BO.dart';
+import '../../../domain_layer/providers/user_api_provider.dart';
 import '../../../repositoris/db_data_source/folder.dart';
 import '../../../repositoris/db_data_source/module.dart';
 import '../../../repositoris/db_data_source/term.dart';

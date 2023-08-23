@@ -6,6 +6,7 @@ import 'package:the_remember/src/repositoris/db_data_source/user.dart';
 import '../../../main.dart';
 import '../../../network_processor/network_main.dart';
 import '../../domain_layer/data_mixins/modules/modules.dart';
+import '../../domain_layer/providers/user_api_provider.dart';
 import '../../repositoris/db_data_source/folder.dart';
 import '../../repositoris/db_data_source/http_utils.dart';
 import '../../repositoris/db_data_source/module.dart';
@@ -86,7 +87,7 @@ class _HomePageState extends AbstractUIStatefulWidget<HomePage>
     return
       Consumer<UserApiProfile>(builder: (context, userApi, child) {
       // Future _future = getUser(userApi);
-        Future _future = getUser(userApi);
+        Future _future = UserApiProfile.getUser(userApi);
       return
         StatefulWrapper(
           onInit: () {
