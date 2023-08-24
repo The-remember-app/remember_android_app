@@ -13,11 +13,11 @@ import '../../repositoris/db_data_source/module.dart';
 import '../../repositoris/db_data_source/term.dart';
 import '../../urils/db/abstract_entity.dart';
 import '../../urils/db/dbMixins.dart';
-import '../ui_states/home.dart';
+import 'login_or_main_screen.dart';
 import '../ui_templates/abstract_ui.dart';
 import '../ui_templates/wrappers/on_init_wrapper.dart';
-import 'login/LoginScreen.dart';
-import 'modules/modules.dart';
+import '../pages/login/LoginScreen.dart';
+import '../pages/modules/modules.dart';
 
 // StatefulWidget имеет состояние, с которым
 // позже мы будем работать через функцию
@@ -38,12 +38,7 @@ class AwaitUserScreen extends StatefulWidget {
 }
 
 
-class _AwaitUserScreenState extends AbstractUIStatefulWidget<AwaitUserScreen>
-    with
-        OpenAndClose3<CollectionSchema<UserDbDS>,
-            CollectionSchema<HttpUtilsDbDS>, CollectionSchema<AbstractEntity>>,
-        StartLoginingScreenDbMixin
-    implements GetDataFromDbI {
+class _AwaitUserScreenState extends AbstractUIStatefulWidget<AwaitUserScreen>{
 
   Future? get userGetter  => this.widget.userGetter;
 
@@ -60,16 +55,7 @@ class _AwaitUserScreenState extends AbstractUIStatefulWidget<AwaitUserScreen>
     return
       Consumer<UserApiProfile>(builder: (context, userApi, child) {
         Future _future = widget.awaitUserFunc(widget, context);
-      // Future _future = getUser(userApi);
-      //   Future userGetter = UserApiProfile.getUser(userApi);
-      return
-        // StatefulOnInitWrapper(
-        //   onInit: () {
-        //     //FirebaseNotifications().setUpFirebase();
-        //   },
-        //   beforeBuild: (Widget , BuildContext ) {  },
-        //   child:
-          FutureBuilder<UserDbDS?>(
+      return FutureBuilder<UserDbDS?>(
             future: _future.then((value) async {
               // var pr = Provider.of<UserApiProfile>(context, listen: false);
               var oldUser = userApi.user;
@@ -104,24 +90,8 @@ class _AwaitUserScreenState extends AbstractUIStatefulWidget<AwaitUserScreen>
                 if (snapshot.error != null) {
                   return Text(snapshot.error.toString());
                 }
+                return LoginOrMainScreen(snapshot);
 
-                if (userApi.user != null) {
-                  // Navigator.pushNamed(
-                  //   context,
-                  //   '/root_folder',
-                  //   arguments: Map<String, dynamic>(),
-                  // );
-                  print(22222222444444444);
-                  return StartModule();
-                } else {
-                  // Navigator.pushNamed(
-                  //   context,
-                  //   '/login_screen',
-                  //   arguments: Map<String, dynamic>(),
-                  // );
-                  print(111111113333333333);
-                  return LoginScreen();
-                }
               } else {
                 return Scaffold(
                   appBar: AppBar(),

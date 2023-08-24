@@ -8,32 +8,38 @@ import '../../../domain_layer/providers/user_api_provider.dart';
 import '../../ui_templates/buttom_nav_bar.dart';
 
 class MyAccountScreen extends StatelessWidget {
+
+
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserApiProfile>(
-        builder: (context, userApi, child)=>
+    var userPr = Provider.of<UserApiProfile>(context, listen: false);
+    return
+      // Consumer<UserApiProfile>(
+      //   builder: (context, userApi, child)=>
 
-      Scaffold(
-      backgroundColor: Color(0xffffffff),
-      appBar: AppBar(
-        elevation: 4,
-        centerTitle: false,
-        automaticallyImplyLeading: false,
-        backgroundColor: Color(0xff3a57e8),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero,
-        ),
-        title: Text(
-          "My Account",
-          style: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontStyle: FontStyle.normal,
-            fontSize: 20,
-            color: Color(0xffffffff),
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
+      // Scaffold(
+
+      // appBar: AppBar(
+      //   elevation: 4,
+      //   centerTitle: false,
+      //   automaticallyImplyLeading: false,
+      //   backgroundColor: Color(0xff3a57e8),
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.zero,
+      //   ),
+      //   title: Text(
+      //     "My Account",
+      //     style: TextStyle(
+      //       fontWeight: FontWeight.w700,
+      //       fontStyle: FontStyle.normal,
+      //       fontSize: 20,
+      //       color: Color(0xffffffff),
+      //     ),
+      //   ),
+      // ),
+      // body:
+      SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -265,9 +271,9 @@ class MyAccountScreen extends StatelessWidget {
             ),
             MaterialButton(
               onPressed: () async {
-                userApi.user?.active = false;
-                userApi.authHeaders = Map<String, String>();
-                userApi.userChange();
+                userPr.user?.active = false;
+                userPr.authHeaders = Map<String, String>();
+                userPr.userChange();
                 await Navigator.pushNamed(
                   context,
                   '/login_screen',
@@ -295,9 +301,11 @@ class MyAccountScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: MainBottomNavigationBar(),
-    )
-  );
+      )
+        // ,
+      // bottomNavigationBar: MainBottomNavigationBar(),
+    // )
+  // );
+    ;
   }
 }

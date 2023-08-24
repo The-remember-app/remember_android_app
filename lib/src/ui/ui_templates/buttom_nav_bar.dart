@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../domain_layer/providers/bottom_navigation_provider.dart';
 // import 'flutterViz_bottom_navigationBar_model.dart';
 
 
@@ -27,6 +30,8 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     // flutterVizBottomNavigationBarItems[0].icon
+    var bottomPagePr = Provider.of<BottomNavigationProvider>(
+        context, listen: false);
     return BottomNavigationBar(
         items: flutterVizBottomNavigationBarItems
             .map((BottomNavigationBarItem item) {
@@ -36,7 +41,7 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
           );
         }).toList(),
         backgroundColor: Color(0xffffffff),
-        currentIndex: 0,
+        currentIndex: bottomPagePr.activePageNumber,
         elevation: 8,
         iconSize: 24,
         selectedItemColor: Color(0xff3a57e8),
@@ -47,22 +52,27 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
         showUnselectedLabels: true,
         onTap: (value) async {
 
-          if (value == 0){
-            await Navigator.pushNamed(
-                  context,
-                  '/root_folder',
-                  arguments: Map<String, dynamic>(),
-                );
-          } else if (value == 4){
+          var bottomPagePr = Provider.of<BottomNavigationProvider>(
+              context, listen: false);
+          bottomPagePr.activePageNumber = value;
 
-            await Navigator.pushNamed(
-                  context,
-                  '/my_account',
-                  arguments: Map<String, dynamic>(),
-                );
-          }
+          // if (value == 0){
+          //   await Navigator.pushNamed(
+          //         context,
+          //         '/root_folder',
+          //         arguments: Map<String, dynamic>(),
+          //       );
+          // } else if (value == 4){
+          //
+          //   await Navigator.pushNamed(
+          //         context,
+          //         '/my_account',
+          //         arguments: Map<String, dynamic>(),
+          //       );
+          // }
 
           print(value);
+
 
         },
       );

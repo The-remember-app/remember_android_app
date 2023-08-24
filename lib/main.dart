@@ -10,7 +10,7 @@ import 'package:the_remember/src/domain_layer/providers/user_api_provider.dart';
 import 'package:the_remember/src/repositoris/db_data_source/http_utils.dart';
 import 'package:the_remember/src/repositoris/db_data_source/user.dart';
 import 'package:the_remember/src/ui/navigation_processor.dart';
-import 'package:the_remember/src/ui/pages/await_user_screen.dart';
+import 'package:the_remember/src/ui/ui_states/await_user_screen.dart';
 import 'package:the_remember/src/ui/pages/login/LoginScreen.dart';
 import 'package:the_remember/src/ui/pages/modules/learning/choiceWord.dart';
 import 'package:the_remember/src/ui/pages/modules/learning/learn_finished.dart';
@@ -19,6 +19,7 @@ import 'package:the_remember/src/ui/pages/modules/learning/writeWordOneMoreTime.
 import 'package:the_remember/src/ui/pages/modules/unary_folder.dart';
 import 'package:the_remember/src/ui/pages/modules/unary_module.dart';
 import 'package:the_remember/src/ui/pages/settings/MyAccountScreen.dart';
+import 'package:the_remember/src/ui/ui_states/login_or_status_bar.dart';
 import 'package:uuid/uuid.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:the_remember/src/repositoris/db_data_source/folder.dart';
@@ -148,7 +149,7 @@ class MyApp extends StatelessWidget {
           } else if (settings.name == '/login_screen') {
             return MaterialPageRoute(
               settings: settings,
-              builder: (context) => LoginScreen(),
+              builder: (context) => AuthScreen(),
             );
           } else if (settings.name == '/my_account') {
             return MaterialPageRoute(
