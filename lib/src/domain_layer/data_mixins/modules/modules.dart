@@ -45,7 +45,7 @@ mixin StartModuleDbMixin
           .userUuidEqualTo(user.uuid)
           .findAll();
     }
-    closeConn();
+    await closeConn();
     this.setState(() => null);
   }
 

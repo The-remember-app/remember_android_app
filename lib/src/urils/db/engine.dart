@@ -4,6 +4,7 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:the_remember/src/repositoris/db_data_source/term_adding_info.dart';
 import 'package:the_remember/src/repositoris/db_data_source/user.dart';
+import 'package:the_remember/src/urils/db/abstract_entity.dart';
 
 import '../../repositoris/db_data_source/folder.dart';
 import '../../repositoris/db_data_source/http_utils.dart';
@@ -76,13 +77,8 @@ class IzarManager  {
 
   }
 
-  // Future<void> saveInDatabase(activity) async {
-  //   final isar = await IzarManager.instance.
-  //
-  //   await isar.writeTxn((isar) async {
-  //     await isar.activities.put(activity); // insert & update
-  //   });
-  //   await IzarManager.instance.closeIsar(isar);
-  // }
+  Future<Isar> openActivityDBv2(List<CollectionSchema<AbstractEntity>> connSchemes) async {
+    return _openIsar('term', connSchemes);
 
+  }
 }

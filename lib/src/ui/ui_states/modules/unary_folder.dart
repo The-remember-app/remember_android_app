@@ -1,113 +1,59 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter/material.dart';
-//
-// AppBar AppBarBuilder(String appBarText, BuildContext context,
-//     {List<(IconButton Function()?, Function?)>? leading = null,
-//     List<Map<String, List<Function?>>>? actions = null}) {
-//   var currLeading = null;
-//   if (leading != null) {
-//     for (var (leadingWidget, leadingAction) in leading) {
-//       if (leadingAction == null) {
-//         // доавить действие по умолчанию (стрелку назад)
-//       }
-//     }
-//   }
-//   return AppBar(
-//     elevation: 4,
-//     centerTitle: false,
-//     automaticallyImplyLeading: false,
-//     backgroundColor: Color(0xff3a57e8),
-//     shape: RoundedRectangleBorder(
-//       borderRadius: BorderRadius.zero,
-//     ),
-//     title: Text(
-//       appBarText,
-//       style: TextStyle(
-//         fontWeight: FontWeight.w700,
-//         fontStyle: FontStyle.normal,
-//         fontSize: 20,
-//         color: Color(0xfff9f9f9),
-//       ),
-//     ),
-//     leading: IconButton(
-//       icon: Icon(
-//         Icons.arrow_back,
-//         color: Color(0xfff9f9f9),
-//         size: 24,
-//       ),
-//       onPressed: () {
-//         Navigator.pop(context);
-//       },
-//     ),
-//     actions: [
-//       Icon(Icons.search, color: Color(0xffffffff), size: 24),
-//     ],
-//   );
-// }
-//
-// AppBar AppBarWithSearch(String appBarText, BuildContext context) {
-//   return AppBar(
-//     elevation: 4,
-//     centerTitle: false,
-//     automaticallyImplyLeading: false,
-//     backgroundColor: Color(0xff3a57e8),
-//     shape: RoundedRectangleBorder(
-//       borderRadius: BorderRadius.zero,
-//     ),
-//     title: Text(
-//       appBarText,
-//       style: TextStyle(
-//         fontWeight: FontWeight.w700,
-//         fontStyle: FontStyle.normal,
-//         fontSize: 20,
-//         color: Color(0xfff9f9f9),
-//       ),
-//     ),
-//     actions: [
-//       Icon(Icons.search, color: Color(0xffffffff), size: 24),
-//     ],
-//   );
-// }
-//
-// AppBar AppBarWithArrowBack() {
-//   return AppBar(
-//     elevation: 4,
-//     centerTitle: false,
-//     automaticallyImplyLeading: false,
-//     backgroundColor: Color(0xff3a57e8),
-//     shape: RoundedRectangleBorder(
-//       borderRadius: BorderRadius.zero,
-//     ),
-//     title: Text(
-//       folder?.name ?? "Не найдено ничего по этому UUID",
-//       style: TextStyle(
-//         fontWeight: FontWeight.w700,
-//         fontStyle: FontStyle.normal,
-//         fontSize: 20,
-//         color: Color(0xfff9f9f9),
-//       ),
-//     ),
-//     actions: [
-//       Icon(Icons.search, color: Color(0xffffffff), size: 24),
-//     ],
-//   );
-// }
-//
-// IconButton getStandardArrowBackButton(
-//     Map<String, Function?> buttonTriggers, BuildContext context) {
-//   var buttonTriggersLoc = {
-//     for (var kv in buttonTriggers.entries) kv.key: kv.value
-//   };
-//   buttonTriggersLoc['onPressed'] = buttonTriggersLoc['onPressed'] ??
-//       () {
-//         Navigator.pop(context);
-//       };
-//   return IconButton(
-//     icon: Icon(
-//       Icons.arrow_back,
-//       color: Color(0xfff9f9f9),
-//       size: 24,
-//     ),
-//     onPressed: buttonTriggersLoc['onPressed'] as void Function()?,
-//   );
-// }
+
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../domain_layer/providers/folder_module.dart';
+import '../../../domain_layer/providers/sub_folder_modules.dart';
+import '../../pages/modules/unary_folder.dart';
+import '../../ui_templates/abstract_ui.dart';
+
+class FoldersListProcessor extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var fmPr = Provider.of<FolderAndModuleProvider>(context, listen: false);
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => SubFolderAndModuleProvider(fmPr: fmPr)),
+      ],
+      child: AwaitFoldersList(),
+    );
+  }
+
+}
+
+class AwaitFoldersList extends StatefulWidget{
+  @override
+  _AwaitFoldersListState createState() => _AwaitFoldersListState();
+}
+
+class _AwaitFoldersListState extends AbstractUIStatefulWidget<AwaitFoldersList>
+{
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Consumer<SubFolderAndModuleProvider>(builder: (context, subFmPr, child) {
+      var _future = subFmPr.initLists;
+      return FutureBuilder<void>(
+        future: _future.then((value) async {
+          return value;
+        }),
+        builder: (context, AsyncSnapshot<void> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.error != null) {
+              return Text(snapshot.error.toString());
+            }
+            return LoadedFoldersList();
+
+          } else {
+            return Container();
+
+          }
+        },
+        // )
+      );
+    });
+  }
+}
+

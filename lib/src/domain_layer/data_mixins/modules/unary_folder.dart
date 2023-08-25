@@ -56,6 +56,7 @@ implements
           // .getByUuid(folderEntity!.rootFolderUuid!)
       );
     }
+    await closeConn();
     this.setState(() => null);
 
   }
@@ -63,7 +64,7 @@ implements
   void dispose() async {
     // TODO: implement dispose
 
-    closeConn();
+
     // super.dispose();
   }
 

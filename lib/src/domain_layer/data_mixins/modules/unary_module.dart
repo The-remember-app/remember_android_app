@@ -47,6 +47,7 @@ mixin UnaryModuleStateDbMixin
           .getByComplexIndex([currentModuleEntity.rootFolderUuid!, currentModuleEntity.userUuid])
       );
     }
+    await closeConn();
 
     this.setState(() => null);
     // closeConn();
@@ -56,7 +57,7 @@ mixin UnaryModuleStateDbMixin
   void dispose() async {
     // TODO: implement dispose
 
-    closeConn();
+
     // super.dispose();
   }
 }

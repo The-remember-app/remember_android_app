@@ -10,6 +10,7 @@ import '../skeleton.dart';
 import '../ui_templates/abstract_ui.dart';
 import '../ui_templates/navigation/app_bar_navigation_enum.dart';
 import '../ui_templates/navigation/main_navigation_middleware.dart';
+import 'modules/folders_and_modules_choice.dart';
 
 class MainContent extends StatelessWidget {
   MainContent() : super();
@@ -85,18 +86,7 @@ class PageChoice extends StatelessWidget {
       BottomNavigationProvider bottomPagePr,
       AppBarNavigationProvider appBarPagePr) {
     if (bottomPagePr.activePageNumber == 0) {
-      return Wapper(
-        appBar: appBarPagePr.getAppBarWidget[AppBarNavigationEnum.arrowBack]!(
-            context, dfMapper),
-        body: Container(child: Text("Заглушка главного экрана"),),
-        bottomNavigationBar: bottomPagePr.bottomNavWidget!(context),
-        dfMapper: dfMapper,
-        onWillPop: () async {
-          // bottomPagePr.activePageNumber = 0;
-          return false;
-        },
-        appBarEmulate: AppBarEmulate(title: 'Root folder'),
-      );
+      return FoldersAndModulesProcessor(dfMapper: dfMapper);
     } else if (bottomPagePr.activePageNumber == 4) {
       return Wapper(
         appBar: appBarPagePr.getAppBarWidget[AppBarNavigationEnum.arrowBack]!(

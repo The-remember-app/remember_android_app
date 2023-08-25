@@ -103,9 +103,9 @@ class AddProviderListeners extends StatefulWidget{
 class _AddProviderListenersState extends State<AddProviderListeners>{
   @override
   Widget build(BuildContext context) {
-    return  Consumer<BottomNavigationProvider>(builder: (context, userApi, child) {
-      return Consumer<AppBarNavigationProvider>(builder: (context, userApi, child) {
-        return Consumer<ArrowBackNavigationProvider>(builder: (context, userApi, child)
+    return  Consumer<BottomNavigationProvider>(builder: (context, bottomPagePr, child) {
+      return Consumer<AppBarNavigationProvider>(builder: (context, appBarPagePr, child) {
+        return Consumer<ArrowBackNavigationProvider>(builder: (context, arrowBackPagePr, child)
         {
           return widget.child();
         });
