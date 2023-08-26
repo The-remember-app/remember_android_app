@@ -1,90 +1,68 @@
 ///File download from FlutterViz- Drag and drop a tools. For more details visit https://flutterviz.io/
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:the_remember/src/ui/pages/modules/learning/progress_bar.dart';
 
+import '../../../../domain_layer/providers/learning_navigation.dart';
+import '../../../../domain_layer/providers/terms_in_module.dart';
 import '../../../../repositoris/db_data_source/folder.dart';
 import '../../../../repositoris/db_data_source/module.dart';
 import '../../../../repositoris/db_data_source/term.dart';
+import '../../../ui_templates/abstract_ui.dart';
 import '../unary_module.dart';
 
 
-class WriteWordOneMoreTime extends StatelessWidget {
-  final ModuleDbDS moduleEntity;
-  final TermEntityDbDS wordEntity;
-  final int progress;
-  final int maxProgress;
-  List<TermEntityDbDS>? currTermsList;
-  final String userInput;
+class WriteWordOneMoreTime extends StatefulWidget {
+  final TermsInModuleProvider termsPr;
+  final LearnScreensNavigationProvider learnNavPr;
+  late TermEntityDbDS wordEntity;
+  late int progress;
+  late int maxProgress;
+  late bool reverseTerm;
+  String inputWord = "";
 
-  final bool reverseTerm;
+  WriteWordOneMoreTime({
+    required this.termsPr,
+    required this.learnNavPr,
+  }) {
+    progress = learnNavPr.activePageNumber;
+    maxProgress = termsPr.learningIterationTermsList!.length;
+    wordEntity = termsPr.learningIterationTermsList![progress];
+    reverseTerm = wordEntity.isTermReverseChoice();
+  }
 
-  WriteWordOneMoreTime(this.moduleEntity, this.wordEntity, this.progress,
-      this.maxProgress,
-      [this.currTermsList = null,
-        this.userInput = "",
-        this.reverseTerm = false]);
+  @override
+  _WriteWordOneMoreTimeState createState() => _WriteWordOneMoreTimeState();
+}
+
+class _WriteWordOneMoreTimeState extends AbstractUIStatefulWidget<WriteWordOneMoreTime> {
 
   @override
   Widget build(BuildContext context) {
     // var moduleEntity = foldersOrModules[moduleEntity];
     // var wordEntity = words[wordId];
-    return WillPopScope(
-      child:Scaffold(
-      backgroundColor: Color(0xffffffff),
-      appBar: AppBar(
-          elevation: 4,
-          centerTitle: false,
-          automaticallyImplyLeading: false,
-          backgroundColor: Color(0xff3a57e8),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero,
-          ),
-          title: Text(
-            moduleEntity.name ?? "Не найден Uuid для этого модуля",
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontStyle: FontStyle.normal,
-              fontSize: 14,
-              color: Color(0xfff9f9f9),
-            ),
-          ),
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Color(0xfff9f9f9),
-              size: 24,
-            ), onPressed: () {
-            Navigator.pushNamed(
-              context,
-              '/module_id',
-              arguments: {
-                'moduleId': moduleEntity,
-              },
-            );
-            // Navigator.pop(context);
-
-
-          },
-          ),
-      ),
-      body: GestureDetector(
+    var learnNavPr =
+    Provider.of<LearnScreensNavigationProvider>(context, listen: false);
+    return GestureDetector(
         onPanUpdate: (details) async {
           // Swiping in right direction.
           if (details.delta.dx > 0) {}
 
           // Swiping in left direction.
           if (details.delta.dx < 0) {
+            learnNavPr.activePageNumber += 1;
             // if (buttonPressed.values.any((isClicked) => isClicked)) {
-            var nextPage = await getNextLearnPage(
-                moduleEntity,
-                currTermList: currTermsList,
-                progress: progress,
-                InputedWord: userInput,
-                showPostScreen: false,
-              context: context,
-            );
-
-            await nextPage(context);
+            // var nextPage = await getNextLearnPage(
+            //     moduleEntity,
+            //     currTermList: currTermsList,
+            //     progress: progress,
+            //     InputedWord: userInput,
+            //     showPostScreen: false,
+            //   context: context,
+            // );
+            //
+            // await nextPage(context);
 
 
             // Navigator.push(
@@ -99,15 +77,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.max,
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
-              child: LinearProgressIndicator(
-                  backgroundColor: Color(0xff808080),
-                  valueColor:
-                  new AlwaysStoppedAnimation<Color>(Color(0xff3a57e8)),
-                  value: progress.toDouble() / maxProgress.toDouble(),
-                  minHeight: 3),
-            ),
+            LearnProgressBarWidget(),
             Container(
               margin: EdgeInsets.all(0),
               padding: EdgeInsets.all(0),
@@ -175,7 +145,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
                               child: Align(
                                 alignment: Alignment.topCenter,
                                 child: Text(
-                                  wordEntity.maybeReverseTermWrite ??
+                                  widget.wordEntity.maybeReverseTermWrite ??
                                       "Похоже, что по этому Uuid не найдено термина, так быть не должно...",
                                   textAlign: TextAlign.left,
                                   overflow: TextOverflow.clip,
@@ -225,7 +195,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
                             child: Align(
                               alignment: Alignment.topCenter,
                               child: Text(
-                                wordEntity.maybeReverseDefinitionWrite ??
+                                widget.wordEntity.maybeReverseDefinitionWrite ??
                                     "Похоже, что по этому Uuid не найдено термина, так быть не должно...",
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.clip,
@@ -251,19 +221,20 @@ class WriteWordOneMoreTime extends StatelessWidget {
                 onChanged: (text) async {
                   // UserInput = text;
                   if (text.toLowerCase() ==
-                      wordEntity.maybeReverseDefinitionWrite.toLowerCase()) {
+                      widget.wordEntity.maybeReverseDefinitionWrite.toLowerCase()) {
+                    learnNavPr.activePageNumber += 1;
                     // words[wordId]?.write_error_counter -= 1;
-                    var nextPage = await getNextLearnPage(
-                        moduleEntity,
-                        currTermList: currTermsList,
-                        progress: progress,
-                      InputedWord: userInput,
-                      showPostScreen: false,
-                      context: context,
-                    );
-
-                    await nextPage(context);
-                    // Navigator.push(
+                    // var nextPage = await getNextLearnPage(
+                    //     moduleEntity,
+                    //     currTermList: currTermsList,
+                    //     progress: progress,
+                    //   InputedWord: userInput,
+                    //   showPostScreen: false,
+                    //   context: context,
+                    // );
+                    //
+                    // await nextPage(context);
+                    // // Navigator.push(
                     //     context,
                     //     MaterialPageRoute(
                     //         builder: (context) => nextPage));
@@ -301,7 +272,7 @@ class WriteWordOneMoreTime extends StatelessWidget {
                     fontSize: 14,
                     color: Color(0xff000000),
                   ),
-                  hintText: wordEntity.maybeReverseDefinitionWrite ??
+                  hintText: widget.wordEntity.maybeReverseDefinitionWrite ??
                       "Похоже, что по этому Uuid не найдено термина, так быть не должно...",
                   hintStyle: TextStyle(
                     fontWeight: FontWeight.w400,
@@ -352,15 +323,16 @@ class WriteWordOneMoreTime extends StatelessWidget {
                         alignment: Alignment.center,
                         child: MaterialButton(
                           onPressed: () async {
-                            var nextPage = await getNextLearnPage(
-                                moduleEntity,
-                                currTermList: currTermsList,
-                                progress: progress,
-                              InputedWord: userInput,
-                              showPostScreen: false,
-                              context: context,
-                            );
-                            await nextPage(context);
+                            learnNavPr.activePageNumber += 1;
+                            // var nextPage = await getNextLearnPage(
+                            //     moduleEntity,
+                            //     currTermList: currTermsList,
+                            //     progress: progress,
+                            //   InputedWord: userInput,
+                            //   showPostScreen: false,
+                            //   context: context,
+                            // );
+                            // await nextPage(context);
                             // Navigator.push(
                             //     context,
                             //     MaterialPageRoute(
@@ -394,15 +366,16 @@ class WriteWordOneMoreTime extends StatelessWidget {
                         alignment: Alignment.center,
                         child: MaterialButton(
                           onPressed: () async {
-                            var nextPage = await getNextLearnPage(
-                                moduleEntity,
-                                currTermList:  currTermsList,
-                                progress: progress,
-                                InputedWord: wordEntity.maybeReverseDefinitionWrite,
-                                showPostScreen: false,
-                              context: context,
-                            );
-                            await nextPage(context);
+                            learnNavPr.activePageNumber += 1;
+                            // var nextPage = await getNextLearnPage(
+                            //     moduleEntity,
+                            //     currTermList:  currTermsList,
+                            //     progress: progress,
+                            //     InputedWord: wordEntity.maybeReverseDefinitionWrite,
+                            //     showPostScreen: false,
+                            //   context: context,
+                            // );
+                            // await nextPage(context);
 
                             // Navigator.push(
                             //     context,
@@ -438,19 +411,6 @@ class WriteWordOneMoreTime extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    ),
-    onWillPop: () async {
-      var nextPage = await getNextLearnPage(
-          moduleEntity,
-          currTermList: currTermsList,
-          progress: currTermsList!.length,
-          context: context
-
       );
-      await nextPage(context);
-    return false;
-    },
-    );
   }
 }

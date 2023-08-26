@@ -12,6 +12,11 @@ import 'folder_module.dart';
 
 class TermsInModuleProvider with ChangeNotifier, OpenAndClose {
   List<TermEntityDbDS>? _termsList = null;
+  List<TermEntityDbDS>? _learningIterationTermsList = null;
+  List<TermEntityDbDS>? _changedInLearningIterationTermsList = null;
+
+
+
   final FolderAndModuleProvider fmPr;
   late Future _initLists;
 
@@ -29,14 +34,43 @@ class TermsInModuleProvider with ChangeNotifier, OpenAndClose {
 
   Future<void> _initListsFromDB() async {
     var isar = await openConn();
+    // var module = await isar
+    //     .collection<ModuleDbDS>()
+    //     .filter()
+    //     .uuidEqualTo(fmPr.currentModule!.uuid)
+    //     .userUuidEqualTo(fmPr.userPr.user!.uuid)
+    //     .findAll();
+    // await module[0].words.load();
+    // _termsList = module[0].words.toList();
     _termsList = await isar
         .collection<TermEntityDbDS>()
+
         .filter()
+        .module((q) => q.uuidEqualTo(fmPr.currentModule!.uuid))
         .moduleUuidEqualTo(fmPr.currentModule!.uuid)
         .userUuidEqualTo(fmPr.userPr.user!.uuid)
         .findAll();
+    _termsList!.forEach((element) {
+      element.module.value = fmPr.currentModule;
+    });
+
+    // await _termsList![0].module.load();
+    // _termsList![0].module.
 
     notifyListeners();
     await closeConn();
+  }
+
+  List<TermEntityDbDS>? get changedInLearningIterationTermsList =>
+      _changedInLearningIterationTermsList;
+
+  set changedInLearningIterationTermsList(List<TermEntityDbDS>? value) {
+    _changedInLearningIterationTermsList = value;
+  }
+  List<TermEntityDbDS>? get learningIterationTermsList =>
+      _learningIterationTermsList;
+
+  set learningIterationTermsList(List<TermEntityDbDS>? value) {
+    _learningIterationTermsList = value;
   }
 }

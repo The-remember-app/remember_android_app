@@ -1,59 +1,25 @@
 ///File download from FlutterViz- Drag and drop a tools. For more details visit https://flutterviz.io/
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../domain_layer/functions/words_BO.dart';
+import '../../../../domain_layer/providers/folder_module.dart';
+import '../../../../domain_layer/providers/module_buttoons_navigation.dart';
 import '../../../../repositoris/db_data_source/folder.dart';
 import '../../../../repositoris/db_data_source/module.dart';
 import '../unary_module.dart';
 
 class LearnCompleted extends StatelessWidget {
-  final ModuleDbDS moduleEntity;
 
-  LearnCompleted(this.moduleEntity);
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      child:Scaffold(
-      backgroundColor: Color(0xffffffff),
-      appBar: AppBar(
-        elevation: 4,
-        centerTitle: false,
-        automaticallyImplyLeading: false,
-        backgroundColor: Color(0xff3a57e8),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero,
-        ),
-        title: Text(
-          moduleEntity.name ?? "Нет модуля с таким Uuid",
-          style: TextStyle(
-            fontWeight: FontWeight.w400,
-            fontStyle: FontStyle.normal,
-            fontSize: 14,
-            color: Color(0xfff9f9f9),
-          ),
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Color(0xfff9f9f9),
-            size: 24,
-          ),
-          onPressed: () {
-            Navigator.pushNamed(
-              context,
-              '/module_id',
-              arguments: {
-                'moduleId': moduleEntity,
-              },
-            );
-            // Navigator.pop(context);
-          },
-        ),
-      ),
-      body: Column(
+    var moduleNavPr =
+    Provider.of<ModuleButtonNavigationProvider>(context, listen: false);
+    var fmPr = Provider.of<FolderAndModuleProvider>(context, listen: false);
+    return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.max,
@@ -116,16 +82,8 @@ class LearnCompleted extends StatelessWidget {
                           alignment: Alignment.center,
                           child: MaterialButton(
                             onPressed: () async {
-                              await startLearning(moduleEntity.isarId);
-                              var nextPage =
-                                  await getNextLearnPage(moduleEntity, context: context,);
-                              await nextPage(context);
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) =>
-                              //         nextPage ));
-                            },
+                              moduleNavPr.buttonType = ModuleButtonNavigationEnum.startLearn;
+    },
                             color: Color(0xfff9f9f9),
                             elevation: 0,
                             shape: RoundedRectangleBorder(
@@ -153,7 +111,7 @@ class LearnCompleted extends StatelessWidget {
                         padding: EdgeInsets.fromLTRB(10, 10, 10, 20),
                         child: MaterialButton(
                           onPressed: () {
-                            Navigator.pop(context);
+                            moduleNavPr.buttonType = ModuleButtonNavigationEnum.mainModuleScreen;
                           },
                           color: Color(0xfff9f9f9),
                           elevation: 0,
@@ -184,19 +142,6 @@ class LearnCompleted extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    ),
-    onWillPop: () async {
-      var nextPage = await getNextLearnPage(
-          moduleEntity,
-          currTermList: [],
-          progress: 1,
-          context: context
-
       );
-      await nextPage(context);
-    return false;
-    },
-    );
   }
 }
