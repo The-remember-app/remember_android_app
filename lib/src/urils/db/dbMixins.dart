@@ -11,6 +11,9 @@ import 'abstract_entity.dart';
 import 'dbMixins.dart';
 import 'engine.dart';
 
+
+
+
 abstract class OpenAndCloseI{
   Future<void> openConn();
   Future<void> closeConn();
@@ -75,8 +78,7 @@ T3 extends CollectionSchema<AbstractEntity>
         _ => throw 'this type is not in in switch construction!',
       };
       if (currConnType != null) {
-        locConn[currConnType] =
-        await IzarManager.instance.openActivityDB(currConnType);
+        locConn[currConnType] = await IzarManager.instance.openActivityDB(currConnType);
         return  locConn[currConnType];
       }
       return null;

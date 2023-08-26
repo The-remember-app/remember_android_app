@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:the_remember/src/ui/ui_states/modules/unary_module.dart';
 
 import '../../../domain_layer/providers/app_bar_navigation.dart';
 import '../../../domain_layer/providers/bottom_navigation_provider.dart';
@@ -66,7 +67,7 @@ class _FolderOrModuleChoiceState
         appBar: appBarPagePr.getAppBarWidget[fmPr.currentFolder == null
             ? AppBarNavigationEnum.empty
             : AppBarNavigationEnum.arrowBack]!(context, widget.dfMapper),
-        body: UnaryFolder(),
+        body: UnaryFolder( dfMapper: widget.dfMapper),
         bottomNavigationBar: bottomPagePr.bottomNavWidget!(context),
         dfMapper: widget.dfMapper,
         onWillPop: () async {
@@ -77,35 +78,22 @@ class _FolderOrModuleChoiceState
             AppBarEmulate(title: fmPr.currentFolder?.name ?? "Root folder"),
       );
     } else {
-      return Wapper(
-        appBar: appBarPagePr.getAppBarWidget[fmPr.currentFolder == null
-            ? AppBarNavigationEnum.empty
-            : AppBarNavigationEnum.arrowBack]!(context, widget.dfMapper),
-        body: UnaryModule(),
-        bottomNavigationBar: bottomPagePr.bottomNavWidget!(context),
-        dfMapper: widget.dfMapper,
-        onWillPop: () async {
-          fmPr.currentFolder = fmPr.currentFolder;
-          return false;
-        },
-        appBarEmulate:
-            AppBarEmulate(title: fmPr.currentModule?.name ?? "unknown error"),
-      );
+      return  ModuleWithTerms(dfMapper: widget.dfMapper);
     }
   }
 }
 
-class AwaitFolderAndModules extends StatefulWidget {
-  @override
-  _AwaitFolderAndModulesState createState() => _AwaitFolderAndModulesState();
-}
-
-class _AwaitFolderAndModulesState
-    extends AbstractUIStatefulWidget<AwaitFolderAndModules> {
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<FolderAndModuleProvider>(builder: (context, fmPr, child) {
-      // Future _future = fmPr.
-    });
-  }
-}
+// class AwaitFolderAndModules extends StatefulWidget {
+//   @override
+//   _AwaitFolderAndModulesState createState() => _AwaitFolderAndModulesState();
+// }
+//
+// class _AwaitFolderAndModulesState
+//     extends AbstractUIStatefulWidget<AwaitFolderAndModules> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Consumer<FolderAndModuleProvider>(builder: (context, fmPr, child) {
+//       // Future _future = fmPr.
+//     });
+//   }
+// }

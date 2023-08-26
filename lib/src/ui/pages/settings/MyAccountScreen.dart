@@ -273,12 +273,14 @@ class MyAccountScreen extends StatelessWidget {
               onPressed: () async {
                 userPr.user?.active = false;
                 userPr.authHeaders = Map<String, String>();
-                userPr.userChange();
-                await Navigator.pushNamed(
-                  context,
-                  '/login_screen',
-                  arguments: Map<String, dynamic>(),
-                );
+                var coro = userPr.userChange();
+                userPr.user = null;
+                await coro;
+                // await Navigator.pushNamed(
+                //   context,
+                //   '/login_screen',
+                //   arguments: Map<String, dynamic>(),
+                // );
                 // userApi.user = null;
               },
               color: Color(0x343a57e8),

@@ -74,7 +74,7 @@ class FolderAndModuleProvider with ChangeNotifier {
   FolderDbDS? get currentFolder => _currentFolder;
 
   set currentFolder(FolderDbDS? folder) {
-    if (this._currentFolder != folder || _firstFolderInit) {
+    if ((this._currentFolder != folder || this._currentModule != null) || _firstFolderInit) {
       _firstFolderInit = false;
       _rootFolderSet(folder);
       this._currentFolder = folder;

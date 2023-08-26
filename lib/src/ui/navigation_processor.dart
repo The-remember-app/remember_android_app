@@ -13,7 +13,7 @@ Widget navigationProcessor() {
     if (awaitUserWidget.userGetter == null) {
       var pr = Provider.of<UserApiProfile>(context, listen: false);
 
-      awaitUserWidget.userGetter = UserApiProfile.getUser(pr)
+      awaitUserWidget.userGetter = pr.awaitUser()
           .then((value)  {
             awaitUserWidget.userGetterCompleted = true;
             return value;

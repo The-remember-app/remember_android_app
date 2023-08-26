@@ -9,21 +9,36 @@ import '../../../domain_layer/providers/sub_folder_modules.dart';
 import '../../pages/modules/unary_folder.dart';
 import '../../ui_templates/abstract_ui.dart';
 
-class FoldersListProcessor extends StatelessWidget {
+class FoldersListProcessor extends StatefulWidget {
+  final DFMapper dfMapper;
+
+  const FoldersListProcessor({super.key, required this.dfMapper});
+
+  @override
+  _FoldersListProcessorState createState() => _FoldersListProcessorState();
+
+
+
+}
+class _FoldersListProcessorState extends AbstractUIStatefulWidget<FoldersListProcessor>{
   @override
   Widget build(BuildContext context) {
     var fmPr = Provider.of<FolderAndModuleProvider>(context, listen: false);
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => SubFolderAndModuleProvider(fmPr: fmPr)),
+        ChangeNotifierProvider(create: (context) => SubFolderAndModuleProvider(widget.dfMapper, fmPr: fmPr)),
       ],
-      child: AwaitFoldersList(),
+      child: AwaitFoldersList( dfMapper: widget.dfMapper),
     );
   }
-
 }
 
+
 class AwaitFoldersList extends StatefulWidget{
+  final DFMapper dfMapper;
+
+  const AwaitFoldersList({super.key, required this.dfMapper});
+
   @override
   _AwaitFoldersListState createState() => _AwaitFoldersListState();
 }
@@ -32,8 +47,9 @@ class _AwaitFoldersListState extends AbstractUIStatefulWidget<AwaitFoldersList>
 {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
     return Consumer<SubFolderAndModuleProvider>(builder: (context, subFmPr, child) {
+      // subFmPr.reInit();
       var _future = subFmPr.initLists;
       return FutureBuilder<void>(
         future: _future.then((value) async {
@@ -44,7 +60,7 @@ class _AwaitFoldersListState extends AbstractUIStatefulWidget<AwaitFoldersList>
             if (snapshot.error != null) {
               return Text(snapshot.error.toString());
             }
-            return LoadedFoldersList();
+            return LoadedFoldersList( dfMapper: widget.dfMapper);
 
           } else {
             return Container();

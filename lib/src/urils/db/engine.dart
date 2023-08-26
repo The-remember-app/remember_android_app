@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:the_remember/src/repositoris/db_data_source/sentence.dart';
 import 'package:the_remember/src/repositoris/db_data_source/term_adding_info.dart';
 import 'package:the_remember/src/repositoris/db_data_source/user.dart';
 import 'package:the_remember/src/urils/db/abstract_entity.dart';
@@ -11,12 +12,22 @@ import '../../repositoris/db_data_source/http_utils.dart';
 import '../../repositoris/db_data_source/module.dart';
 import '../../repositoris/db_data_source/term.dart';
 
+List<CollectionSchema<AbstractEntity>> allSchemes = [
+  TermEntityDbDSSchema,
+  ModuleDbDSSchema,
+  FolderDbDSSchema,
+  UserDbDSSchema,
+  HttpUtilsDbDSSchema,
+  TermAddingInfoDbDSSchema,
+  SentenceDbDSSchema
+];
+
 enum ConnType {
   module, folder, term, user, server_urls, term_info
 }
 
 class IzarManager  {
-  static final IzarManager  instance  = IzarManager ._internal();
+  static final IzarManager  instance  = IzarManager._internal();
   final Map<String, int> _izarCounter = <String, int>{};
 
   factory IzarManager () {
@@ -66,19 +77,14 @@ class IzarManager  {
     //   ConnType.folder => _openIsar('folder', [TermEntityDbDSSchema, ModuleDbDSSchema, FolderDbDSSchema] ),
     // };
     return _openIsar('term',
-        [TermEntityDbDSSchema,
-          ModuleDbDSSchema,
-          FolderDbDSSchema,
-          UserDbDSSchema,
-          HttpUtilsDbDSSchema,
-          TermAddingInfoDbDSSchema
-        ]);
+        allSchemes
+    );
 
 
   }
 
   Future<Isar> openActivityDBv2(List<CollectionSchema<AbstractEntity>> connSchemes) async {
-    return _openIsar('term', connSchemes);
+    return _openIsar('term', allSchemes);
 
   }
 }

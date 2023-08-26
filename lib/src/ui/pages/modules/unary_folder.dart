@@ -22,7 +22,9 @@ import '../../ui_templates/abstract_ui.dart';
 import 'modules.dart';
 
 class UnaryFolder extends StatefulWidget {
-  // UnaryFolder(this.folderId);
+  final DFMapper dfMapper;
+
+  const UnaryFolder({super.key, required this.dfMapper});
 
   @override
   UnaryFolderState createState() => UnaryFolderState();
@@ -34,7 +36,7 @@ class UnaryFolderState extends AbstractUIStatefulWidget<UnaryFolder> {
     return Stack(
       alignment: Alignment.topLeft,
       children: [
-        FoldersListProcessor(),
+        FoldersListProcessor( dfMapper: widget.dfMapper),
         Align(
           alignment: Alignment.bottomRight,
           child: Container(
@@ -69,6 +71,10 @@ class UnaryFolderState extends AbstractUIStatefulWidget<UnaryFolder> {
 }
 
 class LoadedFoldersList extends StatelessWidget {
+  final DFMapper dfMapper;
+
+  const LoadedFoldersList({super.key, required this.dfMapper});
+
   @override
   Widget build(BuildContext context) {
     var subFmPr =
@@ -86,10 +92,10 @@ class LoadedFoldersList extends StatelessWidget {
   List<Widget> getFolderAndModulesUI(BuildContext context,
       SubFolderAndModuleProvider subFmPr, FolderAndModuleProvider fmPr) {
     var foldersDataUI = subFmPr.subFoldersList!.map<Widget>((folder) {
-      return OneFolderListItem(currentFolder: folder, fmPr: fmPr);
+      return OneFolderListItem(currentFolder: folder, fmPr: fmPr, subFmPr: subFmPr);
     }).toList();
     var modulesDataUI = subFmPr.subModulesList!.map<Widget>((module) {
-      return OneModuleListItem(currentModule: module, fmPr: fmPr);
+      return OneModuleListItem(currentModule: module, fmPr: fmPr, subFmPr: subFmPr);
     }).toList();
     return foldersDataUI + modulesDataUI;
   }
@@ -98,9 +104,10 @@ class LoadedFoldersList extends StatelessWidget {
 class OneFolderListItem extends StatelessWidget {
   final FolderAndModuleProvider fmPr;
   final FolderDbDS currentFolder;
+  final SubFolderAndModuleProvider subFmPr;
 
   const OneFolderListItem(
-      {super.key, required this.currentFolder, required this.fmPr});
+      {super.key, required this.currentFolder, required this.fmPr, required this.subFmPr});
 
   @override
   Widget build(BuildContext context) {
@@ -143,6 +150,7 @@ class OneFolderListItem extends StatelessWidget {
       ),
       onTap: () async {
         fmPr.currentFolder = currentFolder;
+        subFmPr.reInit();
       },
     );
   }
@@ -151,9 +159,10 @@ class OneFolderListItem extends StatelessWidget {
 class OneModuleListItem extends StatelessWidget {
   final FolderAndModuleProvider fmPr;
   final ModuleDbDS currentModule;
+  final SubFolderAndModuleProvider subFmPr;
 
   const OneModuleListItem(
-      {super.key, required this.currentModule, required this.fmPr});
+      {super.key, required this.currentModule, required this.fmPr, required this.subFmPr});
 
   @override
   Widget build(BuildContext context) {
@@ -196,6 +205,7 @@ class OneModuleListItem extends StatelessWidget {
       ),
       onTap: () async {
         fmPr.currentModule = currentModule;
+        subFmPr.reInit();
       },
     );
   }

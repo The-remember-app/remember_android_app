@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
+import 'package:the_remember/src/urils/db/abstract_entity.dart';
 
 import '../../../api_package/lib/api_package.dart';
 import '../../../network_processor/network_main.dart';
@@ -9,11 +10,19 @@ import '../../urils/db/dbMixins.dart';
 import '../../urils/db/engine.dart';
 
 
-class UserApiProfile with ChangeNotifier {
+class UserApiProfile with ChangeNotifier, OpenAndClose {
   UserDbDS? _user = null;
   bool _firstUserInit = true;
   ApiPackage? _baseApi = null;
   Map<String, String> _authHeaders = {};
+  late Future _awaitUser;
+
+
+  Future<UserDbDS?> Function() get awaitUser => () async {await _awaitUser; return _user;};
+
+  UserApiProfile(){
+    getUser();
+  }
 
   Map<String, String> get authHeaders => _authHeaders;
 
@@ -35,6 +44,7 @@ class UserApiProfile with ChangeNotifier {
     if (this._user != user || _firstUserInit) {
       _firstUserInit = false;
       this._user = user;
+      _awaitUser = (() async => this._user)();
       if (user != null){
         networkProcessor(this);
       }
@@ -42,48 +52,49 @@ class UserApiProfile with ChangeNotifier {
       notifyListeners();
     }
   }
-  void userChange(){
+  Future<void> userChange() async{
+    var changedUser = _user;
     notifyListeners();
+    if (changedUser != null) {
+      var conn = await openConn();
+      await conn.writeTxn(()async {
+        await conn.collection<UserDbDS>().put(changedUser);
+      });
+      await closeConn();
+    }
+
+  }
+  Future<UserDbDS?> getUser() async {
+    _awaitUser = _getUser();
+    return await _awaitUser;
   }
 
-  static Future<UserDbDS?> getUser(UserApiProfile? userApi) async {
-    if (userApi?.user != null && userApi!.user!.active) {
-      return userApi.user;
+  Future<UserDbDS?> _getUser() async {
+    if (_user != null && _user!.active) {
+      return _user;
     } else {
       // await Future.delayed(Duration(seconds: 5));
-      var conn = (await OpenAndClose3.openConnStatic([
-        CollectionSchema<UserDbDS>,
-        CollectionSchema<HttpUtilsDbDS>,
-      ]));
-      var activeUsers = (await conn[ConnType.user]!
+      var conn = await openConn();
+      var activeUsers = (await conn
           .collection<UserDbDS>()
           .filter()
           .activeEqualTo(true)
           .findAll());
-      // FIXME:
-      if (true || activeUsers.length > 1 || (userApi?.user != null && !userApi!.user!.active)) {
+      //2
+      if ( activeUsers.length > 1 || (_user != null && !(_user!.active))) {
         for (var u in activeUsers) {
           u.active = false;
         }
-        if (userApi?.user != null) {
-          activeUsers += [userApi!.user!, userApi.user!];
+        if (_user != null) {
+          activeUsers += [_user!, _user!];
         }
-        (await conn[ConnType.user]!.writeTxn(() async {
-          (await conn[ConnType.user]!.collection<UserDbDS>().putAll(activeUsers));
+        (await conn.writeTxn(() async {
+          (await conn.collection<UserDbDS>().putAll(activeUsers));
         }));
-      }
-      // if (userApi?.baseApi == null) {
-      //   var serverUrls = (await conn[ConnType.server_urls]!
-      //       .collection<HttpUtilsDbDS>()
-      //       .where()
-      //       .findAll());
-      //   serverUrls.forEach((element) async { await networkProcessor(element.httpUrl, userApi); });
-      //   // networkProcessor([for (var i in serverUrls) i.httpUrl]);
-      // } else {
-      //
-      // }
 
-      var coro =  OpenAndClose3.closeConnStatic(conn);
+      }
+
+      var coro =  closeConn();
 
 
       UserDbDS? currentUser;
@@ -92,7 +103,13 @@ class UserApiProfile with ChangeNotifier {
       } else {
         currentUser = activeUsers[0];
       }
-      return currentUser;
+      await coro;
+      _user = currentUser;
+      notifyListeners();
+      return _user;
     }
   }
+
+  @override
+  List<CollectionSchema<AbstractEntity>> get classes => [];
 }

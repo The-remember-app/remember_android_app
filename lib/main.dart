@@ -79,84 +79,84 @@ class MyApp extends StatelessWidget {
         // указываем исходную страницу, которую мы создадим позже
         home: navigationProcessor(),
         onUnknownRoute: (settings) {
-          return MaterialPageRoute(builder: (context) {
-            return StartModule();
-          });
+          // return MaterialPageRoute(builder: (context) {
+          //   return StartModule();
+          // });
         },
         onGenerateRoute: (settings) {
-          var args = settings.arguments as Map<String, dynamic>?;
-          if (settings.name == '/root_folder') {
-            return MaterialPageRoute(
-              settings: settings,
-              builder: (context) => StartModule(),
-            );
-          } else if (settings.name == '/module_id') {
-            return MaterialPageRoute(
-              settings: settings,
-              builder: (context) =>
-                  UnaryModule(args!["moduleId"] as ModuleDbDS),
-            );
-          } else if (settings.name == '/folders_id') {
-            return MaterialPageRoute(
-              settings: settings,
-              builder: (context) => UnaryFolder(args!["folderId"] as int),
-            );
-          } else if (settings.name == '/learning__finished_modal') {
-            // TODO: сделать окно окончания изучения слов модальным
-            return MaterialPageRoute(
-              settings: settings,
-              builder: (context) =>
-                  LearnCompleted(args!["moduleEntity"] as ModuleDbDS),
-            );
-          } else if (settings.name == '/learning__choice_word') {
-            return MaterialPageRoute(
-              settings: settings,
-              builder: (context) => ChoiceWord(
-                args!["moduleEntity"] as ModuleDbDS,
-                args["wordEntity"] as TermEntityDbDS,
-                args["progress"] as int,
-                args["maxProgress"] as int,
-                args["definitions"] as List<TermEntityDbDS>,
-                args["currTermsList"] as List<TermEntityDbDS>?,
-                args["reverseTerm"] as bool,
-              ),
-            );
-          } else if (settings.name == '/learning__write_word') {
-            return MaterialPageRoute(
-              settings: settings,
-              builder: (context) => WriteWord(
-                args!["moduleEntity"] as ModuleDbDS,
-                args["wordEntity"] as TermEntityDbDS,
-                args["progress"] as int,
-                args["maxProgress"] as int,
-                args["currTermsList"] as List<TermEntityDbDS>?,
-                args["reverseTerm"] as bool,
-              ),
-            );
-          } else if (settings.name == '/learning__double_write_word') {
-            return MaterialPageRoute(
-              settings: settings,
-              builder: (context) => WriteWordOneMoreTime(
-                args!["moduleEntity"] as ModuleDbDS,
-                args["wordEntity"] as TermEntityDbDS,
-                args["progress"] as int,
-                args["maxProgress"] as int,
-                args["currTermsList"] as List<TermEntityDbDS>?,
-                args["userInput"] as String,
-                args["reverseTerm"] as bool,
-              ),
-            );
-          } else if (settings.name == '/login_screen') {
-            return MaterialPageRoute(
-              settings: settings,
-              builder: (context) => AuthScreen(),
-            );
-          } else if (settings.name == '/my_account') {
-            return MaterialPageRoute(
-              settings: settings,
-              builder: (context) => MyAccountScreen(),
-            );
-          }
+          // var args = settings.arguments as Map<String, dynamic>?;
+          // if (settings.name == '/root_folder') {
+          //   return MaterialPageRoute(
+          //     settings: settings,
+          //     builder: (context) => StartModule(),
+          //   );
+          // } else if (settings.name == '/module_id') {
+          //   return MaterialPageRoute(
+          //     settings: settings,
+          //     builder: (context) =>
+          //         UnaryModule(args!["moduleId"] as ModuleDbDS),
+          //   );
+          // } else if (settings.name == '/folders_id') {
+          //   return MaterialPageRoute(
+          //     settings: settings,
+          //     builder: (context) => UnaryFolder(args!["folderId"] as int),
+          //   );
+          // } else if (settings.name == '/learning__finished_modal') {
+          //   // TODO: сделать окно окончания изучения слов модальным
+          //   return MaterialPageRoute(
+          //     settings: settings,
+          //     builder: (context) =>
+          //         LearnCompleted(args!["moduleEntity"] as ModuleDbDS),
+          //   );
+          // } else if (settings.name == '/learning__choice_word') {
+          //   return MaterialPageRoute(
+          //     settings: settings,
+          //     builder: (context) => ChoiceWord(
+          //       args!["moduleEntity"] as ModuleDbDS,
+          //       args["wordEntity"] as TermEntityDbDS,
+          //       args["progress"] as int,
+          //       args["maxProgress"] as int,
+          //       args["definitions"] as List<TermEntityDbDS>,
+          //       args["currTermsList"] as List<TermEntityDbDS>?,
+          //       args["reverseTerm"] as bool,
+          //     ),
+          //   );
+          // } else if (settings.name == '/learning__write_word') {
+          //   return MaterialPageRoute(
+          //     settings: settings,
+          //     builder: (context) => WriteWord(
+          //       args!["moduleEntity"] as ModuleDbDS,
+          //       args["wordEntity"] as TermEntityDbDS,
+          //       args["progress"] as int,
+          //       args["maxProgress"] as int,
+          //       args["currTermsList"] as List<TermEntityDbDS>?,
+          //       args["reverseTerm"] as bool,
+          //     ),
+          //   );
+          // } else if (settings.name == '/learning__double_write_word') {
+          //   return MaterialPageRoute(
+          //     settings: settings,
+          //     builder: (context) => WriteWordOneMoreTime(
+          //       args!["moduleEntity"] as ModuleDbDS,
+          //       args["wordEntity"] as TermEntityDbDS,
+          //       args["progress"] as int,
+          //       args["maxProgress"] as int,
+          //       args["currTermsList"] as List<TermEntityDbDS>?,
+          //       args["userInput"] as String,
+          //       args["reverseTerm"] as bool,
+          //     ),
+          //   );
+          // } else if (settings.name == '/login_screen') {
+          //   return MaterialPageRoute(
+          //     settings: settings,
+          //     builder: (context) => AuthScreen(),
+          //   );
+          // } else if (settings.name == '/my_account') {
+          //   return MaterialPageRoute(
+          //     settings: settings,
+          //     builder: (context) => MyAccountScreen(),
+          //   );
+          // }
         });
       // );
   }

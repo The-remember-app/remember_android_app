@@ -4,6 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import 'package:the_remember/src/repositoris/db_data_source/folder.dart';
 import 'package:the_remember/src/repositoris/db_data_source/module.dart';
+import 'package:the_remember/src/repositoris/db_data_source/term.dart';
+import '../../repositoris/db_data_source/sentence.dart';
+import '../../repositoris/db_data_source/term_adding_info.dart';
+import '../../repositoris/db_data_source/user.dart';
+import '../../ui/ui_templates/abstract_ui.dart';
 import '../../urils/db/abstract_entity.dart';
 import '../../urils/db/dbMixins.dart';
 import '../../urils/db/engine.dart';
@@ -14,12 +19,28 @@ class SubFolderAndModuleProvider with ChangeNotifier, OpenAndClose {
   List<FolderDbDS>? _subFoldersList = null;
   List<ModuleDbDS>? _subModulesList = null;
   final FolderAndModuleProvider fmPr;
+  final DFMapper dfMapper;
   late Future _initLists;
   @override
-  List<CollectionSchema<AbstractEntity>> get classes => [FolderDbDSSchema, ModuleDbDSSchema];
+  List<CollectionSchema<AbstractEntity>> get classes => [
+    UserDbDSSchema,
+    FolderDbDSSchema,
+    ModuleDbDSSchema,
+    TermEntityDbDSSchema ,
+    TermAddingInfoDbDSSchema,
+    SentenceDbDSSchema,
+  ];
 
-  SubFolderAndModuleProvider({required this.fmPr}){
+  SubFolderAndModuleProvider(this.dfMapper, {required this.fmPr}){
     _initLists = _initListsFromDB();
+  }
+  void reInit()  {
+    if (_subFoldersList != null && fmPr.currentModule == null){
+      _subFoldersList = null;
+      _subModulesList = null;
+      _initLists = _initListsFromDB();
+      notifyListeners();
+    }
   }
 
 
@@ -67,4 +88,10 @@ class SubFolderAndModuleProvider with ChangeNotifier, OpenAndClose {
 
 
   }
+
+  void changed(){
+    notifyListeners();
+  }
+
+
 }

@@ -3,6 +3,7 @@ import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:isar/isar.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:the_remember/src/repositoris/db_data_source/sentence.dart';
 import 'package:the_remember/src/repositoris/db_data_source/term_adding_info.dart';
 import 'package:uuid/uuid.dart';
 
@@ -79,6 +80,11 @@ class TermEntityDbDS  extends AbstractEntity  {
   @Name("adding_info_entity")
   @JsonKey(includeFromJson: false, includeToJson: false)
   final addInfoEntities = IsarLinks<TermAddingInfoDbDS>();
+
+  @Backlink(to: 'termEntity')
+  @Name("sentence_entities")
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final sentenceEntities = IsarLinks<SentenceDbDS>();
 
   void updateReverseWrite(){
     _reverseChoice = null;

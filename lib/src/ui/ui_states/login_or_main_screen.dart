@@ -40,7 +40,7 @@ class _LoginOrMainScreenState extends AbstractUIStatefulWidget<LoginOrMainScreen
   }
 
   Widget choiceNextScreen(UserApiProfile  userApi){
-    if (userApi.user != null) {
+    if (userApi.user != null && userApi.user!.active) {
       // Navigator.pushNamed(
       //   context,
       //   '/root_folder',

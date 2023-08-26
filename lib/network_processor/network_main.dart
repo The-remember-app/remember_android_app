@@ -33,7 +33,7 @@ import '../src/urils/db/engine.dart';
 // }
 
 Future<void> networkProcessor(UserApiProfile? userApi) async {
-  if (userApi?.baseApi == null && userApi?.user == null) {
+  if (userApi?.baseApi == null && userApi?.user != null) {
     var conn = (await OpenAndClose3.openConnStatic(
         [CollectionSchema<HttpUtilsDbDS>, CollectionSchema<UserDbDS>]));
 
@@ -50,7 +50,22 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
     await loginUser(userApi!.user!.username, userApi.user!.password,
         serverUrls: serverUrls, userApi: userApi);
     return;
-  } else if (userApi?.baseApi == null) {
+  } else if (userApi?.baseApi == null && userApi?.user == null) {
+    // var conn = (await OpenAndClose3.openConnStatic(
+    //     [CollectionSchema<HttpUtilsDbDS>, CollectionSchema<UserDbDS>]));
+    //
+    // var serverUrlsEntities = (await conn[ConnType.server_urls]!
+    //     .collection<HttpUtilsDbDS>()
+    //     .where()
+    //     .findAll());
+    // // var user = (await conn[ConnType.user]!
+    // //     .collection<UserDbDS>()
+    // //     .getByUuid(userApi!.user!.uuid));
+    // var serverUrls = [for (var i in serverUrlsEntities) i.httpUrl];
+    //
+    // await OpenAndClose3.closeConnStatic(conn);
+    // await loginUser(userApi!.user!.username, userApi.user!.password,
+    //     serverUrls: serverUrls, userApi: userApi);
     return;
   }
   print("networkProcessor(userApi) started!!!!!!!!!!!!");
@@ -412,8 +427,10 @@ Future<void> loginUser(
 
       await OpenAndClose3.closeConnStatic(conn);
     }
+
     serverUrls.forEach((url) async => await testServerUrl(
         url, goodUrlFounded, username, password, userApi, onErrorCallback));
+
   } else if (userApi?.authHeaders == null ||
       (userApi?.authHeaders != null && userApi!.authHeaders.isEmpty)) {
     await getAuthHeaders(await userApi!.baseApi!.getAuthApi(), "<unnamed>",
