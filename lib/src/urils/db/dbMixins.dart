@@ -107,7 +107,7 @@ abstract mixin class OpenAndClose  {
   Isar? _conn = null;
 
 
-  List<CollectionSchema<AbstractEntity>> get classes;
+  List<CollectionSchema<AbstractEntity>> get classes => [];
 
   Future<Isar> openConn() async {
     _conn = await  IzarManager.instance.openActivityDBv2(this.classes);

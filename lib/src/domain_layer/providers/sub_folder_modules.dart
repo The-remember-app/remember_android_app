@@ -12,10 +12,11 @@ import '../../ui/ui_templates/abstract_ui.dart';
 import '../../urils/db/abstract_entity.dart';
 import '../../urils/db/dbMixins.dart';
 import '../../urils/db/engine.dart';
+import '../../urils/profilers/abstract.dart';
 import 'folder_module.dart';
 
 
-class SubFolderAndModuleProvider with ChangeNotifier, OpenAndClose {
+class SubFolderAndModuleProvider extends ModChangeNotifier {
   List<FolderDbDS>? _subFoldersList = null;
   List<ModuleDbDS>? _subModulesList = null;
   final FolderAndModuleProvider fmPr;
@@ -32,15 +33,20 @@ class SubFolderAndModuleProvider with ChangeNotifier, OpenAndClose {
   ];
 
   SubFolderAndModuleProvider(this.dfMapper, {required this.fmPr}){
-    _initLists = _initListsFromDB();
+    init(isRealInit: true);
   }
-  void reInit()  {
-    if (_subFoldersList != null && fmPr.currentModule == null){
+
+  @override
+  void init({bool isRealInit = false}) {
+    // if (_subFoldersList != null && fmPr.currentModule == null){
       _subFoldersList = null;
       _subModulesList = null;
       _initLists = _initListsFromDB();
-      notifyListeners();
-    }
+      fmPr.subFolderPr = this;
+      if (!isRealInit) {
+        notifyListeners();
+      }
+    // }
   }
 
 
@@ -92,6 +98,19 @@ class SubFolderAndModuleProvider with ChangeNotifier, OpenAndClose {
   void changed(){
     notifyListeners();
   }
+
+  @override
+  void dispose() {
+    fmPr.subFolderPr = null;
+    super.dispose();
+  }
+
+  @override
+  void notifyListeners(){
+    super.notifyListeners();
+  }
+
+
 
 
 }

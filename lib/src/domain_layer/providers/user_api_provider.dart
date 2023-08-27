@@ -112,4 +112,10 @@ class UserApiProfile with ChangeNotifier, OpenAndClose {
 
   @override
   List<CollectionSchema<AbstractEntity>> get classes => [];
+
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 }

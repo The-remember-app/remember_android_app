@@ -150,7 +150,7 @@ class OneFolderListItem extends StatelessWidget {
       ),
       onTap: () async {
         fmPr.currentFolder = currentFolder;
-        subFmPr.reInit();
+        // subFmPr.reInit();
       },
     );
   }
@@ -205,7 +205,7 @@ class OneModuleListItem extends StatelessWidget {
       ),
       onTap: () async {
         fmPr.currentModule = currentModule;
-        subFmPr.reInit();
+        // subFmPr.reInit();
       },
     );
   }

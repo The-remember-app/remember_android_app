@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
+import 'package:the_remember/src/domain_layer/providers/sub_folder_modules.dart';
 import 'package:the_remember/src/domain_layer/providers/user_api_provider.dart';
 import 'package:the_remember/src/repositoris/db_data_source/folder.dart';
 import 'package:the_remember/src/repositoris/db_data_source/module.dart';
@@ -11,6 +12,7 @@ import '../../urils/db/engine.dart';
 
 
 class FolderAndModuleProvider with ChangeNotifier {
+  SubFolderAndModuleProvider? subFolderPr = null;
   FolderDbDS? _currentFolder = null;
   List<FolderDbDS?> _rootFolder = [];
 
@@ -105,6 +107,21 @@ class FolderAndModuleProvider with ChangeNotifier {
       }
     }
   }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  void notifyListeners(){
+
+    super.notifyListeners();
+    subFolderPr?.init();
+    // subFolderPr = null;
+  }
+
 
 
 
