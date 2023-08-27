@@ -1,9 +1,6 @@
 import 'package:isar/isar.dart';
-import 'package:uuid/uuid.dart';
 
-import '../../../api_package/lib/api_package.dart';
 import '../../urils/db/abstract_entity.dart';
-import 'module.dart';
 
 part 'http_utils.g.dart';
 

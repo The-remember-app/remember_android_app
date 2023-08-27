@@ -4,12 +4,10 @@
 
 import 'dart:async';
 
+import 'package:api_package/src/model/create_user_dto.dart';
+import 'package:api_package/src/model/user_dto.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
-
-import 'package:api_package/src/model/create_user_dto.dart';
-import 'package:api_package/src/model/http_validation_error.dart';
-import 'package:api_package/src/model/user_dto.dart';
 
 class UsersEntitiesApi {
 

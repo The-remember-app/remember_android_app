@@ -1,8 +1,6 @@
 
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:the_remember/src/ui/ui_templates/abstract_ui.dart';
 
 import 'abstract.dart';
 

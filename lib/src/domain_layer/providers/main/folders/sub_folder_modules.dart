@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import 'package:the_remember/src/repositoris/db_data_source/folder.dart';
 import 'package:the_remember/src/repositoris/db_data_source/module.dart';
 import 'package:the_remember/src/repositoris/db_data_source/term.dart';
+
 import '../../../../repositoris/db_data_source/sentence.dart';
 import '../../../../repositoris/db_data_source/term_adding_info.dart';
 import '../../../../repositoris/db_data_source/user.dart';

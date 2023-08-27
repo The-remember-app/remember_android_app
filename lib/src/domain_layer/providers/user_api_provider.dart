@@ -1,13 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import 'package:the_remember/src/urils/db/abstract_entity.dart';
 
 import '../../../api_package/lib/api_package.dart';
 import '../../../network_processor/network_main.dart';
-import '../../repositoris/db_data_source/http_utils.dart';
 import '../../repositoris/db_data_source/user.dart';
-import '../../urils/db/dbMixins.dart';
-import '../../urils/db/engine.dart';
 import '../../urils/profilers/abstract.dart';
 
 class UserApiProfile extends ModChangeNotifier {

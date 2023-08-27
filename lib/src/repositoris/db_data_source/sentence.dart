@@ -1,11 +1,8 @@
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:isar/isar.dart';
 import 'package:the_remember/src/repositoris/db_data_source/term.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../api_package/lib/api_package.dart';
 import '../../urils/db/abstract_entity.dart';
-
 
 part 'sentence.g.dart';
 

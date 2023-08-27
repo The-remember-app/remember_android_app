@@ -1,9 +1,7 @@
 import 'package:isar/isar.dart';
 import 'package:the_remember/src/repositoris/db_data_source/module.dart';
 
-import '../../../main.dart';
 import '../../../network_processor/network_main.dart';
-import '../../repositoris/db_data_source/folder.dart';
 import '../../repositoris/db_data_source/term.dart';
 import '../../urils/db/dbMixins.dart';
 import '../../urils/db/engine.dart';

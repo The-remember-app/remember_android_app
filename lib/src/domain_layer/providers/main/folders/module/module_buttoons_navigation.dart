@@ -1,8 +1,8 @@
 import 'dart:core';
 
-import 'package:flutter/cupertino.dart';
 import 'package:the_remember/src/domain_layer/providers/main/folders/module/terms_in_module.dart';
 import 'package:the_remember/src/domain_layer/providers/user_api_provider.dart';
+
 import '../../../../../urils/profilers/abstract.dart';
 import '../../../../functions/words_BO.dart';
 

@@ -1,37 +1,7 @@
-import 'dart:async';
-import 'dart:collection';
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
-import 'package:openapi_generator_annotations/openapi_generator_annotations.dart';
-import 'package:the_remember/src/domain_layer/providers/user_api_provider.dart';
-import 'package:the_remember/src/repositoris/db_data_source/http_utils.dart';
-import 'package:the_remember/src/repositoris/db_data_source/user.dart';
 import 'package:the_remember/src/ui/ui_states/navigation_processor.dart';
-import 'package:the_remember/src/ui/ui_states/await_user_screen.dart';
-import 'package:the_remember/src/ui/pages/login/LoginScreen.dart';
-import 'package:the_remember/src/ui/pages/modules/learning/choiceWord.dart';
-import 'package:the_remember/src/ui/pages/modules/learning/learn_finished.dart';
-import 'package:the_remember/src/ui/pages/modules/learning/writeWord.dart';
-import 'package:the_remember/src/ui/pages/modules/learning/writeWordOneMoreTime.dart';
-import 'package:the_remember/src/ui/pages/modules/unary_folder.dart';
-import 'package:the_remember/src/ui/pages/modules/unary_module.dart';
-import 'package:the_remember/src/ui/pages/settings/MyAccountScreen.dart';
-import 'package:the_remember/src/ui/ui_states/login_or_status_bar.dart';
-import 'package:uuid/uuid.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:the_remember/src/repositoris/db_data_source/folder.dart';
-import 'package:the_remember/src/repositoris/db_data_source/module.dart';
-import 'package:the_remember/src/repositoris/db_data_source/term.dart';
-import 'package:the_remember/src/ui/pages/modules/modules.dart';
-import 'package:the_remember/src/urils/db/dbMixins.dart';
-import 'package:the_remember/src/urils/db/engine.dart';
-import 'package:provider/provider.dart';
-
-import 'api_package/lib/api_package.dart';
-import 'network_processor/network_main.dart';
 
 // main() является главной функцией с которой начинается
 // выполнение приложения

@@ -2,16 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
-import '../../../../domain_layer/functions/words_BO.dart';
 // import '../../../../domain_layer/providers/folders/folder_module.dart';
 // import '../../../../domain_layer/providers/folders/module/module_buttoons_navigation.dart';
 import '../../../../domain_layer/providers/main/folders/folder_module.dart';
 import '../../../../domain_layer/providers/main/folders/module/module_buttoons_navigation.dart';
-import '../../../../repositoris/db_data_source/folder.dart';
-import '../../../../repositoris/db_data_source/module.dart';
-import '../unary_module.dart';
 
 class LearnCompleted extends StatelessWidget {
 

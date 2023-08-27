@@ -13,9 +13,7 @@ import '../../../../domain_layer/providers/user_api_provider.dart';
 import '../../../../repositoris/db_data_source/term.dart';
 import '../../../pages/modules/learning/choiceWord.dart';
 import '../../../pages/modules/learning/learn_finished.dart';
-import '../../../pages/modules/learning/writeWord.dart';
 import '../../../ui_templates/abstract_ui.dart';
-import '../../../ui_templates/wrappers/on_init_wrapper.dart';
 
 class LearnScreenProcessor extends StatelessWidget {
   @override

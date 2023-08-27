@@ -1,13 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
-import 'package:the_remember/src/repositoris/db_data_source/folder.dart';
 import 'package:the_remember/src/repositoris/db_data_source/module.dart';
 import 'package:the_remember/src/repositoris/db_data_source/term.dart';
+
 import '../../../../../repositoris/db_data_source/sentence.dart';
 import '../../../../../repositoris/db_data_source/term_adding_info.dart';
 import '../../../../../urils/db/abstract_entity.dart';
-import '../folder_module.dart';
 import '../../../../../urils/profilers/abstract.dart';
+import '../folder_module.dart';
 
 class TermsInModuleProvider extends ModChangeNotifier {
   late List<TermEntityDbDS>? _termsList ;

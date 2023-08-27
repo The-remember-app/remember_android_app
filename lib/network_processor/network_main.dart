@@ -3,15 +3,12 @@ import 'dart:convert';
 import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:the_remember/api_package/lib/api_package.dart';
 import 'package:the_remember/src/repositoris/db_data_source/module.dart';
 import 'package:the_remember/src/repositoris/db_data_source/term.dart';
 import 'package:the_remember/src/repositoris/db_data_source/user.dart';
 
-import '../main.dart';
 import '../src/domain_layer/providers/user_api_provider.dart';
 import '../src/repositoris/db_data_source/folder.dart';
 import '../src/repositoris/db_data_source/http_utils.dart';

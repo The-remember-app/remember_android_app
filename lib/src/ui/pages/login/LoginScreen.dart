@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../main.dart';
 import '../../../../network_processor/network_main.dart';
 import '../../../domain_layer/providers/auth/auth_screen_provider.dart';
 import '../../../domain_layer/providers/user_api_provider.dart';

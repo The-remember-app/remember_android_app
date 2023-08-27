@@ -3,25 +3,17 @@
 ///File download from FlutterViz- Drag and drop a tools. For more details visit https://flutterviz.io/
 
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
-import '../../../domain_layer/data_mixins/modules/unary_folder.dart';
 // import '../../../domain_layer/providers/folders/folder_module.dart';
 import '../../../domain_layer/providers/main/folders/folder_module.dart';
 import '../../../domain_layer/providers/main/folders/sub_folder_modules.dart';
 // import '../../../domain_layer/providers/sub_folder_modules.dart';
 import '../../../repositoris/db_data_source/folder.dart';
 import '../../../repositoris/db_data_source/module.dart';
-import '../../../repositoris/db_data_source/term.dart';
-import '../../../urils/db/abstract_entity.dart';
-import '../../../urils/db/dbMixins.dart';
-
 // import '../../repositoris/folder_repository/local_db_data_source/folder.dart';
 import '../../ui_states/modules/unary_folder.dart';
 import '../../ui_templates/abstract_ui.dart';
-import 'modules.dart';
 
 class UnaryFolder extends StatefulWidget {
   final DFMapper dfMapper;

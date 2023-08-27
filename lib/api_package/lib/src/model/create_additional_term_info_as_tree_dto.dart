@@ -4,8 +4,8 @@
 
 // ignore_for_file: unused_element
 import 'package:api_package/src/model/add_info_type_enum.dart';
-import 'package:built_value/json_object.dart';
 import 'package:built_value/built_value.dart';
+import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 
 part 'create_additional_term_info_as_tree_dto.g.dart';

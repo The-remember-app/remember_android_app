@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_remember/src/ui/pages/modules/learning/progress_bar.dart';
 
-import 'package:uuid/uuid.dart';
-
 import '../../../../domain_layer/functions/words_BO.dart';
 // import '../../../../domain_layer/providers/folders/module/learning/choice/choice_buttons_in_learn_screen.dart';
 // import '../../../../domain_layer/providers/folders/module/learning/learning_navigation.dart';
@@ -13,12 +11,8 @@ import '../../../../domain_layer/functions/words_BO.dart';
 import '../../../../domain_layer/providers/main/folders/module/learning/choice/choice_buttons_in_learn_screen.dart';
 import '../../../../domain_layer/providers/main/folders/module/learning/learning_navigation.dart';
 import '../../../../domain_layer/providers/main/folders/module/terms_in_module.dart';
-import '../../../../repositoris/db_data_source/folder.dart';
-import '../../../../repositoris/db_data_source/module.dart';
 import '../../../../repositoris/db_data_source/term.dart';
 import '../../../ui_templates/abstract_ui.dart';
-import '../modules.dart';
-import '../unary_module.dart';
 
 // Padding getDefinitionVariable(TermEntityDbDS wordEntity, BuildContext context,
 //     TermEntityDbDS targetTermEntity, _ChoiceWordState currWidgetClass) {

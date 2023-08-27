@@ -7,7 +7,6 @@ import 'package:the_remember/src/repositoris/db_data_source/sentence.dart';
 import 'package:the_remember/src/repositoris/db_data_source/term_adding_info.dart';
 import 'package:uuid/uuid.dart';
 
-
 import '../../../api_package/lib/api_package.dart';
 import '../../../main.dart';
 import '../../urils/db/abstract_entity.dart';

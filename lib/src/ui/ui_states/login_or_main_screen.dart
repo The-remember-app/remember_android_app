@@ -1,17 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
 
-import '../../../network_processor/network_main.dart';
 import '../../domain_layer/providers/user_api_provider.dart';
-import '../../repositoris/db_data_source/http_utils.dart';
 import '../../repositoris/db_data_source/user.dart';
-import '../../urils/db/abstract_entity.dart';
-import '../../urils/db/dbMixins.dart';
-import '../../urils/db/engine.dart';
-import 'await_user_screen.dart';
-import '../pages/login/LoginScreen.dart';
-import '../pages/modules/modules.dart';
 import '../ui_templates/abstract_ui.dart';
 import 'login_or_status_bar.dart';
 import 'main_content.dart';

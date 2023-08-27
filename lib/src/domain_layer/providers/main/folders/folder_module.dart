@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
-import 'package:isar/isar.dart';
 import 'package:the_remember/src/domain_layer/providers/user_api_provider.dart';
 import 'package:the_remember/src/repositoris/db_data_source/folder.dart';
 import 'package:the_remember/src/repositoris/db_data_source/module.dart';
-import '../../../../urils/profilers/abstract.dart';
+
 import '../../../../urils/db/abstract_entity.dart';
+import '../../../../urils/profilers/abstract.dart';
 
 
 class FolderAndModuleProvider extends ModChangeNotifier {

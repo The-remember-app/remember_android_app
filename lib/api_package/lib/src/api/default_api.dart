@@ -4,9 +4,6 @@
 
 import 'dart:async';
 
-import 'package:built_value/serializer.dart';
-import 'package:dio/dio.dart';
-
 import 'package:api_package/src/api_util.dart';
 import 'package:api_package/src/model/create_folder_dto.dart';
 import 'package:api_package/src/model/create_module_dto.dart';
@@ -15,7 +12,6 @@ import 'package:api_package/src/model/create_user_dto.dart';
 import 'package:api_package/src/model/folder_dto.dart';
 import 'package:api_package/src/model/folder_with_nested_entities_dto.dart';
 import 'package:api_package/src/model/folder_with_root_entity_dto.dart';
-import 'package:api_package/src/model/http_validation_error.dart';
 import 'package:api_package/src/model/module_dto.dart';
 import 'package:api_package/src/model/personalize_module_dto.dart';
 import 'package:api_package/src/model/personalize_term_dto.dart';
@@ -23,6 +19,8 @@ import 'package:api_package/src/model/term_dto.dart';
 import 'package:api_package/src/model/token.dart';
 import 'package:api_package/src/model/user_dto.dart';
 import 'package:built_value/json_object.dart';
+import 'package:built_value/serializer.dart';
+import 'package:dio/dio.dart';
 
 class DefaultApi {
 

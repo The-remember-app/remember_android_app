@@ -1,23 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
 import 'package:the_remember/src/repositoris/db_data_source/user.dart';
 
-import '../../../main.dart';
-import '../../../network_processor/network_main.dart';
-import '../../domain_layer/data_mixins/modules/modules.dart';
 import '../../domain_layer/providers/user_api_provider.dart';
-import '../../repositoris/db_data_source/folder.dart';
-import '../../repositoris/db_data_source/http_utils.dart';
-import '../../repositoris/db_data_source/module.dart';
-import '../../repositoris/db_data_source/term.dart';
-import '../../urils/db/abstract_entity.dart';
-import '../../urils/db/dbMixins.dart';
-import 'login_or_main_screen.dart';
 import '../ui_templates/abstract_ui.dart';
-import '../ui_templates/wrappers/on_init_wrapper.dart';
-import '../pages/login/LoginScreen.dart';
-import '../pages/modules/modules.dart';
+import 'login_or_main_screen.dart';
 
 // StatefulWidget имеет состояние, с которым
 // позже мы будем работать через функцию

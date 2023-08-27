@@ -1,8 +1,5 @@
 import 'dart:core';
 
-import 'package:flutter/cupertino.dart';
-
-import '../../../../ui/ui_templates/navigation/app_bar_navigation_enum.dart';
 import '../../../../urils/profilers/abstract.dart';
 
 class ArrowBackNavigationProvider extends ModChangeNotifier {

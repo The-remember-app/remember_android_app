@@ -3,30 +3,17 @@
 ///File download from FlutterViz- Drag and drop a tools. For more details visit https://flutterviz.io/
 
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
-import '../../../../main.dart';
-import '../../../domain_layer/data_mixins/modules/unary_module.dart';
 import '../../../domain_layer/functions/words_BO.dart';
 // import '../../../domain_layer/providers/folders/folder_module.dart';
 // import '../../../domain_layer/providers/folders/module/module_buttoons_navigation.dart';
 import '../../../domain_layer/providers/main/folders/folder_module.dart';
 import '../../../domain_layer/providers/main/folders/module/module_buttoons_navigation.dart';
 import '../../../domain_layer/providers/user_api_provider.dart';
-import '../../../repositoris/db_data_source/folder.dart';
 import '../../../repositoris/db_data_source/module.dart';
 import '../../../repositoris/db_data_source/term.dart';
-import '../../../urils/db/abstract_entity.dart';
-import '../../../urils/db/dbMixins.dart';
-import '../../ui_states/modules/unary_module.dart';
 import '../../ui_templates/abstract_ui.dart';
-import 'learning/choiceWord.dart';
-import 'learning/learn_finished.dart';
-import 'learning/writeWord.dart';
-import 'learning/writeWordOneMoreTime.dart';
-import 'modules.dart';
 
 // Future<Widget>
 

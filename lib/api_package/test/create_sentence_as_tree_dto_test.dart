@@ -1,5 +1,5 @@
-import 'package:test/test.dart';
 import 'package:api_package/api_package.dart';
+import 'package:test/test.dart';
 
 // tests for CreateSentenceAsTreeDTO
 void main() {
