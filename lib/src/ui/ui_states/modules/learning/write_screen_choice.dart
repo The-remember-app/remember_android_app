@@ -22,10 +22,12 @@ class AddWriteScreenProvider extends StatelessWidget{
   Widget build(BuildContext context) {
     var progress = learnNavPr.activePageNumber;
     var wordEntity = termsPr.learningIterationTermsList![progress];
+    // var learnNavPr =
+    // Provider.of<LearnScreensNavigationProvider>(context, listen: false);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-            create: (context) => WriteWordNavigationProvider(wordEntity)),
+            create: (context) => WriteWordNavigationProvider(termsPr, learnNavPr)),
         // Provider(create: (context) => SomeOtherClass()),
       ],
       child: WriteScreenChoice(termsPr: termsPr, learnNavPr: learnNavPr),

@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import 'package:the_remember/src/repositoris/db_data_source/folder.dart';
@@ -15,46 +13,45 @@ import '../../urils/db/engine.dart';
 import '../../urils/profilers/abstract.dart';
 import 'folder_module.dart';
 
-
 class SubFolderAndModuleProvider extends ModChangeNotifier {
-  List<FolderDbDS>? _subFoldersList = null;
-  List<ModuleDbDS>? _subModulesList = null;
+  late List<FolderDbDS>? _subFoldersList ;
+  late List<ModuleDbDS>? _subModulesList ;
   final FolderAndModuleProvider fmPr;
   final DFMapper dfMapper;
   late Future _initLists;
+
   @override
   List<CollectionSchema<AbstractEntity>> get classes => [
-    UserDbDSSchema,
-    FolderDbDSSchema,
-    ModuleDbDSSchema,
-    TermEntityDbDSSchema ,
-    TermAddingInfoDbDSSchema,
-    SentenceDbDSSchema,
-  ];
+        UserDbDSSchema,
+        FolderDbDSSchema,
+        ModuleDbDSSchema,
+        TermEntityDbDSSchema,
+        TermAddingInfoDbDSSchema,
+        SentenceDbDSSchema,
+      ];
 
-  SubFolderAndModuleProvider(this.dfMapper, {required this.fmPr}){
-    init(isRealInit: true);
+  SubFolderAndModuleProvider(this.dfMapper, {required this.fmPr}) : super() {
+    // init(isRealInit: true);
   }
 
   @override
   void init({bool isRealInit = false}) {
     // if (_subFoldersList != null && fmPr.currentModule == null){
-      _subFoldersList = null;
-      _subModulesList = null;
-      _initLists = _initListsFromDB();
-      fmPr.subFolderPr = this;
-      if (!isRealInit) {
-        notifyListeners();
-      }
-    // }
+    _subFoldersList = null;
+    _subModulesList = null;
+    _initLists = _initListsFromDB();
+    parentProvidersList[fmPr.runtimeType] = fmPr;
+    super.init(isRealInit: isRealInit);
+
   }
 
-
   List<FolderDbDS>? get subFoldersList => _subFoldersList;
+
   List<ModuleDbDS>? get subModulesList => _subModulesList;
+
   Future get initLists => _initLists;
 
-  Future<void> _initListsFromDB() async{
+  Future<void> _initListsFromDB() async {
     if (fmPr.currentModule == null) {
       var isar = await openConn();
       if (fmPr.currentFolder == null) {
@@ -71,46 +68,40 @@ class SubFolderAndModuleProvider extends ModChangeNotifier {
             .userUuidEqualTo(fmPr.userPr.user!.uuid)
             .findAll();
       } else {
-      _subFoldersList = await isar
-          .collection<FolderDbDS>()
-          .filter()
-          .rootFolder((q) => q.isarIdEqualTo(fmPr.currentFolder!.isarId))
-          .userUuidEqualTo(fmPr.userPr.user!.uuid)
-          .findAll();
-      _subModulesList = await isar
-          .collection<ModuleDbDS>()
-          .filter()
-          .rootFolder((q) => q.isarIdEqualTo(fmPr.currentFolder!.isarId))
-          .userUuidEqualTo(fmPr.userPr.user!.uuid)
-          .findAll();
+        _subFoldersList = await isar
+            .collection<FolderDbDS>()
+            .filter()
+            .rootFolder((q) => q.isarIdEqualTo(fmPr.currentFolder!.isarId))
+            .userUuidEqualTo(fmPr.userPr.user!.uuid)
+            .findAll();
+        _subModulesList = await isar
+            .collection<ModuleDbDS>()
+            .filter()
+            .rootFolder((q) => q.isarIdEqualTo(fmPr.currentFolder!.isarId))
+            .userUuidEqualTo(fmPr.userPr.user!.uuid)
+            .findAll();
       }
       notifyListeners();
-      await closeConn ();
+      await closeConn();
     } else {
       _subFoldersList = [];
       _subModulesList = [];
       notifyListeners();
     }
-
-
   }
 
-  void changed(){
+  void changed() {
     notifyListeners();
   }
 
-  @override
-  void dispose() {
-    fmPr.subFolderPr = null;
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   fmPr.subFolderPr = null;
+  //   super.dispose();
+  // }
 
-  @override
-  void notifyListeners(){
-    super.notifyListeners();
-  }
-
-
-
-
+  // @override
+  // void notifyListeners() {
+  //   super.notifyListeners();
+  // }
 }

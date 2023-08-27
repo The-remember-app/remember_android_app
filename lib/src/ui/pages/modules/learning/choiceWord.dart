@@ -70,6 +70,7 @@ class ChoiceWord extends StatefulWidget {
 }
 
 class _ChoiceWordState extends AbstractUIStatefulWidget<ChoiceWord> {
+  bool nextScreen = false;
   // final ModuleDbDS moduleEntity;
   // final TermEntityDbDS wordEntity;
   // final int progress;
@@ -96,18 +97,27 @@ class _ChoiceWordState extends AbstractUIStatefulWidget<ChoiceWord> {
   Widget build(BuildContext context) {
     // var moduleEntity = foldersOrModules[moduleEntity];
     // var wordEntity = words[wordEntity];
+    // var learnNavPr = Provider.of<LearnScreensNavigationProvider>(context, listen: false);
+    var termsPr = Provider.of<TermsInModuleProvider>(context, listen: false);
+
     var learnNavPr =
         Provider.of<LearnScreensNavigationProvider>(context, listen: false);
     return GestureDetector(
       onPanUpdate: (details) async {
+
+
+
         // Swiping in right direction.
         if (details.delta.dx > 0) {}
 
         // Swiping in left direction.
         if (details.delta.dx < 0) {
           if (widget.buttonPressed.values.any((isClicked) => isClicked)) {
-            learnNavPr.activePageNumber += 1;
 
+            if (!nextScreen) {
+              nextScreen = true;
+              learnNavPr.activePageNumber += 1;
+            }
             // var nextPage = await getNextLearnPage(
             //     moduleEntity,
             //     currTermList: currTermsList,
@@ -121,6 +131,7 @@ class _ChoiceWordState extends AbstractUIStatefulWidget<ChoiceWord> {
             //     MaterialPageRoute(
             //         builder: (context) => nextPage));
           }
+
         }
       },
       child: Column(
@@ -154,7 +165,7 @@ class _ChoiceWordState extends AbstractUIStatefulWidget<ChoiceWord> {
                 alignment: Alignment.center,
                 child: Text(
                   (widget.wordEntity.maybeReverseTermChoice ??
-                      "Похоже, в словаре не хватает слов, это явно ошибка"),
+                      "Похоже, в словаре не хватает слов, это явно ошибка") + " " + (learnNavPr.activePageNumber.toString() + " / " +  termsPr.learningIterationTermsList!.length.toString()),
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.clip,
                   style: TextStyle(
@@ -206,6 +217,7 @@ class _ChoiceWordState extends AbstractUIStatefulWidget<ChoiceWord> {
                           if (widget.buttonPressed.values
                               .any((isClicked) => isClicked)) {
                             learnNavPr.activePageNumber += 1;
+                            nextScreen = true;
                             // var nextPage = await getNextLearnPage(
                             //   moduleEntity,
                             //   currTermList: currTermsList,
@@ -270,7 +282,7 @@ class ChoiceButtonAddProvider extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
             create: (context) =>
-                ChoiceLearnButtonsProvider(choiceWordObj.wordEntity)),
+                ChoiceLearnButtonsProvider(choiceWordObj.termsPr, choiceWordObj.learnNavPr)),
         // Provider(create: (context) => SomeOtherClass()),
       ],
       child: ListView(

@@ -3,22 +3,33 @@ import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:the_remember/src/domain_layer/providers/terms_in_module.dart';
 import 'package:the_remember/src/domain_layer/providers/user_api_provider.dart';
-
+import '../../urils/profilers/abstract.dart';
 import '../functions/words_BO.dart';
 
-
-enum ModuleButtonNavigationEnum{
-  startLearn, continueLearn, moduleSettings, mainModuleScreen
+enum ModuleButtonNavigationEnum {
+  startLearn,
+  continueLearn,
+  moduleSettings,
+  mainModuleScreen
 }
 
-
-class ModuleButtonNavigationProvider with ChangeNotifier {
+class ModuleButtonNavigationProvider extends ModChangeNotifier {
   final TermsInModuleProvider termPr;
   final UserApiProfile userPr;
-  ModuleButtonNavigationEnum _buttonType = ModuleButtonNavigationEnum.mainModuleScreen;
-  bool _firstUserInit = true;
+  late ModuleButtonNavigationEnum _buttonType ;
+  late bool _firstUserInit ;
 
-  ModuleButtonNavigationProvider(this.termPr, this.userPr);
+  ModuleButtonNavigationProvider(this.termPr, this.userPr): super()  {
+    // init();
+  }
+
+  @override
+  void init({bool isRealInit = false}) {
+    _buttonType =
+        ModuleButtonNavigationEnum.mainModuleScreen;
+    _firstUserInit = true;
+    super.init(isRealInit: isRealInit);
+  }
 
   set buttonType(ModuleButtonNavigationEnum val) {
     if (this._buttonType != val || _firstUserInit) {
@@ -33,7 +44,7 @@ class ModuleButtonNavigationProvider with ChangeNotifier {
     }
   }
 
-  void setButtonTypeWithoutSetState(ModuleButtonNavigationEnum val){
+  void setButtonTypeWithoutSetState(ModuleButtonNavigationEnum val) {
     if (this._buttonType != val || _firstUserInit) {
       _firstUserInit = false;
       this._buttonType = val;
@@ -41,5 +52,4 @@ class ModuleButtonNavigationProvider with ChangeNotifier {
   }
 
   ModuleButtonNavigationEnum get buttonType => _buttonType;
-
 }

@@ -9,13 +9,12 @@ import '../../urils/db/abstract_entity.dart';
 import '../../urils/db/dbMixins.dart';
 import '../../urils/db/engine.dart';
 import 'folder_module.dart';
+import '../../urils/profilers/abstract.dart';
 
-class TermsInModuleProvider with ChangeNotifier, OpenAndClose {
-  List<TermEntityDbDS>? _termsList = null;
-  List<TermEntityDbDS>? _learningIterationTermsList = null;
-  List<TermEntityDbDS>? _changedInLearningIterationTermsList = null;
-
-
+class TermsInModuleProvider extends ModChangeNotifier {
+  late List<TermEntityDbDS>? _termsList ;
+  late List<TermEntityDbDS>? _learningIterationTermsList ;
+  late  List<TermEntityDbDS>? _changedInLearningIterationTermsList;
 
   final FolderAndModuleProvider fmPr;
   late Future _initLists;
@@ -24,8 +23,17 @@ class TermsInModuleProvider with ChangeNotifier, OpenAndClose {
   List<CollectionSchema<AbstractEntity>> get classes =>
       [TermEntityDbDSSchema, TermAddingInfoDbDSSchema, SentenceDbDSSchema];
 
-  TermsInModuleProvider({required this.fmPr}) {
+  TermsInModuleProvider({required this.fmPr}): super() {
+    // init();
+  }
+
+  @override
+  void init({bool isRealInit = false}) {
     _initLists = _initListsFromDB();
+    _termsList = null;
+     _learningIterationTermsList = null;
+     _changedInLearningIterationTermsList = null;
+    super.init(isRealInit: isRealInit);
   }
 
   List<TermEntityDbDS>? get termsList => _termsList;
@@ -44,7 +52,6 @@ class TermsInModuleProvider with ChangeNotifier, OpenAndClose {
     // _termsList = module[0].words.toList();
     _termsList = await isar
         .collection<TermEntityDbDS>()
-
         .filter()
         .module((q) => q.uuidEqualTo(fmPr.currentModule!.uuid))
         .moduleUuidEqualTo(fmPr.currentModule!.uuid)
@@ -67,6 +74,7 @@ class TermsInModuleProvider with ChangeNotifier, OpenAndClose {
   set changedInLearningIterationTermsList(List<TermEntityDbDS>? value) {
     _changedInLearningIterationTermsList = value;
   }
+
   List<TermEntityDbDS>? get learningIterationTermsList =>
       _learningIterationTermsList;
 

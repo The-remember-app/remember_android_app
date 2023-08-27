@@ -8,20 +8,32 @@ import '../../repositoris/db_data_source/http_utils.dart';
 import '../../repositoris/db_data_source/user.dart';
 import '../../urils/db/dbMixins.dart';
 import '../../urils/db/engine.dart';
+import '../../urils/profilers/abstract.dart';
 
-
-class UserApiProfile with ChangeNotifier, OpenAndClose {
-  UserDbDS? _user = null;
-  bool _firstUserInit = true;
-  ApiPackage? _baseApi = null;
-  Map<String, String> _authHeaders = {};
+class UserApiProfile extends ModChangeNotifier {
+  late UserDbDS? _user ;
+  late bool _firstUserInit ;
+  late ApiPackage? _baseApi ;
+  late Map<String, String> _authHeaders ;
   late Future _awaitUser;
 
+  Future<UserDbDS?> Function() get awaitUser => () async {
+        await _awaitUser;
+        return _user;
+      };
 
-  Future<UserDbDS?> Function() get awaitUser => () async {await _awaitUser; return _user;};
+  UserApiProfile() : super() {
+    // init();
+  }
 
-  UserApiProfile(){
+  @override
+  void init({bool isRealInit = false}) {
+     _user = null;
+     _firstUserInit = true;
+     _baseApi = null;
+     _authHeaders = {};
     getUser();
+    super.init(isRealInit: isRealInit);
   }
 
   Map<String, String> get authHeaders => _authHeaders;
@@ -45,25 +57,26 @@ class UserApiProfile with ChangeNotifier, OpenAndClose {
       _firstUserInit = false;
       this._user = user;
       _awaitUser = (() async => this._user)();
-      if (user != null){
+      if (user != null) {
         networkProcessor(this);
       }
 
       notifyListeners();
     }
   }
-  Future<void> userChange() async{
+
+  Future<void> userChange() async {
     var changedUser = _user;
     notifyListeners();
     if (changedUser != null) {
       var conn = await openConn();
-      await conn.writeTxn(()async {
+      await conn.writeTxn(() async {
         await conn.collection<UserDbDS>().put(changedUser);
       });
       await closeConn();
     }
-
   }
+
   Future<UserDbDS?> getUser() async {
     _awaitUser = _getUser();
     return await _awaitUser;
@@ -81,7 +94,7 @@ class UserApiProfile with ChangeNotifier, OpenAndClose {
           .activeEqualTo(true)
           .findAll());
       //2
-      if ( activeUsers.length > 1 || (_user != null && !(_user!.active))) {
+      if (activeUsers.length > 1 || (_user != null && !(_user!.active))) {
         for (var u in activeUsers) {
           u.active = false;
         }
@@ -91,11 +104,9 @@ class UserApiProfile with ChangeNotifier, OpenAndClose {
         (await conn.writeTxn(() async {
           (await conn.collection<UserDbDS>().putAll(activeUsers));
         }));
-
       }
 
-      var coro =  closeConn();
-
+      var coro = closeConn();
 
       UserDbDS? currentUser;
       if (activeUsers.isEmpty || activeUsers.length > 1) {
@@ -112,7 +123,6 @@ class UserApiProfile with ChangeNotifier, OpenAndClose {
 
   @override
   List<CollectionSchema<AbstractEntity>> get classes => [];
-
 
   @override
   void dispose() {

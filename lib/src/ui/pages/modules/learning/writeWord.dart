@@ -41,21 +41,29 @@ class WriteWord extends StatefulWidget {
 }
 
 class _WriteWordState extends AbstractUIStatefulWidget<WriteWord> {
+  bool nextScreen = false;
   @override
   Widget build(BuildContext context) {
     // var moduleEntity = foldersOrModules[moduleId];
     // var wordEntity = words[wordId];
+    // var learnNavPr = Provider.of<LearnScreensNavigationProvider>(context, listen: false);
+    var termsPr = Provider.of<TermsInModuleProvider>(context, listen: false);
+
     var learnNavPr =
     Provider.of<LearnScreensNavigationProvider>(context, listen: false);
     var writeLearnNavPr = Provider.of<WriteWordNavigationProvider>(context, listen: false);
     return GestureDetector(
       onPanUpdate: (details) async {
+
         // Swiping in right direction.
         if (details.delta.dx > 0) {}
 
         // Swiping in left direction.
         if (details.delta.dx < 0) {
-          writeLearnNavPr.writtenWord = widget.inputWord;
+          if (!nextScreen) {
+            writeLearnNavPr.writtenWord = widget.inputWord;
+            nextScreen = true;
+          }
           // if (buttonPressed.values.any((isClicked) => isClicked)) {
           // var nextPage = await getNextLearnPage(moduleEntity,
           //     currTermList: currTermsList,
@@ -70,6 +78,7 @@ class _WriteWordState extends AbstractUIStatefulWidget<WriteWord> {
           //         builder: (context) => nextPage));
           // }
         }
+
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -111,8 +120,8 @@ class _WriteWordState extends AbstractUIStatefulWidget<WriteWord> {
                     child: Align(
                       alignment: Alignment.center,
                       child: Text(
-                        widget.wordEntity.maybeReverseTermWrite ??
-                            "Не найдено термина с таким UUID",
+                        (widget.wordEntity.maybeReverseTermWrite ??
+                            "Не найдено термина с таким UUID")+ " " + (learnNavPr.activePageNumber.toString() + " / " +  termsPr.learningIterationTermsList!.length.toString()),
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.clip,
                         style: TextStyle(

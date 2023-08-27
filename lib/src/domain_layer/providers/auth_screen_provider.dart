@@ -1,13 +1,22 @@
-
-
-
 import 'dart:core';
 
 import 'package:flutter/cupertino.dart';
+import '../../urils/profilers/abstract.dart';
 
-class AuthScreenProvider with ChangeNotifier {
-  bool _isLoading = false;
-  bool _firstUserInit = true;
+class AuthScreenProvider extends ModChangeNotifier {
+  late bool _isLoading;
+  late bool _firstUserInit ;
+
+  AuthScreenProvider(): super()  {
+    // init();
+  }
+
+  @override
+  void init({bool isRealInit = false}) {
+     _isLoading = false;
+     _firstUserInit = true;
+    super.init(isRealInit: isRealInit);
+  }
 
   set isLoading(bool val) {
     if (this._isLoading != val || _firstUserInit) {

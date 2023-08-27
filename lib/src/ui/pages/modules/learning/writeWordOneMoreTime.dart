@@ -37,7 +37,7 @@ class WriteWordOneMoreTime extends StatefulWidget {
 }
 
 class _WriteWordOneMoreTimeState extends AbstractUIStatefulWidget<WriteWordOneMoreTime> {
-
+  bool nextScreen = false;
   @override
   Widget build(BuildContext context) {
     // var moduleEntity = foldersOrModules[moduleEntity];
@@ -46,31 +46,36 @@ class _WriteWordOneMoreTimeState extends AbstractUIStatefulWidget<WriteWordOneMo
     Provider.of<LearnScreensNavigationProvider>(context, listen: false);
     return GestureDetector(
         onPanUpdate: (details) async {
-          // Swiping in right direction.
-          if (details.delta.dx > 0) {}
 
-          // Swiping in left direction.
-          if (details.delta.dx < 0) {
+        // Swiping in right direction.
+        if (details.delta.dx > 0) {}
+
+        // Swiping in left direction.
+        if (details.delta.dx < 0) {
+          if (!nextScreen) {
+            nextScreen = true;
             learnNavPr.activePageNumber += 1;
-            // if (buttonPressed.values.any((isClicked) => isClicked)) {
-            // var nextPage = await getNextLearnPage(
-            //     moduleEntity,
-            //     currTermList: currTermsList,
-            //     progress: progress,
-            //     InputedWord: userInput,
-            //     showPostScreen: false,
-            //   context: context,
-            // );
-            //
-            // await nextPage(context);
-
-
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => nextPage));
-            // }
           }
+          // if (buttonPressed.values.any((isClicked) => isClicked)) {
+          // var nextPage = await getNextLearnPage(
+          //     moduleEntity,
+          //     currTermList: currTermsList,
+          //     progress: progress,
+          //     InputedWord: userInput,
+          //     showPostScreen: false,
+          //   context: context,
+          // );
+          //
+          // await nextPage(context);
+
+
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) => nextPage));
+          // }
+
+      }
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -223,6 +228,7 @@ class _WriteWordOneMoreTimeState extends AbstractUIStatefulWidget<WriteWordOneMo
                   if (text.toLowerCase() ==
                       widget.wordEntity.maybeReverseDefinitionWrite.toLowerCase()) {
                     learnNavPr.activePageNumber += 1;
+                    nextScreen = true;
                     // words[wordId]?.write_error_counter -= 1;
                     // var nextPage = await getNextLearnPage(
                     //     moduleEntity,
@@ -324,6 +330,7 @@ class _WriteWordOneMoreTimeState extends AbstractUIStatefulWidget<WriteWordOneMo
                         child: MaterialButton(
                           onPressed: () async {
                             learnNavPr.activePageNumber += 1;
+                            nextScreen = true;
                             // var nextPage = await getNextLearnPage(
                             //     moduleEntity,
                             //     currTermList: currTermsList,
