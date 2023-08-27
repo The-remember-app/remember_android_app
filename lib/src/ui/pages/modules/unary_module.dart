@@ -17,164 +17,164 @@ import '../../ui_templates/abstract_ui.dart';
 
 // Future<Widget>
 
-Future<Function(BuildContext)> getNextLearnPage(
-  ModuleDbDS moduleEntity, {
-  List<TermEntityDbDS>? currTermList = null,
-  int progress = -1,
-  // List<int>? currTermIdList = null,
-  String? InputedWord = null,
-  bool? showPostScreen = null,
-  BuildContext? context = null,
-}) async {
-  // return choiceWord;
-  // if (currTermList == null){
-  if (showPostScreen ?? false) {
-    // return WriteWordOneMoreTime(moduleId, currentWord.id, progress, currTermList.length,);
-  } else {
-    progress += 1;
-  }
-  var currentModule = moduleEntity;
-
-  // if (currTermList == null && currTermIdList != null) {
-  //   currTermList ??= [for (var termId in currTermIdList) words[termId]!];
-  // }
-  if (currTermList == null) {
-    currTermList ??= [
-      for (var w in (await getAllTermsFromModule(moduleEntity.isarId)))
-        if ((w.writeErrorCounter != 0 || w.chooseErrorCounter != 0)) w
-    ];
-    currTermList.sort((term1, term2) {
-      if (term1.chooseErrorCounter == term2.chooseErrorCounter) {
-        return term1.writeErrorCounter.compareTo(term2.writeErrorCounter);
-      }
-      return term1.chooseErrorCounter.compareTo(term2.chooseErrorCounter);
-    });
-    if (currTermList.length >= 10) {
-      currTermList = currTermList.sublist(0, 10);
-    }
-    currTermList.shuffle();
-  }
-
-  if (currTermList.isEmpty) {
-    var pr = Provider.of<UserApiProfile>(context!, listen: false);
-    await learnTransactionCompleted(currTermList, pr);
-    // return LearnCompleted(moduleEntity);
-    return (BuildContext context) => Navigator.pushNamed(
-          context,
-          '/learning__finished_modal',
-          arguments: {
-            'moduleEntity': moduleEntity,
-          },
-        );
-  }
-  // if (progress >= currTermUuidList!.length){
-  //   return UnaryModule() ;
-  // }
-  // }
-  var lastWord = null;
-  if (progress != 0) {
-    lastWord = currTermList[progress - 1];
-  }
-  if (progress > 9 || progress >= currTermList.length) {
-    if (InputedWord != null && lastWord != null) {
-      if (InputedWord.toLowerCase() ==
-          lastWord.maybeReverseDefinitionWrite.toLowerCase()) {
-        lastWord.writeErrorCounter -= 1;
-      } else {
-        lastWord.writeErrorCounter += 1;
-      }
-      lastWord?.resetReverse();
-    }
-    var pr = Provider.of<UserApiProfile>(context!, listen: false);
-    await learnTransactionCompleted(currTermList, pr);
-    return (BuildContext context) => Navigator.pushNamed(
-          context,
-          '/module_id',
-          arguments: {
-            'moduleId': moduleEntity,
-          },
-        );
-    // return UnaryModule(moduleEntity);
-  }
-  var currentWord = currTermList[progress];
-
-  if (showPostScreen ?? false) {
-    return (BuildContext context) => Navigator.pushNamed(
-          context,
-          '/learning__double_write_word',
-          arguments: {
-            'moduleEntity': moduleEntity,
-            'wordEntity': currentWord,
-            'progress': progress,
-            'maxProgress': currTermList!.length,
-            'currTermsList': currTermList,
-            'userInput': InputedWord ?? "",
-            'reverseTerm': currentWord.isTermReverseWrite(),
-          },
-        );
-    // return WriteWordOneMoreTime(
-    //     moduleEntity,
-    //     currentWord,
-    //     progress,
-    //     currTermList.length,
-    //     currTermList,
-    //     InputedWord ?? "",
-    //     currentWord.isTermReverseWrite());
-  }
-  if (InputedWord != null && lastWord != null) {
-    if (InputedWord.toLowerCase() ==
-        lastWord.maybeReverseDefinitionWrite.toLowerCase()) {
-      lastWord.writeErrorCounter -= 1;
-    } else {
-      lastWord.writeErrorCounter += 1;
-    }
-    lastWord?.resetReverse();
-  }
-  if (currentWord.chooseErrorCounter == 0) {
-    return (BuildContext context) => Navigator.pushNamed(
-          context,
-          '/learning__write_word',
-          arguments: {
-            'moduleEntity': moduleEntity,
-            'wordEntity': currentWord,
-            'progress': progress,
-            'maxProgress': currTermList!.length,
-            'currTermsList': currTermList,
-            'reverseTerm': currentWord.isTermReverseWrite(),
-          },
-        );
-
-    // return WriteWord(moduleEntity, currentWord, progress, currTermList.length,
-    //     currTermList, currentWord.isTermReverseWrite());
-  } else {
-    var definitionDataPre = await getAllTermsFromModule(moduleEntity.isarId);
-    definitionDataPre.shuffle();
-
-    var definitionData = [
-      for (var ww in definitionDataPre)
-        if (ww.isarId != currentWord.isarId) ww
-    ];
-    definitionData = definitionData.sublist(0, 3);
-    definitionData.add(currentWord);
-    definitionData.shuffle();
-    // var r_num =
-    return (BuildContext context) => Navigator.pushNamed(
-          context,
-          '/learning__choice_word',
-          arguments: {
-            'moduleEntity': moduleEntity,
-            'wordEntity': currentWord,
-            'progress': progress,
-            'maxProgress': currTermList!.length,
-            'definitions': definitionData,
-            'currTermsList': currTermList,
-            'reverseTerm': currentWord.isTermReverseWrite(),
-          },
-        );
-    // return ChoiceWord(moduleEntity, currentWord, progress, currTermList.length,
-    //     definitionData, currTermList, currentWord.isTermReverseChoice());
-  }
-}
+// Future<Function(BuildContext)> getNextLearnPage(
+//   ModuleDbDS moduleEntity, {
+//   List<TermEntityDbDS>? currTermList = null,
+//   int progress = -1,
+//   // List<int>? currTermIdList = null,
+//   String? InputedWord = null,
+//   bool? showPostScreen = null,
+//   BuildContext? context = null,
+// }) async {
+//   // return choiceWord;
+//   // if (currTermList == null){
+//   if (showPostScreen ?? false) {
+//     // return WriteWordOneMoreTime(moduleId, currentWord.id, progress, currTermList.length,);
+//   } else {
+//     progress += 1;
+//   }
+//   var currentModule = moduleEntity;
+//
+//   // if (currTermList == null && currTermIdList != null) {
+//   //   currTermList ??= [for (var termId in currTermIdList) words[termId]!];
+//   // }
+//   if (currTermList == null) {
+//     currTermList ??= [
+//       for (var w in (await getAllTermsFromModule(moduleEntity.isarId)))
+//         if ((w.writeErrorCounter != 0 || w.chooseErrorCounter != 0)) w
+//     ];
+//     currTermList.sort((term1, term2) {
+//       if (term1.chooseErrorCounter == term2.chooseErrorCounter) {
+//         return term1.writeErrorCounter.compareTo(term2.writeErrorCounter);
+//       }
+//       return term1.chooseErrorCounter.compareTo(term2.chooseErrorCounter);
+//     });
+//     if (currTermList.length >= 10) {
+//       currTermList = currTermList.sublist(0, 10);
+//     }
+//     currTermList.shuffle();
+//   }
+//
+//   if (currTermList.isEmpty) {
+//     var pr = Provider.of<UserApiProfile>(context!, listen: false);
+//     await learnTransactionCompleted(currTermList, pr);
+//     // return LearnCompleted(moduleEntity);
+//     return (BuildContext context) => Navigator.pushNamed(
+//           context,
+//           '/learning__finished_modal',
+//           arguments: {
+//             'moduleEntity': moduleEntity,
+//           },
+//         );
+//   }
+//   // if (progress >= currTermUuidList!.length){
+//   //   return UnaryModule() ;
+//   // }
+//   // }
+//   var lastWord = null;
+//   if (progress != 0) {
+//     lastWord = currTermList[progress - 1];
+//   }
+//   if (progress > 9 || progress >= currTermList.length) {
+//     if (InputedWord != null && lastWord != null) {
+//       if (InputedWord.toLowerCase() ==
+//           lastWord.maybeReverseDefinitionWrite.toLowerCase()) {
+//         lastWord.writeErrorCounter -= 1;
+//       } else {
+//         lastWord.writeErrorCounter += 1;
+//       }
+//       lastWord?.resetReverse();
+//     }
+//     var pr = Provider.of<UserApiProfile>(context!, listen: false);
+//     await learnTransactionCompleted(currTermList, pr);
+//     return (BuildContext context) => Navigator.pushNamed(
+//           context,
+//           '/module_id',
+//           arguments: {
+//             'moduleId': moduleEntity,
+//           },
+//         );
+//     // return UnaryModule(moduleEntity);
+//   }
+//   var currentWord = currTermList[progress];
+//
+//   if (showPostScreen ?? false) {
+//     return (BuildContext context) => Navigator.pushNamed(
+//           context,
+//           '/learning__double_write_word',
+//           arguments: {
+//             'moduleEntity': moduleEntity,
+//             'wordEntity': currentWord,
+//             'progress': progress,
+//             'maxProgress': currTermList!.length,
+//             'currTermsList': currTermList,
+//             'userInput': InputedWord ?? "",
+//             'reverseTerm': currentWord.isTermReverseWrite(),
+//           },
+//         );
+//     // return WriteWordOneMoreTime(
+//     //     moduleEntity,
+//     //     currentWord,
+//     //     progress,
+//     //     currTermList.length,
+//     //     currTermList,
+//     //     InputedWord ?? "",
+//     //     currentWord.isTermReverseWrite());
+//   }
+//   if (InputedWord != null && lastWord != null) {
+//     if (InputedWord.toLowerCase() ==
+//         lastWord.maybeReverseDefinitionWrite.toLowerCase()) {
+//       lastWord.writeErrorCounter -= 1;
+//     } else {
+//       lastWord.writeErrorCounter += 1;
+//     }
+//     lastWord?.resetReverse();
+//   }
+//   if (currentWord.chooseErrorCounter == 0) {
+//     return (BuildContext context) => Navigator.pushNamed(
+//           context,
+//           '/learning__write_word',
+//           arguments: {
+//             'moduleEntity': moduleEntity,
+//             'wordEntity': currentWord,
+//             'progress': progress,
+//             'maxProgress': currTermList!.length,
+//             'currTermsList': currTermList,
+//             'reverseTerm': currentWord.isTermReverseWrite(),
+//           },
+//         );
+//
+//     // return WriteWord(moduleEntity, currentWord, progress, currTermList.length,
+//     //     currTermList, currentWord.isTermReverseWrite());
+//   } else {
+//     var definitionDataPre = await getAllTermsFromModule(moduleEntity.isarId);
+//     definitionDataPre.shuffle();
+//
+//     var definitionData = [
+//       for (var ww in definitionDataPre)
+//         if (ww.isarId != currentWord.isarId) ww
+//     ];
+//     definitionData = definitionData.sublist(0, 3);
+//     definitionData.add(currentWord);
+//     definitionData.shuffle();
+//     // var r_num =
+//     return (BuildContext context) => Navigator.pushNamed(
+//           context,
+//           '/learning__choice_word',
+//           arguments: {
+//             'moduleEntity': moduleEntity,
+//             'wordEntity': currentWord,
+//             'progress': progress,
+//             'maxProgress': currTermList!.length,
+//             'definitions': definitionData,
+//             'currTermsList': currTermList,
+//             'reverseTerm': currentWord.isTermReverseWrite(),
+//           },
+//         );
+//     // return ChoiceWord(moduleEntity, currentWord, progress, currTermList.length,
+//     //     definitionData, currTermList, currentWord.isTermReverseChoice());
+//   }
+// }
 
 class UnaryModule extends StatefulWidget {
   UnaryModule();

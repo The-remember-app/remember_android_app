@@ -47,17 +47,8 @@ class ChoiceWord extends StatefulWidget {
     wordEntity = termsPr.learningIterationTermsList![progress];
     reverseTerm = wordEntity.isTermReverseChoice();
 
-    var definitionDataPre = termsPr.termsList!;
-    definitionDataPre.shuffle();
 
-    var definitionData = [
-      for (var ww in definitionDataPre)
-        if (ww.isarId != wordEntity.isarId) ww
-    ];
-    definitionData = definitionData.sublist(0, 3);
-    definitionData.add(wordEntity);
-    definitionData.shuffle();
-    definitions = definitionData;
+    definitions = getChoiceDefinitions(wordEntity, reverseTerm, termsPr.termsList!, );
     for (var definition in definitions) {
       buttonPressed[definition.isarId] = false;
     }

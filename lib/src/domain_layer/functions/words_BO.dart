@@ -177,3 +177,29 @@ TermsInModuleProvider termsPr,
 
 }
 
+
+List<TermEntityDbDS> getChoiceDefinitions(
+TermEntityDbDS targetWordEntity,
+bool reverseTerm,
+List<TermEntityDbDS> termsList,
+
+
+){
+  var definitionDataPre = termsList;
+  definitionDataPre.shuffle();
+
+  var definitionData = [
+    for (var ww in definitionDataPre)
+      if (
+      ww.isarId != targetWordEntity.isarId
+          || targetWordEntity.maybeReverseDefinitionChoice != (
+          reverseTerm ? ww.term : ww.definition
+      )
+      ) ww
+  ];
+  definitionData = definitionData.sublist(0, 3);
+  definitionData.add(targetWordEntity);
+  definitionData.shuffle();
+  return definitionData;
+}
+
