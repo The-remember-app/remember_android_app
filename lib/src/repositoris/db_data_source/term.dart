@@ -51,6 +51,9 @@ class TermEntityDbDS  extends AbstractEntity  {
   @Name("choice_neg_error_counter")
   @JsonKey(name: 'choice_neg_error_counter')
   late int choiceNegErrorCounter;
+  @Name("watch_count")
+  @JsonKey(name: 'watch_count')
+  late int watchCount;
 
   @Name("created_at")
   @JsonKey(name: 'created_at')
@@ -173,6 +176,8 @@ class TermEntityDbDS  extends AbstractEntity  {
       ..chooseErrorCounter=data.chooseErrorCounter!.asNum.toInt()
       ..writeErrorCounter=data.writeErrorCounter!.asNum.toInt()
       ..choiceNegErrorCounter=data.choiceNegErrorCounter!.asNum.toInt()
+      // TODO: fix me
+      ..watchCount=data.watchCount!.asNum.toInt()
       ..createdAt=DateTime.parse(data.createdAt!.asString)
       ..updatedAt=DateTime.parse(data.updatedAt!.asString)
       ..personalCreatedAt=DateTime.parse(data.personalCreatedAt!.asString)

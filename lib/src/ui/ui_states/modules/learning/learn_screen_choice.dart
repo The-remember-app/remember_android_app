@@ -29,22 +29,8 @@ class LearnScreenAddProfiler extends StatefulWidget {
   final List<TermEntityDbDS> changedTermsList = [];
 
   LearnScreenAddProfiler({super.key, required this.termsPr}) {
-    var currTermList = [
-      for (var w in termsPr.termsList!)
-        if ((w.writeErrorCounter != 0 || w.chooseErrorCounter != 0)) w
-    ];
-    currTermList.sort((term1, term2) {
-      if (term1.chooseErrorCounter == term2.chooseErrorCounter) {
-        return term1.writeErrorCounter.compareTo(term2.writeErrorCounter);
-      }
-      return term1.chooseErrorCounter.compareTo(term2.chooseErrorCounter);
-    });
-    if (currTermList.length >= 10) {
-      currTermList = currTermList.sublist(0, 10);
-    }
-    currTermList.shuffle();
 
-    currIterationTermsList = currTermList;
+    currIterationTermsList = getOneLearnIterationList( termsPr.termsList!);
 
     termsPr.learningIterationTermsList = currIterationTermsList;
     termsPr.changedInLearningIterationTermsList = changedTermsList;

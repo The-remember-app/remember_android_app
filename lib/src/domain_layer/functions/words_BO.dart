@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:isar/isar.dart';
 import 'package:the_remember/src/repositoris/db_data_source/module.dart';
 
+import '../../../main.dart';
 import '../../../network_processor/network_main.dart';
 import '../../repositoris/db_data_source/term.dart';
 import '../../urils/db/dbMixins.dart';
@@ -13,10 +16,15 @@ Future<void> startLearning(
     TermsInModuleProvider termPr, UserApiProfile userPr) async {
   await termPr.initLists;
   var currUpdateTime = DateTime.now();
+  var min_ = 2;
+  var max_ = 5;
   for (var w in termPr.termsList!) {
-    w.chooseErrorCounter = 1;
-    w.writeErrorCounter = 1;
+
+    var chooseCount = min_ + random.nextInt(max_ - min_);
+    w.chooseErrorCounter = chooseCount;
+    w.writeErrorCounter = max_ - chooseCount;
     w.choiceNegErrorCounter = 0;
+    w.watchCount = 0;
     w.personalUpdatedAt = currUpdateTime;
   }
   Map<int, TermEntityDbDS> currTermMap = {
@@ -154,12 +162,18 @@ void choiceWordChanging(
     ){
   if (askedWord == choiceWord) {
     askedWord.chooseErrorCounter -= 1;
+
     termsPr.changedInLearningIterationTermsList!.add(askedWord);
   } else {
     askedWord.chooseErrorCounter += 1;
-    choiceWord.choiceNegErrorCounter += 1;
+    if (choiceWord.watchCount > 0) {
+      choiceWord.chooseErrorCounter += 1;
+      choiceWord.watchCount += 1;
+    }
+    // choiceWord.choiceNegErrorCounter += 1;
     termsPr.changedInLearningIterationTermsList!.addAll([askedWord, choiceWord]);
   }
+  askedWord.watchCount += 1;
 }
 
 void writeWordChanging(
@@ -172,7 +186,11 @@ TermsInModuleProvider termsPr,
     askedWord.writeErrorCounter -= 1;
   } else {
     askedWord.writeErrorCounter += 1;
+    if (askedWord.writeErrorCounter % 3 == 0){
+      askedWord.chooseErrorCounter += 1;
+    }
   }
+  askedWord.watchCount += 1;
   termsPr.changedInLearningIterationTermsList!.add(askedWord);
 
 }
@@ -182,9 +200,7 @@ List<TermEntityDbDS> getChoiceDefinitions(
 TermEntityDbDS targetWordEntity,
 bool reverseTerm,
 List<TermEntityDbDS> termsList,
-
-
-){
+    ){
   var definitionDataPre = termsList;
   definitionDataPre.shuffle();
 
@@ -197,9 +213,57 @@ List<TermEntityDbDS> termsList,
       )
       ) ww
   ];
-  definitionData = definitionData.sublist(0, 3);
+  definitionData.sort((term1, term2) {
+  return term2.watchCount.compareTo(term1.watchCount);
+  });
+  definitionData = definitionData.sublist(0, targetWordEntity.module.value!.choicesCount);
   definitionData.add(targetWordEntity);
   definitionData.shuffle();
   return definitionData;
 }
 
+List<TermEntityDbDS> getOneLearnIterationList(
+    List<TermEntityDbDS> termsList,
+
+    ){
+
+  var targetIterationLen = 10;
+  var unknownTargetIterationLen = 7;
+  var knowTargetIterationLen = targetIterationLen - unknownTargetIterationLen;
+
+  var currTermList = [
+    for (var w in termsList)
+      if ((w.writeErrorCounter != 0 || w.chooseErrorCounter != 0)) w
+  ];
+
+  var currLearntTermList = [
+    for (var w in termsList)
+      if ((w.writeErrorCounter == 0 && w.chooseErrorCounter == 0)) w
+  ];
+
+  int realUnknownIterationLen = targetIterationLen - min(currLearntTermList.length, knowTargetIterationLen);
+  knowTargetIterationLen = targetIterationLen - realUnknownIterationLen;
+
+
+
+  currTermList.sort((term1, term2) {
+    if (term1.chooseErrorCounter == term2.chooseErrorCounter) {
+      return term1.writeErrorCounter.compareTo(term2.writeErrorCounter);
+    }
+    return term1.chooseErrorCounter.compareTo(term2.chooseErrorCounter);
+  });
+  if (currTermList.length >= realUnknownIterationLen) {
+    currTermList = currTermList.sublist(0, realUnknownIterationLen);
+  } else {
+
+    knowTargetIterationLen += ((currTermList.length - targetIterationLen) / 2).round();
+    targetIterationLen = currTermList.length;
+  }
+  if (currLearntTermList.length >= knowTargetIterationLen){
+    currLearntTermList = currLearntTermList.sublist(0, knowTargetIterationLen);
+  }
+  currTermList += currLearntTermList;
+  currTermList.shuffle();
+
+  return currTermList;
+}

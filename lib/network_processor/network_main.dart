@@ -4,6 +4,7 @@ import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 import 'package:isar/isar.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:the_remember/api_package/lib/api_package.dart';
 import 'package:the_remember/src/repositoris/db_data_source/module.dart';
 import 'package:the_remember/src/repositoris/db_data_source/term.dart';
@@ -171,6 +172,8 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
       if (networkModule.personalUpdatedAt
           .isBefore(dbModule.personalUpdatedAt)) {
         networkModule
+        // FIXME:
+
           ..isReverseDefinitionWrite = dbModule.isReverseDefinitionWrite
           ..standardAndReverseWrite = dbModule.standardAndReverseWrite
           ..isReverseDefinitionChoice = dbModule.isReverseDefinitionChoice
@@ -211,6 +214,7 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
       var dbTerm = termsFromDb[networkTerm.uuid]!;
       if (networkTerm.personalUpdatedAt.isBefore(dbTerm.personalUpdatedAt)) {
         networkTerm
+          ..watchCount=dbTerm.watchCount
           ..chooseErrorCounter = dbTerm.chooseErrorCounter
           ..writeErrorCounter = dbTerm.writeErrorCounter
           ..choiceNegErrorCounter = dbTerm.choiceNegErrorCounter
@@ -375,7 +379,7 @@ Future testServerUrl(
       ApiPackage(dio: dio, serializers: standardSerializers);
   final AuthApi realAuthApi = baseApiContainer.getAuthApi();
 
-  // baseApiContainer.dio.interceptors.add(PrettyDioLogger());
+  baseApiContainer.dio.interceptors.add(PrettyDioLogger());
 
   var healthyCheck = await realAuthApi.loginForAccessTokenAuthHealthcheckPost();
   if (goodUrlFounded[0]) {

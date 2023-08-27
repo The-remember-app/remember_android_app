@@ -38,6 +38,18 @@ class ModuleDbDS  extends AbstractEntity {
   late bool isReverseDefinitionChoice = false;
   @Name("standard_and_reverse_choice")
   late bool standardAndReverseChoice = true;
+
+  @Name("max_iteration_len")
+  late int maxIterationLen = 10;
+  @Name("min_iteration_len")
+  late int minIterationLen = 4;
+  @Name("min_watch_count")
+  late int minWatchCount = 5;
+  @Name("known_term_part")
+  late int knownTermPart = 30;
+  @Name("choices_count")
+  late int choicesCount = 4;
+
   @Name("created_at")
   late DateTime createdAt;
   @Name("updated_at")

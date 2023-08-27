@@ -306,7 +306,7 @@ class _ChoiceButtonInLearningWidgetState
   Widget build(BuildContext context) {
     return Consumer<ChoiceLearnButtonsProvider>(builder: (context, choicePr, child)
     {
-
+      var clickedFalseButton = false;
       var buttonPressed = widget.choiceWordObj.buttonPressed;
       var wordEntity = widget.wordDefinitionEntity;
       var targetTermEntity = widget.choiceWordObj.wordEntity;
@@ -318,6 +318,7 @@ class _ChoiceButtonInLearningWidgetState
           // wordEntity.chooseErrorCounter -= 1;
         } else {
           buttonColor = Color(0xffff0000);
+          clickedFalseButton = true;
           // wordEntity.choiceNegErrorCounter += 1;
         }
       } else {
@@ -350,9 +351,13 @@ class _ChoiceButtonInLearningWidgetState
           ),
           padding: EdgeInsets.all(16),
           child: Text(
-            targetTermEntity.isTermReverseChoice()
+              (targetTermEntity.isTermReverseChoice()
                 ? wordEntity.term
-                : wordEntity.definition,
+                : wordEntity.definition) +(
+                  clickedFalseButton? "": " / " + (targetTermEntity.isTermReverseChoice()
+                      ? wordEntity.definition
+                      : wordEntity.term)
+              ),
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w400,
