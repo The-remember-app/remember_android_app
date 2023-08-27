@@ -2,9 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:the_remember/src/ui/ui_states/modules/unary_module.dart';
 
-import '../../../domain_layer/providers/app_bar_navigation.dart';
-import '../../../domain_layer/providers/bottom_navigation_provider.dart';
-import '../../../domain_layer/providers/folder_module.dart';
+// import '../../../domain_layer/providers/main_navigation/app_bar_navigation.dart';
+// import '../../../domain_layer/providers/main_navigation/bottom_navigation_provider.dart';
+// import '../../../domain_layer/providers/folders/folder_module.dart';
+import '../../../domain_layer/providers/main/folders/folder_module.dart';
+import '../../../domain_layer/providers/main/main_navigation/app_bar_navigation.dart';
+import '../../../domain_layer/providers/main/main_navigation/bottom_navigation_provider.dart';
 import '../../../domain_layer/providers/user_api_provider.dart';
 import '../../../repositoris/db_data_source/folder.dart';
 import '../../../repositoris/db_data_source/module.dart';

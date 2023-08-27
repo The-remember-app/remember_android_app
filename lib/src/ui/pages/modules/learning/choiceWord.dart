@@ -7,9 +7,12 @@ import 'package:the_remember/src/ui/pages/modules/learning/progress_bar.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../domain_layer/functions/words_BO.dart';
-import '../../../../domain_layer/providers/choice_buttons_in_learn_screen.dart';
-import '../../../../domain_layer/providers/learning_navigation.dart';
-import '../../../../domain_layer/providers/terms_in_module.dart';
+// import '../../../../domain_layer/providers/folders/module/learning/choice/choice_buttons_in_learn_screen.dart';
+// import '../../../../domain_layer/providers/folders/module/learning/learning_navigation.dart';
+// import '../../../../domain_layer/providers/folders/module/terms_in_module.dart';
+import '../../../../domain_layer/providers/main/folders/module/learning/choice/choice_buttons_in_learn_screen.dart';
+import '../../../../domain_layer/providers/main/folders/module/learning/learning_navigation.dart';
+import '../../../../domain_layer/providers/main/folders/module/terms_in_module.dart';
 import '../../../../repositoris/db_data_source/folder.dart';
 import '../../../../repositoris/db_data_source/module.dart';
 import '../../../../repositoris/db_data_source/term.dart';

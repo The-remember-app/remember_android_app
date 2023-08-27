@@ -7,7 +7,8 @@ import '../../repositoris/db_data_source/folder.dart';
 import '../../repositoris/db_data_source/term.dart';
 import '../../urils/db/dbMixins.dart';
 import '../../urils/db/engine.dart';
-import '../providers/terms_in_module.dart';
+// import '../providers/folders/module/terms_in_module.dart';
+import '../providers/main/folders/module/terms_in_module.dart';
 import '../providers/user_api_provider.dart';
 
 Future<void> startLearning(

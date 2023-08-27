@@ -1,7 +1,7 @@
 import 'dart:core';
 
 import 'package:flutter/cupertino.dart';
-import '../../urils/profilers/abstract.dart';
+import '../../../urils/profilers/abstract.dart';
 
 class AuthScreenProvider extends ModChangeNotifier {
   late bool _isLoading;

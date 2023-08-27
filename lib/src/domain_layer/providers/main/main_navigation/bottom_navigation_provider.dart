@@ -1,7 +1,7 @@
 import 'dart:core';
 
 import 'package:flutter/cupertino.dart';
-import '../../urils/profilers/abstract.dart';
+import '../../../../urils/profilers/abstract.dart';
 
 class BottomNavigationProvider extends ModChangeNotifier {
   late int _activePageNumber ;

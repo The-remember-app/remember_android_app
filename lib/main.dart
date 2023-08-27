@@ -9,7 +9,7 @@ import 'package:openapi_generator_annotations/openapi_generator_annotations.dart
 import 'package:the_remember/src/domain_layer/providers/user_api_provider.dart';
 import 'package:the_remember/src/repositoris/db_data_source/http_utils.dart';
 import 'package:the_remember/src/repositoris/db_data_source/user.dart';
-import 'package:the_remember/src/ui/navigation_processor.dart';
+import 'package:the_remember/src/ui/ui_states/navigation_processor.dart';
 import 'package:the_remember/src/ui/ui_states/await_user_screen.dart';
 import 'package:the_remember/src/ui/pages/login/LoginScreen.dart';
 import 'package:the_remember/src/ui/pages/modules/learning/choiceWord.dart';
@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         // указываем исходную страницу, которую мы создадим позже
-        home: navigationProcessor(),
+        home: NavigationProcessor(),
         onUnknownRoute: (settings) {
           // return MaterialPageRoute(builder: (context) {
           //   return StartModule();

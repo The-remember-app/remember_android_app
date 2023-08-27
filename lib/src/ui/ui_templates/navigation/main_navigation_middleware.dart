@@ -3,14 +3,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-import '../../../domain_layer/providers/app_bar_navigation.dart';
-import '../../../domain_layer/providers/arrrow_back_navigation.dart';
-import '../../../domain_layer/providers/bottom_navigation_provider.dart';
-import '../../navigation_processor.dart';
+import '../../../domain_layer/providers/main/main_navigation/app_bar_navigation.dart';
+import '../../../domain_layer/providers/main/main_navigation/arrrow_back_navigation.dart';
+import '../../../domain_layer/providers/main/main_navigation/bottom_navigation_provider.dart';
+// import '../../../domain_layer/providers/main_navigation/app_bar_navigation.dart';
+// import '../../../domain_layer/providers/main_navigation/arrrow_back_navigation.dart';
+// import '../../../domain_layer/providers/main_navigation/bottom_navigation_provider.dart';
+import '../../ui_states/navigation_processor.dart';
 import '../abstract_ui.dart';
-import '../appBarWidgets.dart';
-import '../buttom_nav_bar.dart';
+// import '../appBarWidgets.dart';
+import '../buttom_navigation_templates/buttom_nav_bar.dart';
 import 'app_bar_navigation_enum.dart';
+import 'button_navigation.dart';
 
 class MainNavigationMiddleware extends StatelessWidget{
 
@@ -34,59 +38,6 @@ class MainNavigationMiddleware extends StatelessWidget{
   }
 }
 
-
-class AddBottomNavigationMiddleware extends StatelessWidget{
-
-  final Widget Function() child;
-  final DFMapper dfMapper;
-
-  AddBottomNavigationMiddleware({required this.child, required this.dfMapper});
-
-  @override
-  Widget build(BuildContext context)  {
-    var bottomPagePr = Provider.of<BottomNavigationProvider>(context, listen: false);
-    bottomPagePr.bottomNavWidget = (BuildContext context) => MainBottomNavigationBar();
-    return AddAppBarNavigationMiddleware(child: child, dfMapper: dfMapper,);
-  }
-
-}
-
-class AddAppBarNavigationMiddleware extends StatelessWidget{
-
-  final Widget Function() child;
-  final DFMapper dfMapper;
-
-  AddAppBarNavigationMiddleware({required this.child, required this.dfMapper});
-
-  @override
-  Widget build(BuildContext context)  {
-    var appBarPagePr = Provider.of<AppBarNavigationProvider>(context, listen: false);
-    appBarPagePr.getAppBarWidget = {
-      AppBarNavigationEnum.empty: (BuildContext context, DFMapper dfMapper) => EmptyAppBar(dfMapper: dfMapper),
-      AppBarNavigationEnum.arrowBack: (BuildContext context, DFMapper dfMapper) => ArrowBackAppBar(dfMapper: dfMapper),
-    };
-    return AddWillPopScopeNavigationMiddleware(child: child, dfMapper: dfMapper,);
-  }
-}
-
-class AddWillPopScopeNavigationMiddleware extends StatelessWidget{
-
-  final Widget Function() child;
-  final DFMapper dfMapper;
-
-  AddWillPopScopeNavigationMiddleware({required this.child, required this.dfMapper});
-
-  @override
-  Widget build(BuildContext context)  {
-    return
-      WillPopScope(
-      child: AddProviderListeners(child: child, dfMapper: dfMapper,),
-        onWillPop: () async {
-          return await dfMapper.onWillPop();
-        }
-      );
-  }
-}
 
 class AddProviderListeners extends StatefulWidget{
 

@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../domain_layer/providers/folder_module.dart';
-import '../../../domain_layer/providers/sub_folder_modules.dart';
+// import '../../../domain_layer/providers/folders/folder_module.dart';
+// import '../../../domain_layer/providers/sub_folder_modules.dart';
+import '../../../domain_layer/providers/main/folders/folder_module.dart';
+import '../../../domain_layer/providers/main/folders/sub_folder_modules.dart';
 import '../../pages/modules/unary_folder.dart';
 import '../../ui_templates/abstract_ui.dart';
 

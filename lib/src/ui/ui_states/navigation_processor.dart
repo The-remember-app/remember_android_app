@@ -4,9 +4,9 @@ import 'package:the_remember/src/repositoris/db_data_source/user.dart';
 import 'package:the_remember/src/ui/ui_states/await_user_screen.dart';
 import 'package:the_remember/src/ui/ui_templates/wrappers/on_init_wrapper.dart';
 
-import '../domain_layer/providers/user_api_provider.dart';
+import '../../domain_layer/providers/user_api_provider.dart';
 
-Widget navigationProcessor() {
+Widget NavigationProcessor() {
   Future<UserDbDS?> awaitUserFunc(AwaitUserScreen widgetObj, BuildContext context) async {
     var awaitUserWidget = widgetObj;
 

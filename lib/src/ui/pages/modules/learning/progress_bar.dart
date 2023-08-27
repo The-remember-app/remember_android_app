@@ -4,8 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../domain_layer/providers/learning_navigation.dart';
-import '../../../../domain_layer/providers/terms_in_module.dart';
+import '../../../../domain_layer/providers/main/folders/module/learning/learning_navigation.dart';
+import '../../../../domain_layer/providers/main/folders/module/terms_in_module.dart';
+
+// import '../../../../domain_layer/providers/folders/module/learning/learning_navigation.dart';
+// import '../../../../domain_layer/providers/folders/module/terms_in_module.dart';
 
 class LearnProgressBarWidget extends StatelessWidget{
   @override

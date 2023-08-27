@@ -1,12 +1,13 @@
 import 'dart:core';
 
 import 'package:flutter/cupertino.dart';
-import 'package:the_remember/src/domain_layer/providers/terms_in_module.dart';
+// import 'package:the_remember/src/domain_layer/providers/folders/module/terms_in_module.dart';
 import 'package:the_remember/src/repositoris/db_data_source/term.dart';
 
-import '../../urils/profilers/abstract.dart';
-import '../functions/words_BO.dart';
-import 'learning_navigation.dart';
+import '../../../../../../../urils/profilers/abstract.dart';
+import '../../../../../../functions/words_BO.dart';
+import '../../terms_in_module.dart';
+import '../learning_navigation.dart';
 
 class WriteWordNavigationProvider extends ModChangeNotifier {
   late String? _writtenWord;

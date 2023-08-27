@@ -8,8 +8,10 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../domain_layer/data_mixins/modules/unary_folder.dart';
-import '../../../domain_layer/providers/folder_module.dart';
-import '../../../domain_layer/providers/sub_folder_modules.dart';
+// import '../../../domain_layer/providers/folders/folder_module.dart';
+import '../../../domain_layer/providers/main/folders/folder_module.dart';
+import '../../../domain_layer/providers/main/folders/sub_folder_modules.dart';
+// import '../../../domain_layer/providers/sub_folder_modules.dart';
 import '../../../repositoris/db_data_source/folder.dart';
 import '../../../repositoris/db_data_source/module.dart';
 import '../../../repositoris/db_data_source/term.dart';

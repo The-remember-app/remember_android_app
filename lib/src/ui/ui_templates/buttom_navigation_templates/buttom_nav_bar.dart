@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../domain_layer/providers/bottom_navigation_provider.dart';
+import '../../../domain_layer/providers/main/main_navigation/bottom_navigation_provider.dart';
+
+// import '../../domain_layer/providers/main_navigation/bottom_navigation_provider.dart';
 // import 'flutterViz_bottom_navigationBar_model.dart';
 
 

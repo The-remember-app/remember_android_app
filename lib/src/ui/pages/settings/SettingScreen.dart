@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../ui_templates/buttom_nav_bar.dart';
+import '../../ui_templates/buttom_navigation_templates/buttom_nav_bar.dart';
 
 class SettingScreen extends StatelessWidget {
   @override

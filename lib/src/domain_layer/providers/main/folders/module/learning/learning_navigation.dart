@@ -2,14 +2,15 @@ import 'dart:core';
 
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
-import 'package:the_remember/src/domain_layer/providers/terms_in_module.dart';
+// import 'package:the_remember/src/domain_layer/providers/folders/module/terms_in_module.dart';
 import 'package:the_remember/src/domain_layer/providers/user_api_provider.dart';
 import 'package:the_remember/src/urils/db/abstract_entity.dart';
 import 'package:the_remember/src/urils/db/dbMixins.dart';
 
-import '../functions/words_BO.dart';
-import 'module_buttoons_navigation.dart';
-import '../../urils/profilers/abstract.dart';
+import '../../../../../functions/words_BO.dart';
+import '../module_buttoons_navigation.dart';
+import '../../../../../../urils/profilers/abstract.dart';
+import '../terms_in_module.dart';
 
 class LearnScreensNavigationProvider extends ModChangeNotifier {
   late int _activePageNumber = 0;

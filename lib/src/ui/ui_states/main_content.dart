@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../domain_layer/providers/app_bar_navigation.dart';
-import '../../domain_layer/providers/bottom_navigation_provider.dart';
+// import '../../domain_layer/providers/main_navigation/app_bar_navigation.dart';
+// import '../../domain_layer/providers/main_navigation/bottom_navigation_provider.dart';
+import '../../domain_layer/providers/main/main_navigation/app_bar_navigation.dart';
+import '../../domain_layer/providers/main/main_navigation/bottom_navigation_provider.dart';
 import '../pages/modules/modules.dart';
 import '../pages/settings/MyAccountScreen.dart';
-import '../skeleton.dart';
+import '../ui_templates/skeleton.dart';
 import '../ui_templates/abstract_ui.dart';
 import '../ui_templates/navigation/app_bar_navigation_enum.dart';
 import '../ui_templates/navigation/main_navigation_middleware.dart';

@@ -2,9 +2,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../domain_layer/providers/learning_navigation.dart';
-import '../../../../domain_layer/providers/terms_in_module.dart';
-import '../../../../domain_layer/providers/write_word_navigation.dart';
+// import '../../../../domain_layer/providers/folders/module/learning/learning_navigation.dart';
+// import '../../../../domain_layer/providers/folders/module/terms_in_module.dart';
+// import '../../../../domain_layer/providers/folders/module/learning/write/write_word_navigation.dart';
+import '../../../../domain_layer/providers/main/folders/module/learning/learning_navigation.dart';
+import '../../../../domain_layer/providers/main/folders/module/learning/write/write_word_navigation.dart';
+import '../../../../domain_layer/providers/main/folders/module/terms_in_module.dart';
 import '../../../pages/modules/learning/writeWord.dart';
 import '../../../pages/modules/learning/writeWordOneMoreTime.dart';
 import '../../../ui_templates/abstract_ui.dart';
