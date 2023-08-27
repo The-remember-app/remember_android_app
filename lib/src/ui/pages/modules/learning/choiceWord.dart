@@ -6,6 +6,7 @@ import 'package:the_remember/src/ui/pages/modules/learning/progress_bar.dart';
 
 import 'package:uuid/uuid.dart';
 
+import '../../../../domain_layer/functions/words_BO.dart';
 import '../../../../domain_layer/providers/choice_buttons_in_learn_screen.dart';
 import '../../../../domain_layer/providers/learning_navigation.dart';
 import '../../../../domain_layer/providers/terms_in_module.dart';
@@ -326,16 +327,16 @@ class _ChoiceButtonInLearningWidgetState
       if (buttonPressed[wordEntity.isarId] ?? false) {
         if (wordEntity.isarId == targetTermEntity.isarId) {
           buttonColor = Color(0xff00ff00);
-          wordEntity.chooseErrorCounter -= 1;
+          // wordEntity.chooseErrorCounter -= 1;
         } else {
           buttonColor = Color(0xffff0000);
-          wordEntity.choiceNegErrorCounter += 1;
+          // wordEntity.choiceNegErrorCounter += 1;
         }
       } else {
         if (wordEntity.isarId == targetTermEntity.isarId &&
             buttonPressed.values.any((isClicked) => isClicked)) {
           buttonColor = Color(0xff00ff00);
-          wordEntity.chooseErrorCounter += 1;
+          // wordEntity.chooseErrorCounter += 1;
         }
       }
       if (buttonPressed.values.any((isClicked) => isClicked)) {
@@ -346,6 +347,7 @@ class _ChoiceButtonInLearningWidgetState
         child: MaterialButton(
           onPressed: () {
             if (! widget.choiceWordObj.buttonIsDisabled) {
+              choiceWordChanging(targetTermEntity, wordEntity, widget.choiceWordObj.definitions,  widget.choiceWordObj.termsPr);
 
                   buttonPressed[wordEntity.isarId] = true;
                   choicePr.buttonClicked = wordEntity;

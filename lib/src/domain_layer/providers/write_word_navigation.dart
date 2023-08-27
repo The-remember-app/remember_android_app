@@ -5,6 +5,7 @@ import 'package:the_remember/src/domain_layer/providers/terms_in_module.dart';
 import 'package:the_remember/src/repositoris/db_data_source/term.dart';
 
 import '../../urils/profilers/abstract.dart';
+import '../functions/words_BO.dart';
 import 'learning_navigation.dart';
 
 class WriteWordNavigationProvider extends ModChangeNotifier {
@@ -28,6 +29,7 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
 
   set writtenWord(String? value) {
     _writtenWord = value;
+    // writeWordChanging(_targetWord, _writtenWord, termsPr.termsList!);
     notifyListeners();
   }
 

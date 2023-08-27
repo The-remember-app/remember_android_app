@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_remember/src/ui/pages/modules/learning/progress_bar.dart';
 
+import '../../../../domain_layer/functions/words_BO.dart';
 import '../../../../domain_layer/providers/learning_navigation.dart';
 import '../../../../domain_layer/providers/terms_in_module.dart';
+import '../../../../domain_layer/providers/write_word_navigation.dart';
 import '../../../../repositoris/db_data_source/folder.dart';
 import '../../../../repositoris/db_data_source/module.dart';
 import '../../../../repositoris/db_data_source/term.dart';
@@ -42,8 +44,12 @@ class _WriteWordOneMoreTimeState extends AbstractUIStatefulWidget<WriteWordOneMo
   Widget build(BuildContext context) {
     // var moduleEntity = foldersOrModules[moduleEntity];
     // var wordEntity = words[wordId];
+    var termsPr = Provider.of<TermsInModuleProvider>(context, listen: false);
+
     var learnNavPr =
     Provider.of<LearnScreensNavigationProvider>(context, listen: false);
+    var writeLearnNavPr = Provider.of<WriteWordNavigationProvider>(context, listen: false);
+
     return GestureDetector(
         onPanUpdate: (details) async {
 
@@ -227,6 +233,8 @@ class _WriteWordOneMoreTimeState extends AbstractUIStatefulWidget<WriteWordOneMo
                   // UserInput = text;
                   if (text.toLowerCase() ==
                       widget.wordEntity.maybeReverseDefinitionWrite.toLowerCase()) {
+                    writeWordChanging(writeLearnNavPr.targetWord, writeLearnNavPr.writtenWord,  termsPr.termsList!, termsPr);
+
                     learnNavPr.activePageNumber += 1;
                     nextScreen = true;
                     // words[wordId]?.write_error_counter -= 1;
@@ -329,6 +337,8 @@ class _WriteWordOneMoreTimeState extends AbstractUIStatefulWidget<WriteWordOneMo
                         alignment: Alignment.center,
                         child: MaterialButton(
                           onPressed: () async {
+                            writeWordChanging(writeLearnNavPr.targetWord, writeLearnNavPr.writtenWord, termsPr.termsList!, termsPr);
+
                             learnNavPr.activePageNumber += 1;
                             nextScreen = true;
                             // var nextPage = await getNextLearnPage(
@@ -373,6 +383,9 @@ class _WriteWordOneMoreTimeState extends AbstractUIStatefulWidget<WriteWordOneMo
                         alignment: Alignment.center,
                         child: MaterialButton(
                           onPressed: () async {
+                            writeWordChanging(writeLearnNavPr.targetWord, null, termsPr.termsList!, termsPr);
+                            nextScreen = true;
+
                             learnNavPr.activePageNumber += 1;
                             // var nextPage = await getNextLearnPage(
                             //     moduleEntity,

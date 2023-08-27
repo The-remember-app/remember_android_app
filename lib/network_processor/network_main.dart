@@ -378,7 +378,7 @@ Future testServerUrl(
       ApiPackage(dio: dio, serializers: standardSerializers);
   final AuthApi realAuthApi = baseApiContainer.getAuthApi();
 
-  // baseApiContainer.dio.interceptors.add(PrettyDioLogger());
+  baseApiContainer.dio.interceptors.add(PrettyDioLogger());
 
   var healthyCheck = await realAuthApi.loginForAccessTokenAuthHealthcheckPost();
   if (goodUrlFounded[0]) {

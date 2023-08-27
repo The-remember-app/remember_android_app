@@ -57,12 +57,13 @@ class _LearnScreenAddProfilerState
     extends AbstractUIStatefulWidget<LearnScreenAddProfiler> {
   @override
   Widget build(BuildContext context) {
+    var userPr = Provider.of<UserApiProfile>(context, listen: false);
     var termsPr = Provider.of<TermsInModuleProvider>(context, listen: false);
     var modulePr = Provider.of<ModuleButtonNavigationProvider>(context, listen: false);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-            create: (context) => LearnScreensNavigationProvider(termsPr, modulePr)),
+            create: (context) => LearnScreensNavigationProvider(userPr, termsPr, modulePr)),
         // Provider(create: (context) => SomeOtherClass()),
       ],
       child: LearnScreenChoice(),

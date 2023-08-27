@@ -6,6 +6,7 @@ import 'package:the_remember/src/ui/pages/modules/learning/progress_bar.dart';
 
 import 'package:uuid/uuid.dart';
 
+import '../../../../domain_layer/functions/words_BO.dart';
 import '../../../../domain_layer/providers/learning_navigation.dart';
 import '../../../../domain_layer/providers/terms_in_module.dart';
 import '../../../../domain_layer/providers/write_word_navigation.dart';
@@ -144,6 +145,7 @@ class _WriteWordState extends AbstractUIStatefulWidget<WriteWord> {
                 widget.inputWord = text;
                 if (text.toLowerCase() ==
                     widget.wordEntity.maybeReverseDefinitionWrite.toLowerCase()) {
+                  writeWordChanging(widget.wordEntity, widget.inputWord, widget.termsPr.termsList!, widget.termsPr);
                   learnNavPr.activePageNumber += 1;
                   // words[wordId]?.write_error_counter -= 1;
                   // var nextPage = await getNextLearnPage(
