@@ -235,6 +235,9 @@ List<TermEntityDbDS> getOneLearnIterationList(
     for (var w in termsList)
       if ((w.writeErrorCounter != 0 || w.chooseErrorCounter != 0)) w
   ];
+  if (currTermList.length == 0) {
+    return currTermList;
+  }
 
   var currLearntTermList = [
     for (var w in termsList)
