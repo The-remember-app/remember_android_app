@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **chooseErrorCounter** | [**JsonObject**](.md) |  | 
 **writeErrorCounter** | [**JsonObject**](.md) |  | 
 **choiceNegErrorCounter** | [**JsonObject**](.md) |  | 
+**watchCount** | [**JsonObject**](.md) |  | 
 **personalCreatedAt** | [**JsonObject**](.md) |  | 
 **personalUpdatedAt** | [**JsonObject**](.md) |  | 
 **term** | [**JsonObject**](.md) |  | 

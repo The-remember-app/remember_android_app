@@ -2,19 +2,19 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
+import 'package:dio/dio.dart';
+import 'package:built_value/serializer.dart';
+import 'package:api_package/src/serializers.dart';
+import 'package:api_package/src/auth/api_key_auth.dart';
+import 'package:api_package/src/auth/basic_auth.dart';
+import 'package:api_package/src/auth/bearer_auth.dart';
+import 'package:api_package/src/auth/oauth.dart';
 import 'package:api_package/src/api/auth_api.dart';
 import 'package:api_package/src/api/folders_entities_api.dart';
 import 'package:api_package/src/api/module_entities_api.dart';
 import 'package:api_package/src/api/sentence_entities_api.dart';
 import 'package:api_package/src/api/term_entities_api.dart';
 import 'package:api_package/src/api/users_entities_api.dart';
-import 'package:api_package/src/auth/api_key_auth.dart';
-import 'package:api_package/src/auth/basic_auth.dart';
-import 'package:api_package/src/auth/bearer_auth.dart';
-import 'package:api_package/src/auth/oauth.dart';
-import 'package:api_package/src/serializers.dart';
-import 'package:built_value/serializer.dart';
-import 'package:dio/dio.dart';
 
 class ApiPackage {
   static const String basePath = r'http://localhost';

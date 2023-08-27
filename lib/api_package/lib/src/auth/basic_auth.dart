@@ -4,8 +4,8 @@
 
 import 'dart:convert';
 
-import 'package:api_package/src/auth/auth.dart';
 import 'package:dio/dio.dart';
+import 'package:api_package/src/auth/auth.dart';
 
 class BasicAuthInfo {
   final String username;

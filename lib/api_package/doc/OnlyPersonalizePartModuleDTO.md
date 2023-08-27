@@ -13,6 +13,11 @@ Name | Type | Description | Notes
 **standardAndReverseWrite** | [**JsonObject**](.md) |  | 
 **isReverseDefinitionChoice** | [**JsonObject**](.md) |  | 
 **standardAndReverseChoice** | [**JsonObject**](.md) |  | 
+**maxIterationLen** | [**JsonObject**](.md) |  | 
+**minIterationLen** | [**JsonObject**](.md) |  | 
+**minWatchCount** | [**JsonObject**](.md) |  | 
+**knownTermPart** | [**JsonObject**](.md) |  | 
+**choicesCount** | [**JsonObject**](.md) |  | 
 **personalCreatedAt** | [**JsonObject**](.md) |  | 
 **personalUpdatedAt** | [**JsonObject**](.md) |  | 
 **moduleId** | [**JsonObject**](.md) |  | 

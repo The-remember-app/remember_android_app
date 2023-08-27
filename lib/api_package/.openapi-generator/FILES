@@ -97,12 +97,3 @@ lib/src/model/user_dto.dart
 lib/src/model/validation_error.dart
 lib/src/serializers.dart
 pubspec.yaml
-test/delete_only_personalize_part_folder_dto_test.dart
-test/delete_only_personalize_part_module_dto_test.dart
-test/delete_only_personalize_part_term_dto_test.dart
-test/only_personalize_part_folder_dto_test.dart
-test/only_personalize_part_module_dto_test.dart
-test/only_personalize_part_term_dto_test.dart
-test/update_only_personalize_part_folder_dto_test.dart
-test/update_only_personalize_part_module_dto_test.dart
-test/update_only_personalize_part_term_dto_test.dart

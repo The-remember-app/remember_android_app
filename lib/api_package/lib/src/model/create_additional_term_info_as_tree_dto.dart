@@ -4,8 +4,8 @@
 
 // ignore_for_file: unused_element
 import 'package:api_package/src/model/add_info_type_enum.dart';
-import 'package:built_value/built_value.dart';
 import 'package:built_value/json_object.dart';
+import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 part 'create_additional_term_info_as_tree_dto.g.dart';
@@ -32,7 +32,7 @@ abstract class CreateAdditionalTermInfoAsTreeDTO implements Built<CreateAddition
   JsonObject? get dialectOrArea;
 
   @BuiltValueField(wireName: r'add_info_type')
-  AddInfoTypeEnum? get addInfoType;
+  JsonObject? get addInfoType;
   // enum addInfoTypeEnum {  usual_term,  other_form,  help_phrase_with_word,  help_phrase_without_word,  abbreviation,  composite_word,  sound,  transcription,  };
 
   @BuiltValueField(wireName: r'parent_add_info_id')
@@ -50,7 +50,7 @@ abstract class CreateAdditionalTermInfoAsTreeDTO implements Built<CreateAddition
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateAdditionalTermInfoAsTreeDTOBuilder b) => b
-      ..addInfoType = null;
+      ..addInfoType = JsonObject("usual_term");
 
   @BuiltValueSerializer(custom: true)
   static Serializer<CreateAdditionalTermInfoAsTreeDTO> get serializer => _$CreateAdditionalTermInfoAsTreeDTOSerializer();
@@ -91,7 +91,7 @@ class _$CreateAdditionalTermInfoAsTreeDTOSerializer implements PrimitiveSerializ
       yield r'add_info_type';
       yield serializers.serialize(
         object.addInfoType,
-        specifiedType: const FullType(AddInfoTypeEnum),
+        specifiedType: const FullType(JsonObject),
       );
     }
     if (object.parentAddInfoId != null) {
@@ -165,9 +165,9 @@ class _$CreateAdditionalTermInfoAsTreeDTOSerializer implements PrimitiveSerializ
         case r'add_info_type':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(AddInfoTypeEnum),
-          ) as AddInfoTypeEnum;
-          result.addInfoType = valueDes.toBuilder();
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject?;
+          result.addInfoType = valueDes;
           break;
         case r'parent_add_info_id':
           final valueDes = serializers.deserialize(

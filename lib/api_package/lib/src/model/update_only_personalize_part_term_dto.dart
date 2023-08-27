@@ -2,9 +2,9 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:built_value/built_value.dart';
 // ignore_for_file: unused_element
 import 'package:built_value/json_object.dart';
+import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 part 'update_only_personalize_part_term_dto.g.dart';
@@ -13,14 +13,19 @@ part 'update_only_personalize_part_term_dto.g.dart';
 ///
 /// Properties:
 /// * [termId] 
+/// * [moduleId] 
 /// * [chooseErrorCounter] 
 /// * [writeErrorCounter] 
 /// * [choiceNegErrorCounter] 
+/// * [watchCount] 
 /// * [personalUpdatedAt] 
 @BuiltValue()
 abstract class UpdateOnlyPersonalizePartTermDTO implements Built<UpdateOnlyPersonalizePartTermDTO, UpdateOnlyPersonalizePartTermDTOBuilder> {
   @BuiltValueField(wireName: r'term_id')
   JsonObject? get termId;
+
+  @BuiltValueField(wireName: r'module_id')
+  JsonObject? get moduleId;
 
   @BuiltValueField(wireName: r'choose_error_counter')
   JsonObject? get chooseErrorCounter;
@@ -30,6 +35,9 @@ abstract class UpdateOnlyPersonalizePartTermDTO implements Built<UpdateOnlyPerso
 
   @BuiltValueField(wireName: r'choice_neg_error_counter')
   JsonObject? get choiceNegErrorCounter;
+
+  @BuiltValueField(wireName: r'watch_count')
+  JsonObject? get watchCount;
 
   @BuiltValueField(wireName: r'personal_updated_at')
   JsonObject? get personalUpdatedAt;
@@ -62,6 +70,11 @@ class _$UpdateOnlyPersonalizePartTermDTOSerializer implements PrimitiveSerialize
       object.termId,
       specifiedType: const FullType.nullable(JsonObject),
     );
+    yield r'module_id';
+    yield object.moduleId == null ? null : serializers.serialize(
+      object.moduleId,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
     yield r'choose_error_counter';
     yield object.chooseErrorCounter == null ? null : serializers.serialize(
       object.chooseErrorCounter,
@@ -75,6 +88,11 @@ class _$UpdateOnlyPersonalizePartTermDTOSerializer implements PrimitiveSerialize
     yield r'choice_neg_error_counter';
     yield object.choiceNegErrorCounter == null ? null : serializers.serialize(
       object.choiceNegErrorCounter,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'watch_count';
+    yield object.watchCount == null ? null : serializers.serialize(
+      object.watchCount,
       specifiedType: const FullType.nullable(JsonObject),
     );
     yield r'personal_updated_at';
@@ -113,6 +131,14 @@ class _$UpdateOnlyPersonalizePartTermDTOSerializer implements PrimitiveSerialize
           if (valueDes == null) continue;
           result.termId = valueDes;
           break;
+        case r'module_id':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.moduleId = valueDes;
+          break;
         case r'choose_error_counter':
           final valueDes = serializers.deserialize(
             value,
@@ -136,6 +162,14 @@ class _$UpdateOnlyPersonalizePartTermDTOSerializer implements PrimitiveSerialize
           ) as JsonObject?;
           if (valueDes == null) continue;
           result.choiceNegErrorCounter = valueDes;
+          break;
+        case r'watch_count':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.watchCount = valueDes;
           break;
         case r'personal_updated_at':
           final valueDes = serializers.deserialize(

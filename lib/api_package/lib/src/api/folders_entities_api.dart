@@ -4,14 +4,16 @@
 
 import 'dart:async';
 
+import 'package:built_value/serializer.dart';
+import 'package:dio/dio.dart';
+
 import 'package:api_package/src/api_util.dart';
 import 'package:api_package/src/model/create_folder_dto.dart';
 import 'package:api_package/src/model/folder_dto.dart';
 import 'package:api_package/src/model/folder_with_nested_entities_dto.dart';
 import 'package:api_package/src/model/folder_with_root_entity_dto.dart';
+import 'package:api_package/src/model/http_validation_error.dart';
 import 'package:built_value/json_object.dart';
-import 'package:built_value/serializer.dart';
-import 'package:dio/dio.dart';
 
 class FoldersEntitiesApi {
 

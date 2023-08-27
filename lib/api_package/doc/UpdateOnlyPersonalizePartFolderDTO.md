@@ -9,7 +9,7 @@ import 'package:api_package/api.dart';
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **folderId** | [**JsonObject**](.md) |  | 
-**personalUpdateAt** | [**JsonObject**](.md) |  | 
+**personalUpdatedAt** | [**JsonObject**](.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -2,9 +2,9 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:built_value/built_value.dart';
 // ignore_for_file: unused_element
 import 'package:built_value/json_object.dart';
+import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 part 'personalize_term_dto.g.dart';
@@ -16,6 +16,7 @@ part 'personalize_term_dto.g.dart';
 /// * [chooseErrorCounter] 
 /// * [writeErrorCounter] 
 /// * [choiceNegErrorCounter] 
+/// * [watchCount] 
 /// * [personalCreatedAt] 
 /// * [personalUpdatedAt] 
 /// * [term] 
@@ -37,6 +38,9 @@ abstract class PersonalizeTermDTO implements Built<PersonalizeTermDTO, Personali
 
   @BuiltValueField(wireName: r'choice_neg_error_counter')
   JsonObject? get choiceNegErrorCounter;
+
+  @BuiltValueField(wireName: r'watchCount')
+  JsonObject? get watchCount;
 
   @BuiltValueField(wireName: r'personal_created_at')
   JsonObject? get personalCreatedAt;
@@ -103,6 +107,11 @@ class _$PersonalizeTermDTOSerializer implements PrimitiveSerializer<PersonalizeT
     yield r'choice_neg_error_counter';
     yield object.choiceNegErrorCounter == null ? null : serializers.serialize(
       object.choiceNegErrorCounter,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'watchCount';
+    yield object.watchCount == null ? null : serializers.serialize(
+      object.watchCount,
       specifiedType: const FullType.nullable(JsonObject),
     );
     yield r'personal_created_at';
@@ -199,6 +208,14 @@ class _$PersonalizeTermDTOSerializer implements PrimitiveSerializer<PersonalizeT
           ) as JsonObject?;
           if (valueDes == null) continue;
           result.choiceNegErrorCounter = valueDes;
+          break;
+        case r'watchCount':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.watchCount = valueDes;
           break;
         case r'personal_created_at':
           final valueDes = serializers.deserialize(

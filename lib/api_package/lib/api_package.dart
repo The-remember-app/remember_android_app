@@ -3,15 +3,19 @@
 //
 
 export 'package:api_package/src/api.dart';
+export 'package:api_package/src/auth/api_key_auth.dart';
+export 'package:api_package/src/auth/basic_auth.dart';
+export 'package:api_package/src/auth/oauth.dart';
+export 'package:api_package/src/serializers.dart';
+export 'package:api_package/src/model/date.dart';
+
 export 'package:api_package/src/api/auth_api.dart';
 export 'package:api_package/src/api/folders_entities_api.dart';
 export 'package:api_package/src/api/module_entities_api.dart';
 export 'package:api_package/src/api/sentence_entities_api.dart';
 export 'package:api_package/src/api/term_entities_api.dart';
 export 'package:api_package/src/api/users_entities_api.dart';
-export 'package:api_package/src/auth/api_key_auth.dart';
-export 'package:api_package/src/auth/basic_auth.dart';
-export 'package:api_package/src/auth/oauth.dart';
+
 export 'package:api_package/src/model/add_info_type_enum.dart';
 export 'package:api_package/src/model/additional_term_info_dto.dart';
 export 'package:api_package/src/model/create_additional_term_info_as_tree_dto.dart';
@@ -24,7 +28,6 @@ export 'package:api_package/src/model/create_sentence_dto.dart';
 export 'package:api_package/src/model/create_term_as_tree_dto.dart';
 export 'package:api_package/src/model/create_term_dto.dart';
 export 'package:api_package/src/model/create_user_dto.dart';
-export 'package:api_package/src/model/date.dart';
 export 'package:api_package/src/model/delete_only_personalize_part_folder_dto.dart';
 export 'package:api_package/src/model/delete_only_personalize_part_module_dto.dart';
 export 'package:api_package/src/model/delete_only_personalize_part_term_dto.dart';
@@ -49,4 +52,3 @@ export 'package:api_package/src/model/update_only_personalize_part_module_dto.da
 export 'package:api_package/src/model/update_only_personalize_part_term_dto.dart';
 export 'package:api_package/src/model/user_dto.dart';
 export 'package:api_package/src/model/validation_error.dart';
-export 'package:api_package/src/serializers.dart';

@@ -2,9 +2,9 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:built_value/built_value.dart';
 // ignore_for_file: unused_element
 import 'package:built_value/json_object.dart';
+import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 part 'update_only_personalize_part_module_dto.g.dart';
@@ -17,6 +17,11 @@ part 'update_only_personalize_part_module_dto.g.dart';
 /// * [standardAndReverseWrite] 
 /// * [isReverseDefinitionChoice] 
 /// * [standardAndReverseChoice] 
+/// * [maxIterationLen] 
+/// * [minIterationLen] 
+/// * [minWatchCount] 
+/// * [knownTermPart] 
+/// * [choicesCount] 
 /// * [personalUpdatedAt] 
 @BuiltValue()
 abstract class UpdateOnlyPersonalizePartModuleDTO implements Built<UpdateOnlyPersonalizePartModuleDTO, UpdateOnlyPersonalizePartModuleDTOBuilder> {
@@ -34,6 +39,21 @@ abstract class UpdateOnlyPersonalizePartModuleDTO implements Built<UpdateOnlyPer
 
   @BuiltValueField(wireName: r'standard_and_reverse_choice')
   JsonObject? get standardAndReverseChoice;
+
+  @BuiltValueField(wireName: r'max_iteration_len')
+  JsonObject? get maxIterationLen;
+
+  @BuiltValueField(wireName: r'min_iteration_len')
+  JsonObject? get minIterationLen;
+
+  @BuiltValueField(wireName: r'min_watch_count')
+  JsonObject? get minWatchCount;
+
+  @BuiltValueField(wireName: r'known_term_part')
+  JsonObject? get knownTermPart;
+
+  @BuiltValueField(wireName: r'choices_count')
+  JsonObject? get choicesCount;
 
   @BuiltValueField(wireName: r'personal_updated_at')
   JsonObject? get personalUpdatedAt;
@@ -84,6 +104,31 @@ class _$UpdateOnlyPersonalizePartModuleDTOSerializer implements PrimitiveSeriali
     yield r'standard_and_reverse_choice';
     yield object.standardAndReverseChoice == null ? null : serializers.serialize(
       object.standardAndReverseChoice,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'max_iteration_len';
+    yield object.maxIterationLen == null ? null : serializers.serialize(
+      object.maxIterationLen,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'min_iteration_len';
+    yield object.minIterationLen == null ? null : serializers.serialize(
+      object.minIterationLen,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'min_watch_count';
+    yield object.minWatchCount == null ? null : serializers.serialize(
+      object.minWatchCount,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'known_term_part';
+    yield object.knownTermPart == null ? null : serializers.serialize(
+      object.knownTermPart,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'choices_count';
+    yield object.choicesCount == null ? null : serializers.serialize(
+      object.choicesCount,
       specifiedType: const FullType.nullable(JsonObject),
     );
     yield r'personal_updated_at';
@@ -153,6 +198,46 @@ class _$UpdateOnlyPersonalizePartModuleDTOSerializer implements PrimitiveSeriali
           ) as JsonObject?;
           if (valueDes == null) continue;
           result.standardAndReverseChoice = valueDes;
+          break;
+        case r'max_iteration_len':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.maxIterationLen = valueDes;
+          break;
+        case r'min_iteration_len':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.minIterationLen = valueDes;
+          break;
+        case r'min_watch_count':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.minWatchCount = valueDes;
+          break;
+        case r'known_term_part':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.knownTermPart = valueDes;
+          break;
+        case r'choices_count':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.choicesCount = valueDes;
           break;
         case r'personal_updated_at':
           final valueDes = serializers.deserialize(

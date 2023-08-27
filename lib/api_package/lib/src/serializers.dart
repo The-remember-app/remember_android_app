@@ -2,7 +2,18 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
+// ignore_for_file: unused_import
+
+import 'package:one_of_serializer/any_of_serializer.dart';
+import 'package:one_of_serializer/one_of_serializer.dart';
+import 'package:built_collection/built_collection.dart';
+import 'package:built_value/json_object.dart';
+import 'package:built_value/serializer.dart';
+import 'package:built_value/standard_json_plugin.dart';
+import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:api_package/src/date_serializer.dart';
+import 'package:api_package/src/model/date.dart';
+
 import 'package:api_package/src/model/add_info_type_enum.dart';
 import 'package:api_package/src/model/additional_term_info_dto.dart';
 import 'package:api_package/src/model/create_additional_term_info_as_tree_dto.dart';
@@ -15,7 +26,6 @@ import 'package:api_package/src/model/create_sentence_dto.dart';
 import 'package:api_package/src/model/create_term_as_tree_dto.dart';
 import 'package:api_package/src/model/create_term_dto.dart';
 import 'package:api_package/src/model/create_user_dto.dart';
-import 'package:api_package/src/model/date.dart';
 import 'package:api_package/src/model/delete_only_personalize_part_folder_dto.dart';
 import 'package:api_package/src/model/delete_only_personalize_part_module_dto.dart';
 import 'package:api_package/src/model/delete_only_personalize_part_term_dto.dart';
@@ -40,15 +50,6 @@ import 'package:api_package/src/model/update_only_personalize_part_module_dto.da
 import 'package:api_package/src/model/update_only_personalize_part_term_dto.dart';
 import 'package:api_package/src/model/user_dto.dart';
 import 'package:api_package/src/model/validation_error.dart';
-import 'package:built_collection/built_collection.dart';
-import 'package:built_value/iso_8601_date_time_serializer.dart';
-import 'package:built_value/json_object.dart';
-import 'package:built_value/serializer.dart';
-import 'package:built_value/standard_json_plugin.dart';
-// ignore_for_file: unused_import
-
-import 'package:one_of_serializer/any_of_serializer.dart';
-import 'package:one_of_serializer/one_of_serializer.dart';
 
 part 'serializers.g.dart';
 

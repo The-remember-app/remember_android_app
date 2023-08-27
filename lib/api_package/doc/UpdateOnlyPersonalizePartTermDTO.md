@@ -9,9 +9,11 @@ import 'package:api_package/api.dart';
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **termId** | [**JsonObject**](.md) |  | 
+**moduleId** | [**JsonObject**](.md) |  | 
 **chooseErrorCounter** | [**JsonObject**](.md) |  | 
 **writeErrorCounter** | [**JsonObject**](.md) |  | 
 **choiceNegErrorCounter** | [**JsonObject**](.md) |  | 
+**watchCount** | [**JsonObject**](.md) |  | 
 **personalUpdatedAt** | [**JsonObject**](.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

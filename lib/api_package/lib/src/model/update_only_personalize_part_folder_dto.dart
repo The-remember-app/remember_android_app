@@ -2,9 +2,9 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:built_value/built_value.dart';
 // ignore_for_file: unused_element
 import 'package:built_value/json_object.dart';
+import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 part 'update_only_personalize_part_folder_dto.g.dart';
@@ -13,14 +13,14 @@ part 'update_only_personalize_part_folder_dto.g.dart';
 ///
 /// Properties:
 /// * [folderId] 
-/// * [personalUpdateAt] 
+/// * [personalUpdatedAt] 
 @BuiltValue()
 abstract class UpdateOnlyPersonalizePartFolderDTO implements Built<UpdateOnlyPersonalizePartFolderDTO, UpdateOnlyPersonalizePartFolderDTOBuilder> {
   @BuiltValueField(wireName: r'folder_id')
   JsonObject? get folderId;
 
-  @BuiltValueField(wireName: r'personal_update_at')
-  JsonObject? get personalUpdateAt;
+  @BuiltValueField(wireName: r'personal_updated_at')
+  JsonObject? get personalUpdatedAt;
 
   UpdateOnlyPersonalizePartFolderDTO._();
 
@@ -50,9 +50,9 @@ class _$UpdateOnlyPersonalizePartFolderDTOSerializer implements PrimitiveSeriali
       object.folderId,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'personal_update_at';
-    yield object.personalUpdateAt == null ? null : serializers.serialize(
-      object.personalUpdateAt,
+    yield r'personal_updated_at';
+    yield object.personalUpdatedAt == null ? null : serializers.serialize(
+      object.personalUpdatedAt,
       specifiedType: const FullType.nullable(JsonObject),
     );
   }
@@ -86,13 +86,13 @@ class _$UpdateOnlyPersonalizePartFolderDTOSerializer implements PrimitiveSeriali
           if (valueDes == null) continue;
           result.folderId = valueDes;
           break;
-        case r'personal_update_at':
+        case r'personal_updated_at':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.personalUpdateAt = valueDes;
+          result.personalUpdatedAt = valueDes;
           break;
         default:
           unhandled.add(key);

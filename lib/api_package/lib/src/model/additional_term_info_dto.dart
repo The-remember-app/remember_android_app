@@ -4,8 +4,8 @@
 
 // ignore_for_file: unused_element
 import 'package:api_package/src/model/add_info_type_enum.dart';
-import 'package:built_value/built_value.dart';
 import 'package:built_value/json_object.dart';
+import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 part 'additional_term_info_dto.g.dart';
@@ -34,7 +34,7 @@ abstract class AdditionalTermInfoDTO implements Built<AdditionalTermInfoDTO, Add
   JsonObject? get dialectOrArea;
 
   @BuiltValueField(wireName: r'add_info_type')
-  JsonObject? get addInfoType;
+  JsonObject get addInfoType;
   // enum addInfoTypeEnum {  usual_term,  other_form,  help_phrase_with_word,  help_phrase_without_word,  abbreviation,  composite_word,  sound,  transcription,  };
 
   @BuiltValueField(wireName: r'parent_add_info_id')
@@ -58,7 +58,7 @@ abstract class AdditionalTermInfoDTO implements Built<AdditionalTermInfoDTO, Add
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AdditionalTermInfoDTOBuilder b) => b
-      ..addInfoType = null;
+      ..addInfoType = JsonObject("usual_term");
 
   @BuiltValueSerializer(custom: true)
   static Serializer<AdditionalTermInfoDTO> get serializer => _$AdditionalTermInfoDTOSerializer();
@@ -94,7 +94,7 @@ class _$AdditionalTermInfoDTOSerializer implements PrimitiveSerializer<Additiona
     yield r'add_info_type';
     yield serializers.serialize(
       object.addInfoType,
-      specifiedType: const FullType(AddInfoTypeEnum),
+      specifiedType: const FullType(JsonObject),
     );
     yield r'parent_add_info_id';
     yield object.parentAddInfoId == null ? null : serializers.serialize(

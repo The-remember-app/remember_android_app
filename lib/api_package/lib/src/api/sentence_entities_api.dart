@@ -4,12 +4,14 @@
 
 import 'dart:async';
 
-import 'package:api_package/src/api_util.dart';
-import 'package:api_package/src/model/create_sentence_dto.dart';
-import 'package:api_package/src/model/sentence_dto.dart';
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
+
+import 'package:api_package/src/api_util.dart';
+import 'package:api_package/src/model/create_sentence_dto.dart';
+import 'package:api_package/src/model/http_validation_error.dart';
+import 'package:api_package/src/model/sentence_dto.dart';
+import 'package:built_value/json_object.dart';
 
 class SentenceEntitiesApi {
 
