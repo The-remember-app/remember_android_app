@@ -92,22 +92,3 @@ class _AwaitUserScreenState extends AbstractUIStatefulWidget<AwaitUserScreen>{
   }
 }
 
-// return Scaffold(
-//     // мы создаем AppBar с текстом "Home Page"
-//     appBar: AppBar(title: Text("Home page")),
-//     // указываем текст в качестве тела Scaffold
-//     // текст предварительно вложен в Center виджет,
-//     // чтобы выровнять его по центру
-//     body: Center(
-//         child: Text(
-//       "Hello, JSON Placeholder!!!",
-//       // Также выравниваем текст внутри самого виджета Text
-//       textAlign: TextAlign.center,
-//       // Theme.of(context) позволяет получить доступ к
-//       // текущему ThemeData, который был указан в MaterialApp
-//       // После получения ThemeData мы можем использовать
-//       // различные его стили (например headline3, как здесь)
-//       style: Theme.of(context).textTheme.headline3,
-//     )));
-//   }
-// }

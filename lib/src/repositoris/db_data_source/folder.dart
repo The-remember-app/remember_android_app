@@ -6,8 +6,16 @@ import 'module.dart';
 
 part 'folder.g.dart';
 
+
+abstract class FolderOrModule extends AbstractEntity {
+  Id get isarId;
+  late String uuid;
+  late String userUuid;
+  late String? rootFolderUuid;
+}
+
 @collection
-class FolderDbDS extends AbstractEntity {
+class FolderDbDS extends AbstractEntity implements FolderOrModule {
   // get isarId => fastHash(id!);
   @Name("id")
   Id get isarId => AbstractEntity.fastHash(complexIndex.join("")) ;
@@ -64,6 +72,7 @@ class FolderDbDS extends AbstractEntity {
       ..personalUpdatedAt=DateTime.parse(data.personalUpdatedAt!.asString)
     ;
   }
+
 }
 
 

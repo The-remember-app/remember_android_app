@@ -14,6 +14,7 @@ import '../../../repositoris/db_data_source/module.dart';
 // import '../../repositoris/folder_repository/local_db_data_source/folder.dart';
 import '../../ui_states/modules/unary_folder.dart';
 import '../../ui_templates/abstract_ui.dart';
+import 'folder_status_bar.dart';
 
 class UnaryFolder extends StatefulWidget {
   final DFMapper dfMapper;
@@ -139,6 +140,7 @@ class OneFolderListItem extends StatelessWidget {
                 color: Color(0xff000000),
               ),
             ),
+            FolderStatusBarWidget(currentFolder),
           ],
         ),
       ),
@@ -194,6 +196,7 @@ class OneModuleListItem extends StatelessWidget {
                 color: Color(0xff000000),
               ),
             ),
+            FolderStatusBarWidget(currentModule),
           ],
         ),
       ),

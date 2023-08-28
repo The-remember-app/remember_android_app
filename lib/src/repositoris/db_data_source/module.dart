@@ -17,7 +17,7 @@ part 'module.g.dart';
   // Module(this.id, this.name);
 
 @collection
-class ModuleDbDS  extends AbstractEntity {
+class ModuleDbDS  extends AbstractEntity implements FolderOrModule {
   @Name("id")
   Id get isarId => AbstractEntity.fastHash(complexIndex.join("")) ;
   late String uuid;
@@ -49,6 +49,8 @@ class ModuleDbDS  extends AbstractEntity {
   late int knownTermPart = 30;
   @Name("choices_count")
   late int choicesCount = 4;
+  @Name("is_learnt")
+  late bool isLearnt = false;
 
   @Name("created_at")
   late DateTime createdAt;
@@ -75,10 +77,36 @@ class ModuleDbDS  extends AbstractEntity {
       ..standardAndReverseWrite=data.standardAndReverseWrite!.asBool
       ..isReverseDefinitionChoice=data.isReverseDefinitionChoice!.asBool
       ..standardAndReverseChoice=data.standardAndReverseChoice!.asBool
+      ..choicesCount=data.choicesCount!.asNum.toInt()
+      ..knownTermPart=data.knownTermPart!.asNum.toInt()
+      ..minWatchCount=data.minWatchCount!.asNum.toInt()
+      ..minIterationLen=data.minIterationLen!.asNum.toInt()
+      ..maxIterationLen=data.maxIterationLen!.asNum.toInt()
       ..createdAt=DateTime.parse(data.createdAt!.asString)
       ..updatedAt=DateTime.parse(data.updatedAt!.asString)
       ..personalCreatedAt=DateTime.parse(data.personalCreatedAt!.asString)
       ..personalUpdatedAt=DateTime.parse(data.personalUpdatedAt!.asString)
     ;
   }
+
+  Future<(int, int, int)> getLearnProcess(Isar isar) async {
+    if(this.isLearnt) {
+      var res = await isar.collection<TermEntityDbDS>().count();
+      return (res, res, res);
+    }
+    var terms = await isar
+        .collection<TermEntityDbDS>()
+        .filter()
+    .moduleUuidEqualTo(this.uuid)
+    .userUuidEqualTo(this.userUuid)
+    .findAll();
+
+
+    return (
+    terms.where((element) => element.writeErrorCounter == 0 && element.watchCount != 0).length,
+    terms.where((element) => element.chooseErrorCounter == 0 && element.watchCount != 0).length,
+    terms.length
+    );
+  }
+
 }

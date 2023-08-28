@@ -176,7 +176,6 @@ class TermEntityDbDS  extends AbstractEntity  {
       ..chooseErrorCounter=data.chooseErrorCounter!.asNum.toInt()
       ..writeErrorCounter=data.writeErrorCounter!.asNum.toInt()
       ..choiceNegErrorCounter=data.choiceNegErrorCounter!.asNum.toInt()
-      // TODO: fix me
       ..watchCount=data.watchCount!.asNum.toInt()
       ..createdAt=DateTime.parse(data.createdAt!.asString)
       ..updatedAt=DateTime.parse(data.updatedAt!.asString)

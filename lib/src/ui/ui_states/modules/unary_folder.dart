@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 // import '../../../domain_layer/providers/folders/folder_module.dart';
 // import '../../../domain_layer/providers/sub_folder_modules.dart';
 import '../../../domain_layer/providers/main/folders/folder_module.dart';
+import '../../../domain_layer/providers/main/folders/folder_progress_bar.dart';
 import '../../../domain_layer/providers/main/folders/sub_folder_modules.dart';
 import '../../pages/modules/unary_folder.dart';
 import '../../ui_templates/abstract_ui.dart';
@@ -30,7 +31,14 @@ class _FoldersListProcessorState extends AbstractUIStatefulWidget<FoldersListPro
       providers: [
         ChangeNotifierProvider(create: (context) => SubFolderAndModuleProvider(widget.dfMapper, fmPr: fmPr)),
       ],
-      child: AwaitFoldersList( dfMapper: widget.dfMapper),
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => FolderProgressBarProvider(
+              Provider.of<SubFolderAndModuleProvider>(context, listen: false)
+          )),
+        ],
+        child: AwaitFoldersList( dfMapper: widget.dfMapper),
+    )  ,
     );
   }
 }

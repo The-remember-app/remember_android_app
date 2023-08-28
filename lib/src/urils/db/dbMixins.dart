@@ -103,19 +103,40 @@ T3 extends CollectionSchema<AbstractEntity>
 
 abstract mixin class OpenAndClose  {
   Isar? _conn = null;
+  int _connCount = 0;
+  Future<Isar>? _getConnCoro = null;
+  Future<void>? _closeConnCoro = null;
 
 
   List<CollectionSchema<AbstractEntity>> get classes => [];
 
   Future<Isar> openConn() async {
-    _conn = await  IzarManager.instance.openActivityDBv2(this.classes);
+    if (_closeConnCoro != null){
+      await _closeConnCoro;
+    }
+    _connCount += 1;
+
+    if (_getConnCoro != null){
+      _conn = await _getConnCoro;
+    } else if (_conn  == null) {
+      _getConnCoro = IzarManager.instance.openActivityDBv2(this.classes);
+      _conn = await _getConnCoro;
+      _getConnCoro = null;
+    }
     return _conn!;
   }
 
   Future<void> closeConn() async {
-    var closeFuture =  IzarManager.instance.closeIsar(_conn!);
-    _conn = null;
-    await closeFuture;
+    if (_getConnCoro != null){
+      await _getConnCoro;
+    }
+    _connCount -= 1;
+    if (_connCount < 1) {
+      _closeConnCoro = IzarManager.instance.closeIsar(_conn!);
+      _conn = null;
+      await _closeConnCoro;
+      _closeConnCoro = null;
+    }
   }
   // Future<void> openConn() async {
   //   // FIXME: Если кто-то сторонний откроет

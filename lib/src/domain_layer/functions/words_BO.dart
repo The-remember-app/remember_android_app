@@ -208,7 +208,7 @@ List<TermEntityDbDS> termsList,
     for (var ww in definitionDataPre)
       if (
       ww.isarId != targetWordEntity.isarId
-          || targetWordEntity.maybeReverseDefinitionChoice != (
+          && targetWordEntity.maybeReverseDefinitionChoice != (
           reverseTerm ? ww.term : ww.definition
       )
       ) ww
@@ -216,7 +216,7 @@ List<TermEntityDbDS> termsList,
   definitionData.sort((term1, term2) {
   return term2.watchCount.compareTo(term1.watchCount);
   });
-  definitionData = definitionData.sublist(0, targetWordEntity.module.value!.choicesCount);
+  definitionData = definitionData.sublist(0, targetWordEntity.module.value!.choicesCount - 1);
   definitionData.add(targetWordEntity);
   definitionData.shuffle();
   return definitionData;
