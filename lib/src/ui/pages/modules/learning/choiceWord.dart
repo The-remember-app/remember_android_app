@@ -354,7 +354,7 @@ class _ChoiceButtonInLearningWidgetState
               (targetTermEntity.isTermReverseChoice()
                 ? wordEntity.term
                 : wordEntity.definition) +(
-                  clickedFalseButton? "": " / " + (targetTermEntity.isTermReverseChoice()
+                  !clickedFalseButton? "": " / " + (targetTermEntity.isTermReverseChoice()
                       ? wordEntity.definition
                       : wordEntity.term)
               ),

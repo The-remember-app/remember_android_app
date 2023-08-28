@@ -53,7 +53,7 @@ class TermEntityDbDS  extends AbstractEntity  {
   late int choiceNegErrorCounter;
   @Name("watch_count")
   @JsonKey(name: 'watch_count')
-  late int watchCount;
+  late int watchCount = 0;
 
   @Name("created_at")
   @JsonKey(name: 'created_at')
