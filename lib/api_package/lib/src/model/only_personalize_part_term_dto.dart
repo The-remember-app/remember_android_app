@@ -35,7 +35,7 @@ abstract class OnlyPersonalizePartTermDTO implements Built<OnlyPersonalizePartTe
   @BuiltValueField(wireName: r'choice_neg_error_counter')
   JsonObject? get choiceNegErrorCounter;
 
-  @BuiltValueField(wireName: r'watchCount')
+  @BuiltValueField(wireName: r'watch_count')
   JsonObject? get watchCount;
 
   @BuiltValueField(wireName: r'personal_created_at')
@@ -93,7 +93,7 @@ class _$OnlyPersonalizePartTermDTOSerializer implements PrimitiveSerializer<Only
       object.choiceNegErrorCounter,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'watchCount';
+    yield r'watch_count';
     yield object.watchCount == null ? null : serializers.serialize(
       object.watchCount,
       specifiedType: const FullType.nullable(JsonObject),
@@ -173,7 +173,7 @@ class _$OnlyPersonalizePartTermDTOSerializer implements PrimitiveSerializer<Only
           if (valueDes == null) continue;
           result.choiceNegErrorCounter = valueDes;
           break;
-        case r'watchCount':
+        case r'watch_count':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
