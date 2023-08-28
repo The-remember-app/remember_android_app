@@ -57,11 +57,20 @@ class CircleFolderStatusBarWidget extends StatelessWidget {
       RadialAxis(
         pointers: <GaugePointer>[
           RangePointer(
+            value: statusInfo.watch.toDouble(),
+            cornerStyle: CornerStyle.bothCurve,
+            width: 0.1,
+            sizeUnit: GaugeSizeUnit.factor,
+            color: Color(0xff1caafa),
+            pointerOffset: 0.0,
+          ),
+          RangePointer(
             value: statusInfo.choice.toDouble(),
             cornerStyle: CornerStyle.bothCurve,
             width: 0.1,
             sizeUnit: GaugeSizeUnit.factor,
             color: Color(0xffffdd4f),
+            pointerOffset: 0.1,
           ),
           RangePointer(
             value: statusInfo.write.toDouble(),
@@ -69,6 +78,7 @@ class CircleFolderStatusBarWidget extends StatelessWidget {
             width: 0.1,
             sizeUnit: GaugeSizeUnit.factor,
             color: Color(0xff6eff42),
+            pointerOffset: 0.2,
           ),
 
         ],

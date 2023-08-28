@@ -89,10 +89,10 @@ class ModuleDbDS  extends AbstractEntity implements FolderOrModule {
     ;
   }
 
-  Future<(int, int, int)> getLearnProcess(Isar isar) async {
+  Future<(int, int, int, int)> getLearnProcess(Isar isar) async {
     if(this.isLearnt) {
       var res = await isar.collection<TermEntityDbDS>().count();
-      return (res, res, res);
+      return (res, res, res, res);
     }
     var terms = await isar
         .collection<TermEntityDbDS>()
@@ -101,10 +101,15 @@ class ModuleDbDS  extends AbstractEntity implements FolderOrModule {
     .userUuidEqualTo(this.userUuid)
     .findAll();
 
+  return getLearnProcessStatic(terms);
 
+  }
+
+  static (int, int, int, int) getLearnProcessStatic(List<TermEntityDbDS> terms){
     return (
-    terms.where((element) => element.writeErrorCounter == 0 && element.watchCount != 0).length,
-    terms.where((element) => element.chooseErrorCounter == 0 && element.watchCount != 0).length,
+    terms.where((element) => element.writeErrorCounter <= 0 && element.watchCount != 0).length,
+    terms.where((element) => element.chooseErrorCounter <= 0 && element.watchCount != 0).length,
+    terms.where((element) => element.watchCount > 0).length,
     terms.length
     );
   }

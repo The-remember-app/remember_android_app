@@ -41,9 +41,10 @@ class WriteWord extends StatefulWidget {
 }
 
 class _WriteWordState extends AbstractUIStatefulWidget<WriteWord> {
-  bool nextScreen = false;
+
   @override
   Widget build(BuildContext context) {
+    bool nextScreen = false;
     // var moduleEntity = foldersOrModules[moduleId];
     // var wordEntity = words[wordId];
     // var learnNavPr = Provider.of<LearnScreensNavigationProvider>(context, listen: false);

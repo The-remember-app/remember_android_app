@@ -39,9 +39,10 @@ class WriteWordOneMoreTime extends StatefulWidget {
 }
 
 class _WriteWordOneMoreTimeState extends AbstractUIStatefulWidget<WriteWordOneMoreTime> {
-  bool nextScreen = false;
+
   @override
   Widget build(BuildContext context) {
+    bool nextScreen = false;
     // var moduleEntity = foldersOrModules[moduleEntity];
     // var wordEntity = words[wordId];
     var termsPr = Provider.of<TermsInModuleProvider>(context, listen: false);

@@ -92,7 +92,7 @@ class _LearnScreenChoiceState
       return Text(
           "Список терминов для текущей итерации не существует, это явно ошибка");
     } else if (learnNavPr.learnFinished) {
-      learnTransactionCompleted(termsPr.changedInLearningIterationTermsList ?? [], userPr);
+      learnTransactionCompleted(termsPr.changedInLearningIterationTermsList ?? [], userPr, learnFinished: true);
       return LearnCompleted();
     } else if (learnNavPr.iterationFinished) {
       learnTransactionCompleted(termsPr.changedInLearningIterationTermsList ?? [], userPr);

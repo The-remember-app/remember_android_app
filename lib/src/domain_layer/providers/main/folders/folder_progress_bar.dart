@@ -10,9 +10,10 @@ import '../../../../urils/profilers/abstract.dart';
 class FolderStats {
   final int write;
   final int choice;
+  final int watch;
   final int all;
 
-  FolderStats(this.write, this.choice, this.all);
+  FolderStats(this.write, this.choice, this.watch, this.all);
 }
 
 class FolderProgressBarProvider extends ModChangeNotifier {
@@ -62,6 +63,7 @@ class FolderProgressBarProvider extends ModChangeNotifier {
     return FolderStats(
         statesList.map<int>((i) => i!.write).reduce((a, b) => a + b),
         statesList.map<int>((i) => i!.choice).reduce((a, b) => a + b),
+        statesList.map<int>((i) => i!.watch).reduce((a, b) => a + b),
         statesList.map<int>((i) => i!.all).reduce((a, b) => a + b));
   }
 
@@ -150,7 +152,7 @@ class FolderProgressBarProvider extends ModChangeNotifier {
     _getModuleState = {
       for(var i in
       {for (var i in allModules) i: moduleStats[i]! }.entries)
-        i.key: FolderStats(i.value.$1, i.value.$2, i.value.$3)
+        i.key: FolderStats(i.value.$1, i.value.$2, i.value.$3, i.value.$4)
     };
 
     // var terms = await isar

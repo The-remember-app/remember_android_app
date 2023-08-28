@@ -10,10 +10,13 @@ import '../../../domain_layer/functions/words_BO.dart';
 // import '../../../domain_layer/providers/folders/module/module_buttoons_navigation.dart';
 import '../../../domain_layer/providers/main/folders/folder_module.dart';
 import '../../../domain_layer/providers/main/folders/module/module_buttoons_navigation.dart';
+import '../../../domain_layer/providers/main/folders/module/terms_in_module.dart';
 import '../../../domain_layer/providers/user_api_provider.dart';
 import '../../../repositoris/db_data_source/module.dart';
 import '../../../repositoris/db_data_source/term.dart';
+import '../../ui_states/modules/module_status_var.dart';
 import '../../ui_templates/abstract_ui.dart';
+import 'folder_status_bar.dart';
 
 // Future<Widget>
 
@@ -194,6 +197,8 @@ class _UnaryModuleState extends AbstractUIStatefulWidget<UnaryModule> {
     var fmPr = Provider.of<FolderAndModuleProvider>(context, listen: false);
     var moduleNavPr =
         Provider.of<ModuleButtonNavigationProvider>(context, listen: false);
+    // var termsPr = Provider.of<TermsInModuleProvider>(context, listen: false)
+    // var statusBarData = ModuleDbDS.getLearnProcessStatic(termsPr.termsList!)
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -217,25 +222,28 @@ class _UnaryModuleState extends AbstractUIStatefulWidget<UnaryModule> {
               width: 200,
               height: 100,
               decoration: BoxDecoration(
-                color: Color(0xffeccfff),
+                color: Color(0xeccfff),
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(20.0),
-                border: Border.all(color: Color(0xffe9c7ff), width: 1),
+                border: Border.all(color: Color(0xe9c7ff), width: 1),
               ),
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "Term",
-                  textAlign: TextAlign.start,
-                  overflow: TextOverflow.clip,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontStyle: FontStyle.normal,
-                    fontSize: 24,
-                    color: Color(0xffe83a3a),
-                  ),
-                ),
-              ),
+              child: AwaitTermsInMainModule(fmPr.currentModule!),
+
+
+              // Align(
+              //   alignment: Alignment.center,
+              //   child: Text(
+              //     "Term",
+              //     textAlign: TextAlign.start,
+              //     overflow: TextOverflow.clip,
+              //     style: TextStyle(
+              //       fontWeight: FontWeight.w700,
+              //       fontStyle: FontStyle.normal,
+              //       fontSize: 24,
+              //       color: Color(0xffe83a3a),
+              //     ),
+              //   ),
+              // ),
             ),
           ),
           Padding(

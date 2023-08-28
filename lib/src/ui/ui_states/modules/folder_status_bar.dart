@@ -27,9 +27,9 @@ class FolderStatusBarAddConsumer extends StatelessWidget{
 
 class AwaitFolderStatusBar extends StatefulWidget {
   bool userGetterCompleted = false;
-  late Future Function(BuildContext) awaitUserFunc;
+  late Future Function(BuildContext) awaitTermsStateFunc;
 
-  AwaitFolderStatusBar(this.awaitUserFunc) : super(){  }
+  AwaitFolderStatusBar(this.awaitTermsStateFunc) : super(){  }
 
   @override
   _AwaitFolderStatusBarState createState() => _AwaitFolderStatusBarState();
@@ -42,7 +42,7 @@ class _AwaitFolderStatusBarState extends AbstractUIStatefulWidget<AwaitFolderSta
 
   @override
   Widget build(BuildContext context){
-    var _future = widget.awaitUserFunc(context);
+    var _future = widget.awaitTermsStateFunc(context);
     FolderStats? res = null;
     return FutureBuilder<FolderStats>(
           future: _future.then((value) async => res=value),

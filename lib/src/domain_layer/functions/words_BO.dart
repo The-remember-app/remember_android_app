@@ -8,6 +8,7 @@ import '../../../network_processor/network_main.dart';
 import '../../repositoris/db_data_source/term.dart';
 import '../../urils/db/dbMixins.dart';
 import '../../urils/db/engine.dart';
+
 // import '../providers/folders/module/terms_in_module.dart';
 import '../providers/main/folders/module/terms_in_module.dart';
 import '../providers/user_api_provider.dart';
@@ -17,9 +18,8 @@ Future<void> startLearning(
   await termPr.initLists;
   var currUpdateTime = DateTime.now();
   var min_ = 2;
-  var max_ = 5;
+  var max_ = termPr.termsList![0].module.value!.minWatchCount;
   for (var w in termPr.termsList!) {
-
     var chooseCount = min_ + random.nextInt(max_ - min_);
     w.chooseErrorCounter = chooseCount;
     w.writeErrorCounter = max_ - chooseCount;
@@ -60,7 +60,10 @@ Future<void> startLearning(
     //     .module((q) => q.isarIdEqualTo(moduleId))
     //     .findAll();
 
-    await conn.collection<TermEntityDbDS>().putAll([for (var i in wordsInCurrModule) if (i != null) i]);
+    await conn.collection<TermEntityDbDS>().putAll([
+      for (var i in wordsInCurrModule)
+        if (i != null) i
+    ]);
   });
   // var wordsInCurrModule1 = await conn
   //     .collection<TermEntityDbDS>()
@@ -92,7 +95,8 @@ Future<List<TermEntityDbDS>> getAllTermsFromModule(int moduleId) async {
 
 Future<void> learnTransactionCompleted(
     List<TermEntityDbDS> learnedData,
-    UserApiProfile userApi
+    UserApiProfile userApi,
+{bool learnFinished = false,}
     ) async {
   var updateFuture = null;
 
@@ -102,17 +106,16 @@ Future<void> learnTransactionCompleted(
   // }
   var currUpdateTime = DateTime.now();
   Map<int, TermEntityDbDS> currTermMap = {
-    for (var i in learnedData) i.isarId: i
-      ..personalUpdatedAt = currUpdateTime
+    for (var i in learnedData) i.isarId: i..personalUpdatedAt = currUpdateTime
   };
 
   if (learnedData.isNotEmpty) {
-    updateFuture = updatePersonalizedTerms(currTermMap.values.toList(), userApi);
+    learnedData[0].module.value!.isLearnt = true;
+    updateFuture =
+        updatePersonalizedTerms(currTermMap.values.toList(), userApi);
   }
 
-
   // var networkFuture = updatePersonalizedTerms(termPr.termsList!, userPr);
-
 
   var conn =
       (await OpenAndClose3.openConnStatic([CollectionSchema<TermEntityDbDS>]))
@@ -120,7 +123,7 @@ Future<void> learnTransactionCompleted(
           .toList()[0];
 
   var wordsInCurrModule =
-  await conn.collection<TermEntityDbDS>().getAll(currTermMap.keys.toList());
+      await conn.collection<TermEntityDbDS>().getAll(currTermMap.keys.toList());
   for (var w in wordsInCurrModule) {
     var updateTerm = currTermMap[w!.isarId]!;
     w
@@ -137,10 +140,9 @@ Future<void> learnTransactionCompleted(
     //     .module((q) => q.isarIdEqualTo(moduleId))
     //     .findAll();
 
-    await conn.collection<TermEntityDbDS>()
-        .putAll([
-          for (var i in wordsInCurrModule)
-            if (i != null) i
+    await conn.collection<TermEntityDbDS>().putAll([
+      for (var i in wordsInCurrModule)
+        if (i != null) i
     ]);
   });
 
@@ -155,11 +157,11 @@ Future<void> learnTransactionCompleted(
 }
 
 void choiceWordChanging(
-    TermEntityDbDS askedWord,
-    TermEntityDbDS choiceWord,
-    List<TermEntityDbDS> choiceList,
-    TermsInModuleProvider termsPr,
-    ){
+  TermEntityDbDS askedWord,
+  TermEntityDbDS choiceWord,
+  List<TermEntityDbDS> choiceList,
+  TermsInModuleProvider termsPr,
+) {
   if (askedWord == choiceWord) {
     askedWord.chooseErrorCounter -= 1;
 
@@ -171,100 +173,115 @@ void choiceWordChanging(
       choiceWord.watchCount += 1;
     }
     // choiceWord.choiceNegErrorCounter += 1;
-    termsPr.changedInLearningIterationTermsList!.addAll([askedWord, choiceWord]);
+    termsPr.changedInLearningIterationTermsList!
+        .addAll([askedWord, choiceWord]);
   }
   askedWord.watchCount += 1;
 }
 
 void writeWordChanging(
-TermEntityDbDS askedWord,
-String? inputWord,
-List<TermEntityDbDS> allModuleTerms,
-TermsInModuleProvider termsPr,
-){
-  if (inputWord== null || askedWord.maybeReverseDefinitionWrite.toLowerCase() == inputWord!.toLowerCase()){
+  TermEntityDbDS askedWord,
+  String? inputWord,
+  List<TermEntityDbDS> allModuleTerms,
+  TermsInModuleProvider termsPr,
+) {
+  if (inputWord == null ||
+      askedWord.maybeReverseDefinitionWrite.toLowerCase() ==
+          inputWord!.toLowerCase()) {
     askedWord.writeErrorCounter -= 1;
   } else {
     askedWord.writeErrorCounter += 1;
-    if (askedWord.writeErrorCounter % 3 == 0){
+    if (askedWord.writeErrorCounter % 3 == 0) {
       askedWord.chooseErrorCounter += 1;
     }
   }
   askedWord.watchCount += 1;
   termsPr.changedInLearningIterationTermsList!.add(askedWord);
-
 }
 
-
 List<TermEntityDbDS> getChoiceDefinitions(
-TermEntityDbDS targetWordEntity,
-bool reverseTerm,
-List<TermEntityDbDS> termsList,
-    ){
+  TermEntityDbDS targetWordEntity,
+  bool reverseTerm,
+  List<TermEntityDbDS> termsList,
+) {
   var definitionDataPre = termsList;
   definitionDataPre.shuffle();
 
   var definitionData = [
     for (var ww in definitionDataPre)
-      if (
-      ww.isarId != targetWordEntity.isarId
-          && targetWordEntity.maybeReverseDefinitionChoice != (
-          reverseTerm ? ww.term : ww.definition
-      )
-      ) ww
+      if (ww.isarId != targetWordEntity.isarId ||
+          (targetWordEntity.maybeReverseDefinitionChoice !=
+              (reverseTerm ? ww.term : ww.definition)))
+        ww
   ];
   definitionData.sort((term1, term2) {
-  return term2.watchCount.compareTo(term1.watchCount);
+    return term2.watchCount.compareTo(term1.watchCount);
   });
-  definitionData = definitionData.sublist(0, targetWordEntity.module.value!.choicesCount - 1);
+  definitionData = definitionData.sublist(
+      0, targetWordEntity.module.value!.choicesCount - 1);
   definitionData.add(targetWordEntity);
   definitionData.shuffle();
   return definitionData;
 }
 
 List<TermEntityDbDS> getOneLearnIterationList(
-    List<TermEntityDbDS> termsList,
-
-    ){
-
-  var targetIterationLen = 10;
-  var unknownTargetIterationLen = 7;
-  var knowTargetIterationLen = targetIterationLen - unknownTargetIterationLen;
-
+  List<TermEntityDbDS> termsList,
+) {
   var currTermList = [
     for (var w in termsList)
-      if ((w.writeErrorCounter != 0 || w.chooseErrorCounter != 0)) w
+      if ((w.writeErrorCounter > 0 || w.chooseErrorCounter > 0)) w
   ];
   if (currTermList.length == 0) {
     return currTermList;
   }
 
+  int targetIterationLen = currTermList[0].module.value!.maxIterationLen;
+  int knowTargetIterationLen = (targetIterationLen.toDouble() *
+      currTermList[0].module.value!.knownTermPart.toDouble()
+      / 100.0
+         )
+      .round();
+  int unknownTargetIterationLen = targetIterationLen - knowTargetIterationLen;
+
   var currLearntTermList = [
     for (var w in termsList)
-      if ((w.writeErrorCounter == 0 && w.chooseErrorCounter == 0)) w
+      if ((w.writeErrorCounter <= 0 && w.chooseErrorCounter <= 0)) w
   ];
 
-  int realUnknownIterationLen = targetIterationLen - min(currLearntTermList.length, knowTargetIterationLen);
+  int realUnknownIterationLen = targetIterationLen -
+      min(currLearntTermList.length, knowTargetIterationLen);
   knowTargetIterationLen = targetIterationLen - realUnknownIterationLen;
-
-
 
   currTermList.sort((term1, term2) {
     if (term1.chooseErrorCounter == term2.chooseErrorCounter) {
-      return term1.writeErrorCounter.compareTo(term2.writeErrorCounter);
+      return term2.writeErrorCounter.compareTo(term1.writeErrorCounter);
     }
-    return term1.chooseErrorCounter.compareTo(term2.chooseErrorCounter);
+    return term2.chooseErrorCounter.compareTo(term1.chooseErrorCounter);
   });
   if (currTermList.length >= realUnknownIterationLen) {
     currTermList = currTermList.sublist(0, realUnknownIterationLen);
   } else {
-
-    knowTargetIterationLen += ((currTermList.length - targetIterationLen) / 2).round();
+    // knowTargetIterationLen += ((realUnknownIterationLen - currTermList.length)).round();
+    knowTargetIterationLen = (currTermList.length.toDouble() *
+        currTermList[0].module.value!.knownTermPart.toDouble()
+        /100.0
+    )
+        .round();
+    knowTargetIterationLen = max(knowTargetIterationLen,
+        currTermList[0].module.value!.minIterationLen - currTermList.length);
     targetIterationLen = currTermList.length;
   }
-  if (currLearntTermList.length >= knowTargetIterationLen){
+  if (currLearntTermList.length >= knowTargetIterationLen) {
     currLearntTermList = currLearntTermList.sublist(0, knowTargetIterationLen);
   }
+
+  for (var i in currLearntTermList) {
+    var v = random.nextDouble() < 0.8;
+    i
+      ..chooseErrorCounter = v ? 1 : 0
+      ..writeErrorCounter = v ? 0 : 1;
+  }
+
   currTermList += currLearntTermList;
   currTermList.shuffle();
 

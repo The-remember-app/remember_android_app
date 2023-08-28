@@ -59,7 +59,7 @@ class ChoiceWord extends StatefulWidget {
 }
 
 class _ChoiceWordState extends AbstractUIStatefulWidget<ChoiceWord> {
-  bool nextScreen = false;
+
   // final ModuleDbDS moduleEntity;
   // final TermEntityDbDS wordEntity;
   // final int progress;
@@ -84,6 +84,7 @@ class _ChoiceWordState extends AbstractUIStatefulWidget<ChoiceWord> {
 
   @override
   Widget build(BuildContext context) {
+    bool nextScreen = false;
     // var moduleEntity = foldersOrModules[moduleEntity];
     // var wordEntity = words[wordEntity];
     // var learnNavPr = Provider.of<LearnScreensNavigationProvider>(context, listen: false);
