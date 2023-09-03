@@ -23,7 +23,7 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
   List<BottomNavigationBarItem> flutterVizBottomNavigationBarItems =
   [
     BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-    BottomNavigationBarItem(icon: Icon(Icons.remove), label: ""),
+    BottomNavigationBarItem(icon: Icon(Icons.remove), label: "test"),
     BottomNavigationBarItem(icon: Icon(Icons.remove), label: ""),
     BottomNavigationBarItem(icon: Icon(Icons.remove), label: ""),
     BottomNavigationBarItem(icon: Icon(Icons.person), label: "Account")

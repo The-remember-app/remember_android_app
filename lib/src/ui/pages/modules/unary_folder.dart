@@ -8,9 +8,11 @@ import 'package:provider/provider.dart';
 // import '../../../domain_layer/providers/folders/folder_module.dart';
 import '../../../domain_layer/providers/main/folders/folder_module.dart';
 import '../../../domain_layer/providers/main/folders/sub_folder_modules.dart';
+
 // import '../../../domain_layer/providers/sub_folder_modules.dart';
 import '../../../repositoris/db_data_source/folder.dart';
 import '../../../repositoris/db_data_source/module.dart';
+
 // import '../../repositoris/folder_repository/local_db_data_source/folder.dart';
 import '../../ui_states/modules/unary_folder.dart';
 import '../../ui_templates/abstract_ui.dart';
@@ -31,7 +33,7 @@ class UnaryFolderState extends AbstractUIStatefulWidget<UnaryFolder> {
     return Stack(
       alignment: Alignment.topLeft,
       children: [
-        FoldersListProcessor( dfMapper: widget.dfMapper),
+        FoldersListProcessor(dfMapper: widget.dfMapper),
         Align(
           alignment: Alignment.bottomRight,
           child: Container(
@@ -87,10 +89,12 @@ class LoadedFoldersList extends StatelessWidget {
   List<Widget> getFolderAndModulesUI(BuildContext context,
       SubFolderAndModuleProvider subFmPr, FolderAndModuleProvider fmPr) {
     var foldersDataUI = subFmPr.subFoldersList!.map<Widget>((folder) {
-      return OneFolderListItem(currentFolder: folder, fmPr: fmPr, subFmPr: subFmPr);
+      return OneFolderListItem(
+          currentFolder: folder, fmPr: fmPr, subFmPr: subFmPr);
     }).toList();
     var modulesDataUI = subFmPr.subModulesList!.map<Widget>((module) {
-      return OneModuleListItem(currentModule: module, fmPr: fmPr, subFmPr: subFmPr);
+      return OneModuleListItem(
+          currentModule: module, fmPr: fmPr, subFmPr: subFmPr);
     }).toList();
     return foldersDataUI + modulesDataUI;
   }
@@ -102,7 +106,10 @@ class OneFolderListItem extends StatelessWidget {
   final SubFolderAndModuleProvider subFmPr;
 
   const OneFolderListItem(
-      {super.key, required this.currentFolder, required this.fmPr, required this.subFmPr});
+      {super.key,
+      required this.currentFolder,
+      required this.fmPr,
+      required this.subFmPr});
 
   @override
   Widget build(BuildContext context) {
@@ -129,17 +136,23 @@ class OneFolderListItem extends StatelessWidget {
               color: Color(0xfffffdc0),
               iconSize: 64,
             ),
-            Text(
+      Container( child:
+      Flexible(
+          fit: FlexFit.tight,
+          child: Text(
               currentFolder.name,
               textAlign: TextAlign.start,
-              overflow: TextOverflow.clip,
+              // overflow: TextOverflow.clip,
+              overflow: TextOverflow.visible,
               style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontStyle: FontStyle.normal,
                 fontSize: 14,
                 color: Color(0xff000000),
               ),
+          ),
             ),
+      ),
             FolderStatusBarWidget(currentFolder),
           ],
         ),
@@ -158,7 +171,10 @@ class OneModuleListItem extends StatelessWidget {
   final SubFolderAndModuleProvider subFmPr;
 
   const OneModuleListItem(
-      {super.key, required this.currentModule, required this.fmPr, required this.subFmPr});
+      {super.key,
+      required this.currentModule,
+      required this.fmPr,
+      required this.subFmPr});
 
   @override
   Widget build(BuildContext context) {
@@ -185,20 +201,32 @@ class OneModuleListItem extends StatelessWidget {
               color: Color(0xffffdfba),
               iconSize: 64,
             ),
-            Text(
-              currentModule.name,
-              textAlign: TextAlign.start,
-              overflow: TextOverflow.clip,
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-                fontSize: 14,
-                color: Color(0xff000000),
+            // Expanded(
+            //   flex: 1,
+            //   child:
+            Container( child:
+            Flexible(
+              fit: FlexFit.tight,
+              child:
+              Text(
+                currentModule.name,
+                textAlign: TextAlign.start,
+                // overflow: TextOverflow.clip,
+                overflow: TextOverflow.visible,
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 14,
+                  color: Color(0xff000000),
+                ),
               ),
+            ),
+            // ),
             ),
             FolderStatusBarWidget(currentModule),
           ],
         ),
+
       ),
       onTap: () async {
         fmPr.currentModule = currentModule;

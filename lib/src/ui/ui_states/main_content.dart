@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 // import '../../domain_layer/providers/main_navigation/bottom_navigation_provider.dart';
 import '../../domain_layer/providers/main/main_navigation/app_bar_navigation.dart';
 import '../../domain_layer/providers/main/main_navigation/bottom_navigation_provider.dart';
+import '../../test_ui_page.dart';
 import '../pages/settings/MyAccountScreen.dart';
 import '../ui_templates/abstract_ui.dart';
 import '../ui_templates/navigation/app_bar_navigation_enum.dart';
@@ -101,6 +102,20 @@ class PageChoice extends StatelessWidget {
         },
         appBarEmulate: AppBarEmulate(title: 'My account'),
       );
+    } else if (bottomPagePr.activePageNumber == 1) {
+      return Wapper(
+        appBar: appBarPagePr.getAppBarWidget[AppBarNavigationEnum.arrowBack]!(
+            context, dfMapper),
+        body: TestUiPage(),
+        bottomNavigationBar: bottomPagePr.bottomNavWidget!(context),
+        dfMapper: dfMapper,
+        onWillPop: () async {
+          bottomPagePr.activePageNumber = 0;
+          return false;
+        },
+        appBarEmulate: AppBarEmulate(title: 'Ещё не реализовано'),
+      );
+
     } else {
       return Wapper(
         appBar: appBarPagePr.getAppBarWidget[AppBarNavigationEnum.arrowBack]!(

@@ -15,20 +15,25 @@ import 'module.dart';
 part 'term.g.dart';
 
 // final Map<Uuid, TermEntityDbDS> words = TermEntityDbDS.getTestTerms();
+abstract class LearnWriteEntity{
+  Id get isarId;
+  String get termUuid;
+  String get targetWrite;
+
+
+}
+
 
 @JsonSerializable()
 @collection
-class TermEntityDbDS  extends AbstractEntity  {
+class TermEntityDbDS  extends AbstractEntity
+implements LearnWriteEntity{
   @Name("id")
   @JsonKey(includeFromJson: false, includeToJson: false)
   Id get isarId => AbstractEntity.fastHash(complexIndex.join("")) ;
   // @Index(unique: true, replace: true, caseSensitive: false)
   @JsonKey(name: 'id')
   late String uuid;
-
-  @ignore
-  @JsonKey(name: 'term_id', includeFromJson: true, includeToJson: true)
-  String get term_uuid => this.uuid;
 
   @Name("user_uuid")
   @JsonKey(name: 'user_id')
@@ -88,6 +93,10 @@ class TermEntityDbDS  extends AbstractEntity  {
   @JsonKey(includeFromJson: false, includeToJson: false)
   final sentenceEntities = IsarLinks<SentenceDbDS>();
 
+  @ignore
+  @JsonKey(name: 'term_id', includeFromJson: true, includeToJson: true)
+  String get _termUuid => this.uuid;
+
   void updateReverseWrite(){
     _reverseChoice = null;
     _reverseWrite =   random.nextBool();
@@ -146,24 +155,57 @@ class TermEntityDbDS  extends AbstractEntity  {
   }
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
-  get  maybeReverseTermWrite {
+  String get  maybeReverseTermWrite {
     return isTermReverseWrite() ? definition: term;
   }
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
-  get  maybeReverseDefinitionWrite {
+  String get  maybeReverseDefinitionWrite {
     return isTermReverseWrite() ? term : definition;
   }
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
-  get  maybeReverseTermChoice {
+  String get  maybeReverseTermChoice {
     return isTermReverseChoice() ? definition: term;
   }
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
-  get  maybeReverseDefinitionChoice {
+  String get  maybeReverseDefinitionChoice {
     return isTermReverseChoice() ? term : definition;
   }
+
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Set<String> get  maybeReverseTermWriteSet {
+    return isTermReverseWrite() ? definitionSet : termSet;
+  }
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Set<String> get  maybeReverseDefinitionWriteSet {
+    return isTermReverseWrite() ? termSet : definitionSet;
+  }
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Set<String> get  maybeReverseTermChoiceSet {
+    return isTermReverseChoice() ? definitionSet : termSet;
+  }
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Set<String> get  maybeReverseDefinitionChoiceSet {
+    return isTermReverseChoice() ? termSet : definitionSet;
+  }
+
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Set<String> get  definitionSet {
+    return {definition};
+  }
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Set<String> get  termSet {
+    return {term};
+  }
+
 
   static TermEntityDbDS fromJson(PersonalizeTermDTO data){
 
@@ -222,5 +264,11 @@ class TermEntityDbDS  extends AbstractEntity  {
 
     return res;
   }
+
+  @override
+  String get targetWrite => maybeReverseDefinitionWrite;
+
+  @override
+  String get termUuid => uuid;
 
 }

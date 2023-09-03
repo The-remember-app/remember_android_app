@@ -14,6 +14,7 @@ import '../../../../domain_layer/providers/main/folders/module/learning/write/wr
 import '../../../../domain_layer/providers/main/folders/module/terms_in_module.dart';
 import '../../../../repositoris/db_data_source/term.dart';
 import '../../../ui_templates/abstract_ui.dart';
+import '../../../ui_templates/pages/main/folders/module/learn/write_field_template.dart';
 
 void changeWordStatus(Uuid wordId, bool) {}
 
@@ -62,7 +63,9 @@ class _WriteWordState extends AbstractUIStatefulWidget<WriteWord> {
         // Swiping in left direction.
         if (details.delta.dx < 0) {
           if (!nextScreen) {
-            writeLearnNavPr.writtenWord = widget.inputWord;
+            writeLearnNavPr.checkUserInput();
+
+            // writeLearnNavPr.writtenWord = widget.inputWord;
             nextScreen = true;
           }
           // if (buttonPressed.values.any((isClicked) => isClicked)) {
@@ -135,84 +138,89 @@ class _WriteWordState extends AbstractUIStatefulWidget<WriteWord> {
                     ),
                   ),
                 ),
+
+
+
               ],
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-              onChanged: (text) async {
-                widget.inputWord = text;
-                if (text.toLowerCase() ==
-                    widget.wordEntity.maybeReverseDefinitionWrite.toLowerCase()) {
-                  writeWordChanging(widget.wordEntity, widget.inputWord, widget.termsPr.termsList!, widget.termsPr);
-                  learnNavPr.activePageNumber += 1;
-                  // words[wordId]?.write_error_counter -= 1;
-                  // var nextPage = await getNextLearnPage(
-                  //   moduleEntity,
-                  //   currTermList: currTermsList,
-                  //   progress: progress,
-                  //   InputedWord: inputWord,
-                  //   showPostScreen: false,
-                  //   context: context,
-                  // );
-                  // await nextPage(context);
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => nextPage));
-                }
-                // print("onChanged");
-                // print("Введенный текст: $text");
-              },
-              controller: TextEditingController(),
-              obscureText: false,
-              textAlign: TextAlign.start,
-              maxLines: 1,
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-                fontSize: 14,
-                color: Color(0xff000000),
-              ),
-              decoration: InputDecoration(
-                disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                  borderSide: BorderSide(color: Color(0xff000000), width: 1),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                  borderSide: BorderSide(color: Color(0xff000000), width: 1),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                  borderSide: BorderSide(color: Color(0xff000000), width: 1),
-                ),
-                labelText: "Введите значение темина",
-                labelStyle: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontStyle: FontStyle.normal,
-                  fontSize: 14,
-                  color: Color(0xff000000),
-                ),
-                hintText: "Начните вводить",
-                hintStyle: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontStyle: FontStyle.normal,
-                  fontSize: 14,
-                  color: Color(0xff000000),
-                ),
-                filled: true,
-                fillColor: Color(0xfff2f2f3),
-                isDense: false,
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                prefixIcon:
-                    Icon(Icons.edit, color: Color(0xff212435), size: 24),
-              ),
-              autofocus: true,
-            ),
-          ),
+          // Padding(
+          //   padding: EdgeInsets.all(10),
+          //   child: TextField(
+          //     onChanged: (text) async {
+          //       widget.inputWord = text;
+          //       if (text.toLowerCase() ==
+          //           widget.wordEntity.maybeReverseDefinitionWrite.toLowerCase()) {
+          //         writeWordChanging(widget.wordEntity, widget.inputWord, widget.termsPr.termsList!, widget.termsPr);
+          //         learnNavPr.activePageNumber += 1;
+          //         // words[wordId]?.write_error_counter -= 1;
+          //         // var nextPage = await getNextLearnPage(
+          //         //   moduleEntity,
+          //         //   currTermList: currTermsList,
+          //         //   progress: progress,
+          //         //   InputedWord: inputWord,
+          //         //   showPostScreen: false,
+          //         //   context: context,
+          //         // );
+          //         // await nextPage(context);
+          //         // Navigator.push(
+          //         //     context,
+          //         //     MaterialPageRoute(
+          //         //         builder: (context) => nextPage));
+          //       }
+          //       // print("onChanged");
+          //       // print("Введенный текст: $text");
+          //     },
+          //     controller: TextEditingController(),
+          //     obscureText: false,
+          //     textAlign: TextAlign.start,
+          //     maxLines: 1,
+          //     style: TextStyle(
+          //       fontWeight: FontWeight.w400,
+          //       fontStyle: FontStyle.normal,
+          //       fontSize: 14,
+          //       color: Color(0xff000000),
+          //     ),
+          //     decoration: InputDecoration(
+          //       disabledBorder: OutlineInputBorder(
+          //         borderRadius: BorderRadius.circular(4.0),
+          //         borderSide: BorderSide(color: Color(0xff000000), width: 1),
+          //       ),
+          //       focusedBorder: OutlineInputBorder(
+          //         borderRadius: BorderRadius.circular(4.0),
+          //         borderSide: BorderSide(color: Color(0xff000000), width: 1),
+          //       ),
+          //       enabledBorder: OutlineInputBorder(
+          //         borderRadius: BorderRadius.circular(4.0),
+          //         borderSide: BorderSide(color: Color(0xff000000), width: 1),
+          //       ),
+          //       labelText: "Введите значение темина",
+          //       labelStyle: TextStyle(
+          //         fontWeight: FontWeight.w400,
+          //         fontStyle: FontStyle.normal,
+          //         fontSize: 14,
+          //         color: Color(0xff000000),
+          //       ),
+          //       hintText: "Начните вводить",
+          //       hintStyle: TextStyle(
+          //         fontWeight: FontWeight.w400,
+          //         fontStyle: FontStyle.normal,
+          //         fontSize: 14,
+          //         color: Color(0xff000000),
+          //       ),
+          //       filled: true,
+          //       fillColor: Color(0xfff2f2f3),
+          //       isDense: false,
+          //       contentPadding:
+          //           EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+          //       prefixIcon:
+          //           Icon(Icons.edit, color: Color(0xff212435), size: 24),
+          //     ),
+          //     autofocus: true,
+          //   ),
+          // ),
+
+          WriteFieldInLearnModTemplate(widget.wordEntity, termsPr.termsList!),
           Expanded(
             flex: 1,
             child: Align(
@@ -242,7 +250,11 @@ class _WriteWordState extends AbstractUIStatefulWidget<WriteWord> {
                       alignment: Alignment.center,
                       child: MaterialButton(
                         onPressed: () async {
-                          writeLearnNavPr.writtenWord = widget.inputWord;
+                          // writeLearnNavPr.writtenWord = widget.inputWord;
+
+                          writeLearnNavPr.checkUserInput();
+                          // throw UnimplementedError();
+
                           // var nextPage = await getNextLearnPage(
                           //   moduleEntity,
                           //   currTermList: currTermsList,

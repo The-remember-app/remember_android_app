@@ -1,17 +1,23 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
+import 'package:quiver/iterables.dart';
 import 'package:the_remember/src/repositoris/db_data_source/module.dart';
 
 import '../../../main.dart';
 import '../../../network_processor/network_main.dart';
 import '../../repositoris/db_data_source/term.dart';
+import '../../repositoris/db_data_source/term_adding_info.dart';
+import '../../ui/ui_templates/pages/main/folders/module/learn/write_field_template.dart';
 import '../../urils/db/dbMixins.dart';
 import '../../urils/db/engine.dart';
 
 // import '../providers/folders/module/terms_in_module.dart';
+import '../providers/main/folders/module/learning/write/write_word_navigation.dart';
 import '../providers/main/folders/module/terms_in_module.dart';
 import '../providers/user_api_provider.dart';
+// import 'package:quiver';
 
 Future<void> startLearning(
     TermsInModuleProvider termPr, UserApiProfile userPr) async {
@@ -94,10 +100,10 @@ Future<List<TermEntityDbDS>> getAllTermsFromModule(int moduleId) async {
 }
 
 Future<void> learnTransactionCompleted(
-    List<TermEntityDbDS> learnedData,
-    UserApiProfile userApi,
-{bool learnFinished = false,}
-    ) async {
+  List<TermEntityDbDS> learnedData,
+  UserApiProfile userApi, {
+  bool learnFinished = false,
+}) async {
   var updateFuture = null;
 
   // for(var i in learnedData){
@@ -209,9 +215,9 @@ List<TermEntityDbDS> getChoiceDefinitions(
 
   var definitionData = [
     for (var ww in definitionDataPre)
-      if (ww.isarId != targetWordEntity.isarId ||
-          (targetWordEntity.maybeReverseDefinitionChoice !=
-              (reverseTerm ? ww.term : ww.definition)))
+      if (ww.isarId != targetWordEntity.isarId &&
+          (targetWordEntity.maybeReverseDefinitionChoice != ww.term &&
+              targetWordEntity.maybeReverseDefinitionChoice != ww.definition))
         ww
   ];
   definitionData.sort((term1, term2) {
@@ -237,9 +243,8 @@ List<TermEntityDbDS> getOneLearnIterationList(
 
   int targetIterationLen = currTermList[0].module.value!.maxIterationLen;
   int knowTargetIterationLen = (targetIterationLen.toDouble() *
-      currTermList[0].module.value!.knownTermPart.toDouble()
-      / 100.0
-         )
+          currTermList[0].module.value!.knownTermPart.toDouble() /
+          100.0)
       .round();
   int unknownTargetIterationLen = targetIterationLen - knowTargetIterationLen;
 
@@ -263,9 +268,8 @@ List<TermEntityDbDS> getOneLearnIterationList(
   } else {
     // knowTargetIterationLen += ((realUnknownIterationLen - currTermList.length)).round();
     knowTargetIterationLen = (currTermList.length.toDouble() *
-        currTermList[0].module.value!.knownTermPart.toDouble()
-        /100.0
-    )
+            currTermList[0].module.value!.knownTermPart.toDouble() /
+            100.0)
         .round();
     knowTargetIterationLen = max(knowTargetIterationLen,
         currTermList[0].module.value!.minIterationLen - currTermList.length);
@@ -286,4 +290,201 @@ List<TermEntityDbDS> getOneLearnIterationList(
   currTermList.shuffle();
 
   return currTermList;
+}
+
+List<Widget> getOneWriteFieldInLearnProcess(
+  TermAddingInfoDbDS? addTermInfo,
+  TermEntityDbDS currentTerm,
+  int fieldsCount,
+  WriteWordNavigationProvider wwNavPr,
+    List<GetTermSourceOrFormName> sourceOrFormNameWidgetList,
+) {
+  List<Widget> res = [];
+
+  if (addTermInfo != null) {
+    var helpPhrasesWithoutWordFirst = currentTerm.addInfoEntities
+        .where((element) =>
+            (element.addInfoType == AddInfoType.help_phrase_without_word &&
+                element.addingTextData == 'at_first')
+                // && (fieldsCount == 1 ||
+                // element.parentAddInfoUuid == addTermInfo!.uuid)
+    )
+        .map((e) => GetTextPart("(" + (e.textData ?? "???") + ")"))
+        .toList();
+    res += helpPhrasesWithoutWordFirst;
+
+    var helpPhrasesWithWord = currentTerm.addInfoEntities
+        .where((element) =>
+            (element.addInfoType == AddInfoType.help_phrase_with_word)
+                // && (fieldsCount == 1 ||
+                // element.parentAddInfoUuid == addTermInfo!.uuid)
+                &&  (((element.textData!.allMatches('...').length == 1) &&
+                    (currentTerm.addInfoEntities.every((element) =>
+                        element.addInfoType != AddInfoType.composite_word))) ||
+                ((element.textData!.allMatches('...').length ==
+                    currentTerm.addInfoEntities
+                        .where((element) =>
+                            element.addInfoType == AddInfoType.composite_word)
+                        .length))))
+        .toList();
+    helpPhrasesWithWord.shuffle(random);
+    if (helpPhrasesWithWord.isNotEmpty) {
+      var str =
+          (' ' + helpPhrasesWithWord[0].addingTextData! + ' ').split("...");
+      if (str[0].trim().isNotEmpty) {
+        res += [GetTextPart(str[0])];
+        str.removeAt(0);
+        str += [''];
+      }
+
+      for (var (index, data) in zip([
+        str,
+        currentTerm.addInfoEntities
+            .where(
+                (element) => element.addInfoType == AddInfoType.composite_word)
+            .toList()
+      ]).indexed) {
+        var s = data[0] as String;
+        var source = data[1] as LearnWriteEntity;
+        res += [GetInputFieldPart(s, index, source, wwNavPr)];
+        if (s.trim().isNotEmpty) {
+          res += [GetTextPart(s)];
+        }
+      }
+    } else {
+      res += [GetInputFieldPart(addTermInfo.textData!, 0, addTermInfo, wwNavPr)];
+    }
+
+    var helpPhrasesWithoutWordEnd = currentTerm.addInfoEntities
+        .where((element) =>
+            (element.addInfoType == AddInfoType.help_phrase_without_word &&
+                (element.addingTextData == 'at_end' ||
+                    element.addingTextData == 'any'))
+                // &&   (fieldsCount == 1 ||
+                // element.parentAddInfoUuid == addTermInfo!.uuid)
+    )
+        .map((e) => GetTextPart("(" + (e.textData ?? "???") + ")"))
+        .toList();
+
+    res += helpPhrasesWithoutWordEnd;
+  } else {
+    res += [GetInputFieldPart(currentTerm.maybeReverseDefinitionWrite, 0, currentTerm, wwNavPr)];
+  }
+
+  var sourceOrFormName = sourceOrFormNameWidgetList.isEmpty ? "" : sourceOrFormNameWidgetList[0].text;
+  var helpString = [for (var i in res )  (i is GetTextPart)? i.text : null ];
+  var stringKey = (sourceOrFormName ?? "") + [for (var i in helpString) i ?? '@@@'].join();
+  var targetStrings =   [for (var i in res )  if (i is GetInputFieldPart) i.targetString ];
+  var sourceEntity  = [for (var i in res ) if (i is GetInputFieldPart) i.currentLearnWriteEntity];
+  for (var r in res  ){
+    if (r is GetInputFieldPart){
+      (r as GetInputFieldPart).realInit(
+          stringKey,
+          targetStrings,
+          currentTerm,
+          sourceEntity,
+      );
+    }
+  }
+
+  return res;
+}
+
+List<Widget> getWriteFieldsListInLearnProcess(
+    TermEntityDbDS currentTerm, List<TermEntityDbDS> termsList) {
+  List<OneVariantTermField> widgetList = [];
+
+  var similarTerms = termsList
+      .where((element) =>
+          // currentTerm.maybeReverseTermWriteSet.difference(
+          //     currentTerm. isTermReverseWrite()?   element.definitionSet : element.termSet
+          // ).isEmpty
+          currentTerm.maybeReverseTermWriteSet ==
+          (currentTerm.isTermReverseWrite()
+              ? element.definitionSet
+              : element.termSet))
+      .toList();
+  for (var i in [currentTerm] + similarTerms) {
+    var fields = i.addInfoEntities
+        .toList()
+        .where((element) => (element.addInfoType == AddInfoType.usual_term ||
+            element.addInfoType == AddInfoType.other_form ||
+            element.addInfoType == AddInfoType.abbreviation ||
+            (element.addInfoType == AddInfoType.composite_word &&
+                element.addingTextData == "1")))
+        .toList();
+
+    if (fields.isNotEmpty) {
+      fields.sort((one, two) {
+        if (one.addInfoType == AddInfoType.usual_term &&
+            two.addInfoType != AddInfoType.usual_term) {
+          return 1;
+        } else if (one.addInfoType == AddInfoType.usual_term &&
+            two.addInfoType == AddInfoType.usual_term) {
+          return 0;
+        } else {
+          if (one.addInfoType == AddInfoType.abbreviation &&
+              two.addInfoType != AddInfoType.abbreviation) {
+            return 1;
+          } else if (one.addInfoType == AddInfoType.abbreviation &&
+              two.addInfoType == AddInfoType.abbreviation) {
+            return 0;
+          } else {
+            if (one.addInfoType == AddInfoType.other_form &&
+                two.addInfoType != AddInfoType.other_form) {
+              return 1;
+            } else if (one.addInfoType == AddInfoType.other_form &&
+                two.addInfoType == AddInfoType.other_form) {
+              return 0;
+            } else {
+              if (one.addInfoType == AddInfoType.composite_word &&
+                  two.addInfoType != AddInfoType.composite_word) {
+                return 1;
+              } else if (one.addInfoType == AddInfoType.composite_word &&
+                  two.addInfoType == AddInfoType.composite_word) {
+                return 0;
+              } else {
+                return -1;
+              }
+            }
+          }
+        }
+      });
+      widgetList = fields
+          .map((e) => OneVariantTermField(e, i, currentTerm))
+          .toList();
+    } else {
+      widgetList += [OneVariantTermField(null, i, currentTerm)];
+    }
+    for( var i in widgetList){
+      i.fieldsCount = widgetList.length;
+    }
+  }
+
+  return widgetList as List<Widget>;
+}
+
+bool testWrittenWord(
+  String? sourceOrFormName,
+  List<String?> helpString,
+  TermEntityDbDS currentTerm,
+  List<TermAddingInfoDbDS>? addTermInfo,
+  WriteWordNavigationProvider wwNavPr,
+) {
+  var correctStringKey =
+      (sourceOrFormName ?? "") + [for (var i in helpString) i ?? '@@@'].join();
+  wwNavPr.checkCorrectingWordProcessor[correctStringKey] =
+      (wwNavPr.checkCorrectingWordProcessor[correctStringKey] ?? []) + [];
+
+  return true;
+}
+
+
+void userInputRegister(
+    String userInput,
+    String strKey,
+    WriteWordNavigationProvider wwNavPr,
+
+    ){
+
 }

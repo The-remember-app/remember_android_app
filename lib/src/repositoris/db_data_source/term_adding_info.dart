@@ -19,7 +19,8 @@ enum AddInfoType {
 }
 
 @collection
-class TermAddingInfoDbDS extends AbstractEntity {
+class TermAddingInfoDbDS extends AbstractEntity
+    implements LearnWriteEntity{
   // get isarId => fastHash(id!);
   @Name("id")
   Id get isarId => AbstractEntity.fastHash(complexIndex.join(""));
@@ -49,7 +50,7 @@ class TermAddingInfoDbDS extends AbstractEntity {
   late String termUuid;
 
   @Name("parent_add_info_id")
-  late String? parentAddInfoId;
+  late String? parentAddInfoUuid;
 
   @Name("created_at")
   late DateTime createdAt;
@@ -81,8 +82,14 @@ class TermAddingInfoDbDS extends AbstractEntity {
           : EnumToString.fromString(
               AddInfoType.values, data.addInfoType!.asString)
       ..termUuid = data.termId!.asString
-      ..parentAddInfoId = data.parentAddInfoId?.asString
+      ..parentAddInfoUuid = data.parentAddInfoId?.asString
       ..createdAt = DateTime.parse(data.createdAt!.asString)
       ..updatedAt = DateTime.parse(data.updatedAt!.asString);
   }
+
+  @override
+  String get targetWrite => textData!;
+
+  // @override
+  // String get termUuid => termUuid;
 }
