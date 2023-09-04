@@ -18,6 +18,11 @@ class WriteWordRes {
 
 }
 
+
+// class ItemHashList extends List<String>{
+//
+// }
+
 class WriteWordNavigationProvider extends ModChangeNotifier {
   late String? _writtenWord;
 
@@ -64,22 +69,31 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
       List<WriteWordRes> resultsContainer
   ) {
     checkCorrectingWordProcessor[strKey] =
-        (checkCorrectingWordProcessor[strKey] ?? []) + [targetStrings];
+        (checkCorrectingWordProcessor[strKey] ?? [])
+          ..add( targetStrings);
     strTermsToEntities[strKey] =
-        (strTermsToEntities[strKey] ?? []) + [currentTerm];
+        (strTermsToEntities[strKey] ?? [])
+    ..add(currentTerm);
     strKeyToSourceEntity[strKey] =
-        (strKeyToSourceEntity[strKey] ?? []) + [sourceEntity];
-    results[strKey] = (results[strKey] ?? Set());
-    results[strKey]!.add(resultsContainer);
+        (strKeyToSourceEntity[strKey] ?? [])..add(sourceEntity);
+    results[strKey] = (results[strKey] ?? Set())..add(resultsContainer);
   }
 
   void checkUserInput(){
     for (var kv in checkCorrectingWordProcessor.entries){
       var strKey = kv.key;
-      var targetWords = kv.value.toSet();
-      var userInputs =  results[strKey];
-      if (targetWords.intersection( userInputs) != targetWords){
+      var targetWords = [for (var i in kv.value) [for (var ii in i) ii]];
+      var userInputs =  [for ( var i in results[strKey]!) [for(var ii in i) ii.userInput]];
+      var targetWordsStrings = {for (var (index, i) in targetWords.indexed) (i.join("####"), index)};
+      var userInputsStrings = {for (var (index, i) in userInputs.indexed) (i.join("####"), index)};
+      if (targetWordsStrings.intersection( userInputsStrings) != targetWordsStrings){
+        var correctTermsStr = targetWordsStrings.intersection( userInputsStrings);
+        var errorTermsStr = userInputsStrings.intersection( targetWordsStrings);
+        var correctTerms = [for (var (i, index) in correctTermsStr) targetWords[index]];
+        var errorTerms =  [for (var (i, index) in errorTermsStr) userInputs[index]];
 
+      } else {
+        // Всё правильно
       }
     }
   }

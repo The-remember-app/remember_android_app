@@ -73,7 +73,7 @@ class TestUiPage extends StatelessWidget {
           ),
         ),
         WriteFieldInLearnModTemplate(
-            TermEntityDbDS()
+            TermEntityDbDS(), <TermEntityDbDS>[],
         ),
         Expanded(
           flex: 1,

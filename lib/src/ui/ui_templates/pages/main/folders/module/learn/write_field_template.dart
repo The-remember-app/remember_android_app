@@ -101,7 +101,7 @@ class OneVariantTermField extends StatelessWidget {
                   children: getOneWriteFieldInLearnProcess(
                       addTermInfo,
                       currentTerm,
-                      fieldsCount,
+                      fieldsCount!,
                       wwNavPr,
                       sourceOrFormNameWidgetList),
                 ),
