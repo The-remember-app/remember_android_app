@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:isar/isar.dart';
@@ -19,6 +21,7 @@ abstract class LearnWriteEntity{
   Id get isarId;
   String get termUuid;
   String get targetWrite;
+  TermEntityDbDS get termEntityInterface;
 
 
 }
@@ -47,18 +50,19 @@ implements LearnWriteEntity{
   @Name("module_id")
   @JsonKey(name: 'module_id')
   late String moduleUuid;
+
   @Name("choose_error_counter")
   @JsonKey(name: 'choose_error_counter')
-  late int chooseErrorCounter;
+  late int _chooseErrorCounter;
   @Name("write_error_counter")
   @JsonKey(name: 'write_error_counter')
-  late int writeErrorCounter;
+  late int _writeErrorCounter;
   @Name("choice_neg_error_counter")
   @JsonKey(name: 'choice_neg_error_counter')
-  late int choiceNegErrorCounter;
+  late int _choiceNegErrorCounter;
   @Name("watch_count")
   @JsonKey(name: 'watch_count')
-  late int watchCount = 0;
+  late int _watchCount ;
 
   @Name("created_at")
   @JsonKey(name: 'created_at')
@@ -265,10 +269,38 @@ implements LearnWriteEntity{
     return res;
   }
 
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   String get targetWrite => maybeReverseDefinitionWrite;
 
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   String get termUuid => uuid;
+
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  TermEntityDbDS get termEntityInterface => this;
+
+  int get chooseErrorCounter => _chooseErrorCounter;
+  int get writeErrorCounter => _writeErrorCounter;
+  int get choiceNegErrorCounter => _choiceNegErrorCounter;
+  int get watchCount => _watchCount;
+
+  set chooseErrorCounter(int value){
+    _chooseErrorCounter = max(value, 0);
+  }
+  set writeErrorCounter(int value){
+    _writeErrorCounter = max(value, 0);
+  }
+  set choiceNegErrorCounter(int value){
+    _choiceNegErrorCounter = max(value, 0);
+  }
+  set watchCount(int value){
+    _watchCount = max(value, 0);
+  }
+
 
 }

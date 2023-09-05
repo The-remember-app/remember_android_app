@@ -63,7 +63,7 @@ class _WriteWordState extends AbstractUIStatefulWidget<WriteWord> {
         // Swiping in left direction.
         if (details.delta.dx < 0) {
           if (!nextScreen) {
-            writeLearnNavPr.checkUserInput();
+            await writeLearnNavPr.checkUserInput();
 
             // writeLearnNavPr.writtenWord = widget.inputWord;
             nextScreen = true;
@@ -221,55 +221,7 @@ class _WriteWordState extends AbstractUIStatefulWidget<WriteWord> {
           // ),
 
           WriteFieldInLearnModTemplate(widget.wordEntity, termsPr.termsList!),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
-            child: Align(
-              alignment: Alignment.center,
-              child: MaterialButton(
-                onPressed: () async {
 
-
-
-                  // writeWordChanging(writeLearnNavPr.targetWord, writeLearnNavPr.writtenWord, termsPr.termsList!, termsPr);
-                  //
-                  // learnNavPr.activePageNumber += 1;
-                  // nextScreen = true;
-                  // var nextPage = await getNextLearnPage(
-                  //     moduleEntity,
-                  //     currTermList: currTermsList,
-                  //     progress: progress,
-                  //   InputedWord: userInput,
-                  //   showPostScreen: false,
-                  //   context: context,
-                  // );
-                  // await nextPage(context);
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => nextPage ));
-                },
-                color: Color(0xfff9f9f9),
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  side:
-                  BorderSide(color: Color(0xff3a57e8), width: 2),
-                ),
-                padding: EdgeInsets.all(16),
-                child: Text(
-                  "Пропустить ввод термина",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                  ),
-                ),
-                textColor: Color(0xff000000),
-                height: 40,
-                minWidth: 140,
-              ),
-            ),
-          ),
           Expanded(
             flex: 1,
             child: Align(
@@ -301,22 +253,8 @@ class _WriteWordState extends AbstractUIStatefulWidget<WriteWord> {
                         onPressed: () async {
                           // writeLearnNavPr.writtenWord = widget.inputWord;
 
-                          writeLearnNavPr.checkUserInput();
-                          // throw UnimplementedError();
+                          await writeLearnNavPr.checkUserInput();
 
-                          // var nextPage = await getNextLearnPage(
-                          //   moduleEntity,
-                          //   currTermList: currTermsList,
-                          //   progress: progress,
-                          //   InputedWord: inputWord,
-                          //   showPostScreen: true,
-                          //   context: context,
-                          // );
-                          // await nextPage(context);
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => nextPage));
                         },
                         color: Color(0xfff9f9f9),
                         elevation: 0,

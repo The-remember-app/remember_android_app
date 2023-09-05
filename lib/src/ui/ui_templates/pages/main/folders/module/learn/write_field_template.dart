@@ -63,9 +63,9 @@ class OneVariantTermField extends StatelessWidget {
       throw UnimplementedError(
           "fieldsCount and currentFieldIndex mast be implemented");
     }
-
-    var sourceOrFormNameWidgetList =
-        sourceOrFormNameProcessor(addTermInfo, currentTerm);
+  var sourceOrFormNameWidgetListAsSpecType = sourceOrFormNameProcessor(addTermInfo, currentTerm);
+    List<Widget> sourceOrFormNameWidgetList =
+        [for (var i in sourceOrFormNameWidgetListAsSpecType) i as Widget];
 
     var wwNavPr =
         Provider.of<WriteWordNavigationProvider>(context, listen: false);
@@ -74,8 +74,8 @@ class OneVariantTermField extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       // crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
-      children: (sourceOrFormNameWidgetList as List<Widget>) +
-          [
+      children: (sourceOrFormNameWidgetList) +
+          <Widget>[
             // Expanded(
             //   // flex: 1,
             //   child:
@@ -97,7 +97,7 @@ class OneVariantTermField extends StatelessWidget {
                       fieldsCount!,
                       currentFieldIndex,
                       wwNavPr,
-                      sourceOrFormNameWidgetList),
+                      sourceOrFormNameWidgetListAsSpecType as List<GetTermSourceOrFormName>),
                 ),
               ),
             ),
@@ -227,6 +227,8 @@ class GetInputFieldPart extends StatefulWidget {
   bool _realInitCalled = false;
   String userInput = "";
 
+  bool? errorStatus = null;
+
   GetInputFieldPart(
     this.targetString,
     this.targetStringIndex,
@@ -240,8 +242,7 @@ class GetInputFieldPart extends StatefulWidget {
     if (userInputsContainer.length != targetStringIndex) {
       throw UnimplementedError('Неправильная инициализация');
     }
-    userInputsContainer
-        .add(WriteWordRes(userInput, targetStringIndex, strKey, errorCallback));
+
   }
 
   void realInit(
@@ -251,6 +252,8 @@ class GetInputFieldPart extends StatefulWidget {
     List<LearnWriteEntity> sourceEntity,
   ) {
     _realInitCalled = true;
+    userInputsContainer
+        .add(WriteWordRes(userInput, targetStringIndex, strKey, null, null));
     wwNavPr.addWriteWordProcessor(
         strKey, targetStrings, currentTerm, sourceEntity, userInputsContainer);
   }
@@ -261,8 +264,25 @@ class GetInputFieldPart extends StatefulWidget {
 
 class _GetInputFieldPartState
     extends AbstractUIStatefulWidget<GetInputFieldPart> {
+  _GetInputFieldPartState() {
+
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    widget.userInputsContainer[widget.targetStringIndex]!.errorCallback =
+    (() async {
+      widget.errorStatus = true;
+      setState(() => null);
+    });
+    widget.userInputsContainer[widget.targetStringIndex]!.successCallback =
+    (() async {
+      widget.errorStatus = false;
+      setState(() => null);
+    });
+
+    // setState()
     if (!widget._realInitCalled) {
       throw UnimplementedError('realInit must called before build');
     }
@@ -280,6 +300,7 @@ class _GetInputFieldPartState
           border: Border.all(color: Color(0x4d9e9e9e), width: 1),
         ),
         child: TextField(
+
           onChanged: (text) async {
             widget.userInput = text.trim().toLowerCase();
             widget.userInputsContainer[widget.targetStringIndex].userInput =
@@ -309,7 +330,7 @@ class _GetInputFieldPartState
           onSubmitted: (text) async {
             widget.wwNavPr.isUserCompletedInput();
           },
-          controller: TextEditingController(),
+          controller: TextEditingController(text: widget.userInput),
           obscureText: false,
           textAlign: TextAlign.start,
           maxLines: 1,
@@ -347,7 +368,9 @@ class _GetInputFieldPartState
               color: Color(0xff000000),
             ),
             filled: true,
-            fillColor: Color(0xfff2f2f3),
+            fillColor: widget.errorStatus == null
+                ? Color(0xfff2f2f3)
+                : (widget.errorStatus! ? Color(0xfff87878) : Color(0xffadffad)),
             isDense: false,
             contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
             prefixIcon: Icon(Icons.edit, color: Color(0xff212435), size: 24),

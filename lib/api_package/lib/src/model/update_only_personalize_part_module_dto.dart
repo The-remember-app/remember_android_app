@@ -22,6 +22,7 @@ part 'update_only_personalize_part_module_dto.g.dart';
 /// * [minWatchCount] 
 /// * [knownTermPart] 
 /// * [choicesCount] 
+/// * [isLearnt] 
 /// * [personalUpdatedAt] 
 @BuiltValue()
 abstract class UpdateOnlyPersonalizePartModuleDTO implements Built<UpdateOnlyPersonalizePartModuleDTO, UpdateOnlyPersonalizePartModuleDTOBuilder> {
@@ -54,6 +55,9 @@ abstract class UpdateOnlyPersonalizePartModuleDTO implements Built<UpdateOnlyPer
 
   @BuiltValueField(wireName: r'choices_count')
   JsonObject? get choicesCount;
+
+  @BuiltValueField(wireName: r'is_learnt')
+  JsonObject? get isLearnt;
 
   @BuiltValueField(wireName: r'personal_updated_at')
   JsonObject? get personalUpdatedAt;
@@ -129,6 +133,11 @@ class _$UpdateOnlyPersonalizePartModuleDTOSerializer implements PrimitiveSeriali
     yield r'choices_count';
     yield object.choicesCount == null ? null : serializers.serialize(
       object.choicesCount,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'is_learnt';
+    yield object.isLearnt == null ? null : serializers.serialize(
+      object.isLearnt,
       specifiedType: const FullType.nullable(JsonObject),
     );
     yield r'personal_updated_at';
@@ -238,6 +247,14 @@ class _$UpdateOnlyPersonalizePartModuleDTOSerializer implements PrimitiveSeriali
           ) as JsonObject?;
           if (valueDes == null) continue;
           result.choicesCount = valueDes;
+          break;
+        case r'is_learnt':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.isLearnt = valueDes;
           break;
         case r'personal_updated_at':
           final valueDes = serializers.deserialize(

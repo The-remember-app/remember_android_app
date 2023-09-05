@@ -18,6 +18,7 @@ Name | Type | Description | Notes
 **minWatchCount** | [**JsonObject**](.md) |  | 
 **knownTermPart** | [**JsonObject**](.md) |  | 
 **choicesCount** | [**JsonObject**](.md) |  | 
+**isLearnt** | [**JsonObject**](.md) |  | 
 **personalCreatedAt** | [**JsonObject**](.md) |  | 
 **personalUpdatedAt** | [**JsonObject**](.md) |  | 
 **name** | [**JsonObject**](.md) |  | 

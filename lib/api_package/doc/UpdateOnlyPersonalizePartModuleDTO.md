@@ -18,6 +18,7 @@ Name | Type | Description | Notes
 **minWatchCount** | [**JsonObject**](.md) |  | 
 **knownTermPart** | [**JsonObject**](.md) |  | 
 **choicesCount** | [**JsonObject**](.md) |  | 
+**isLearnt** | [**JsonObject**](.md) |  | 
 **personalUpdatedAt** | [**JsonObject**](.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

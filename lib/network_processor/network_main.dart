@@ -7,6 +7,7 @@ import 'package:isar/isar.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:the_remember/api_package/lib/api_package.dart';
 import 'package:the_remember/src/repositoris/db_data_source/module.dart';
+import 'package:the_remember/src/repositoris/db_data_source/sentence.dart';
 import 'package:the_remember/src/repositoris/db_data_source/term.dart';
 import 'package:the_remember/src/repositoris/db_data_source/user.dart';
 
@@ -81,12 +82,14 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
   final FoldersEntitiesApi folderApi = baseApi.getFoldersEntitiesApi();
   final ModuleEntitiesApi moduleApi = baseApi.getModuleEntitiesApi();
   final TermEntitiesApi termApi = baseApi.getTermEntitiesApi();
+  final SentenceEntitiesApi sentenceApi = baseApi.getSentenceEntitiesApi();
   // JsonObject("string");
   late Map<ConnType, Isar> conn;
   late Map<String, FolderDbDS> foldersFromDb;
   late Map<String, ModuleDbDS> modulesFromDb;
   late Map<String, TermEntityDbDS> termsFromDb;
   late Map<String, TermAddingInfoDbDS> addInfoTermsFromDb;
+  late Map<String, SentenceDbDS> sentenceFromDb;
 
   var coro = (() async {
     // await Future.delayed(Duration(seconds: 5));
@@ -129,6 +132,14 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
           .findAll())
         ent.uuid: ent
     };
+    sentenceFromDb = {
+      for (var ent in await conn[ConnType.term]!
+          .collection<SentenceDbDS>()
+          .filter()
+          .userUuidEqualTo(userApi.user!.uuid)
+          .findAll())
+        ent.uuid: ent
+    };
   })();
 
   final foldersCoro = folderApi.getAllFoldersFolderAllGet(headers: authHeaders);
@@ -136,6 +147,8 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
   final termsCoro = termApi.getAllTermTermAllGet(headers: authHeaders);
   final addInfoCoro =
       termApi.getAllAddTermInfoTermAddInfoAllGet(headers: authHeaders);
+  final sentenceCoro =
+      sentenceApi.getAllTermSentenceAllGet(headers: authHeaders);
 
   final folders = await foldersCoro;
 
@@ -172,12 +185,17 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
       if (networkModule.personalUpdatedAt
           .isBefore(dbModule.personalUpdatedAt)) {
         networkModule
-        // FIXME:
-
+          // FIXME:
           ..isReverseDefinitionWrite = dbModule.isReverseDefinitionWrite
           ..standardAndReverseWrite = dbModule.standardAndReverseWrite
           ..isReverseDefinitionChoice = dbModule.isReverseDefinitionChoice
           ..standardAndReverseChoice = dbModule.standardAndReverseChoice
+          ..maxIterationLen= dbModule.maxIterationLen
+          ..minIterationLen= dbModule.minIterationLen
+          ..minWatchCount= dbModule.minWatchCount
+          ..knownTermPart= dbModule.knownTermPart
+          ..choicesCount= dbModule.choicesCount
+          ..isLearnt= dbModule.isLearnt
           ..personalUpdatedAt = dbModule.personalUpdatedAt;
       }
     }
@@ -214,17 +232,19 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
       var dbTerm = termsFromDb[networkTerm.uuid]!;
       if (networkTerm.personalUpdatedAt.isBefore(dbTerm.personalUpdatedAt)) {
         networkTerm
-          ..watchCount=dbTerm.watchCount
           ..chooseErrorCounter = dbTerm.chooseErrorCounter
           ..writeErrorCounter = dbTerm.writeErrorCounter
           ..choiceNegErrorCounter = dbTerm.choiceNegErrorCounter
+          ..watchCount=dbTerm.watchCount
           ..personalUpdatedAt = dbTerm.personalUpdatedAt;
-      } else if (networkTerm.personalUpdatedAt.isAfter(dbTerm.personalUpdatedAt)) {
+      } else if (networkTerm.personalUpdatedAt
+          .isAfter(dbTerm.personalUpdatedAt)) {
         serverUpdatesTerm.add(dbTerm);
       }
     }
   }
-  var serverTermUpdateCoro = updatePersonalizedTerms(serverUpdatesTerm, userApi);
+  var serverTermUpdateCoro =
+      updatePersonalizedTerms(serverUpdatesTerm, userApi);
 
   final addInfoTerms = await addInfoCoro;
   var addInfoTermsToDb = {
@@ -251,6 +271,32 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
     }
   }
 
+  final sentences = await sentenceCoro;
+  var sentencesToDb = {
+    for (var ent in [
+      for (var ait in sentences.data!.asList)
+        SentenceDbDS.fromJson(
+            standardSerializers.deserialize(ait,
+                specifiedType: const FullType(SentenceDTO)
+              // ..["add_info_type"]=[ait["add_info_type"]],
+              //     specifiedType: const FullType(AdditionalTermInfoDTO)
+            ) as SentenceDTO,
+            userApi.user!.uuid)
+    ])
+      ent.uuid: ent
+  };
+
+  for (var networkSentences in sentencesToDb.values) {
+    networkSentences.termEntity.value = termsToDb[networkSentences.termUuid]!;
+    if (sentenceFromDb[networkSentences.uuid] != null) {
+      var dbSentence = sentenceFromDb[networkSentences.uuid]!;
+      if (networkSentences.updatedAt.isBefore(dbSentence.updatedAt)) {
+        networkSentences = dbSentence;
+      }
+    }
+  }
+
+
   conn[ConnType.term]!.writeTxnSync(() {
     conn[ConnType.term]!
         .collection<FolderDbDS>()
@@ -264,6 +310,9 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
     conn[ConnType.term]!
         .collection<TermAddingInfoDbDS>()
         .putAllSync(addInfoTermsToDb.values.toList());
+    conn[ConnType.term]!
+        .collection<SentenceDbDS>()
+        .putAllSync(sentencesToDb.values.toList());
   });
   var res1 = conn[ConnType.term]!
       .collection<FolderDbDS>()
@@ -278,8 +327,6 @@ Future<void> networkProcessor(UserApiProfile? userApi) async {
 
   await OpenAndClose3.closeConnStatic(conn);
   await serverTermUpdateCoro;
-
-
 
   // final folders = await mainApi.getAllFoldersFolderAllGet(headers: authHeaders);
 
@@ -431,7 +478,6 @@ Future<void> loginUser(
 
     serverUrls.forEach((url) async => await testServerUrl(
         url, goodUrlFounded, username, password, userApi, onErrorCallback));
-
   } else if (userApi?.authHeaders == null ||
       (userApi?.authHeaders != null && userApi!.authHeaders.isEmpty)) {
     await getAuthHeaders(await userApi!.baseApi!.getAuthApi(), "<unnamed>",
@@ -457,22 +503,16 @@ Future<void> updatePersonalizedTerms(
     // PersonalizeTermDTO.serializer.serialize(standardSerializers, toDTOModel());
     // PersonalizeTermDTO.serializer.
     var data1 = [
-      for (var i in terms)
-        i.toJsonAsMap()
+      for (var i in terms) i.toJsonAsMap()
       // i.toDTO<UpdateOnlyPersonalizePartTermDTO>()
       // JsonObject(standardSerializers.serialize(
       //      i.toDTO<UpdateOnlyPersonalizePartTermDTO>()
       // ))
     ];
-    var data2 =  jsonEncode(
-        data1
-    );
-    var data3 = JsonObject(
-        data2
-    );
-    var res =
-        await myFunc(
-          userApi.baseApi!.dio,
+    var data2 = jsonEncode(data1);
+    var data3 = JsonObject(data2);
+    var res = await myFunc(
+      userApi.baseApi!.dio,
       standardSerializers,
       body: data1,
       headers: userApi.authHeaders,
@@ -481,10 +521,9 @@ Future<void> updatePersonalizedTerms(
   }
 }
 
-Future<Response<JsonObject>>  myFunc(
-Dio _dio,
-Serializers _serializers,
-    {
+Future<Response<JsonObject>> myFunc(
+  Dio _dio,
+  Serializers _serializers, {
   List<Map<String, dynamic>>? body,
   CancelToken? cancelToken,
   Map<String, dynamic>? headers,
@@ -516,8 +555,7 @@ Serializers _serializers,
 
   try {
     _bodyData = body;
-
-  } catch(error, stackTrace) {
+  } catch (error, stackTrace) {
     throw DioException(
       requestOptions: _options.compose(
         _dio.options,
@@ -542,11 +580,12 @@ Serializers _serializers,
 
   try {
     final rawResponse = _response.data;
-    _responseData = rawResponse == null ? null : _serializers.deserialize(
-      rawResponse,
-      specifiedType: const FullType(JsonObject),
-    ) as JsonObject;
-
+    _responseData = rawResponse == null
+        ? null
+        : _serializers.deserialize(
+            rawResponse,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
   } catch (error, stackTrace) {
     throw DioException(
       requestOptions: _response.requestOptions,

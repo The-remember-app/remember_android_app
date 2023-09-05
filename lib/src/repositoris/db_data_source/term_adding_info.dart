@@ -87,9 +87,16 @@ class TermAddingInfoDbDS extends AbstractEntity
       ..updatedAt = DateTime.parse(data.updatedAt!.asString);
   }
 
+
+  @ignore
   @override
   String get targetWrite => textData!;
 
+
+
+  @ignore
+  @override
+  TermEntityDbDS get termEntityInterface => this.termEntity.value!;
   // @override
   // String get termUuid => termUuid;
 }

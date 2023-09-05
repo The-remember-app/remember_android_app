@@ -254,7 +254,7 @@ List<TermEntityDbDS> getOneLearnIterationList(
   ];
 
   int realUnknownIterationLen = targetIterationLen -
-      min(currLearntTermList.length, knowTargetIterationLen);
+      min([currLearntTermList.length, knowTargetIterationLen])!;
   knowTargetIterationLen = targetIterationLen - realUnknownIterationLen;
 
   currTermList.sort((term1, term2) {
@@ -271,8 +271,8 @@ List<TermEntityDbDS> getOneLearnIterationList(
             currTermList[0].module.value!.knownTermPart.toDouble() /
             100.0)
         .round();
-    knowTargetIterationLen = max(knowTargetIterationLen,
-        currTermList[0].module.value!.minIterationLen - currTermList.length);
+    knowTargetIterationLen = max([knowTargetIterationLen,
+        currTermList[0].module.value!.minIterationLen - currTermList.length])!;
     targetIterationLen = currTermList.length;
   }
   if (currLearntTermList.length >= knowTargetIterationLen) {
@@ -426,6 +426,7 @@ List<Widget> getWriteFieldsListInLearnProcess(
               : element.termSet))
       .toList();
   for (var i in [currentTerm] + similarTerms) {
+    // i.addInfoEntities.
     var fields = i.addInfoEntities
         .toList()
         .where((element) => (element.addInfoType == AddInfoType.usual_term ||
@@ -471,10 +472,16 @@ List<Widget> getWriteFieldsListInLearnProcess(
           }
         }
       });
-      widgetList =
-          fields.map((e) => OneVariantTermField(e, i, currentTerm)).toList();
+      widgetList.addAll(
+          fields.map<OneVariantTermField>(
+                  (e) => OneVariantTermField(
+                      e,
+                      i,
+                      currentTerm
+                  )
+          ).toList() as List<OneVariantTermField>);
     } else {
-      widgetList += [OneVariantTermField(null, i, currentTerm)];
+      widgetList.add(OneVariantTermField(null, i, currentTerm));
     }
     for (var (index, i) in widgetList.indexed) {
       i

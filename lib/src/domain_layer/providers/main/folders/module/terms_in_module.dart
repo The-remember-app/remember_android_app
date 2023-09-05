@@ -9,9 +9,11 @@ import '../../../../../urils/profilers/abstract.dart';
 import '../folder_module.dart';
 
 class TermsInModuleProvider extends ModChangeNotifier {
-  late List<TermEntityDbDS>? _termsList ;
-  late List<TermEntityDbDS>? _learningIterationTermsList ;
-  late  List<TermEntityDbDS>? _changedInLearningIterationTermsList;
+  late List<TermEntityDbDS>? _termsList;
+
+  late List<TermEntityDbDS>? _learningIterationTermsList;
+
+  late List<TermEntityDbDS>? _changedInLearningIterationTermsList;
 
   final FolderAndModuleProvider fmPr;
   late Future _initLists;
@@ -20,7 +22,7 @@ class TermsInModuleProvider extends ModChangeNotifier {
   List<CollectionSchema<AbstractEntity>> get classes =>
       [TermEntityDbDSSchema, TermAddingInfoDbDSSchema, SentenceDbDSSchema];
 
-  TermsInModuleProvider({required this.fmPr}): super() {
+  TermsInModuleProvider({required this.fmPr}) : super() {
     // init();
   }
 
@@ -28,8 +30,8 @@ class TermsInModuleProvider extends ModChangeNotifier {
   void init({bool isRealInit = false}) {
     _initLists = _initListsFromDB();
     _termsList = null;
-     _learningIterationTermsList = null;
-     _changedInLearningIterationTermsList = null;
+    _learningIterationTermsList = null;
+    _changedInLearningIterationTermsList = null;
     super.init(isRealInit: isRealInit);
   }
 
@@ -54,9 +56,43 @@ class TermsInModuleProvider extends ModChangeNotifier {
         .moduleUuidEqualTo(fmPr.currentModule!.uuid)
         .userUuidEqualTo(fmPr.userPr.user!.uuid)
         .findAll();
-    _termsList!.forEach((element) {
+    var uuidTermList = {for (var i in _termsList!) i.uuid: i};
+    var addTermsInfoEntities = await isar
+        .collection<TermAddingInfoDbDS>()
+        .filter()
+        .anyOf(
+            uuidTermList.keys, (q, String termUuid) => q.termUuidEqualTo(termUuid))
+        .userUuidEqualTo(fmPr.userPr.user!.uuid)
+        .findAll();
+    var sentenceEntities = await isar
+        .collection<SentenceDbDS>()
+        .filter()
+        .anyOf(
+        uuidTermList.keys, (q, String termUuid) => q.termUuidEqualTo(termUuid))
+        .userUuidEqualTo(fmPr.userPr.user!.uuid)
+        .findAll();
+
+    Map<String, List<TermAddingInfoDbDS>> addTermsInfoEntitiesMap = {};
+    Map<String, List<SentenceDbDS>> sentenceEntitiesMap = {};
+    for (var i in addTermsInfoEntities){
+      addTermsInfoEntitiesMap[i.termUuid] = (addTermsInfoEntitiesMap[i.termUuid] ?? [])
+        ..add(i);
+      i.termEntity.value = uuidTermList[i.termUuid]!;
+    }
+    for (var i in sentenceEntities){
+      sentenceEntitiesMap[i.termUuid] = (sentenceEntitiesMap[i.termUuid] ?? [])
+        ..add(i);
+      i.termEntity.value = uuidTermList[i.termUuid]!;
+    }
+
+   for(var element in  _termsList!) {
       element.module.value = fmPr.currentModule;
-    });
+      // element.addInfoEntities = (addTermsInfoEntitiesMap[element.uuid]!);
+      element.addInfoEntities.addAll(addTermsInfoEntitiesMap[element.uuid]!);
+      element.sentenceEntities.addAll(sentenceEntitiesMap[element.uuid] ?? []);
+      await element.addInfoEntities.load();
+      await element.sentenceEntities.load();
+    }
 
     // await _termsList![0].module.load();
     // _termsList![0].module.

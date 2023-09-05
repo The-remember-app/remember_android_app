@@ -38,6 +38,14 @@ class SubFolderAndModuleProvider extends ModChangeNotifier {
     // if (_subFoldersList != null && fmPr.currentModule == null){
     _subFoldersList = null;
     _subModulesList = null;
+    // if (isRealInit) {
+    //   _initLists = _initListsFromDB();
+    // } else {
+    //   _initLists = (() async {
+    //     await _initLists;
+    //     _initListsFromDB();
+    //   })();
+    // }
     _initLists = _initListsFromDB();
     parentProvidersList[fmPr.runtimeType] = fmPr;
     super.init(isRealInit: isRealInit);
