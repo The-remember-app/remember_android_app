@@ -13,8 +13,15 @@ class WriteWordRes {
   final int indexInString;
   // final int fieldIndex;
   final String keyString;
+  late Future<void> Function() errorCallback;
 
-  WriteWordRes(this.userInput, this.indexInString, this.keyString);
+
+  WriteWordRes(this.userInput, this.indexInString, this.keyString,
+      Future<void> Function()? errorCallback){
+    if (errorCallback != null){
+      this.errorCallback = errorCallback;
+    }
+  }
 
 }
 
@@ -80,9 +87,9 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
   }
 
   void checkUserInput(){
-    for (var kv in checkCorrectingWordProcessor.entries){
+    for (var kv in strKeyToSourceEntity.entries){
       var strKey = kv.key;
-      var targetWords = [for (var i in kv.value) [for (var ii in i) ii]];
+      var targetWords = [for (var i in kv.value) [for (var ii in i) ii.targetWrite]];
       var userInputs =  [for ( var i in results[strKey]!) [for(var ii in i) ii.userInput]];
       var targetWordsStrings = {for (var (index, i) in targetWords.indexed) (i.join("####"), index)};
       var userInputsStrings = {for (var (index, i) in userInputs.indexed) (i.join("####"), index)};
@@ -92,10 +99,19 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
         var correctTerms = [for (var (i, index) in correctTermsStr) targetWords[index]];
         var errorTerms =  [for (var (i, index) in errorTermsStr) userInputs[index]];
 
+        var
+
+
+
       } else {
         // Всё правильно
       }
     }
+  }
+
+
+  void isUserCompletedInput(){
+
   }
 
 }

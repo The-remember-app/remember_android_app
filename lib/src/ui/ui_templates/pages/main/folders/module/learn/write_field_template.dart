@@ -9,6 +9,7 @@ import '../../../../../../../../main.dart';
 import '../../../../../../../domain_layer/functions/words_BO.dart';
 import '../../../../../../../domain_layer/providers/main/folders/module/learning/write/write_word_navigation.dart';
 import '../../../../../../../repositoris/db_data_source/term_adding_info.dart';
+import '../../../../../abstract_ui.dart';
 
 class WriteFieldInLearnModTemplate extends StatelessWidget {
   final TermEntityDbDS currentTerm;
@@ -43,36 +44,28 @@ class OneVariantTermField extends StatelessWidget {
   final TermAddingInfoDbDS? addTermInfo;
   final TermEntityDbDS currentTerm;
   final TermEntityDbDS originalTerm;
-  late int? fieldsCount = null;
+  late int fieldsCount;
+  late int currentFieldIndex;
 
-  OneVariantTermField(
-      this.addTermInfo, this.currentTerm, this.originalTerm,{ int? fieldsCount = null}){
-    this.fieldsCount = fieldsCount;
+  OneVariantTermField(this.addTermInfo, this.currentTerm, this.originalTerm,
+      {int? fieldsCount = null, int? currentFieldIndex = null}) {
+    if (fieldsCount != null) {
+      this.fieldsCount = fieldsCount!;
+    }
+    if (currentFieldIndex != null) {
+      this.currentFieldIndex = currentFieldIndex!;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (fieldsCount == null){
-      throw UnimplementedError("fieldsCount mast be implemented");
+    if (fieldsCount == null || currentFieldIndex == null) {
+      throw UnimplementedError(
+          "fieldsCount and currentFieldIndex mast be implemented");
     }
 
-
-    bool sourceOrFormName;
-    if (addTermInfo != null) {
-      sourceOrFormName = ((addTermInfo!.addInfoType == AddInfoType.usual_term ||
-                  addTermInfo!.addInfoType == AddInfoType.other_form) &&
-              (addTermInfo!.addingTextData != null &&
-                  addTermInfo!.addingTextData!.isNotEmpty)) ||
-          addTermInfo!.addInfoType == AddInfoType.abbreviation;
-    } else {
-      sourceOrFormName = false;
-    }
-
-    List<GetTermSourceOrFormName> sourceOrFormNameWidgetList = (sourceOrFormName
-        ? <GetTermSourceOrFormName>[
-            GetTermSourceOrFormName(addTermInfo!, currentTerm)
-          ]
-        : <GetTermSourceOrFormName>[]);
+    var sourceOrFormNameWidgetList =
+        sourceOrFormNameProcessor(addTermInfo, currentTerm);
 
     var wwNavPr =
         Provider.of<WriteWordNavigationProvider>(context, listen: false);
@@ -102,6 +95,7 @@ class OneVariantTermField extends StatelessWidget {
                       addTermInfo,
                       currentTerm,
                       fieldsCount!,
+                      currentFieldIndex,
                       wwNavPr,
                       sourceOrFormNameWidgetList),
                 ),
@@ -215,11 +209,13 @@ class GetTextPart extends StatelessWidget {
   }
 }
 
-class GetInputFieldPart extends StatelessWidget {
+class GetInputFieldPart extends StatefulWidget {
   final String targetString;
   final int targetStringIndex;
   final LearnWriteEntity currentLearnWriteEntity;
   final List<WriteWordRes> userInputsContainer;
+  final int fieldsCount;
+  final int currentFieldIndex;
 
   late String strKey;
   late List<String> targetStrings;
@@ -231,17 +227,21 @@ class GetInputFieldPart extends StatelessWidget {
   bool _realInitCalled = false;
   String userInput = "";
 
-  GetInputFieldPart(this.targetString, this.targetStringIndex,
-      this.currentLearnWriteEntity, this.wwNavPr, this.userInputsContainer) {
-    if (userInputsContainer.length != targetStringIndex){
+  GetInputFieldPart(
+    this.targetString,
+    this.targetStringIndex,
+    this.currentLearnWriteEntity,
+    this.wwNavPr,
+    this.userInputsContainer,
+    this.fieldsCount,
+    this.currentFieldIndex, {
+    Future<void> Function()? errorCallback = null,
+  }) {
+    if (userInputsContainer.length != targetStringIndex) {
       throw UnimplementedError('Неправильная инициализация');
     }
-    userInputsContainer.add(
-        WriteWordRes(userInput, targetStringIndex,  strKey)
-
-
-    );
-
+    userInputsContainer
+        .add(WriteWordRes(userInput, targetStringIndex, strKey, errorCallback));
   }
 
   void realInit(
@@ -256,8 +256,14 @@ class GetInputFieldPart extends StatelessWidget {
   }
 
   @override
+  _GetInputFieldPartState createState() => _GetInputFieldPartState();
+}
+
+class _GetInputFieldPartState
+    extends AbstractUIStatefulWidget<GetInputFieldPart> {
+  @override
   Widget build(BuildContext context) {
-    if (!_realInitCalled) {
+    if (!widget._realInitCalled) {
       throw UnimplementedError('realInit must called before build');
     }
     return Expanded(
@@ -275,29 +281,33 @@ class GetInputFieldPart extends StatelessWidget {
         ),
         child: TextField(
           onChanged: (text) async {
-            userInput = text.trim().toLowerCase();
-            userInputsContainer[targetStringIndex].userInput = userInput;
+            widget.userInput = text.trim().toLowerCase();
+            widget.userInputsContainer[widget.targetStringIndex].userInput =
+                widget.userInput;
             // if (text.toLowerCase() ==
             //     widget.wordEntity.maybeReverseDefinitionWrite.toLowerCase()) {
             //   writeWordChanging(widget.wordEntity, widget.inputWord, widget.termsPr.termsList!, widget.termsPr);
             //   learnNavPr.activePageNumber += 1;
-              // words[wordId]?.write_error_counter -= 1;
-              // var nextPage = await getNextLearnPage(
-              //   moduleEntity,
-              //   currTermList: currTermsList,
-              //   progress: progress,
-              //   InputedWord: inputWord,
-              //   showPostScreen: false,
-              //   context: context,
-              // );
-              // await nextPage(context);
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (context) => nextPage));
+            // words[wordId]?.write_error_counter -= 1;
+            // var nextPage = await getNextLearnPage(
+            //   moduleEntity,
+            //   currTermList: currTermsList,
+            //   progress: progress,
+            //   InputedWord: inputWord,
+            //   showPostScreen: false,
+            //   context: context,
+            // );
+            // await nextPage(context);
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => nextPage));
             // }
             // print("onChanged");
             // print("Введенный текст: $text");
+          },
+          onSubmitted: (text) async {
+            widget.wwNavPr.isUserCompletedInput();
           },
           controller: TextEditingController(),
           obscureText: false,
