@@ -19,8 +19,10 @@ class WriteFieldInLearnModTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var wwNavPr = Provider.of<WriteWordNavigationProvider>(context, listen: false);
+
     List<Widget> widgetList =
-        getWriteFieldsListInLearnProcess(currentTerm, termsList);
+        getWriteFieldsListInLearnProcess(currentTerm, termsList, wwNavPr);
 
     // fields += [for (var i in termsList) ];
 
@@ -272,12 +274,12 @@ class _GetInputFieldPartState
   Widget build(BuildContext context) {
 
     widget.userInputsContainer[widget.targetStringIndex]!.errorCallback =
-    (() async {
+    ((BuildContext context, AbstractUIStatefulWidget setStateWidget) async {
       widget.errorStatus = true;
       setState(() => null);
     });
     widget.userInputsContainer[widget.targetStringIndex]!.successCallback =
-    (() async {
+    ((BuildContext context, AbstractUIStatefulWidget setStateWidget) async {
       widget.errorStatus = false;
       setState(() => null);
     });
@@ -329,6 +331,9 @@ class _GetInputFieldPartState
           },
           onSubmitted: (text) async {
             widget.wwNavPr.isUserCompletedInput();
+            if (widget.wwNavPr.writtenWord != null){
+              widget.wwNavPr.checkUserInput(context,  this,isAnotherWrite: true);
+            }
           },
           controller: TextEditingController(text: widget.userInput),
           obscureText: false,

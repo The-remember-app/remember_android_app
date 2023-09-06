@@ -13,6 +13,7 @@ import '../../../../domain_layer/providers/main/folders/module/learning/write/wr
 import '../../../../domain_layer/providers/main/folders/module/terms_in_module.dart';
 import '../../../../repositoris/db_data_source/term.dart';
 import '../../../ui_templates/abstract_ui.dart';
+import '../../../ui_templates/pages/main/folders/module/learn/write_field_template.dart';
 
 
 class WriteWordOneMoreTime extends StatefulWidget {
@@ -227,84 +228,87 @@ class _WriteWordOneMoreTimeState extends AbstractUIStatefulWidget<WriteWordOneMo
                 ],
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: TextField(
-                onChanged: (text) async {
-                  // UserInput = text;
-                  if (text.toLowerCase() ==
-                      widget.wordEntity.maybeReverseDefinitionWrite.toLowerCase()) {
-                    writeWordChanging(writeLearnNavPr.targetWord, writeLearnNavPr.writtenWord,  termsPr.termsList!, termsPr);
+            // Padding(
+            //   padding: EdgeInsets.all(10),
+            //   child: TextField(
+            //     onChanged: (text) async {
+            //       // UserInput = text;
+            //       if (text.toLowerCase() ==
+            //           widget.wordEntity.maybeReverseDefinitionWrite.toLowerCase()) {
+            //         writeWordChanging(writeLearnNavPr.targetWord, writeLearnNavPr.writtenWord,  termsPr.termsList!, termsPr);
+            //
+            //         learnNavPr.activePageNumber += 1;
+            //         nextScreen = true;
+            //         // words[wordId]?.write_error_counter -= 1;
+            //         // var nextPage = await getNextLearnPage(
+            //         //     moduleEntity,
+            //         //     currTermList: currTermsList,
+            //         //     progress: progress,
+            //         //   InputedWord: userInput,
+            //         //   showPostScreen: false,
+            //         //   context: context,
+            //         // );
+            //         //
+            //         // await nextPage(context);
+            //         // // Navigator.push(
+            //         //     context,
+            //         //     MaterialPageRoute(
+            //         //         builder: (context) => nextPage));
+            //       }
+            //       // print("onChanged");
+            //       // print("Введенный текст: $text");
+            //     },
+            //     controller: TextEditingController(),
+            //     obscureText: false,
+            //     textAlign: TextAlign.start,
+            //     maxLines: 1,
+            //     style: TextStyle(
+            //       fontWeight: FontWeight.w400,
+            //       fontStyle: FontStyle.normal,
+            //       fontSize: 14,
+            //       color: Color(0xff000000),
+            //     ),
+            //     decoration: InputDecoration(
+            //       disabledBorder: OutlineInputBorder(
+            //         borderRadius: BorderRadius.circular(4.0),
+            //         borderSide: BorderSide(color: Color(0xff000000), width: 1),
+            //       ),
+            //       focusedBorder: OutlineInputBorder(
+            //         borderRadius: BorderRadius.circular(4.0),
+            //         borderSide: BorderSide(color: Color(0xff000000), width: 1),
+            //       ),
+            //       enabledBorder: OutlineInputBorder(
+            //         borderRadius: BorderRadius.circular(4.0),
+            //         borderSide: BorderSide(color: Color(0xff000000), width: 1),
+            //       ),
+            //       labelText: "Попробуйте ещё раз ввести значение темина",
+            //       labelStyle: TextStyle(
+            //         fontWeight: FontWeight.w400,
+            //         fontStyle: FontStyle.normal,
+            //         fontSize: 14,
+            //         color: Color(0xff000000),
+            //       ),
+            //       hintText: widget.wordEntity.maybeReverseDefinitionWrite ??
+            //           "Похоже, что по этому Uuid не найдено термина, так быть не должно...",
+            //       hintStyle: TextStyle(
+            //         fontWeight: FontWeight.w400,
+            //         fontStyle: FontStyle.normal,
+            //         fontSize: 14,
+            //         color: Color(0xff000000),
+            //       ),
+            //       filled: true,
+            //       fillColor: Color(0xfff2f2f3),
+            //       isDense: false,
+            //       contentPadding:
+            //       EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+            //       prefixIcon:
+            //       Icon(Icons.edit, color: Color(0xff212435), size: 24),
+            //     ),
+            //   ),
+            // ),
 
-                    learnNavPr.activePageNumber += 1;
-                    nextScreen = true;
-                    // words[wordId]?.write_error_counter -= 1;
-                    // var nextPage = await getNextLearnPage(
-                    //     moduleEntity,
-                    //     currTermList: currTermsList,
-                    //     progress: progress,
-                    //   InputedWord: userInput,
-                    //   showPostScreen: false,
-                    //   context: context,
-                    // );
-                    //
-                    // await nextPage(context);
-                    // // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => nextPage));
-                  }
-                  // print("onChanged");
-                  // print("Введенный текст: $text");
-                },
-                controller: TextEditingController(),
-                obscureText: false,
-                textAlign: TextAlign.start,
-                maxLines: 1,
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontStyle: FontStyle.normal,
-                  fontSize: 14,
-                  color: Color(0xff000000),
-                ),
-                decoration: InputDecoration(
-                  disabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                    borderSide: BorderSide(color: Color(0xff000000), width: 1),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                    borderSide: BorderSide(color: Color(0xff000000), width: 1),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                    borderSide: BorderSide(color: Color(0xff000000), width: 1),
-                  ),
-                  labelText: "Попробуйте ещё раз ввести значение темина",
-                  labelStyle: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                    fontSize: 14,
-                    color: Color(0xff000000),
-                  ),
-                  hintText: widget.wordEntity.maybeReverseDefinitionWrite ??
-                      "Похоже, что по этому Uuid не найдено термина, так быть не должно...",
-                  hintStyle: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                    fontSize: 14,
-                    color: Color(0xff000000),
-                  ),
-                  filled: true,
-                  fillColor: Color(0xfff2f2f3),
-                  isDense: false,
-                  contentPadding:
-                  EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                  prefixIcon:
-                  Icon(Icons.edit, color: Color(0xff212435), size: 24),
-                ),
-              ),
-            ),
+            WriteFieldInLearnModTemplate(widget.wordEntity, termsPr.termsList!),
+
             Expanded(
               flex: 1,
               child: Align(
@@ -338,9 +342,10 @@ class _WriteWordOneMoreTimeState extends AbstractUIStatefulWidget<WriteWordOneMo
                         alignment: Alignment.center,
                         child: MaterialButton(
                           onPressed: () async {
-                            writeWordChanging(writeLearnNavPr.targetWord, writeLearnNavPr.writtenWord, termsPr.termsList!, termsPr);
+                            writeLearnNavPr.checkUserInput(context, this, isAnotherWrite: true, passedReInput: true);
+                            // writeWordChanging(writeLearnNavPr.targetWord, writeLearnNavPr.writtenWord, termsPr.termsList!, termsPr);
 
-                            learnNavPr.activePageNumber += 1;
+                            // learnNavPr.activePageNumber += 1;
                             nextScreen = true;
                             // var nextPage = await getNextLearnPage(
                             //     moduleEntity,
@@ -384,10 +389,12 @@ class _WriteWordOneMoreTimeState extends AbstractUIStatefulWidget<WriteWordOneMo
                         alignment: Alignment.center,
                         child: MaterialButton(
                           onPressed: () async {
-                            writeWordChanging(writeLearnNavPr.targetWord, null, termsPr.termsList!, termsPr);
+                            writeLearnNavPr.checkUserInput(context,  this,isAnotherWrite: true, answerIsPreventiveCorrect: true);
+
+                            // writeWordChanging(writeLearnNavPr.targetWord, null, termsPr.termsList!, termsPr);
                             nextScreen = true;
 
-                            learnNavPr.activePageNumber += 1;
+                            // learnNavPr.activePageNumber += 1;
                             // var nextPage = await getNextLearnPage(
                             //     moduleEntity,
                             //     currTermList:  currTermsList,

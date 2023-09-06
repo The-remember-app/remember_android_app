@@ -258,6 +258,11 @@ List<TermEntityDbDS> getOneLearnIterationList(
   knowTargetIterationLen = targetIterationLen - realUnknownIterationLen;
 
   currTermList.sort((term1, term2) {
+    if (term1.watchCount == 0) {
+      return -1;
+    } else if (term2.watchCount == 0) {
+      return 1;
+    }
     if (term1.chooseErrorCounter == term2.chooseErrorCounter) {
       return term2.writeErrorCounter.compareTo(term1.writeErrorCounter);
     }
@@ -271,8 +276,10 @@ List<TermEntityDbDS> getOneLearnIterationList(
             currTermList[0].module.value!.knownTermPart.toDouble() /
             100.0)
         .round();
-    knowTargetIterationLen = max([knowTargetIterationLen,
-        currTermList[0].module.value!.minIterationLen - currTermList.length])!;
+    knowTargetIterationLen = max([
+      knowTargetIterationLen,
+      currTermList[0].module.value!.minIterationLen - currTermList.length
+    ])!;
     targetIterationLen = currTermList.length;
   }
   if (currLearntTermList.length >= knowTargetIterationLen) {
@@ -412,7 +419,10 @@ List<Widget> getOneWriteFieldInLearnProcess(
 }
 
 List<Widget> getWriteFieldsListInLearnProcess(
-    TermEntityDbDS currentTerm, List<TermEntityDbDS> termsList) {
+  TermEntityDbDS currentTerm,
+  List<TermEntityDbDS> termsList,
+  WriteWordNavigationProvider wwNavPr,
+) {
   List<OneVariantTermField> widgetList = [];
 
   var similarTerms = termsList
@@ -457,6 +467,30 @@ List<Widget> getWriteFieldsListInLearnProcess(
               return 1;
             } else if (one.addInfoType == AddInfoType.other_form &&
                 two.addInfoType == AddInfoType.other_form) {
+              if (one.addingTextData == 'infinitive') {
+                return 1;
+              } else if (one.addingTextData == 'v2') {
+                if (two.addingTextData == 'infinitive') {
+                  return -1;
+                } else if (two.addingTextData == 'v2') {
+                  return 0;
+                } else {
+                  return 1;
+                }
+              } else if (one.addingTextData == 'v3') {
+                if (two.addingTextData == 'infinitive') {
+                  return -1;
+                } else if (two.addingTextData == 'v2') {
+                  return -1;
+                } else if (two.addingTextData == 'v3') {
+                  return 0;
+                } else {
+                  return 1;
+                }
+              } else {
+                return -1;
+              }
+
               return 0;
             } else {
               if (one.addInfoType == AddInfoType.composite_word &&
@@ -472,22 +506,33 @@ List<Widget> getWriteFieldsListInLearnProcess(
           }
         }
       });
-      widgetList.addAll(
-          fields.map<OneVariantTermField>(
-                  (e) => OneVariantTermField(
-                      e,
-                      i,
-                      currentTerm
-                  )
-          ).toList() as List<OneVariantTermField>);
+
+      if (wwNavPr.writtenWord != null) {
+        fields = fields
+            .where((element) =>
+                (wwNavPr.errorCountMap[element as LearnWriteEntity] ?? 0) > 0)
+            .toList();
+      }
+
+      widgetList.addAll(fields
+          .map<OneVariantTermField>(
+              (e) => OneVariantTermField(e, i, currentTerm))
+          .toList() as List<OneVariantTermField>);
     } else {
-      widgetList.add(OneVariantTermField(null, i, currentTerm));
+      if (wwNavPr.writtenWord == null ||
+          (wwNavPr.writtenWord != null &&
+              (wwNavPr.errorCountMap[currentTerm as LearnWriteEntity] ?? 0) >
+                  0)) {
+        {
+          widgetList.add(OneVariantTermField(null, i, currentTerm));
+        }
+      }
     }
-    for (var (index, i) in widgetList.indexed) {
-      i
-        ..fieldsCount = widgetList.length
-        ..currentFieldIndex = index;
-    }
+  }
+  for (var (index, i) in widgetList.indexed) {
+    i
+      ..fieldsCount = widgetList.length
+      ..currentFieldIndex = index;
   }
 
   return widgetList as List<Widget>;

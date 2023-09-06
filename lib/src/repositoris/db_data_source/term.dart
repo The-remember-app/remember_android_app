@@ -18,9 +18,13 @@ part 'term.g.dart';
 
 // final Map<Uuid, TermEntityDbDS> words = TermEntityDbDS.getTestTerms();
 abstract class LearnWriteEntity{
+  @ignore
   Id get isarId;
+  @ignore
   String get termUuid;
+  @ignore
   String get targetWrite;
+  @ignore
   TermEntityDbDS get termEntityInterface;
 
 
