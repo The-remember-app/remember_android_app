@@ -130,12 +130,19 @@ Future<void> learnTransactionCompleted(
 
   var wordsInCurrModule =
       await conn.collection<TermEntityDbDS>().getAll(currTermMap.keys.toList());
+  print(wordsInCurrModule);
+  print(wordsInCurrModule.length);
   for (var w in wordsInCurrModule) {
     var updateTerm = currTermMap[w!.isarId]!;
+    print("chooseErrorCounter ${w.chooseErrorCounter} ${updateTerm.chooseErrorCounter}");
+    print("writeErrorCounter ${w.writeErrorCounter} ${updateTerm.writeErrorCounter}");
+    print("choiceNegErrorCounter ${w.choiceNegErrorCounter} ${updateTerm.choiceNegErrorCounter}");
+    print("personalUpdatedAt ${w.personalUpdatedAt} ${updateTerm.personalUpdatedAt}");
     w
       ..chooseErrorCounter = updateTerm.chooseErrorCounter
       ..writeErrorCounter = updateTerm.writeErrorCounter
       ..choiceNegErrorCounter = updateTerm.choiceNegErrorCounter
+      ..watchCount = updateTerm.watchCount
       ..personalUpdatedAt = updateTerm.personalUpdatedAt;
   }
 
@@ -151,6 +158,20 @@ Future<void> learnTransactionCompleted(
         if (i != null) i
     ]);
   });
+
+  var wordsInCurrModuleCheck =
+  await conn.collection<TermEntityDbDS>().getAll(currTermMap.keys.toList());
+  for (var w in wordsInCurrModuleCheck) {
+    var updateTerm = currTermMap[w!.isarId]!;
+    print("chooseErrorCounter ${w.chooseErrorCounter} ${updateTerm
+        .chooseErrorCounter}");
+    print("writeErrorCounter ${w.writeErrorCounter} ${updateTerm
+        .writeErrorCounter}");
+    print("choiceNegErrorCounter ${w.choiceNegErrorCounter} ${updateTerm
+        .choiceNegErrorCounter}");
+    print("personalUpdatedAt ${w.personalUpdatedAt} ${updateTerm
+        .personalUpdatedAt}");
+  }
 
   // await conn.writeTxn(() async {
   //   await conn.collection<TermEntityDbDS>().putAll(learnedData);
@@ -343,6 +364,9 @@ List<Widget> getOneWriteFieldInLearnProcess(
           (' ' + helpPhrasesWithWord[0].addingTextData! + ' ').split("...");
       if (str[0].trim().isNotEmpty) {
         res += [GetTextPart(str[0])];
+        str.removeAt(0);
+        str += [''];
+      } else {
         str.removeAt(0);
         str += [''];
       }

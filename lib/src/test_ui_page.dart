@@ -34,7 +34,7 @@ class UITestScreenAwaitData extends StatefulWidget
     var terms = await isar
         .collection<TermEntityDbDS>()
         .filter()
-        .uuidEqualTo("0a89595a-ca91-4f0d-bb3e-1299520c2cce")
+        .uuidEqualTo("a35f1cb2-a765-4b69-a988-88dc97af4bfa")
         .findAll();
     // await closeConn();
     await terms[0].sentenceEntities.load();
