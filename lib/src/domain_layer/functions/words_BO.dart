@@ -115,10 +115,13 @@ Future<void> learnTransactionCompleted(
     for (var i in learnedData) i.isarId: i..personalUpdatedAt = currUpdateTime
   };
 
-  if (learnedData.isNotEmpty) {
-    learnedData[0].module.value!.isLearnt = true;
-    updateFuture =
-        updatePersonalizedTerms(currTermMap.values.toList(), userApi);
+  var currentModule = learnedData[0].module.value!;
+
+  if (learnFinished) {
+    currentModule!.isLearnt = true;
+    updateFuture = Future.wait([
+        updatePersonalizedTerms(currTermMap.values.toList(), userApi)
+  ] + (learnFinished? [(() async { return null;})()]: []));
   }
 
   // var networkFuture = updatePersonalizedTerms(termPr.termsList!, userPr);
@@ -146,6 +149,13 @@ Future<void> learnTransactionCompleted(
       ..personalUpdatedAt = updateTerm.personalUpdatedAt;
   }
 
+  ModuleDbDS? currDbModule = null;
+  if (learnFinished) {
+    currDbModule = await conn.collection<ModuleDbDS>().getByComplexIndex(
+        [currentModule.uuid, currentModule.userUuid]);
+    currDbModule!.isLearnt = true;
+  }
+
   await conn.writeTxn(() async {
     // var wordsInCurrModule = await conn
     //     .collection<TermEntityDbDS>()
@@ -157,6 +167,9 @@ Future<void> learnTransactionCompleted(
       for (var i in wordsInCurrModule)
         if (i != null) i
     ]);
+    if (currDbModule != null && learnFinished) {
+      await conn.collection<ModuleDbDS>().putByComplexIndex(currDbModule);
+    }
   });
 
   var wordsInCurrModuleCheck =

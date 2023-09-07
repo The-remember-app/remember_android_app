@@ -90,7 +90,12 @@ class ModuleDbDS extends AbstractEntity implements FolderOrModule {
 
   Future<(int, int, int, int)> getLearnProcess(Isar isar) async {
     if (this.isLearnt) {
-      var res = await isar.collection<TermEntityDbDS>().count();
+      var res = await isar
+          .collection<TermEntityDbDS>()
+          .filter()
+          .moduleUuidEqualTo(this.uuid)
+          .userUuidEqualTo(this.userUuid)
+          .count();
       return (res, res, res, res);
     }
     var terms = await isar
