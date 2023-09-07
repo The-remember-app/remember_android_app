@@ -15,7 +15,7 @@ class WriteWordRes {
   final int indexInString;
 
   // final int fieldIndex;
-  final String keyString;
+  late String keyString;
   late Future<void> Function(BuildContext, AbstractUIStatefulWidget)
       errorCallback;
   late Future<void> Function(BuildContext, AbstractUIStatefulWidget)
@@ -54,8 +54,9 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
   late Map<String, List<TermEntityDbDS>> strTermsToEntities;
   late Map<String, List<List<LearnWriteEntity>>> strKeyToSourceEntity;
   late Map<TermEntityDbDS, Map<LearnWriteEntity, WriteWordRes>> resultsAsMap;
-  late Map<String, Set<List<WriteWordRes>>> results;
+  late Map<String, List<List<WriteWordRes>>> results;
   late Map<LearnWriteEntity, int> errorCountMap;
+  late List<LearnWriteEntity> disabledFields;
 
   WriteWordNavigationProvider(this.termsPr, this.learnNavPr) : super() {}
 
@@ -69,6 +70,7 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
     resultsAsMap = Map();
     results = Map();
     errorCountMap = Map();
+    disabledFields = [];
 
     super.init(isRealInit: isRealInit);
   }
@@ -88,7 +90,8 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
       List<String> targetStrings,
       TermEntityDbDS currentTerm,
       List<LearnWriteEntity> sourceEntity,
-      List<WriteWordRes> resultsContainer) {
+      List<WriteWordRes> resultsContainer
+      ) {
     checkCorrectingWordProcessor[strKey] =
         (checkCorrectingWordProcessor[strKey] ?? []);
     checkCorrectingWordProcessor[strKey]!.add(targetStrings);
@@ -97,7 +100,7 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
     strKeyToSourceEntity[strKey] = (strKeyToSourceEntity[strKey] ?? []);
     strKeyToSourceEntity[strKey]!.add(sourceEntity);
 
-    results[strKey] = (results[strKey] ?? Set());
+    results[strKey] = (results[strKey] ?? []);
     results[strKey]!.add(resultsContainer);
     // results[strKey]!.toList()
     print("");
@@ -113,7 +116,11 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
 
     Map<TermEntityDbDS, int> termErrorCounter = {};
 
-    for (var kv in strKeyToSourceEntity.entries) {
+    for (var kv in strKeyToSourceEntity.entries.where(
+            (element) => !(
+                element.value.any((element1) =>
+                element1.any((element2) => disabledFields.contains(element2))
+                    ) ))) {
       var strKey = kv.key;
       var currentTerms = strTermsToEntities[strKey]!;
 
@@ -141,7 +148,7 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
         correctTermsStr = targetWordsStrings;
         errorTermsStr = {};
       } else {
-        correctTermsStr = targetWordsStrings.difference(userInputsStrings);
+        correctTermsStr = targetWordsStrings.intersection(userInputsStrings);
         errorTermsStr = userInputsStrings.difference(targetWordsStrings);
         var correctTerms = [
           for (var (i, index) in correctTermsStr) targetWords[index]
@@ -156,11 +163,20 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
         // if (!isAnotherWrite) {
         //   currTerm.writeErrorCounter += 1;
         // }
-        if (!isAnotherWrite) {
+        if (!answerIsPreventiveCorrect) {
           termErrorCounter[currTerm] = (termErrorCounter[currTerm] ?? 0) + 1;
         }
         errorCountMap[strTermsToEntities[strKey]![index]] =
             (errorCountMap[strTermsToEntities[strKey]![index]] ?? 0) + 1;
+
+        for (var i in strKeyToSourceEntity[strKey]![index]){
+          if (currTerm != i){
+            errorCountMap[i] = ( errorCountMap[i] ?? 0) + 1;
+          }
+        }
+
+
+
       }
 
       for (var (successStrField, index) in correctTermsStr) {
@@ -168,7 +184,7 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
         // if (!isAnotherWrite) {
         //   currTerm.writeErrorCounter += 1;
         // }
-        if (!isAnotherWrite) {
+        if (!answerIsPreventiveCorrect) {
           termErrorCounter[currTerm] = (termErrorCounter[currTerm] ?? 0);
         }
         errorCountMap[strTermsToEntities[strKey]![index]] =
@@ -195,7 +211,7 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
       // ];
     }
 
-    if (isAnotherWrite || errorCount == 0 || passedReInput) {
+    if (errorCount == 0 || passedReInput || answerIsPreventiveCorrect) {
       for (var kv in termErrorCounter.entries) {
         if (kv.value == 0 || answerIsPreventiveCorrect) {
           //TODO: баллы начислять только после окна с исправлением ошибок

@@ -328,10 +328,10 @@ List<Widget> getOneWriteFieldInLearnProcess(
             // && (fieldsCount == 1 ||
             // element.parentAddInfoUuid == addTermInfo!.uuid)
             &&
-            (((element.textData!.allMatches('...').length == 1) &&
+            ((("...".allMatches(element.addingTextData!).length == 1) &&
                     (currentTerm.addInfoEntities.every((element) =>
                         element.addInfoType != AddInfoType.composite_word))) ||
-                ((element.textData!.allMatches('...').length ==
+                (("...".allMatches(element.addingTextData!).length ==
                     currentTerm.addInfoEntities
                         .where((element) =>
                             element.addInfoType == AddInfoType.composite_word)
@@ -346,14 +346,27 @@ List<Widget> getOneWriteFieldInLearnProcess(
         str.removeAt(0);
         str += [''];
       }
+      // if (currentTerm.addInfoEntities.any((element) => element.addInfoType == AddInfoType.composite_word))
 
-      for (var (index, data) in zip([
-        str,
-        currentTerm.addInfoEntities
+      List<TermAddingInfoDbDS> termsList;
+      if (currentTerm.addInfoEntities.any(
+          (element) => element.addInfoType == AddInfoType.composite_word)) {
+        termsList = currentTerm.addInfoEntities
             .where(
                 (element) => element.addInfoType == AddInfoType.composite_word)
-            .toList()
-      ]).indexed) {
+            .toList();
+      } else {
+        termsList = currentTerm.addInfoEntities
+            .where((element) => ([
+                  AddInfoType.usual_term,
+                  AddInfoType.other_form,
+                  AddInfoType.abbreviation,
+                ].contains(element.addInfoType) &&
+                element == addTermInfo))
+            .toList();
+      }
+
+      for (var (index, data) in zip([str, termsList]).indexed) {
         var s = data[0] as String;
         var source = data[1] as LearnWriteEntity;
         res += [
@@ -404,14 +417,12 @@ List<Widget> getOneWriteFieldInLearnProcess(
     for (var i in res)
       if (i is GetInputFieldPart) i.currentLearnWriteEntity
   ];
-  for (var r in res) {
+  for (var (index, r)
+      in res.where((element) => element is GetInputFieldPart).indexed) {
     if (r is GetInputFieldPart) {
       (r as GetInputFieldPart).realInit(
-        stringKey,
-        targetStrings,
-        currentTerm,
-        sourceEntity,
-      );
+          stringKey, targetStrings, currentTerm, sourceEntity,
+          oldUserInputsContainer: wwNavPr.results[stringKey]?.last ?? null);
     }
   }
 
@@ -468,27 +479,27 @@ List<Widget> getWriteFieldsListInLearnProcess(
             } else if (one.addInfoType == AddInfoType.other_form &&
                 two.addInfoType == AddInfoType.other_form) {
               if (one.addingTextData == 'infinitive') {
-                return 1;
+                return -1;
               } else if (one.addingTextData == 'v2') {
                 if (two.addingTextData == 'infinitive') {
-                  return -1;
+                  return 1;
                 } else if (two.addingTextData == 'v2') {
                   return 0;
                 } else {
-                  return 1;
+                  return -1;
                 }
               } else if (one.addingTextData == 'v3') {
                 if (two.addingTextData == 'infinitive') {
-                  return -1;
+                  return 1;
                 } else if (two.addingTextData == 'v2') {
-                  return -1;
+                  return 1;
                 } else if (two.addingTextData == 'v3') {
                   return 0;
                 } else {
-                  return 1;
+                  return -1;
                 }
               } else {
-                return -1;
+                return 1;
               }
 
               return 0;
@@ -508,10 +519,13 @@ List<Widget> getWriteFieldsListInLearnProcess(
       });
 
       if (wwNavPr.writtenWord != null) {
-        fields = fields
-            .where((element) =>
-                (wwNavPr.errorCountMap[element as LearnWriteEntity] ?? 0) > 0)
-            .toList();
+        fields = fields.where((element) {
+          if ((wwNavPr.errorCountMap[element as LearnWriteEntity] ?? 0) > 0) {
+            return true;
+          }
+          wwNavPr.disabledFields.add(element);
+          return false;
+        }).toList();
       }
 
       widgetList.addAll(fields
@@ -523,9 +537,9 @@ List<Widget> getWriteFieldsListInLearnProcess(
           (wwNavPr.writtenWord != null &&
               (wwNavPr.errorCountMap[currentTerm as LearnWriteEntity] ?? 0) >
                   0)) {
-        {
-          widgetList.add(OneVariantTermField(null, i, currentTerm));
-        }
+        widgetList.add(OneVariantTermField(null, i, currentTerm));
+      } else {
+        wwNavPr.disabledFields.add(currentTerm);
       }
     }
   }

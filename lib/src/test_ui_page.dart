@@ -1,12 +1,170 @@
 ///File download from FlutterViz- Drag and drop a tools. For more details visit https://flutterviz.io/
 
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
+import 'package:provider/provider.dart';
 import 'package:the_remember/src/repositoris/db_data_source/term.dart';
+import 'package:the_remember/src/ui/ui_templates/abstract_ui.dart';
 import 'package:the_remember/src/ui/ui_templates/pages/main/folders/module/learn/write_field_template.dart';
+import 'package:the_remember/src/urils/db/dbMixins.dart';
 
-// aaaaaaaaaa 150
-// aaaa 100
+import 'domain_layer/providers/main/folders/folder_module.dart';
+import 'domain_layer/providers/main/folders/module/learning/choice/choice_buttons_in_learn_screen.dart';
+import 'domain_layer/providers/main/folders/module/learning/learning_navigation.dart';
+import 'domain_layer/providers/main/folders/module/learning/write/write_word_navigation.dart';
+import 'domain_layer/providers/main/folders/module/module_buttoons_navigation.dart';
+import 'domain_layer/providers/main/folders/module/terms_in_module.dart';
+import 'domain_layer/providers/user_api_provider.dart';
+
+
+class UITestScreenAwaitData extends StatefulWidget
+    with OpenAndClose {
+  late Future<TermEntityDbDS?> termGetter;
+  late TermEntityDbDS currTerm;
+  bool userGetterCompleted = false;
+  // final Future Function(UITestScreenAwaitData, BuildContext) awaitUserFunc;
+  bool termIsLoaded = false;
+
+  UITestScreenAwaitData() : super() {
+    termGetter = awaitFunc();
+  }
+
+  Future<TermEntityDbDS> awaitFunc() async {
+    var isar = await openConn();
+    var terms = await isar
+        .collection<TermEntityDbDS>()
+        .filter()
+        .uuidEqualTo("0a89595a-ca91-4f0d-bb3e-1299520c2cce")
+        .findAll();
+    // await closeConn();
+    await terms[0].sentenceEntities.load();
+    await terms[0].addInfoEntities.load();
+    await terms[0].module.load();
+    await closeConn();
+    currTerm =  terms[0];
+    return terms[0];
+  }
+
+  @override
+  _UITestScreenAwaitDataState createState() => _UITestScreenAwaitDataState();
+}
+
+
+class _UITestScreenAwaitDataState
+    extends AbstractUIStatefulWidget<UITestScreenAwaitData> {
+
+  Future get termGetter => this.widget.termGetter;
+
+  _UITestScreenAwaitDataState() : super();
+
+  @override
+  Widget build(BuildContext context) {
+    // if (dbWorkCompleted && dbWorkCallback != null) {
+    //   dbWorkCallback!(context);
+    // }
+
+
+    String? lastRoute = null;
+    return
+      FutureBuilder<TermEntityDbDS?>(
+        future: termGetter.then((value) async {
+          if (!widget.termIsLoaded) {
+            widget.termIsLoaded = true;
+          setState(() {
+            return null;
+          });
+        }
+      }),
+        builder: (context, AsyncSnapshot<TermEntityDbDS?> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.error != null) {
+              return Text(snapshot.error.toString());
+            }
+            return PrConsAdd(child: TestUiPage(widget.currTerm));
+          } else {
+            return Scaffold(
+              appBar: AppBar(),
+              body: Container(),
+            );
+          }
+        },
+        // )
+      );
+  }
+
+}
+
+
+class  PrConsAdd extends StatelessWidget{
+
+  final Widget child;
+
+  const PrConsAdd({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    var userPr = Provider.of<UserApiProfile>(context, listen: false);
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (context) => FolderAndModuleProvider(userPr: userPr)),
+        // Provider(create: (context) => SomeOtherClass()),
+      ],
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+              create: (context) => TermsInModuleProvider(
+                  fmPr:  Provider.of<FolderAndModuleProvider>(context, listen: false)
+              )),
+        ],
+        child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+                create: (context) => ModuleButtonNavigationProvider(
+                    Provider.of<TermsInModuleProvider>(context, listen: false),
+                    userPr)),
+          ],
+          child:   MultiProvider(
+            providers: [
+              ChangeNotifierProvider(
+                  create: (context) => LearnScreensNavigationProvider(
+                      userPr,
+                      Provider.of<TermsInModuleProvider>(context, listen: false),
+                      Provider.of<ModuleButtonNavigationProvider>(context, listen: false)
+                  )),
+              // Provider(create: (context) => SomeOtherClass()),
+            ],
+            child: MultiProvider(
+              providers: [
+                ChangeNotifierProvider(
+                    create: (context) => WriteWordNavigationProvider(
+                        Provider.of<TermsInModuleProvider>(context, listen: false),
+                        Provider.of<LearnScreensNavigationProvider>(context, listen: false)
+                    )
+                ),
+                // Provider(create: (context) => SomeOtherClass()),
+              ],
+              child: child,
+            ),
+          ),
+        ),
+      ),
+    );
+
+
+
+
+  }
+
+}
+
+
 class TestUiPage extends StatelessWidget {
+
+  final TermEntityDbDS currTerm;
+
+  const TestUiPage(  this.currTerm);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -73,7 +231,7 @@ class TestUiPage extends StatelessWidget {
           ),
         ),
         WriteFieldInLearnModTemplate(
-            TermEntityDbDS(), <TermEntityDbDS>[],
+          currTerm, <TermEntityDbDS>[],
         ),
         Expanded(
           flex: 1,

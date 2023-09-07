@@ -19,7 +19,8 @@ class WriteFieldInLearnModTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var wwNavPr = Provider.of<WriteWordNavigationProvider>(context, listen: false);
+    var wwNavPr =
+        Provider.of<WriteWordNavigationProvider>(context, listen: false);
 
     List<Widget> widgetList =
         getWriteFieldsListInLearnProcess(currentTerm, termsList, wwNavPr);
@@ -65,9 +66,11 @@ class OneVariantTermField extends StatelessWidget {
       throw UnimplementedError(
           "fieldsCount and currentFieldIndex mast be implemented");
     }
-  var sourceOrFormNameWidgetListAsSpecType = sourceOrFormNameProcessor(addTermInfo, currentTerm);
-    List<Widget> sourceOrFormNameWidgetList =
-        [for (var i in sourceOrFormNameWidgetListAsSpecType) i as Widget];
+    var sourceOrFormNameWidgetListAsSpecType =
+        sourceOrFormNameProcessor(addTermInfo, currentTerm);
+    List<Widget> sourceOrFormNameWidgetList = [
+      for (var i in sourceOrFormNameWidgetListAsSpecType) i as Widget
+    ];
 
     var wwNavPr =
         Provider.of<WriteWordNavigationProvider>(context, listen: false);
@@ -99,7 +102,8 @@ class OneVariantTermField extends StatelessWidget {
                       fieldsCount!,
                       currentFieldIndex,
                       wwNavPr,
-                      sourceOrFormNameWidgetListAsSpecType as List<GetTermSourceOrFormName>),
+                      sourceOrFormNameWidgetListAsSpecType
+                          as List<GetTermSourceOrFormName>),
                 ),
               ),
             ),
@@ -215,7 +219,7 @@ class GetInputFieldPart extends StatefulWidget {
   final String targetString;
   final int targetStringIndex;
   final LearnWriteEntity currentLearnWriteEntity;
-  final List<WriteWordRes> userInputsContainer;
+  List<WriteWordRes> userInputsContainer;
   final int fieldsCount;
   final int currentFieldIndex;
 
@@ -244,20 +248,23 @@ class GetInputFieldPart extends StatefulWidget {
     if (userInputsContainer.length != targetStringIndex) {
       throw UnimplementedError('Неправильная инициализация');
     }
-
+    userInputsContainer
+        .add(WriteWordRes("", targetStringIndex, "", null, null));
   }
 
-  void realInit(
-    String strKey,
-    List<String> targetStrings,
-    TermEntityDbDS currentTerm,
-    List<LearnWriteEntity> sourceEntity,
-  ) {
+  void realInit(String strKey, List<String> targetStrings,
+      TermEntityDbDS currentTerm, List<LearnWriteEntity> sourceEntity,
+      {List<WriteWordRes>? oldUserInputsContainer = null}) {
     _realInitCalled = true;
-    userInputsContainer
-        .add(WriteWordRes(userInput, targetStringIndex, strKey, null, null));
-    wwNavPr.addWriteWordProcessor(
-        strKey, targetStrings, currentTerm, sourceEntity, userInputsContainer);
+    if (oldUserInputsContainer == null) {
+      userInputsContainer[targetStringIndex]
+        ..userInput = userInput
+        ..keyString = strKey;
+      wwNavPr.addWriteWordProcessor(strKey, targetStrings, currentTerm,
+          sourceEntity, userInputsContainer);
+    } else {
+      userInputsContainer = oldUserInputsContainer;
+    }
   }
 
   @override
@@ -266,22 +273,19 @@ class GetInputFieldPart extends StatefulWidget {
 
 class _GetInputFieldPartState
     extends AbstractUIStatefulWidget<GetInputFieldPart> {
-  _GetInputFieldPartState() {
-
-  }
+  _GetInputFieldPartState() {}
 
   @override
   Widget build(BuildContext context) {
-
     widget.userInputsContainer[widget.targetStringIndex]!.errorCallback =
-    ((BuildContext context, AbstractUIStatefulWidget setStateWidget) async {
+        ((BuildContext context, AbstractUIStatefulWidget setStateWidget) async {
       widget.errorStatus = true;
-      setState(() => null);
+      setStateWidget.setState(() => null);
     });
     widget.userInputsContainer[widget.targetStringIndex]!.successCallback =
-    ((BuildContext context, AbstractUIStatefulWidget setStateWidget) async {
+        ((BuildContext context, AbstractUIStatefulWidget setStateWidget) async {
       widget.errorStatus = false;
-      setState(() => null);
+      setStateWidget.setState(() => null);
     });
 
     // setState()
@@ -302,7 +306,6 @@ class _GetInputFieldPartState
           border: Border.all(color: Color(0x4d9e9e9e), width: 1),
         ),
         child: TextField(
-
           onChanged: (text) async {
             widget.userInput = text.trim().toLowerCase();
             widget.userInputsContainer[widget.targetStringIndex].userInput =
@@ -331,8 +334,9 @@ class _GetInputFieldPartState
           },
           onSubmitted: (text) async {
             widget.wwNavPr.isUserCompletedInput();
-            if (widget.wwNavPr.writtenWord != null){
-              widget.wwNavPr.checkUserInput(context,  this,isAnotherWrite: true);
+            if (widget.wwNavPr.writtenWord != null) {
+              widget.wwNavPr
+                  .checkUserInput(context, this, isAnotherWrite: true);
             }
           },
           controller: TextEditingController(text: widget.userInput),

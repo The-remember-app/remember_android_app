@@ -106,7 +106,7 @@ class PageChoice extends StatelessWidget {
       return Wapper(
         appBar: appBarPagePr.getAppBarWidget[AppBarNavigationEnum.arrowBack]!(
             context, dfMapper),
-        body: TestUiPage(),
+        body: UITestScreenAwaitData(),
         bottomNavigationBar: bottomPagePr.bottomNavWidget!(context),
         dfMapper: dfMapper,
         onWillPop: () async {
