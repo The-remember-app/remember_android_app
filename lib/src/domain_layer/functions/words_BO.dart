@@ -629,11 +629,16 @@ List<GetTermSourceOrFormName> sourceOrFormNameProcessor(
     TermAddingInfoDbDS? addTermInfo, TermEntityDbDS currentTerm) {
   bool sourceOrFormName;
   if (addTermInfo != null) {
-    sourceOrFormName = ((addTermInfo!.addInfoType == AddInfoType.usual_term ||
-                addTermInfo!.addInfoType == AddInfoType.other_form) &&
-            (addTermInfo!.addingTextData != null &&
-                addTermInfo!.addingTextData!.isNotEmpty)) ||
-        addTermInfo!.addInfoType == AddInfoType.abbreviation;
+    sourceOrFormName = (
+        (addTermInfo!.addInfoType == AddInfoType.usual_term
+            ||  addTermInfo!.addInfoType == AddInfoType.other_form)
+            &&
+            (addTermInfo!.addingTextData != null
+                &&  addTermInfo!.addingTextData!.isNotEmpty)
+    )
+        || addTermInfo!.addInfoType == AddInfoType.abbreviation
+    || addTermInfo.dialectOrArea != null
+    ;
   } else {
     sourceOrFormName = false;
   }

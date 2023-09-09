@@ -121,7 +121,9 @@ class GetTermSourceOrFormName extends StatelessWidget {
   GetTermSourceOrFormName(this.addTermInfo, this.currentTerm) {
     if (addTermInfo.addInfoType == AddInfoType.abbreviation) {
       text = "Сокр.";
-    } else {
+    } else if (addTermInfo.dialectOrArea != null) {
+      text = addTermInfo.dialectOrArea!;
+  } else {
       text = addTermInfo.addingTextData!;
     }
   }
