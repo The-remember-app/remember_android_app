@@ -263,6 +263,7 @@ class GetInputFieldPart extends StatefulWidget {
       wwNavPr.addWriteWordProcessor(strKey, targetStrings, currentTerm,
           sourceEntity, userInputsContainer);
     } else {
+      oldUserInputsContainer.addAll(userInputsContainer);
       userInputsContainer = oldUserInputsContainer;
     }
   }

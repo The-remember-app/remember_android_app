@@ -115,13 +115,15 @@ Future<void> learnTransactionCompleted(
     for (var i in learnedData) i.isarId: i..personalUpdatedAt = currUpdateTime
   };
 
-  var currentModule = learnedData[0].module.value!;
+  var currentModule = learnedData.isEmpty? null: learnedData[0]?.module.value;
 
   if (learnFinished) {
     currentModule!.isLearnt = true;
     updateFuture = Future.wait([
-        updatePersonalizedTerms(currTermMap.values.toList(), userApi)
+      updatePersonalizedTerms(currTermMap.values.toList(), userApi)
   ] + (learnFinished? [(() async { return null;})()]: []));
+  } else {
+    updateFuture = updatePersonalizedTerms(currTermMap.values.toList(), userApi);
   }
 
   // var networkFuture = updatePersonalizedTerms(termPr.termsList!, userPr);
@@ -137,6 +139,7 @@ Future<void> learnTransactionCompleted(
   print(wordsInCurrModule.length);
   for (var w in wordsInCurrModule) {
     var updateTerm = currTermMap[w!.isarId]!;
+    print("watchCount ${w.watchCount} ${updateTerm.watchCount}");
     print("chooseErrorCounter ${w.chooseErrorCounter} ${updateTerm.chooseErrorCounter}");
     print("writeErrorCounter ${w.writeErrorCounter} ${updateTerm.writeErrorCounter}");
     print("choiceNegErrorCounter ${w.choiceNegErrorCounter} ${updateTerm.choiceNegErrorCounter}");
@@ -152,7 +155,7 @@ Future<void> learnTransactionCompleted(
   ModuleDbDS? currDbModule = null;
   if (learnFinished) {
     currDbModule = await conn.collection<ModuleDbDS>().getByComplexIndex(
-        [currentModule.uuid, currentModule.userUuid]);
+        [currentModule!.uuid, currentModule.userUuid]);
     currDbModule!.isLearnt = true;
   }
 
@@ -176,6 +179,7 @@ Future<void> learnTransactionCompleted(
   await conn.collection<TermEntityDbDS>().getAll(currTermMap.keys.toList());
   for (var w in wordsInCurrModuleCheck) {
     var updateTerm = currTermMap[w!.isarId]!;
+    print("watchCount ${w.watchCount} ${updateTerm.watchCount}");
     print("chooseErrorCounter ${w.chooseErrorCounter} ${updateTerm
         .chooseErrorCounter}");
     print("writeErrorCounter ${w.writeErrorCounter} ${updateTerm
@@ -202,6 +206,7 @@ void choiceWordChanging(
   List<TermEntityDbDS> choiceList,
   TermsInModuleProvider termsPr,
 ) {
+  askedWord.watchCount += 1;
   if (askedWord == choiceWord) {
     askedWord.chooseErrorCounter -= 1;
 
@@ -216,7 +221,7 @@ void choiceWordChanging(
     termsPr.changedInLearningIterationTermsList!
         .addAll([askedWord, choiceWord]);
   }
-  askedWord.watchCount += 1;
+
 }
 
 void writeWordChanging(
@@ -462,6 +467,9 @@ List<Widget> getOneWriteFieldInLearnProcess(
           oldUserInputsContainer: wwNavPr.results[stringKey]?.last ?? null);
     }
   }
+  wwNavPr.results[stringKey] = ( wwNavPr.results[stringKey] ?? []);
+  // for (var i in )
+  wwNavPr.results[stringKey]!.add(null);
 
   return res;
 }
@@ -471,6 +479,13 @@ List<Widget> getWriteFieldsListInLearnProcess(
   List<TermEntityDbDS> termsList,
   WriteWordNavigationProvider wwNavPr,
 ) {
+
+  for (var kv in wwNavPr.results.entries){
+    for (var i in kv.value.where((element) => (element != null))){
+      i!.clear();
+    }
+  }
+
   List<OneVariantTermField> widgetList = [];
 
   var similarTerms = termsList
