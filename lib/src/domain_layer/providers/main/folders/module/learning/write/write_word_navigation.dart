@@ -7,6 +7,7 @@ import 'package:the_remember/src/repositoris/db_data_source/term.dart';
 
 import '../../../../../../../ui/ui_templates/abstract_ui.dart';
 import '../../../../../../../urils/profilers/abstract.dart';
+import '../../../../../../../urils/sets.dart';
 import '../../terms_in_module.dart';
 import '../learning_navigation.dart';
 
@@ -57,6 +58,7 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
   late Map<String, List<List<WriteWordRes>?>> results;
   late Map<LearnWriteEntity, int> errorCountMap;
   late List<LearnWriteEntity> disabledFields;
+  late Map<LearnWriteEntity, List<String>> learnWriteEntityToStrKey;
 
   WriteWordNavigationProvider(this.termsPr, this.learnNavPr) : super() {}
 
@@ -71,6 +73,7 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
     results = Map();
     errorCountMap = Map();
     disabledFields = [];
+    learnWriteEntityToStrKey = {};
 
     super.init(isRealInit: isRealInit);
   }
@@ -98,6 +101,12 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
     strTermsToEntities[strKey]!.add(currentTerm);
     strKeyToSourceEntity[strKey] = (strKeyToSourceEntity[strKey] ?? []);
     strKeyToSourceEntity[strKey]!.add(sourceEntity);
+    for (var lvEntity in sourceEntity) {
+      learnWriteEntityToStrKey[lvEntity] =
+          (learnWriteEntityToStrKey[lvEntity] ?? []);
+      learnWriteEntityToStrKey[lvEntity]!.add(strKey);
+
+    }
 
     results[strKey] = (results[strKey] ?? []);
     if (results[strKey]!.isNotEmpty && results[strKey]!.last == null){
@@ -110,7 +119,8 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
   }
 
   Future<void> checkUserInput(
-      BuildContext? context, AbstractUIStatefulWidget? setStateWidget,
+      BuildContext? context,
+      AbstractUIStatefulWidget? setStateWidget,
       {bool isAnotherWrite = false,
       bool passedReInput = false,
       bool answerIsPreventiveCorrect = false}) async {
@@ -135,12 +145,31 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
         for (var i in results[strKey]!.where((element) => (element != null)))
           [for (var ii in i!) ii.userInput]
       ];
-      var targetWordsStrings = {
+      var _targetWordsStrings = [
         for (var (index, i) in targetWords.indexed) (i.join("####"), -1)
+      ];
+      var _userInputsStrings = [
+        for (var (index, i) in userInputs.indexed) (i.join("####"), -1)
+      ];
+      var targetWordsStrings = {
+        for (var (index, i) in _targetWordsStrings.indexed) i
       };
       var userInputsStrings = {
-        for (var (index, i) in userInputs.indexed) (i.join("####"), -1)
+        for (var (index, i) in _userInputsStrings.indexed) i
       };
+
+      Map<(String, int), int> targetWordsStringsCounter = {};
+      Map<(String, int), int>  userInputsCounter = {};
+      for (var i in _targetWordsStrings) {
+        targetWordsStringsCounter[i] = (targetWordsStringsCounter[i] ?? 0) + 1;
+      }
+      for (var i in _userInputsStrings) {
+        userInputsCounter[i] = (userInputsCounter[i] ?? 0) + 1;
+      }
+
+
+
+
       Set<(String, int)> correctTermsStr;
       Set<(String, int)> errorTermsStr;
       // setsEqual({1}, {1});
@@ -150,27 +179,31 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
         errorTermsStr = {};
       } else {
         correctTermsStr = targetWordsStrings.intersection(userInputsStrings);
-        errorTermsStr = userInputsStrings.difference(targetWordsStrings);
-        var correctTerms = [
-          for (var (i, index) in correctTermsStr) targetWords[index]
-        ];
-        var errorTerms = [
-          for (var (i, index) in errorTermsStr) userInputs[index]
-        ];
+        errorTermsStr = mapCounterDifference(
+            userInputsCounter,
+            targetWordsStringsCounter
+        ).keys.toSet();
+        // errored
+        // var correctTerms = [
+        //   for (var (i, index) in correctTermsStr) targetWords[index]
+        // ];
+        // var errorTerms = [
+        //   for (var (i, index) in errorTermsStr) userInputs[index]
+        // ];
       }
       errorCount += errorTermsStr.length;
       for (var (errorStrField, index) in errorTermsStr) {
-        var currTerm = strTermsToEntities[strKey]![index].termEntityInterface;
+        var currTerm = strTermsToEntities[strKey]![0].termEntityInterface;
         // if (!isAnotherWrite) {
         //   currTerm.writeErrorCounter += 1;
         // }
         if (!answerIsPreventiveCorrect) {
           termErrorCounter[currTerm] = (termErrorCounter[currTerm] ?? 0) + 1;
         }
-        errorCountMap[strTermsToEntities[strKey]![index]] =
-            (errorCountMap[strTermsToEntities[strKey]![index]] ?? 0) + 1;
+        errorCountMap[strTermsToEntities[strKey]![0]] =
+            (errorCountMap[strTermsToEntities[strKey]![0]] ?? 0) + 1;
 
-        for (var i in strKeyToSourceEntity[strKey]![index]) {
+        for (var i in strKeyToSourceEntity[strKey]![0]) {
           if (currTerm != i) {
             errorCountMap[i] = (errorCountMap[i] ?? 0) + 1;
           }
@@ -178,15 +211,15 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
       }
 
       for (var index = 0; index < correctTermsStr.length; index++) {
-        var currTerm = strTermsToEntities[strKey]![index].termEntityInterface;
+        var currTerm = strTermsToEntities[strKey]![0].termEntityInterface;
         // if (!isAnotherWrite) {
         //   currTerm.writeErrorCounter += 1;
         // }
         if (!answerIsPreventiveCorrect) {
           termErrorCounter[currTerm] = (termErrorCounter[currTerm] ?? 0);
         }
-        errorCountMap[strTermsToEntities[strKey]![index]] =
-            (errorCountMap[strTermsToEntities[strKey]![index]] ?? 0) + 1;
+        errorCountMap[strTermsToEntities[strKey]![0]] =
+            (errorCountMap[strTermsToEntities[strKey]![0]] ?? 0) + 1;
       }
 
       await Future.wait([

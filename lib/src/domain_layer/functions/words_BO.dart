@@ -464,7 +464,7 @@ List<Widget> getOneWriteFieldInLearnProcess(
     if (r is GetInputFieldPart) {
       (r as GetInputFieldPart).realInit(
           stringKey, targetStrings, currentTerm, sourceEntity,
-          oldUserInputsContainer: wwNavPr.results[stringKey]?.last ?? null);
+          oldUserInputsContainer: (wwNavPr.results[stringKey] != null && wwNavPr.results[stringKey]!.isNotEmpty)? wwNavPr.results[stringKey]?.last ?? null : null);
     }
   }
   wwNavPr.results[stringKey] = ( wwNavPr.results[stringKey] ?? []);
@@ -484,6 +484,7 @@ List<Widget> getWriteFieldsListInLearnProcess(
     for (var i in kv.value.where((element) => (element != null))){
       i!.clear();
     }
+    kv.value.clear();
   }
 
   List<OneVariantTermField> widgetList = [];
@@ -572,7 +573,16 @@ List<Widget> getWriteFieldsListInLearnProcess(
 
       if (wwNavPr.writtenWord != null) {
         fields = fields.where((element) {
-          if ((wwNavPr.errorCountMap[element as LearnWriteEntity] ?? 0) > 0) {
+          if (
+          (wwNavPr.errorCountMap[element as LearnWriteEntity] ?? 0) > 0
+          || (wwNavPr.learnWriteEntityToStrKey[element] != null &&
+              wwNavPr.learnWriteEntityToStrKey[element]!.any((strKey) =>
+              wwNavPr.strKeyToSourceEntity[strKey] != null &&
+                  wwNavPr.strKeyToSourceEntity[strKey]!.any(
+                      (List<LearnWriteEntity> element1) => element1.contains(element)
+                  )
+              )
+          )) {
             return true;
           }
           wwNavPr.disabledFields.add(element);
