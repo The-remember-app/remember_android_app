@@ -197,36 +197,62 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
         //   for (var (i, index) in errorTermsStr) userInputs[index]
         // ];
       }
-      errorCount += errorTermsStr.length;
-      for (var (errorStrField, index) in errorTermsStr) {
-        var currTerm = strTermsToEntities[strKey]![0].termEntityInterface;
-        // if (!isAnotherWrite) {
-        //   currTerm.writeErrorCounter += 1;
-        // }
-        if (!answerIsPreventiveCorrect) {
-          termErrorCounter[currTerm] = (termErrorCounter[currTerm] ?? 0) + 1;
-        }
-        errorCountMap[strTermsToEntities[strKey]![0]] =
-            (errorCountMap[strTermsToEntities[strKey]![0]] ?? 0) + 1;
 
-        for (var i in strKeyToSourceEntity[strKey]![0]) {
-          if (currTerm != i) {
-            errorCountMap[i] = (errorCountMap[i] ?? 0) + 1;
-          }
-        }
-      }
-
-      for (var index = 0; index < correctTermsStr.length; index++) {
-        var currTerm = strTermsToEntities[strKey]![0].termEntityInterface;
+      var targetWordsStringsOnly = {for (var i in correctTermsStr) i.$1};
+      var targetWordsAsStrings = [ for (var i in strKeyToSourceEntity[strKey]!) for (var ii in i) ii];
+      for (var learnWriteEntity in targetWordsAsStrings.where(
+              (element) => targetWordsStringsOnly.contains((element.targetWrite))
+      )){
+        var currTerm = learnWriteEntity.termEntityInterface;
         // if (!isAnotherWrite) {
         //   currTerm.writeErrorCounter += 1;
         // }
         if (!answerIsPreventiveCorrect) {
           termErrorCounter[currTerm] = (termErrorCounter[currTerm] ?? 0);
         }
-        errorCountMap[strTermsToEntities[strKey]![0]] =
-            (errorCountMap[strTermsToEntities[strKey]![0]] ?? 0);
+        errorCountMap[learnWriteEntity] =
+        (errorCountMap[learnWriteEntity] ?? 0);
       }
+
+
+      // for (var index = 0; index < correctTermsStr.length; index++) {
+      //   var currTerm = strTermsToEntities[strKey]![0].termEntityInterface;
+      //   // if (!isAnotherWrite) {
+      //   //   currTerm.writeErrorCounter += 1;
+      //   // }
+      //   if (!answerIsPreventiveCorrect) {
+      //     termErrorCounter[currTerm] = (termErrorCounter[currTerm] ?? 0);
+      //   }
+      //   errorCountMap[strTermsToEntities[strKey]![0]] =
+      //   (errorCountMap[strTermsToEntities[strKey]![0]] ?? 0);
+      // }
+
+
+      errorCount += errorTermsStr.length;
+
+      // var targetWordsErrorsOnly = {for (var i in targetWordsStrings) i.$1};
+      for (var learnWriteEntity in targetWordsAsStrings.where(
+              (element) => !targetWordsStringsOnly.contains((element.targetWrite))
+      )){
+      // for (var (errorStrField, index) in errorTermsStr) {
+        var currTerm = learnWriteEntity.termEntityInterface;
+        // if (!isAnotherWrite) {
+        //   currTerm.writeErrorCounter += 1;
+        // }
+        if (!answerIsPreventiveCorrect) {
+          termErrorCounter[currTerm] = (termErrorCounter[currTerm] ?? 0) + 1;
+        }
+        errorCountMap[learnWriteEntity] =
+            (errorCountMap[learnWriteEntity] ?? 0) + 1;
+
+        // for (var i in strKeyToSourceEntity[strKey]![0]) {
+          if (currTerm != learnWriteEntity) {
+            errorCountMap[learnWriteEntity] = (errorCountMap[learnWriteEntity] ?? 0) + 1;
+          }
+        // }
+      }
+
+
 
       await Future.wait([
             for (var (i, index) in correctTermsStr)

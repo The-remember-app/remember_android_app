@@ -597,6 +597,7 @@ List<Widget> getWriteFieldsListInLearnProcess(
         for (var i in kv.value){
           i.clear();
         }
+        kv.value.clear();
       }
 
       widgetList.addAll(fields
