@@ -280,6 +280,7 @@ class _GetInputFieldPartState
 
   @override
   Widget build(BuildContext context) {
+    bool isDisabled = false;
     widget.userInputsContainer[widget.targetStringIndex]!.errorCallback =
         ((BuildContext context, AbstractUIStatefulWidget setStateWidget) async {
       widget.errorStatus = true;
@@ -290,6 +291,12 @@ class _GetInputFieldPartState
       widget.errorStatus = false;
       setStateWidget.setState(() => null);
     });
+    if ((widget.wwNavPr.errorCountMap[widget.currentLearnWriteEntity] ?? -1) == 0){
+      isDisabled = true;
+      widget.userInput = widget.currentLearnWriteEntity.targetWrite;
+      widget.userInputsContainer[widget.targetStringIndex].userInput =
+          widget.userInput;
+    }
 
     // setState()
     if (!widget._realInitCalled) {
@@ -342,6 +349,7 @@ class _GetInputFieldPartState
                   .checkUserInput(context, this, isAnotherWrite: true);
             }
           },
+          enabled: !isDisabled,
           controller: TextEditingController(text: widget.userInput),
           obscureText: false,
           textAlign: TextAlign.start,

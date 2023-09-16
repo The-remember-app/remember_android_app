@@ -62,7 +62,7 @@ class _WriteWordOneMoreTimeState extends AbstractUIStatefulWidget<WriteWordOneMo
         if (details.delta.dx < 0) {
           if (!nextScreen) {
             nextScreen = true;
-            learnNavPr.activePageNumber += 1;
+            // learnNavPr.activePageNumber += 1;
           }
           // if (buttonPressed.values.any((isClicked) => isClicked)) {
           // var nextPage = await getNextLearnPage(

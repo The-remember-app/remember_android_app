@@ -136,6 +136,12 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
 
       for (var i in currentTerms) {
         termErrorCounter[i] = (termErrorCounter[i] ?? 0);
+        errorCountMap[i] = (errorCountMap[i] ?? 0);
+      }
+      for (var i in kv.value){
+        for (var ii in i){
+          errorCountMap[ii] = (errorCountMap[ii] ?? 0);
+        }
       }
 
       var targetWords = [
@@ -219,7 +225,7 @@ class WriteWordNavigationProvider extends ModChangeNotifier {
           termErrorCounter[currTerm] = (termErrorCounter[currTerm] ?? 0);
         }
         errorCountMap[strTermsToEntities[strKey]![0]] =
-            (errorCountMap[strTermsToEntities[strKey]![0]] ?? 0) + 1;
+            (errorCountMap[strTermsToEntities[strKey]![0]] ?? 0);
       }
 
       await Future.wait([

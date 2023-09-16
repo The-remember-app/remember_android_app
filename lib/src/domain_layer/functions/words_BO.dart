@@ -576,11 +576,14 @@ List<Widget> getWriteFieldsListInLearnProcess(
           if (
           (wwNavPr.errorCountMap[element as LearnWriteEntity] ?? 0) > 0
           || (wwNavPr.learnWriteEntityToStrKey[element] != null &&
-              wwNavPr.learnWriteEntityToStrKey[element]!.any((strKey) =>
-              wwNavPr.strKeyToSourceEntity[strKey] != null &&
+              wwNavPr.learnWriteEntityToStrKey[element]!.any(
+                      (strKey) =>
+              wwNavPr.strKeyToSourceEntity[strKey] != null
+                  &&
                   wwNavPr.strKeyToSourceEntity[strKey]!.any(
                       (List<LearnWriteEntity> element1) => element1.contains(element)
                   )
+                  && wwNavPr.strKeyToSourceEntity[strKey]!.length > 1
               )
           )) {
             return true;
@@ -590,15 +593,32 @@ List<Widget> getWriteFieldsListInLearnProcess(
         }).toList();
       }
 
+      for (var kv in wwNavPr.strKeyToSourceEntity.entries){
+        for (var i in kv.value){
+          i.clear();
+        }
+      }
+
       widgetList.addAll(fields
           .map<OneVariantTermField>(
               (e) => OneVariantTermField(e, i, currentTerm))
           .toList() as List<OneVariantTermField>);
     } else {
-      if (wwNavPr.writtenWord == null ||
-          (wwNavPr.writtenWord != null &&
-              (wwNavPr.errorCountMap[currentTerm as LearnWriteEntity] ?? 0) >
-                  0)) {
+      if (
+      wwNavPr.writtenWord == null ||
+          (
+              wwNavPr.writtenWord != null &&
+              (
+                  wwNavPr.errorCountMap[currentTerm as LearnWriteEntity] ?? 0) >   0
+          )
+      || (wwNavPr.learnWriteEntityToStrKey[currentTerm] != null &&
+          wwNavPr.learnWriteEntityToStrKey[currentTerm]!.any((strKey) =>
+          wwNavPr.strKeyToSourceEntity[strKey] != null &&
+              wwNavPr.strKeyToSourceEntity[strKey]!.any(
+                      (List<LearnWriteEntity> element1) => element1.contains(currentTerm)
+              )
+          )
+      ) ){
         widgetList.add(OneVariantTermField(null, i, currentTerm));
       } else {
         wwNavPr.disabledFields.add(currentTerm);
