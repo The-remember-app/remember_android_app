@@ -12,6 +12,7 @@ import 'package:uuid/uuid.dart';
 import '../../../api_package/lib/api_package.dart';
 import '../../../main.dart';
 import '../../urils/db/abstract_entity.dart';
+import 'datetime_mark.dart';
 import 'module.dart';
 
 part 'term.g.dart';
@@ -81,6 +82,10 @@ implements LearnWriteEntity{
   @JsonKey(name: 'personal_updated_at')
   late DateTime personalUpdatedAt ;
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @Name("learn_term_datetime_mark")
+  late List<LearnTermDatetimeMark> learnTermDatetimeMark;
+
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
   late bool? _reverseWrite = null;
@@ -104,6 +109,7 @@ implements LearnWriteEntity{
   @ignore
   @JsonKey(name: 'term_id', includeFromJson: true, includeToJson: true)
   String get _termUuid => this.uuid;
+
 
   void updateReverseWrite(){
     _reverseChoice = null;
