@@ -430,9 +430,9 @@ class ModuleEntitiesApi {
   /// Returns a [Future] containing a [Response] with a [AnsListPersonalizeModuleDTOUnionBErrorNoneType] as data
   /// Throws [DioException] if API call or serialization fails
   Future<Response<AnsListPersonalizeModuleDTOUnionBErrorNoneType>> getAllModulePersonalizeAllGet({ 
-    JsonObject? authorOnly = false,
-    JsonObject? limit = 100,
-    JsonObject? offset = 0,
+    bool? authorOnly = false,
+    int? limit = 100,
+    int? offset = 0,
     JsonObject? updatedAfter,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -526,9 +526,9 @@ class ModuleEntitiesApi {
   /// Throws [DioException] if API call or serialization fails
   Future<Response<AnsListPersonalizeModuleDTOUnionBErrorNoneType>> getAllModulePersonalizeFromFolderFolderIdGet({ 
     required JsonObject folderId,
-    JsonObject? authorOnly = false,
-    JsonObject? limit = 100,
-    JsonObject? offset = 0,
+    bool? authorOnly = false,
+    int? limit = 100,
+    int? offset = 0,
     JsonObject? updatedAfter,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -701,8 +701,8 @@ class ModuleEntitiesApi {
   /// Throws [DioException] if API call or serialization fails
   Future<Response<AnsListUUIDUnionBErrorNoneType>> getModulesFromFolderFromFolderFolderIdGet({ 
     required JsonObject folderId,
-    JsonObject? limit = 100,
-    JsonObject? offset = 0,
+    int? limit = 100,
+    int? offset = 0,
     JsonObject? updatedAfter,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,

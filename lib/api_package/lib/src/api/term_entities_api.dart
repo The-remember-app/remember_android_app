@@ -435,9 +435,9 @@ class TermEntitiesApi {
   /// Throws [DioException] if API call or serialization fails
   Future<Response<AnsListPersonalizeTermDTOUnionBErrorNoneType>> getAllPersonalizeTermFromModulePersonalizeFromModuleModuleIdGet({ 
     required JsonObject moduleId,
-    JsonObject? authorOnly = false,
-    JsonObject? limit = 100,
-    JsonObject? offset = 0,
+    bool? authorOnly = false,
+    int? limit = 100,
+    int? offset = 0,
     JsonObject? updatedAfter,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -528,7 +528,7 @@ class TermEntitiesApi {
   /// Throws [DioException] if API call or serialization fails
   Future<Response<AnsPersonalizeTermDTOUnionBErrorNoneType>> getAllPersonalizeTermFromModulePersonalizeTermIdGet({ 
     required JsonObject termId,
-    JsonObject? authorOnly = false,
+    bool? authorOnly = false,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -618,9 +618,9 @@ class TermEntitiesApi {
   /// Throws [DioException] if API call or serialization fails
   Future<Response<AnsListPersonalizeTermDTOUnionBErrorNoneType>> getAllPersonalizeTermPersonalizeAllGet({ 
     required JsonObject moduleIds,
-    JsonObject? authorOnly = false,
-    JsonObject? limit = 100,
-    JsonObject? offset = 0,
+    bool? authorOnly = false,
+    int? limit = 100,
+    int? offset = 0,
     JsonObject? updatedAfter,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -875,9 +875,9 @@ class TermEntitiesApi {
   /// Throws [DioException] if API call or serialization fails
   Future<Response<AnsListTermDTOUnionBErrorNoneType>> getTermsFromModuleFromModuleModuleIdGet({ 
     required JsonObject moduleId,
-    JsonObject? authorOnly = false,
-    JsonObject? limit = 100,
-    JsonObject? offset = 0,
+    bool? authorOnly = false,
+    int? limit = 100,
+    int? offset = 0,
     JsonObject? updatedAfter,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -971,9 +971,9 @@ class TermEntitiesApi {
   /// Throws [DioException] if API call or serialization fails
   Future<Response<AnsListTermDTOUnionBErrorNoneType>> getTermsFromModuleListAllGet({ 
     required JsonObject moduleIds,
-    JsonObject? authorOnly = false,
-    JsonObject? limit = 100,
-    JsonObject? offset = 0,
+    bool? authorOnly = false,
+    int? limit = 100,
+    int? offset = 0,
     JsonObject? updatedAfter,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,

@@ -8,9 +8,9 @@ import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import 'package:api_package/src/api_util.dart';
-import 'package:api_package/src/model/ans_list_sentence_dto_union_b_error_none_type.dart';
-import 'package:api_package/src/model/ans_sentence_dto_union_b_error_none_type.dart';
-import 'package:api_package/src/model/create_sentence_dto.dart';
+import 'package:api_package/src/model/ans_additional_term_info_dto_union_b_error_none_type.dart';
+import 'package:api_package/src/model/ans_list_additional_term_info_dto_union_b_error_none_type.dart';
+import 'package:api_package/src/model/create_additional_term_info_dto.dart';
 import 'package:api_package/src/model/err_only_auth_error.dart';
 import 'package:api_package/src/model/err_only_http_validation_error_model.dart';
 import 'package:api_package/src/model/err_only_literal.dart';
@@ -18,13 +18,13 @@ import 'package:api_package/src/model/err_only_literal_di.dart';
 import 'package:api_package/src/model/err_only_not_found_error.dart';
 import 'package:built_value/json_object.dart';
 
-class SentenceEntitiesApi {
+class AdditionalInfoOfTermsApi {
 
   final Dio _dio;
 
   final Serializers _serializers;
 
-  const SentenceEntitiesApi(this._dio, this._serializers);
+  const AdditionalInfoOfTermsApi(this._dio, this._serializers);
 
   /// Create Term
   /// 
@@ -32,7 +32,7 @@ class SentenceEntitiesApi {
   /// Parameters:
   /// * [moduleId] 
   /// * [termId] 
-  /// * [createSentenceDTO] 
+  /// * [createAdditionalTermInfoDTO] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -40,12 +40,12 @@ class SentenceEntitiesApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [AnsSentenceDTOUnionBErrorNoneType] as data
+  /// Returns a [Future] containing a [Response] with a [AnsAdditionalTermInfoDTOUnionBErrorNoneType] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<AnsSentenceDTOUnionBErrorNoneType>> createTermCreateModuleIdTermIdPost1({ 
+  Future<Response<AnsAdditionalTermInfoDTOUnionBErrorNoneType>> createTermCreateModuleIdTermIdPost({ 
     required JsonObject moduleId,
     required JsonObject termId,
-    required CreateSentenceDTO createSentenceDTO,
+    required CreateAdditionalTermInfoDTO createAdditionalTermInfoDTO,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -53,7 +53,7 @@ class SentenceEntitiesApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/sentence/create/{module_id}/{term_id}'.replaceAll('{' r'module_id' '}', encodeQueryParameter(_serializers, moduleId, const FullType(JsonObject)).toString()).replaceAll('{' r'term_id' '}', encodeQueryParameter(_serializers, termId, const FullType(JsonObject)).toString());
+    final _path = r'/term/add_info/create/{module_id}/{term_id}'.replaceAll('{' r'module_id' '}', encodeQueryParameter(_serializers, moduleId, const FullType(JsonObject)).toString()).replaceAll('{' r'term_id' '}', encodeQueryParameter(_serializers, termId, const FullType(JsonObject)).toString());
     final _options = Options(
       method: r'POST',
       headers: <String, dynamic>{
@@ -75,8 +75,8 @@ class SentenceEntitiesApi {
     dynamic _bodyData;
 
     try {
-      const _type = FullType(CreateSentenceDTO);
-      _bodyData = _serializers.serialize(createSentenceDTO, specifiedType: _type);
+      const _type = FullType(CreateAdditionalTermInfoDTO);
+      _bodyData = _serializers.serialize(createAdditionalTermInfoDTO, specifiedType: _type);
 
     } catch(error, stackTrace) {
       throw DioException(
@@ -99,14 +99,14 @@ class SentenceEntitiesApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    AnsSentenceDTOUnionBErrorNoneType? _responseData;
+    AnsAdditionalTermInfoDTOUnionBErrorNoneType? _responseData;
 
     try {
       final rawResponse = _response.data;
       _responseData = rawResponse == null ? null : _serializers.deserialize(
         rawResponse,
-        specifiedType: const FullType(AnsSentenceDTOUnionBErrorNoneType),
-      ) as AnsSentenceDTOUnionBErrorNoneType;
+        specifiedType: const FullType(AnsAdditionalTermInfoDTOUnionBErrorNoneType),
+      ) as AnsAdditionalTermInfoDTOUnionBErrorNoneType;
 
     } catch (error, stackTrace) {
       throw DioException(
@@ -118,7 +118,7 @@ class SentenceEntitiesApi {
       );
     }
 
-    return Response<AnsSentenceDTOUnionBErrorNoneType>(
+    return Response<AnsAdditionalTermInfoDTOUnionBErrorNoneType>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,
@@ -130,11 +130,11 @@ class SentenceEntitiesApi {
     );
   }
 
-  /// Exist Sentence
+  /// Exist Term Info
   /// 
   ///
   /// Parameters:
-  /// * [sentenceId] 
+  /// * [addTermId] 
   /// * [termId] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
@@ -145,8 +145,8 @@ class SentenceEntitiesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [JsonObject] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<JsonObject>> existSentenceExistGet({ 
-    required JsonObject sentenceId,
+  Future<Response<JsonObject>> existTermInfoExistGet({ 
+    required JsonObject addTermId,
     JsonObject? termId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -155,7 +155,7 @@ class SentenceEntitiesApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/sentence/exist';
+    final _path = r'/term/add_info/exist';
     final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
@@ -169,7 +169,7 @@ class SentenceEntitiesApi {
     );
 
     final _queryParameters = <String, dynamic>{
-      r'sentence_id': encodeQueryParameter(_serializers, sentenceId, const FullType(JsonObject)),
+      r'add_term_id': encodeQueryParameter(_serializers, addTermId, const FullType(JsonObject)),
       r'term_id': encodeQueryParameter(_serializers, termId, const FullType(JsonObject)),
     };
 
@@ -213,11 +213,11 @@ class SentenceEntitiesApi {
     );
   }
 
-  /// Get All Term
+  /// Get All Add Term Info
   /// 
   ///
   /// Parameters:
-  /// * [moduleIds] - Список модулей, из которых будут получены предложения
+  /// * [moduleIds] - Список модулей, из которых будут получены термины
   /// * [authorOnly] 
   /// * [limit] 
   /// * [offset] 
@@ -229,13 +229,11 @@ class SentenceEntitiesApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [AnsListSentenceDTOUnionBErrorNoneType] as data
+  /// Returns a [Future] containing a [Response] with a [AnsListAdditionalTermInfoDTOUnionBErrorNoneType] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<AnsListSentenceDTOUnionBErrorNoneType>> getAllTermAllGet({ 
+  Future<Response<AnsListAdditionalTermInfoDTOUnionBErrorNoneType>> getAllAddTermInfoAllGet({ 
     required JsonObject moduleIds,
-    bool? authorOnly = false,
-    int? limit = 100,
-    int? offset = 0,
+
     JsonObject? updatedAfter,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -243,8 +241,11 @@ class SentenceEntitiesApi {
     ValidateStatus? validateStatus,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
+    bool? authorOnly = false,
+    int? limit = 100,
+    int? offset = 0,
   }) async {
-    final _path = r'/sentence/all';
+    final _path = r'/term/add_info/all';
     final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
@@ -279,14 +280,14 @@ class SentenceEntitiesApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    AnsListSentenceDTOUnionBErrorNoneType? _responseData;
+    AnsListAdditionalTermInfoDTOUnionBErrorNoneType? _responseData;
 
     try {
       final rawResponse = _response.data;
       _responseData = rawResponse == null ? null : _serializers.deserialize(
         rawResponse,
-        specifiedType: const FullType(AnsListSentenceDTOUnionBErrorNoneType),
-      ) as AnsListSentenceDTOUnionBErrorNoneType;
+        specifiedType: const FullType(AnsListAdditionalTermInfoDTOUnionBErrorNoneType),
+      ) as AnsListAdditionalTermInfoDTOUnionBErrorNoneType;
 
     } catch (error, stackTrace) {
       throw DioException(
@@ -298,7 +299,7 @@ class SentenceEntitiesApi {
       );
     }
 
-    return Response<AnsListSentenceDTOUnionBErrorNoneType>(
+    return Response<AnsListAdditionalTermInfoDTOUnionBErrorNoneType>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,
@@ -310,7 +311,7 @@ class SentenceEntitiesApi {
     );
   }
 
-  /// Get All Term
+  /// Get All Add Term Info From Module
   /// 
   ///
   /// Parameters:
@@ -326,9 +327,9 @@ class SentenceEntitiesApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [AnsListSentenceDTOUnionBErrorNoneType] as data
+  /// Returns a [Future] containing a [Response] with a [AnsListAdditionalTermInfoDTOUnionBErrorNoneType] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<AnsListSentenceDTOUnionBErrorNoneType>> getAllTermFromModuleModuleIdGet({ 
+  Future<Response<AnsListAdditionalTermInfoDTOUnionBErrorNoneType>> getAllAddTermInfoFromModuleFromModuleModuleIdGet({ 
     required JsonObject moduleId,
     bool? authorOnly = false,
     int? limit = 100,
@@ -341,7 +342,7 @@ class SentenceEntitiesApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/sentence/from_module/{module_id}'.replaceAll('{' r'module_id' '}', encodeQueryParameter(_serializers, moduleId, const FullType(JsonObject)).toString());
+    final _path = r'/term/add_info/from_module/{module_id}'.replaceAll('{' r'module_id' '}', encodeQueryParameter(_serializers, moduleId, const FullType(JsonObject)).toString());
     final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
@@ -375,14 +376,14 @@ class SentenceEntitiesApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    AnsListSentenceDTOUnionBErrorNoneType? _responseData;
+    AnsListAdditionalTermInfoDTOUnionBErrorNoneType? _responseData;
 
     try {
       final rawResponse = _response.data;
       _responseData = rawResponse == null ? null : _serializers.deserialize(
         rawResponse,
-        specifiedType: const FullType(AnsListSentenceDTOUnionBErrorNoneType),
-      ) as AnsListSentenceDTOUnionBErrorNoneType;
+        specifiedType: const FullType(AnsListAdditionalTermInfoDTOUnionBErrorNoneType),
+      ) as AnsListAdditionalTermInfoDTOUnionBErrorNoneType;
 
     } catch (error, stackTrace) {
       throw DioException(
@@ -394,7 +395,7 @@ class SentenceEntitiesApi {
       );
     }
 
-    return Response<AnsListSentenceDTOUnionBErrorNoneType>(
+    return Response<AnsListAdditionalTermInfoDTOUnionBErrorNoneType>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,
@@ -406,7 +407,7 @@ class SentenceEntitiesApi {
     );
   }
 
-  /// Get All Term
+  /// Get All Add Term Info From Module
   /// 
   ///
   /// Parameters:
@@ -422,9 +423,9 @@ class SentenceEntitiesApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [AnsListSentenceDTOUnionBErrorNoneType] as data
+  /// Returns a [Future] containing a [Response] with a [AnsListAdditionalTermInfoDTOUnionBErrorNoneType] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<AnsListSentenceDTOUnionBErrorNoneType>> getAllTermFromTermTermIdGet({ 
+  Future<Response<AnsListAdditionalTermInfoDTOUnionBErrorNoneType>> getAllAddTermInfoFromModuleFromTermTermIdGet({ 
     required JsonObject termId,
     bool? authorOnly = false,
     int? limit = 100,
@@ -437,7 +438,7 @@ class SentenceEntitiesApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/sentence/from_term/{term_id}'.replaceAll('{' r'term_id' '}', encodeQueryParameter(_serializers, termId, const FullType(JsonObject)).toString());
+    final _path = r'/term/add_info/from_term/{term_id}'.replaceAll('{' r'term_id' '}', encodeQueryParameter(_serializers, termId, const FullType(JsonObject)).toString());
     final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
@@ -471,14 +472,14 @@ class SentenceEntitiesApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    AnsListSentenceDTOUnionBErrorNoneType? _responseData;
+    AnsListAdditionalTermInfoDTOUnionBErrorNoneType? _responseData;
 
     try {
       final rawResponse = _response.data;
       _responseData = rawResponse == null ? null : _serializers.deserialize(
         rawResponse,
-        specifiedType: const FullType(AnsListSentenceDTOUnionBErrorNoneType),
-      ) as AnsListSentenceDTOUnionBErrorNoneType;
+        specifiedType: const FullType(AnsListAdditionalTermInfoDTOUnionBErrorNoneType),
+      ) as AnsListAdditionalTermInfoDTOUnionBErrorNoneType;
 
     } catch (error, stackTrace) {
       throw DioException(
@@ -490,87 +491,7 @@ class SentenceEntitiesApi {
       );
     }
 
-    return Response<AnsListSentenceDTOUnionBErrorNoneType>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
-    );
-  }
-
-  /// Get One Term
-  /// 
-  ///
-  /// Parameters:
-  /// * [sentenceId] 
-  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
-  /// * [headers] - Can be used to add additional headers to the request
-  /// * [extras] - Can be used to add flags to the request
-  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
-  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
-  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
-  ///
-  /// Returns a [Future] containing a [Response] with a [AnsSentenceDTOUnionBErrorNoneType] as data
-  /// Throws [DioException] if API call or serialization fails
-  Future<Response<AnsSentenceDTOUnionBErrorNoneType>> getOneTermSentenceIdGet({ 
-    required JsonObject sentenceId,
-    CancelToken? cancelToken,
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? extra,
-    ValidateStatus? validateStatus,
-    ProgressCallback? onSendProgress,
-    ProgressCallback? onReceiveProgress,
-  }) async {
-    final _path = r'/sentence/{sentence_id}'.replaceAll('{' r'sentence_id' '}', encodeQueryParameter(_serializers, sentenceId, const FullType(JsonObject)).toString());
-    final _options = Options(
-      method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[
-          {
-            'type': 'oauth2',
-            'name': 'OAuth2PasswordBearer',
-          },
-        ],
-        ...?extra,
-      },
-      validateStatus: validateStatus,
-    );
-
-    final _response = await _dio.request<Object>(
-      _path,
-      options: _options,
-      cancelToken: cancelToken,
-      onSendProgress: onSendProgress,
-      onReceiveProgress: onReceiveProgress,
-    );
-
-    AnsSentenceDTOUnionBErrorNoneType? _responseData;
-
-    try {
-      final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(AnsSentenceDTOUnionBErrorNoneType),
-      ) as AnsSentenceDTOUnionBErrorNoneType;
-
-    } catch (error, stackTrace) {
-      throw DioException(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioExceptionType.unknown,
-        error: error,
-        stackTrace: stackTrace,
-      );
-    }
-
-    return Response<AnsSentenceDTOUnionBErrorNoneType>(
+    return Response<AnsListAdditionalTermInfoDTOUnionBErrorNoneType>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,

@@ -422,9 +422,9 @@ class FoldersEntitiesApi {
   /// Returns a [Future] containing a [Response] with a [AnsListPersonalizeFolderDTOUnionBErrorNoneType] as data
   /// Throws [DioException] if API call or serialization fails
   Future<Response<AnsListPersonalizeFolderDTOUnionBErrorNoneType>> getAllFoldersPersonalizeAllGet({ 
-    JsonObject? authorOnly = false,
-    JsonObject? limit = 100,
-    JsonObject? offset = 0,
+    bool? authorOnly = false,
+    int? limit = 100,
+    int? offset = 0,
     JsonObject? updatedAfter,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -595,7 +595,7 @@ class FoldersEntitiesApi {
   /// Throws [DioException] if API call or serialization fails
   Future<Response<AnsPersonalizeFolderDTOUnionBErrorNoneType>> getPersonalizeFolderPersonalizeFolderIdGet({ 
     required JsonObject folderId,
-    JsonObject? authorOnly = false,
+    bool? authorOnly = false,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -685,9 +685,9 @@ class FoldersEntitiesApi {
   /// Throws [DioException] if API call or serialization fails
   Future<Response<AnsListPersonalizeFolderDTOUnionBErrorNoneType>> getPersonalizeSubFoldersPersonalizeFolderIdSubFoldersGet({ 
     required JsonObject folderId,
-    JsonObject? authorOnly = false,
-    JsonObject? limit = 100,
-    JsonObject? offset = 0,
+    bool? authorOnly = false,
+    int? limit = 100,
+    int? offset = 0,
     JsonObject? updatedAfter,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -780,8 +780,8 @@ class FoldersEntitiesApi {
   /// Throws [DioException] if API call or serialization fails
   Future<Response<AnsListFolderDTOUnionBErrorNoneType>> getSubFoldersFolderIdSubFoldersGet({ 
     required JsonObject folderId,
-    JsonObject? limit = 100,
-    JsonObject? offset = 0,
+    int? limit = 100,
+    int? offset = 0,
     JsonObject? updatedAfter,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
