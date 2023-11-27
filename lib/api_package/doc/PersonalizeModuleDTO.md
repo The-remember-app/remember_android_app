@@ -22,8 +22,8 @@ Name | Type | Description | Notes
 **personalCreatedAt** | [**JsonObject**](.md) |  | 
 **personalUpdatedAt** | [**JsonObject**](.md) |  | 
 **name** | [**JsonObject**](.md) |  | 
-**description** | [**JsonObject**](.md) |  | [default to ]
-**rootFolderId** | [**JsonObject**](.md) |  | 
+**description** | [**JsonObject**](.md) |  | [optional] [default to ]
+**rootFolderId** | [**JsonObject**](.md) |  | [optional] 
 **id** | [**JsonObject**](.md) |  | 
 **authorId** | [**JsonObject**](.md) |  | 
 **createdAt** | [**JsonObject**](.md) |  | 

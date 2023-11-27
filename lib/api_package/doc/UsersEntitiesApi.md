@@ -9,12 +9,57 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**createUserUserCreatePost**](UsersEntitiesApi.md#createuserusercreatepost) | **POST** /user/create | Create User
-[**readUsersMeUserMeGet**](UsersEntitiesApi.md#readusersmeusermeget) | **GET** /user/me/ | Read Users Me
+[**checkUserCheckUserGet**](UsersEntitiesApi.md#checkusercheckuserget) | **GET** /user/check_user | Check User
+[**createUserCreatePost**](UsersEntitiesApi.md#createusercreatepost) | **POST** /user/create | Create User
+[**existUserExistGet**](UsersEntitiesApi.md#existuserexistget) | **GET** /user/exist | Exist User
+[**readUsersMeMeGet**](UsersEntitiesApi.md#readusersmemeget) | **GET** /user/me/ | Read Users Me
 
 
-# **createUserUserCreatePost**
-> UserDTO createUserUserCreatePost(createUserDTO)
+# **checkUserCheckUserGet**
+> AnsUserDTOUnionBErrorNoneType checkUserCheckUserGet(username, password)
+
+Check User
+
+### Example
+```dart
+import 'package:api_package/api.dart';
+
+final api = ApiPackage().getUsersEntitiesApi();
+final JsonObject username = ; // JsonObject | 
+final JsonObject password = ; // JsonObject | 
+
+try {
+    final response = api.checkUserCheckUserGet(username, password);
+    print(response);
+} catch on DioException (e) {
+    print('Exception when calling UsersEntitiesApi->checkUserCheckUserGet: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **username** | [**JsonObject**](.md)|  | 
+ **password** | [**JsonObject**](.md)|  | 
+
+### Return type
+
+[**AnsUserDTOUnionBErrorNoneType**](AnsUserDTOUnionBErrorNoneType.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **createUserCreatePost**
+> AnsUserDTOUnionBErrorNoneType createUserCreatePost(createUserDTO)
 
 Create User
 
@@ -26,10 +71,10 @@ final api = ApiPackage().getUsersEntitiesApi();
 final CreateUserDTO createUserDTO = ; // CreateUserDTO | 
 
 try {
-    final response = api.createUserUserCreatePost(createUserDTO);
+    final response = api.createUserCreatePost(createUserDTO);
     print(response);
 } catch on DioException (e) {
-    print('Exception when calling UsersEntitiesApi->createUserUserCreatePost: $e\n');
+    print('Exception when calling UsersEntitiesApi->createUserCreatePost: $e\n');
 }
 ```
 
@@ -41,7 +86,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserDTO**](UserDTO.md)
+[**AnsUserDTOUnionBErrorNoneType**](AnsUserDTOUnionBErrorNoneType.md)
 
 ### Authorization
 
@@ -54,8 +99,49 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **readUsersMeUserMeGet**
-> UserDTO readUsersMeUserMeGet()
+# **existUserExistGet**
+> JsonObject existUserExistGet(userId)
+
+Exist User
+
+### Example
+```dart
+import 'package:api_package/api.dart';
+
+final api = ApiPackage().getUsersEntitiesApi();
+final JsonObject userId = ; // JsonObject | 
+
+try {
+    final response = api.existUserExistGet(userId);
+    print(response);
+} catch on DioException (e) {
+    print('Exception when calling UsersEntitiesApi->existUserExistGet: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **userId** | [**JsonObject**](.md)|  | 
+
+### Return type
+
+[**JsonObject**](JsonObject.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **readUsersMeMeGet**
+> AnsUserDTOUnionBErrorNoneType readUsersMeMeGet()
 
 Read Users Me
 
@@ -68,10 +154,10 @@ import 'package:api_package/api.dart';
 final api = ApiPackage().getUsersEntitiesApi();
 
 try {
-    final response = api.readUsersMeUserMeGet();
+    final response = api.readUsersMeMeGet();
     print(response);
 } catch on DioException (e) {
-    print('Exception when calling UsersEntitiesApi->readUsersMeUserMeGet: $e\n');
+    print('Exception when calling UsersEntitiesApi->readUsersMeMeGet: $e\n');
 }
 ```
 
@@ -80,7 +166,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**UserDTO**](UserDTO.md)
+[**AnsUserDTOUnionBErrorNoneType**](AnsUserDTOUnionBErrorNoneType.md)
 
 ### Authorization
 

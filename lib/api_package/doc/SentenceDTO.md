@@ -10,8 +10,9 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **sentence** | [**JsonObject**](.md) |  | 
 **translate** | [**JsonObject**](.md) |  | 
-**termId** | [**JsonObject**](.md) |  | 
 **id** | [**JsonObject**](.md) |  | 
+**termId** | [**JsonObject**](.md) |  | 
+**moduleId** | [**JsonObject**](.md) |  | 
 **createdAt** | [**JsonObject**](.md) |  | 
 **updatedAt** | [**JsonObject**](.md) |  | 
 

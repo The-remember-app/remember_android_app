@@ -3,49 +3,53 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:api_package/src/model/add_info_type_enum.dart';
+import 'package:api_package/src/model/watch_learn_type_enum.dart';
 import 'package:built_value/json_object.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'additional_term_info_dto.g.dart';
+part 'learn_mark_dto.g.dart';
 
-/// AdditionalTermInfoDTO
+/// LearnMarkDTO
 ///
 /// Properties:
-/// * [textData] 
-/// * [addingTextData] 
-/// * [dialectOrArea] 
-/// * [addInfoType] 
-/// * [parentAddInfoId] 
 /// * [termId] 
+/// * [startWatch] 
+/// * [endWatch] 
+/// * [isLearnt] 
+/// * [isLearnIterStart] 
+/// * [watchType] 
 /// * [id] 
+/// * [userId] 
 /// * [moduleId] 
 /// * [createdAt] 
 /// * [updatedAt] 
 @BuiltValue()
-abstract class AdditionalTermInfoDTO implements Built<AdditionalTermInfoDTO, AdditionalTermInfoDTOBuilder> {
-  @BuiltValueField(wireName: r'text_data')
-  JsonObject? get textData;
-
-  @BuiltValueField(wireName: r'adding_text_data')
-  JsonObject? get addingTextData;
-
-  @BuiltValueField(wireName: r'dialect_or_area')
-  JsonObject? get dialectOrArea;
-
-  @BuiltValueField(wireName: r'add_info_type')
-  JsonObject get addInfoType;
-  // enum addInfoTypeEnum {  usual_term,  other_form,  help_phrase_with_word,  help_phrase_without_word,  abbreviation,  composite_word,  sound,  transcription,  };
-
-  @BuiltValueField(wireName: r'parent_add_info_id')
-  JsonObject? get parentAddInfoId;
-
+abstract class LearnMarkDTO implements Built<LearnMarkDTO, LearnMarkDTOBuilder> {
   @BuiltValueField(wireName: r'term_id')
   JsonObject? get termId;
 
+  @BuiltValueField(wireName: r'start_watch')
+  JsonObject? get startWatch;
+
+  @BuiltValueField(wireName: r'end_watch')
+  JsonObject? get endWatch;
+
+  @BuiltValueField(wireName: r'is_learnt')
+  JsonObject? get isLearnt;
+
+  @BuiltValueField(wireName: r'is_learn_iter_start')
+  JsonObject? get isLearnIterStart;
+
+  @BuiltValueField(wireName: r'watch_type')
+  JsonObject get watchType;
+  // enum watchTypeEnum {  choice,  reverse_choice,  write,  reverse_write,  };
+
   @BuiltValueField(wireName: r'id')
   JsonObject? get id;
+
+  @BuiltValueField(wireName: r'user_id')
+  JsonObject? get userId;
 
   @BuiltValueField(wireName: r'module_id')
   JsonObject? get moduleId;
@@ -56,71 +60,67 @@ abstract class AdditionalTermInfoDTO implements Built<AdditionalTermInfoDTO, Add
   @BuiltValueField(wireName: r'updated_at')
   JsonObject? get updatedAt;
 
-  AdditionalTermInfoDTO._();
+  LearnMarkDTO._();
 
-  factory AdditionalTermInfoDTO([void updates(AdditionalTermInfoDTOBuilder b)]) = _$AdditionalTermInfoDTO;
+  factory LearnMarkDTO([void updates(LearnMarkDTOBuilder b)]) = _$LearnMarkDTO;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(AdditionalTermInfoDTOBuilder b) => b
-      ..addInfoType = JsonObject("usual_term");
+  static void _defaults(LearnMarkDTOBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<AdditionalTermInfoDTO> get serializer => _$AdditionalTermInfoDTOSerializer();
+  static Serializer<LearnMarkDTO> get serializer => _$LearnMarkDTOSerializer();
 }
 
-class _$AdditionalTermInfoDTOSerializer implements PrimitiveSerializer<AdditionalTermInfoDTO> {
+class _$LearnMarkDTOSerializer implements PrimitiveSerializer<LearnMarkDTO> {
   @override
-  final Iterable<Type> types = const [AdditionalTermInfoDTO, _$AdditionalTermInfoDTO];
+  final Iterable<Type> types = const [LearnMarkDTO, _$LearnMarkDTO];
 
   @override
-  final String wireName = r'AdditionalTermInfoDTO';
+  final String wireName = r'LearnMarkDTO';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    AdditionalTermInfoDTO object, {
+    LearnMarkDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    yield r'text_data';
-    yield object.textData == null ? null : serializers.serialize(
-      object.textData,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    if (object.addingTextData != null) {
-      yield r'adding_text_data';
-      yield serializers.serialize(
-        object.addingTextData,
-        specifiedType: const FullType.nullable(JsonObject),
-      );
-    }
-    if (object.dialectOrArea != null) {
-      yield r'dialect_or_area';
-      yield serializers.serialize(
-        object.dialectOrArea,
-        specifiedType: const FullType.nullable(JsonObject),
-      );
-    }
-    if (object.addInfoType != null) {
-      yield r'add_info_type';
-      yield serializers.serialize(
-        object.addInfoType,
-        specifiedType: const FullType(JsonObject),
-      );
-    }
-    if (object.parentAddInfoId != null) {
-      yield r'parent_add_info_id';
-      yield serializers.serialize(
-        object.parentAddInfoId,
-        specifiedType: const FullType.nullable(JsonObject),
-      );
-    }
     yield r'term_id';
     yield object.termId == null ? null : serializers.serialize(
       object.termId,
       specifiedType: const FullType.nullable(JsonObject),
     );
+    yield r'start_watch';
+    yield object.startWatch == null ? null : serializers.serialize(
+      object.startWatch,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'end_watch';
+    yield object.endWatch == null ? null : serializers.serialize(
+      object.endWatch,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'is_learnt';
+    yield object.isLearnt == null ? null : serializers.serialize(
+      object.isLearnt,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'is_learn_iter_start';
+    yield object.isLearnIterStart == null ? null : serializers.serialize(
+      object.isLearnIterStart,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'watch_type';
+    yield serializers.serialize(
+      object.watchType,
+      specifiedType: const FullType(JsonObject),
+    );
     yield r'id';
     yield object.id == null ? null : serializers.serialize(
       object.id,
+      specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'user_id';
+    yield object.userId == null ? null : serializers.serialize(
+      object.userId,
       specifiedType: const FullType.nullable(JsonObject),
     );
     yield r'module_id';
@@ -143,7 +143,7 @@ class _$AdditionalTermInfoDTOSerializer implements PrimitiveSerializer<Additiona
   @override
   Object serialize(
     Serializers serializers,
-    AdditionalTermInfoDTO object, {
+    LearnMarkDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
@@ -154,52 +154,13 @@ class _$AdditionalTermInfoDTOSerializer implements PrimitiveSerializer<Additiona
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required AdditionalTermInfoDTOBuilder result,
+    required LearnMarkDTOBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
-        case r'text_data':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.textData = valueDes;
-          break;
-        case r'adding_text_data':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.addingTextData = valueDes;
-          break;
-        case r'dialect_or_area':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.dialectOrArea = valueDes;
-          break;
-        case r'add_info_type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          result.addInfoType = valueDes;
-          break;
-        case r'parent_add_info_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.parentAddInfoId = valueDes;
-          break;
         case r'term_id':
           final valueDes = serializers.deserialize(
             value,
@@ -208,6 +169,45 @@ class _$AdditionalTermInfoDTOSerializer implements PrimitiveSerializer<Additiona
           if (valueDes == null) continue;
           result.termId = valueDes;
           break;
+        case r'start_watch':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.startWatch = valueDes;
+          break;
+        case r'end_watch':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.endWatch = valueDes;
+          break;
+        case r'is_learnt':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.isLearnt = valueDes;
+          break;
+        case r'is_learn_iter_start':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.isLearnIterStart = valueDes;
+          break;
+        case r'watch_type':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
+          result.watchType = valueDes;
+          break;
         case r'id':
           final valueDes = serializers.deserialize(
             value,
@@ -215,6 +215,14 @@ class _$AdditionalTermInfoDTOSerializer implements PrimitiveSerializer<Additiona
           ) as JsonObject?;
           if (valueDes == null) continue;
           result.id = valueDes;
+          break;
+        case r'user_id':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.userId = valueDes;
           break;
         case r'module_id':
           final valueDes = serializers.deserialize(
@@ -249,12 +257,12 @@ class _$AdditionalTermInfoDTOSerializer implements PrimitiveSerializer<Additiona
   }
 
   @override
-  AdditionalTermInfoDTO deserialize(
+  LearnMarkDTO deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = AdditionalTermInfoDTOBuilder();
+    final result = LearnMarkDTOBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

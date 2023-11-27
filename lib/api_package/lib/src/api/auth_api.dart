@@ -8,7 +8,10 @@ import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import 'package:api_package/src/api_util.dart';
-import 'package:api_package/src/model/http_validation_error.dart';
+import 'package:api_package/src/model/ans_token_b_error.dart';
+import 'package:api_package/src/model/err_only_auth_error.dart';
+import 'package:api_package/src/model/err_only_http_validation_error_model.dart';
+import 'package:api_package/src/model/err_only_literal.dart';
 import 'package:api_package/src/model/token.dart';
 import 'package:built_value/json_object.dart';
 
@@ -20,7 +23,7 @@ class AuthApi {
 
   const AuthApi(this._dio, this._serializers);
 
-  /// Login For Access Token
+  /// Healthcheck Get
   /// 
   ///
   /// Parameters:
@@ -33,7 +36,80 @@ class AuthApi {
   ///
   /// Returns a [Future] containing a [Response] with a [JsonObject] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<JsonObject>> loginForAccessTokenAuthHealthcheckPost({ 
+  Future<Response<JsonObject>> healthcheckGetHealthcheckGet({ 
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final _path = r'/auth/healthcheck';
+    final _options = Options(
+      method: r'GET',
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[],
+        ...?extra,
+      },
+      validateStatus: validateStatus,
+    );
+
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    JsonObject? _responseData;
+
+    try {
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(JsonObject),
+      ) as JsonObject;
+
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    return Response<JsonObject>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
+  }
+
+  /// Healthcheck Post
+  /// 
+  ///
+  /// Parameters:
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future] containing a [Response] with a [JsonObject] as data
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<JsonObject>> healthcheckPostHealthcheckPost({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -93,6 +169,117 @@ class AuthApi {
     );
   }
 
+  /// Login For Access Token In Other Style
+  /// 
+  ///
+  /// Parameters:
+  /// * [username] 
+  /// * [password] 
+  /// * [grantType] 
+  /// * [scope] 
+  /// * [clientId] 
+  /// * [clientSecret] 
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future] containing a [Response] with a [AnsTokenBError] as data
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<AnsTokenBError>> loginForAccessTokenInOtherStyleTokenOtherStylePost({ 
+    JsonObject? username,
+    JsonObject? password,
+    JsonObject? grantType,
+    JsonObject? scope,
+    JsonObject? clientId,
+    JsonObject? clientSecret,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final _path = r'/auth/token/other_style';
+    final _options = Options(
+      method: r'POST',
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[],
+        ...?extra,
+      },
+      contentType: 'application/x-www-form-urlencoded',
+      validateStatus: validateStatus,
+    );
+
+    dynamic _bodyData;
+
+    try {
+      _bodyData = <String, dynamic>{
+        r'grant_type': encodeQueryParameter(_serializers, grantType, const FullType(JsonObject)),
+        r'username': encodeQueryParameter(_serializers, username, const FullType(JsonObject)),
+        r'password': encodeQueryParameter(_serializers, password, const FullType(JsonObject)),
+        r'scope': encodeQueryParameter(_serializers, scope, const FullType(JsonObject)),
+        r'client_id': encodeQueryParameter(_serializers, clientId, const FullType(JsonObject)),
+        r'client_secret': encodeQueryParameter(_serializers, clientSecret, const FullType(JsonObject)),
+      };
+
+    } catch(error, stackTrace) {
+      throw DioException(
+         requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    final _response = await _dio.request<Object>(
+      _path,
+      data: _bodyData,
+      options: _options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    AnsTokenBError? _responseData;
+
+    try {
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(AnsTokenBError),
+      ) as AnsTokenBError;
+
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    return Response<AnsTokenBError>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
+  }
+
   /// Login For Access Token
   /// 
   ///
@@ -112,7 +299,7 @@ class AuthApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Token] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Token>> loginForAccessTokenAuthTokenPost({ 
+  Future<Response<Token>> loginForAccessTokenTokenPost({ 
     JsonObject? username,
     JsonObject? password,
     JsonObject? grantType,

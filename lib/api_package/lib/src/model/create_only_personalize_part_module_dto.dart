@@ -7,24 +7,25 @@ import 'package:built_value/json_object.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'update_only_personalize_part_module_dto.g.dart';
+part 'create_only_personalize_part_module_dto.g.dart';
 
-/// UpdateOnlyPersonalizePartModuleDTO
+/// CreateOnlyPersonalizePartModuleDTO
 ///
 /// Properties:
-/// * [isReverseDefinitionWrite] 
-/// * [standardAndReverseWrite] 
-/// * [isReverseDefinitionChoice] 
-/// * [standardAndReverseChoice] 
-/// * [maxIterationLen] 
-/// * [minIterationLen] 
-/// * [minWatchCount] 
-/// * [knownTermPart] 
-/// * [choicesCount] 
-/// * [isLearnt] 
-/// * [personalUpdatedAt] 
+/// * [isReverseDefinitionWrite]
+/// * [standardAndReverseWrite]
+/// * [isReverseDefinitionChoice]
+/// * [standardAndReverseChoice]
+/// * [maxIterationLen]
+/// * [minIterationLen]
+/// * [minWatchCount]
+/// * [knownTermPart]
+/// * [choicesCount]
+/// * [isLearnt]
+/// * [moduleId]
+/// * [rootFolderId]
 @BuiltValue()
-abstract class UpdateOnlyPersonalizePartModuleDTO implements Built<UpdateOnlyPersonalizePartModuleDTO, UpdateOnlyPersonalizePartModuleDTOBuilder> {
+abstract class CreateOnlyPersonalizePartModuleDTO implements Built<CreateOnlyPersonalizePartModuleDTO, CreateOnlyPersonalizePartModuleDTOBuilder> {
   @BuiltValueField(wireName: r'is_reverse_definition_write')
   JsonObject? get isReverseDefinitionWrite;
 
@@ -55,85 +56,123 @@ abstract class UpdateOnlyPersonalizePartModuleDTO implements Built<UpdateOnlyPer
   @BuiltValueField(wireName: r'is_learnt')
   JsonObject? get isLearnt;
 
-  @BuiltValueField(wireName: r'personal_updated_at')
-  JsonObject? get personalUpdatedAt;
+  @BuiltValueField(wireName: r'module_id')
+  JsonObject? get moduleId;
 
-  UpdateOnlyPersonalizePartModuleDTO._();
+  @BuiltValueField(wireName: r'root_folder_id')
+  JsonObject? get rootFolderId;
 
-  factory UpdateOnlyPersonalizePartModuleDTO([void updates(UpdateOnlyPersonalizePartModuleDTOBuilder b)]) = _$UpdateOnlyPersonalizePartModuleDTO;
+  CreateOnlyPersonalizePartModuleDTO._();
+
+  factory CreateOnlyPersonalizePartModuleDTO([void updates(CreateOnlyPersonalizePartModuleDTOBuilder b)]) = _$CreateOnlyPersonalizePartModuleDTO;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(UpdateOnlyPersonalizePartModuleDTOBuilder b) => b;
+  static void _defaults(CreateOnlyPersonalizePartModuleDTOBuilder b) => b
+      ..isReverseDefinitionWrite = JsonObject(false)
+      ..standardAndReverseWrite = JsonObject(false)
+      ..isReverseDefinitionChoice =JsonObject (true)
+      ..standardAndReverseChoice = JsonObject(false)
+      ..maxIterationLen = JsonObject(10)
+      ..minIterationLen = JsonObject(4)
+      ..minWatchCount = JsonObject(5)
+      ..knownTermPart = JsonObject(30)
+      ..choicesCount = JsonObject(2)
+      ..isLearnt = JsonObject(false);
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateOnlyPersonalizePartModuleDTO> get serializer => _$UpdateOnlyPersonalizePartModuleDTOSerializer();
+  static Serializer<CreateOnlyPersonalizePartModuleDTO> get serializer => _$CreateOnlyPersonalizePartModuleDTOSerializer();
 }
 
-class _$UpdateOnlyPersonalizePartModuleDTOSerializer implements PrimitiveSerializer<UpdateOnlyPersonalizePartModuleDTO> {
+class _$CreateOnlyPersonalizePartModuleDTOSerializer implements PrimitiveSerializer<CreateOnlyPersonalizePartModuleDTO> {
   @override
-  final Iterable<Type> types = const [UpdateOnlyPersonalizePartModuleDTO, _$UpdateOnlyPersonalizePartModuleDTO];
+  final Iterable<Type> types = const [CreateOnlyPersonalizePartModuleDTO, _$CreateOnlyPersonalizePartModuleDTO];
 
   @override
-  final String wireName = r'UpdateOnlyPersonalizePartModuleDTO';
+  final String wireName = r'CreateOnlyPersonalizePartModuleDTO';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    UpdateOnlyPersonalizePartModuleDTO object, {
+    CreateOnlyPersonalizePartModuleDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    yield r'is_reverse_definition_write';
-    yield object.isReverseDefinitionWrite == null ? null : serializers.serialize(
-      object.isReverseDefinitionWrite,
+    if (object.isReverseDefinitionWrite != null) {
+      yield r'is_reverse_definition_write';
+      yield serializers.serialize(
+        object.isReverseDefinitionWrite,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    if (object.standardAndReverseWrite != null) {
+      yield r'standard_and_reverse_write';
+      yield serializers.serialize(
+        object.standardAndReverseWrite,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    if (object.isReverseDefinitionChoice != null) {
+      yield r'is_reverse_definition_choice';
+      yield serializers.serialize(
+        object.isReverseDefinitionChoice,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    if (object.standardAndReverseChoice != null) {
+      yield r'standard_and_reverse_choice';
+      yield serializers.serialize(
+        object.standardAndReverseChoice,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    if (object.maxIterationLen != null) {
+      yield r'max_iteration_len';
+      yield serializers.serialize(
+        object.maxIterationLen,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    if (object.minIterationLen != null) {
+      yield r'min_iteration_len';
+      yield serializers.serialize(
+        object.minIterationLen,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    if (object.minWatchCount != null) {
+      yield r'min_watch_count';
+      yield serializers.serialize(
+        object.minWatchCount,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    if (object.knownTermPart != null) {
+      yield r'known_term_part';
+      yield serializers.serialize(
+        object.knownTermPart,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    if (object.choicesCount != null) {
+      yield r'choices_count';
+      yield serializers.serialize(
+        object.choicesCount,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    if (object.isLearnt != null) {
+      yield r'is_learnt';
+      yield serializers.serialize(
+        object.isLearnt,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    yield r'module_id';
+    yield object.moduleId == null ? null : serializers.serialize(
+      object.moduleId,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'standard_and_reverse_write';
-    yield object.standardAndReverseWrite == null ? null : serializers.serialize(
-      object.standardAndReverseWrite,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'is_reverse_definition_choice';
-    yield object.isReverseDefinitionChoice == null ? null : serializers.serialize(
-      object.isReverseDefinitionChoice,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'standard_and_reverse_choice';
-    yield object.standardAndReverseChoice == null ? null : serializers.serialize(
-      object.standardAndReverseChoice,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'max_iteration_len';
-    yield object.maxIterationLen == null ? null : serializers.serialize(
-      object.maxIterationLen,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'min_iteration_len';
-    yield object.minIterationLen == null ? null : serializers.serialize(
-      object.minIterationLen,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'min_watch_count';
-    yield object.minWatchCount == null ? null : serializers.serialize(
-      object.minWatchCount,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'known_term_part';
-    yield object.knownTermPart == null ? null : serializers.serialize(
-      object.knownTermPart,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'choices_count';
-    yield object.choicesCount == null ? null : serializers.serialize(
-      object.choicesCount,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'is_learnt';
-    yield object.isLearnt == null ? null : serializers.serialize(
-      object.isLearnt,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'personal_updated_at';
-    yield object.personalUpdatedAt == null ? null : serializers.serialize(
-      object.personalUpdatedAt,
+    yield r'root_folder_id';
+    yield object.rootFolderId == null ? null : serializers.serialize(
+      object.rootFolderId,
       specifiedType: const FullType.nullable(JsonObject),
     );
   }
@@ -141,7 +180,7 @@ class _$UpdateOnlyPersonalizePartModuleDTOSerializer implements PrimitiveSeriali
   @override
   Object serialize(
     Serializers serializers,
-    UpdateOnlyPersonalizePartModuleDTO object, {
+    CreateOnlyPersonalizePartModuleDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
@@ -152,7 +191,7 @@ class _$UpdateOnlyPersonalizePartModuleDTOSerializer implements PrimitiveSeriali
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required UpdateOnlyPersonalizePartModuleDTOBuilder result,
+    required CreateOnlyPersonalizePartModuleDTOBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
@@ -239,13 +278,21 @@ class _$UpdateOnlyPersonalizePartModuleDTOSerializer implements PrimitiveSeriali
           if (valueDes == null) continue;
           result.isLearnt = valueDes;
           break;
-        case r'personal_updated_at':
+        case r'module_id':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.personalUpdatedAt = valueDes;
+          result.moduleId = valueDes;
+          break;
+        case r'root_folder_id':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.rootFolderId = valueDes;
           break;
         default:
           unhandled.add(key);
@@ -256,12 +303,12 @@ class _$UpdateOnlyPersonalizePartModuleDTOSerializer implements PrimitiveSeriali
   }
 
   @override
-  UpdateOnlyPersonalizePartModuleDTO deserialize(
+  CreateOnlyPersonalizePartModuleDTO deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = UpdateOnlyPersonalizePartModuleDTOBuilder();
+    final result = CreateOnlyPersonalizePartModuleDTOBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

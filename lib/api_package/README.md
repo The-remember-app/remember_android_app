@@ -46,13 +46,16 @@ Please follow the [installation procedure](#installation--usage) and then run th
 import 'package:api_package/api_package.dart';
 
 
-final api = ApiPackage().getAuthApi();
+final api = ApiPackage().getAdditionalInfoOfTermsApi();
+final JsonObject moduleId = ; // JsonObject | 
+final JsonObject termId = ; // JsonObject | 
+final CreateAdditionalTermInfoDTO createAdditionalTermInfoDTO = ; // CreateAdditionalTermInfoDTO | 
 
 try {
-    final response = await api.loginForAccessTokenAuthHealthcheckPost();
+    final response = await api.createTermCreateModuleIdTermIdPost(moduleId, termId, createAdditionalTermInfoDTO);
     print(response);
 } catch on DioException (e) {
-    print("Exception when calling AuthApi->loginForAccessTokenAuthHealthcheckPost: $e\n");
+    print("Exception when calling AdditionalInfoOfTermsApi->createTermCreateModuleIdTermIdPost: $e\n");
 }
 
 ```
@@ -63,66 +66,123 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-[*AuthApi*](doc/AuthApi.md) | [**loginForAccessTokenAuthHealthcheckPost**](doc/AuthApi.md#loginforaccesstokenauthhealthcheckpost) | **POST** /auth/healthcheck | Login For Access Token
-[*AuthApi*](doc/AuthApi.md) | [**loginForAccessTokenAuthTokenPost**](doc/AuthApi.md#loginforaccesstokenauthtokenpost) | **POST** /auth/token | Login For Access Token
-[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**createFolderAsTreeFolderCreateAsTreePost**](doc/FoldersEntitiesApi.md#createfolderastreefoldercreateastreepost) | **POST** /folder/create/as_tree | Create Folder As Tree
-[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**createFolderFolderCreatePost**](doc/FoldersEntitiesApi.md#createfolderfoldercreatepost) | **POST** /folder/create | Create Folder
-[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**deletePersonalizeFolderFolderPersonalizeDeleteDelete**](doc/FoldersEntitiesApi.md#deletepersonalizefolderfolderpersonalizedeletedelete) | **DELETE** /folder/personalize/delete | Delete Personalize Folder
-[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**getAllFoldersAsTreeFolderAllAsTreeGet**](doc/FoldersEntitiesApi.md#getallfoldersastreefolderallastreeget) | **GET** /folder/all/as_tree | Get All Folders As Tree
-[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**getAllFoldersFolderAllGet**](doc/FoldersEntitiesApi.md#getallfoldersfolderallget) | **GET** /folder/all | Get All Folders
-[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**getOneFolderAsTreeFolderFolderIdAsTreeGet**](doc/FoldersEntitiesApi.md#getonefolderastreefolderfolderidastreeget) | **GET** /folder/{folder_id}/as_tree | Get One Folder As Tree
-[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**getOneFolderFolderFolderIdGet**](doc/FoldersEntitiesApi.md#getonefolderfolderfolderidget) | **GET** /folder/{folder_id} | Get One Folder
-[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**getOneFolderWithParentsFolderFolderIdWithParentGet**](doc/FoldersEntitiesApi.md#getonefolderwithparentsfolderfolderidwithparentget) | **GET** /folder/{folder_id}/with_parent | Get One Folder With Parents
-[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**updatePersonalizeFolderFolderPersonalizeCreateOrUpdatePut**](doc/FoldersEntitiesApi.md#updatepersonalizefolderfolderpersonalizecreateorupdateput) | **PUT** /folder/personalize/create_or_update | Update Personalize Folder
-[*ModuleEntitiesApi*](doc/ModuleEntitiesApi.md) | [**createModuleModuleCreatePost**](doc/ModuleEntitiesApi.md#createmodulemodulecreatepost) | **POST** /module/create | Create Module
-[*ModuleEntitiesApi*](doc/ModuleEntitiesApi.md) | [**deletePersonalizeModuleModulePersonalizeDeleteDelete**](doc/ModuleEntitiesApi.md#deletepersonalizemodulemodulepersonalizedeletedelete) | **DELETE** /module/personalize/delete | Delete Personalize Module
-[*ModuleEntitiesApi*](doc/ModuleEntitiesApi.md) | [**getAllModuleModuleAllGet**](doc/ModuleEntitiesApi.md#getallmodulemoduleallget) | **GET** /module/all | Get All Module
-[*ModuleEntitiesApi*](doc/ModuleEntitiesApi.md) | [**getOneModuleModuleModuleIdGet**](doc/ModuleEntitiesApi.md#getonemodulemodulemoduleidget) | **GET** /module/{module_id} | Get One Module
-[*ModuleEntitiesApi*](doc/ModuleEntitiesApi.md) | [**updatePersonalizeModuleModulePersonalizeCreateOrUpdatePut**](doc/ModuleEntitiesApi.md#updatepersonalizemodulemodulepersonalizecreateorupdateput) | **PUT** /module/personalize/create_or_update | Update Personalize Module
-[*SentenceEntitiesApi*](doc/SentenceEntitiesApi.md) | [**createTermSentenceCreatePost**](doc/SentenceEntitiesApi.md#createtermsentencecreatepost) | **POST** /sentence/create | Create Term
-[*SentenceEntitiesApi*](doc/SentenceEntitiesApi.md) | [**getAllTermSentenceAllGet**](doc/SentenceEntitiesApi.md#getalltermsentenceallget) | **GET** /sentence/all | Get All Term
-[*SentenceEntitiesApi*](doc/SentenceEntitiesApi.md) | [**getOneTermSentenceSentenceIdGet**](doc/SentenceEntitiesApi.md#getonetermsentencesentenceidget) | **GET** /sentence/{sentence_id} | Get One Term
-[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**createTermTermCreatePost**](doc/TermEntitiesApi.md#createtermtermcreatepost) | **POST** /term/create | Create Term
-[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**deletePersonalizeTermeTermPersonalizeDeleteDelete**](doc/TermEntitiesApi.md#deletepersonalizetermetermpersonalizedeletedelete) | **DELETE** /term/personalize/delete | Delete Personalize Terme
-[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getAllAddTermInfoTermAddInfoAllGet**](doc/TermEntitiesApi.md#getalladdterminfotermaddinfoallget) | **GET** /term/add_info/all | Get All Add Term Info
-[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getAllTermTermAllGet**](doc/TermEntitiesApi.md#getalltermtermallget) | **GET** /term/all | Get All Term
-[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getAllTermTermFromModuleModuleIdGet**](doc/TermEntitiesApi.md#getalltermtermfrommodulemoduleidget) | **GET** /term/from_module/{module_id} | Get All Term
-[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getOneTermTermTermIdGet**](doc/TermEntitiesApi.md#getonetermtermtermidget) | **GET** /term/{term_id} | Get One Term
-[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**updatePersonalizeTermTermPersonalizeCreateOrUpdatePut**](doc/TermEntitiesApi.md#updatepersonalizetermtermpersonalizecreateorupdateput) | **PUT** /term/personalize/create_or_update | Update Personalize Term
-[*UsersEntitiesApi*](doc/UsersEntitiesApi.md) | [**createUserUserCreatePost**](doc/UsersEntitiesApi.md#createuserusercreatepost) | **POST** /user/create | Create User
-[*UsersEntitiesApi*](doc/UsersEntitiesApi.md) | [**readUsersMeUserMeGet**](doc/UsersEntitiesApi.md#readusersmeusermeget) | **GET** /user/me/ | Read Users Me
+[*AdditionalInfoOfTermsApi*](doc/AdditionalInfoOfTermsApi.md) | [**createTermCreateModuleIdTermIdPost**](doc/AdditionalInfoOfTermsApi.md#createtermcreatemoduleidtermidpost) | **POST** /term/add_info/create/{module_id}/{term_id} | Create Term
+[*AdditionalInfoOfTermsApi*](doc/AdditionalInfoOfTermsApi.md) | [**existTermInfoExistGet**](doc/AdditionalInfoOfTermsApi.md#existterminfoexistget) | **GET** /term/add_info/exist | Exist Term Info
+[*AdditionalInfoOfTermsApi*](doc/AdditionalInfoOfTermsApi.md) | [**getAllAddTermInfoAllGet**](doc/AdditionalInfoOfTermsApi.md#getalladdterminfoallget) | **GET** /term/add_info/all | Get All Add Term Info
+[*AdditionalInfoOfTermsApi*](doc/AdditionalInfoOfTermsApi.md) | [**getAllAddTermInfoFromModuleFromModuleModuleIdGet**](doc/AdditionalInfoOfTermsApi.md#getalladdterminfofrommodulefrommodulemoduleidget) | **GET** /term/add_info/from_module/{module_id} | Get All Add Term Info From Module
+[*AdditionalInfoOfTermsApi*](doc/AdditionalInfoOfTermsApi.md) | [**getAllAddTermInfoFromModuleFromTermTermIdGet**](doc/AdditionalInfoOfTermsApi.md#getalladdterminfofrommodulefromtermtermidget) | **GET** /term/add_info/from_term/{term_id} | Get All Add Term Info From Module
+[*AuthApi*](doc/AuthApi.md) | [**healthcheckGetHealthcheckGet**](doc/AuthApi.md#healthcheckgethealthcheckget) | **GET** /auth/healthcheck | Healthcheck Get
+[*AuthApi*](doc/AuthApi.md) | [**healthcheckPostHealthcheckPost**](doc/AuthApi.md#healthcheckposthealthcheckpost) | **POST** /auth/healthcheck | Healthcheck Post
+[*AuthApi*](doc/AuthApi.md) | [**loginForAccessTokenInOtherStyleTokenOtherStylePost**](doc/AuthApi.md#loginforaccesstokeninotherstyletokenotherstylepost) | **POST** /auth/token/other_style | Login For Access Token In Other Style
+[*AuthApi*](doc/AuthApi.md) | [**loginForAccessTokenTokenPost**](doc/AuthApi.md#loginforaccesstokentokenpost) | **POST** /auth/token | Login For Access Token
+[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**createFolderCreatePost**](doc/FoldersEntitiesApi.md#createfoldercreatepost) | **POST** /folder/create | Create Folder
+[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**createPersonalizeFolderPersonalizeCreatePost**](doc/FoldersEntitiesApi.md#createpersonalizefolderpersonalizecreatepost) | **POST** /folder/personalize/create | Create Personalize Folder
+[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**existFolderExistFolderIdGet**](doc/FoldersEntitiesApi.md#existfolderexistfolderidget) | **GET** /folder/exist/{folder_id} | Exist Folder
+[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**existPersonalizeFolderPersonalizeExistFolderIdGet**](doc/FoldersEntitiesApi.md#existpersonalizefolderpersonalizeexistfolderidget) | **GET** /folder/personalize/exist/{folder_id} | Exist Personalize Folder
+[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**getAllFoldersPersonalizeAllGet**](doc/FoldersEntitiesApi.md#getallfolderspersonalizeallget) | **GET** /folder/personalize/all | Get All Folders
+[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**getOneFolderFolderIdGet**](doc/FoldersEntitiesApi.md#getonefolderfolderidget) | **GET** /folder/{folder_id} | Get One Folder
+[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**getPersonalizeFolderPersonalizeFolderIdGet**](doc/FoldersEntitiesApi.md#getpersonalizefolderpersonalizefolderidget) | **GET** /folder/personalize/{folder_id} | Get Personalize Folder
+[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**getPersonalizeSubFoldersPersonalizeFolderIdSubFoldersGet**](doc/FoldersEntitiesApi.md#getpersonalizesubfolderspersonalizefolderidsubfoldersget) | **GET** /folder/personalize/{folder_id}/sub_folders | Get Personalize Sub Folders
+[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**getSubFoldersFolderIdSubFoldersGet**](doc/FoldersEntitiesApi.md#getsubfoldersfolderidsubfoldersget) | **GET** /folder/{folder_id}/sub_folders | Get Sub Folders
+[*FoldersEntitiesApi*](doc/FoldersEntitiesApi.md) | [**updatePersonalizeFolderPersonalizeUpdateFolderIdPut**](doc/FoldersEntitiesApi.md#updatepersonalizefolderpersonalizeupdatefolderidput) | **PUT** /folder/personalize/update/{folder_id} | Update Personalize Folder
+[*ModuleEntitiesApi*](doc/ModuleEntitiesApi.md) | [**createModuleCreatePost**](doc/ModuleEntitiesApi.md#createmodulecreatepost) | **POST** /module/create | Create Module
+[*ModuleEntitiesApi*](doc/ModuleEntitiesApi.md) | [**createPersonalizeModulePersonalizeCreatePost**](doc/ModuleEntitiesApi.md#createpersonalizemodulepersonalizecreatepost) | **POST** /module/personalize/create | Create Personalize Module
+[*ModuleEntitiesApi*](doc/ModuleEntitiesApi.md) | [**existModuleExistModuleIdGet**](doc/ModuleEntitiesApi.md#existmoduleexistmoduleidget) | **GET** /module/exist/{module_id} | Exist Module
+[*ModuleEntitiesApi*](doc/ModuleEntitiesApi.md) | [**existPersonalizeModulePersonalizeExistGet**](doc/ModuleEntitiesApi.md#existpersonalizemodulepersonalizeexistget) | **GET** /module/personalize/exist | Exist Personalize Module
+[*ModuleEntitiesApi*](doc/ModuleEntitiesApi.md) | [**getAllModulePersonalizeAllGet**](doc/ModuleEntitiesApi.md#getallmodulepersonalizeallget) | **GET** /module/personalize/all | Get All Module
+[*ModuleEntitiesApi*](doc/ModuleEntitiesApi.md) | [**getAllModulePersonalizeFromFolderFolderIdGet**](doc/ModuleEntitiesApi.md#getallmodulepersonalizefromfolderfolderidget) | **GET** /module/personalize/from_folder/{folder_id} | Get All Module
+[*ModuleEntitiesApi*](doc/ModuleEntitiesApi.md) | [**getModuleIdsFromFolderFromFolderFolderIdIdsOnlyGet**](doc/ModuleEntitiesApi.md#getmoduleidsfromfolderfromfolderfolderididsonlyget) | **GET** /module/from_folder/{folder_id}/ids_only | Get Module Ids From Folder
+[*ModuleEntitiesApi*](doc/ModuleEntitiesApi.md) | [**getModulesFromFolderFromFolderFolderIdGet**](doc/ModuleEntitiesApi.md#getmodulesfromfolderfromfolderfolderidget) | **GET** /module/from_folder/{folder_id} | Get Modules From Folder
+[*ModuleEntitiesApi*](doc/ModuleEntitiesApi.md) | [**getOneModuleModuleIdGet**](doc/ModuleEntitiesApi.md#getonemodulemoduleidget) | **GET** /module/{module_id} | Get One Module
+[*ModuleEntitiesApi*](doc/ModuleEntitiesApi.md) | [**getOneModulePersonalizeModuleIdGet**](doc/ModuleEntitiesApi.md#getonemodulepersonalizemoduleidget) | **GET** /module/personalize/{module_id} | Get One Module
+[*ModuleEntitiesApi*](doc/ModuleEntitiesApi.md) | [**updatePersonalizeModulePersonalizeUpdateModuleIdPut**](doc/ModuleEntitiesApi.md#updatepersonalizemodulepersonalizeupdatemoduleidput) | **PUT** /module/personalize/update/{module_id} | Update Personalize Module
+[*SentenceEntitiesApi*](doc/SentenceEntitiesApi.md) | [**createTermCreateModuleIdTermIdPost1**](doc/SentenceEntitiesApi.md#createtermcreatemoduleidtermidpost1) | **POST** /sentence/create/{module_id}/{term_id} | Create Term
+[*SentenceEntitiesApi*](doc/SentenceEntitiesApi.md) | [**existSentenceExistGet**](doc/SentenceEntitiesApi.md#existsentenceexistget) | **GET** /sentence/exist | Exist Sentence
+[*SentenceEntitiesApi*](doc/SentenceEntitiesApi.md) | [**getAllTermAllGet**](doc/SentenceEntitiesApi.md#getalltermallget) | **GET** /sentence/all | Get All Term
+[*SentenceEntitiesApi*](doc/SentenceEntitiesApi.md) | [**getAllTermFromModuleModuleIdGet**](doc/SentenceEntitiesApi.md#getalltermfrommodulemoduleidget) | **GET** /sentence/from_module/{module_id} | Get All Term
+[*SentenceEntitiesApi*](doc/SentenceEntitiesApi.md) | [**getAllTermFromTermTermIdGet**](doc/SentenceEntitiesApi.md#getalltermfromtermtermidget) | **GET** /sentence/from_term/{term_id} | Get All Term
+[*SentenceEntitiesApi*](doc/SentenceEntitiesApi.md) | [**getOneTermSentenceIdGet**](doc/SentenceEntitiesApi.md#getonetermsentenceidget) | **GET** /sentence/{sentence_id} | Get One Term
+[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**createPersonalizeTermPersonalizeCreatePost**](doc/TermEntitiesApi.md#createpersonalizetermpersonalizecreatepost) | **POST** /term/personalize/create | SYSTEM ONLY
+[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**createTermCreatePost**](doc/TermEntitiesApi.md#createtermcreatepost) | **POST** /term/create | Create Term
+[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**existPersonalizeTermPersonalizeExistGet**](doc/TermEntitiesApi.md#existpersonalizetermpersonalizeexistget) | **GET** /term/personalize/exist | Exist Personalize Term
+[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**existTermExistGet**](doc/TermEntitiesApi.md#existtermexistget) | **GET** /term/exist | Exist Term
+[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getAllPersonalizeTermFromModulePersonalizeFromModuleModuleIdGet**](doc/TermEntitiesApi.md#getallpersonalizetermfrommodulepersonalizefrommodulemoduleidget) | **GET** /term/personalize/from_module/{module_id} | Get All Personalize Term From Module
+[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getAllPersonalizeTermFromModulePersonalizeTermIdGet**](doc/TermEntitiesApi.md#getallpersonalizetermfrommodulepersonalizetermidget) | **GET** /term/personalize/{term_id} | Get All Personalize Term From Module
+[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getAllPersonalizeTermPersonalizeAllGet**](doc/TermEntitiesApi.md#getallpersonalizetermpersonalizeallget) | **GET** /term/personalize/all | Get All Personalize Term
+[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getOneTermTermIdGet**](doc/TermEntitiesApi.md#getonetermtermidget) | **GET** /term/{term_id} | Get One Term
+[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getTermIdsFromModuleFromModuleModuleIdIdsOnlyGet**](doc/TermEntitiesApi.md#gettermidsfrommodulefrommodulemoduleididsonlyget) | **GET** /term/from_module/{module_id}/ids_only | Get Term Ids From Module
+[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getTermsFromModuleFromModuleModuleIdGet**](doc/TermEntitiesApi.md#gettermsfrommodulefrommodulemoduleidget) | **GET** /term/from_module/{module_id} | Get Terms From Module
+[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**getTermsFromModuleListAllGet**](doc/TermEntitiesApi.md#gettermsfrommodulelistallget) | **GET** /term/all | Get Terms From Module List
+[*TermEntitiesApi*](doc/TermEntitiesApi.md) | [**updatePersonalizeTermPersonalizeUpdateTermIdPut**](doc/TermEntitiesApi.md#updatepersonalizetermpersonalizeupdatetermidput) | **PUT** /term/personalize/update/{term_id} | Update Personalize Term
+[*TermMarksEntitiesApi*](doc/TermMarksEntitiesApi.md) | [**createMarkCreateModuleIdPost**](doc/TermMarksEntitiesApi.md#createmarkcreatemoduleidpost) | **POST** /term/personalize/marks/create/{module_id} | Create Mark
+[*TermMarksEntitiesApi*](doc/TermMarksEntitiesApi.md) | [**existTermMarksAllGet**](doc/TermMarksEntitiesApi.md#existtermmarksallget) | **GET** /term/personalize/marks/all | Exist Term Marks
+[*TermMarksEntitiesApi*](doc/TermMarksEntitiesApi.md) | [**existTermMarksExistGet**](doc/TermMarksEntitiesApi.md#existtermmarksexistget) | **GET** /term/personalize/marks/exist | Exist Term Marks
+[*TermMarksEntitiesApi*](doc/TermMarksEntitiesApi.md) | [**existTermMarksFromModuleModuleIdGet**](doc/TermMarksEntitiesApi.md#existtermmarksfrommodulemoduleidget) | **GET** /term/personalize/marks/from_module/{module_id} | Exist Term Marks
+[*TermMarksEntitiesApi*](doc/TermMarksEntitiesApi.md) | [**existTermMarksFromTermTermIdGet**](doc/TermMarksEntitiesApi.md#existtermmarksfromtermtermidget) | **GET** /term/personalize/marks/from_term/{term_id} | Exist Term Marks
+[*UsersEntitiesApi*](doc/UsersEntitiesApi.md) | [**checkUserCheckUserGet**](doc/UsersEntitiesApi.md#checkusercheckuserget) | **GET** /user/check_user | Check User
+[*UsersEntitiesApi*](doc/UsersEntitiesApi.md) | [**createUserCreatePost**](doc/UsersEntitiesApi.md#createusercreatepost) | **POST** /user/create | Create User
+[*UsersEntitiesApi*](doc/UsersEntitiesApi.md) | [**existUserExistGet**](doc/UsersEntitiesApi.md#existuserexistget) | **GET** /user/exist | Exist User
+[*UsersEntitiesApi*](doc/UsersEntitiesApi.md) | [**readUsersMeMeGet**](doc/UsersEntitiesApi.md#readusersmemeget) | **GET** /user/me/ | Read Users Me
 
 
 ## Documentation For Models
 
  - [AddInfoTypeEnum](doc/AddInfoTypeEnum.md)
  - [AdditionalTermInfoDTO](doc/AdditionalTermInfoDTO.md)
- - [CreateAdditionalTermInfoAsTreeDTO](doc/CreateAdditionalTermInfoAsTreeDTO.md)
- - [CreateFolderAsTreeDTO](doc/CreateFolderAsTreeDTO.md)
+ - [AnsAdditionalTermInfoDTOUnionBErrorNoneType](doc/AnsAdditionalTermInfoDTOUnionBErrorNoneType.md)
+ - [AnsFolderDTOUnionBErrorNoneType](doc/AnsFolderDTOUnionBErrorNoneType.md)
+ - [AnsInfo](doc/AnsInfo.md)
+ - [AnsLearnMarkDTOUnionBErrorNoneType](doc/AnsLearnMarkDTOUnionBErrorNoneType.md)
+ - [AnsListAdditionalTermInfoDTOUnionBErrorNoneType](doc/AnsListAdditionalTermInfoDTOUnionBErrorNoneType.md)
+ - [AnsListFolderDTOUnionBErrorNoneType](doc/AnsListFolderDTOUnionBErrorNoneType.md)
+ - [AnsListOnlyPersonalizePartFolderDTOUnionBErrorNoneType](doc/AnsListOnlyPersonalizePartFolderDTOUnionBErrorNoneType.md)
+ - [AnsListPersonalizeFolderDTOUnionBErrorNoneType](doc/AnsListPersonalizeFolderDTOUnionBErrorNoneType.md)
+ - [AnsListPersonalizeModuleDTOUnionBErrorNoneType](doc/AnsListPersonalizeModuleDTOUnionBErrorNoneType.md)
+ - [AnsListPersonalizeTermDTOUnionBErrorNoneType](doc/AnsListPersonalizeTermDTOUnionBErrorNoneType.md)
+ - [AnsListSentenceDTOUnionBErrorNoneType](doc/AnsListSentenceDTOUnionBErrorNoneType.md)
+ - [AnsListTermDTOUnionBErrorNoneType](doc/AnsListTermDTOUnionBErrorNoneType.md)
+ - [AnsListUUIDUnionBErrorNoneType](doc/AnsListUUIDUnionBErrorNoneType.md)
+ - [AnsModuleDTOUnionBErrorNoneType](doc/AnsModuleDTOUnionBErrorNoneType.md)
+ - [AnsOnlyPersonalizePartFolderDTOUnionBErrorNoneType](doc/AnsOnlyPersonalizePartFolderDTOUnionBErrorNoneType.md)
+ - [AnsOnlyPersonalizePartModuleDTOUnionBErrorNoneType](doc/AnsOnlyPersonalizePartModuleDTOUnionBErrorNoneType.md)
+ - [AnsOnlyPersonalizePartTermDTOUnionBErrorNoneType](doc/AnsOnlyPersonalizePartTermDTOUnionBErrorNoneType.md)
+ - [AnsPersonalizeFolderDTOUnionBErrorNoneType](doc/AnsPersonalizeFolderDTOUnionBErrorNoneType.md)
+ - [AnsPersonalizeModuleDTOUnionBErrorNoneType](doc/AnsPersonalizeModuleDTOUnionBErrorNoneType.md)
+ - [AnsPersonalizeTermDTOUnionBErrorNoneType](doc/AnsPersonalizeTermDTOUnionBErrorNoneType.md)
+ - [AnsSentenceDTOUnionBErrorNoneType](doc/AnsSentenceDTOUnionBErrorNoneType.md)
+ - [AnsTermDTOUnionBErrorNoneType](doc/AnsTermDTOUnionBErrorNoneType.md)
+ - [AnsTokenBError](doc/AnsTokenBError.md)
+ - [AnsUserDTOUnionBErrorNoneType](doc/AnsUserDTOUnionBErrorNoneType.md)
+ - [AuthError](doc/AuthError.md)
+ - [BError](doc/BError.md)
+ - [CreateAdditionalTermInfoDTO](doc/CreateAdditionalTermInfoDTO.md)
  - [CreateFolderDTO](doc/CreateFolderDTO.md)
- - [CreateModuleAsTreeDTO](doc/CreateModuleAsTreeDTO.md)
+ - [CreateLearnMarkDTO](doc/CreateLearnMarkDTO.md)
  - [CreateModuleDTO](doc/CreateModuleDTO.md)
- - [CreateSentenceAsTreeDTO](doc/CreateSentenceAsTreeDTO.md)
+ - [CreateOnlyPersonalizePartFolderDTO](doc/CreateOnlyPersonalizePartFolderDTO.md)
+ - [CreateOnlyPersonalizePartModuleDTO](doc/CreateOnlyPersonalizePartModuleDTO.md)
+ - [CreateOnlyPersonalizePartTermDTO](doc/CreateOnlyPersonalizePartTermDTO.md)
  - [CreateSentenceDTO](doc/CreateSentenceDTO.md)
- - [CreateTermAsTreeDTO](doc/CreateTermAsTreeDTO.md)
  - [CreateTermDTO](doc/CreateTermDTO.md)
  - [CreateUserDTO](doc/CreateUserDTO.md)
- - [DeleteOnlyPersonalizePartFolderDTO](doc/DeleteOnlyPersonalizePartFolderDTO.md)
- - [DeleteOnlyPersonalizePartModuleDTO](doc/DeleteOnlyPersonalizePartModuleDTO.md)
- - [DeleteOnlyPersonalizePartTermDTO](doc/DeleteOnlyPersonalizePartTermDTO.md)
+ - [ErrOnlyAuthError](doc/ErrOnlyAuthError.md)
+ - [ErrOnlyHTTPValidationErrorModel](doc/ErrOnlyHTTPValidationErrorModel.md)
+ - [ErrOnlyLiteral](doc/ErrOnlyLiteral.md)
+ - [ErrOnlyLiteralDI](doc/ErrOnlyLiteralDI.md)
+ - [ErrOnlyNotFoundError](doc/ErrOnlyNotFoundError.md)
+ - [ErrorMessages](doc/ErrorMessages.md)
+ - [ErrorTypes](doc/ErrorTypes.md)
  - [FolderDTO](doc/FolderDTO.md)
- - [FolderWithNestedEntitiesDTO](doc/FolderWithNestedEntitiesDTO.md)
- - [FolderWithRootEntityDTO](doc/FolderWithRootEntityDTO.md)
- - [HTTPValidationError](doc/HTTPValidationError.md)
+ - [HTTPValidationErrorModel](doc/HTTPValidationErrorModel.md)
+ - [LearnMarkDTO](doc/LearnMarkDTO.md)
  - [ModuleDTO](doc/ModuleDTO.md)
- - [ModuleWithNestedEntitiesDTO](doc/ModuleWithNestedEntitiesDTO.md)
+ - [NotFoundError](doc/NotFoundError.md)
  - [OnlyPersonalizePartFolderDTO](doc/OnlyPersonalizePartFolderDTO.md)
  - [OnlyPersonalizePartModuleDTO](doc/OnlyPersonalizePartModuleDTO.md)
  - [OnlyPersonalizePartTermDTO](doc/OnlyPersonalizePartTermDTO.md)
  - [PersonalizeFolderDTO](doc/PersonalizeFolderDTO.md)
  - [PersonalizeModuleDTO](doc/PersonalizeModuleDTO.md)
  - [PersonalizeTermDTO](doc/PersonalizeTermDTO.md)
- - [PersonalizeTermWithAddInfoDTO](doc/PersonalizeTermWithAddInfoDTO.md)
  - [SentenceDTO](doc/SentenceDTO.md)
  - [TermDTO](doc/TermDTO.md)
  - [Token](doc/Token.md)
@@ -130,7 +190,8 @@ Class | Method | HTTP request | Description
  - [UpdateOnlyPersonalizePartModuleDTO](doc/UpdateOnlyPersonalizePartModuleDTO.md)
  - [UpdateOnlyPersonalizePartTermDTO](doc/UpdateOnlyPersonalizePartTermDTO.md)
  - [UserDTO](doc/UserDTO.md)
- - [ValidationError](doc/ValidationError.md)
+ - [ValidationErrorModel](doc/ValidationErrorModel.md)
+ - [WatchLearnTypeEnum](doc/WatchLearnTypeEnum.md)
 
 
 ## Documentation For Authorization

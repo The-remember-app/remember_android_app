@@ -9,11 +9,13 @@ import 'package:api_package/src/auth/api_key_auth.dart';
 import 'package:api_package/src/auth/basic_auth.dart';
 import 'package:api_package/src/auth/bearer_auth.dart';
 import 'package:api_package/src/auth/oauth.dart';
+import 'package:api_package/src/api/additional_info_of_terms_api.dart';
 import 'package:api_package/src/api/auth_api.dart';
 import 'package:api_package/src/api/folders_entities_api.dart';
 import 'package:api_package/src/api/module_entities_api.dart';
 import 'package:api_package/src/api/sentence_entities_api.dart';
 import 'package:api_package/src/api/term_entities_api.dart';
+import 'package:api_package/src/api/term_marks_entities_api.dart';
 import 'package:api_package/src/api/users_entities_api.dart';
 
 class ApiPackage {
@@ -70,6 +72,12 @@ class ApiPackage {
     }
   }
 
+  /// Get AdditionalInfoOfTermsApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  AdditionalInfoOfTermsApi getAdditionalInfoOfTermsApi() {
+    return AdditionalInfoOfTermsApi(dio, serializers);
+  }
+
   /// Get AuthApi instance, base route and serializer can be overridden by a given but be careful,
   /// by doing that all interceptors will not be executed
   AuthApi getAuthApi() {
@@ -98,6 +106,12 @@ class ApiPackage {
   /// by doing that all interceptors will not be executed
   TermEntitiesApi getTermEntitiesApi() {
     return TermEntitiesApi(dio, serializers);
+  }
+
+  /// Get TermMarksEntitiesApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  TermMarksEntitiesApi getTermMarksEntitiesApi() {
+    return TermMarksEntitiesApi(dio, serializers);
   }
 
   /// Get UsersEntitiesApi instance, base route and serializer can be overridden by a given but be careful,

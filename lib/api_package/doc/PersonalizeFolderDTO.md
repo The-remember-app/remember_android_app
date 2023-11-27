@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **personalCreatedAt** | [**JsonObject**](.md) |  | 
 **personalUpdatedAt** | [**JsonObject**](.md) |  | 
 **name** | [**JsonObject**](.md) |  | 
-**rootFolderId** | [**JsonObject**](.md) |  | 
+**rootFolderId** | [**JsonObject**](.md) |  | [optional] 
 **id** | [**JsonObject**](.md) |  | 
 **authorId** | [**JsonObject**](.md) |  | 
 **createdAt** | [**JsonObject**](.md) |  | 

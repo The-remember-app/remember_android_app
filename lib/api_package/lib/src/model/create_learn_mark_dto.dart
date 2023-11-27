@@ -3,91 +3,102 @@
 //
 
 // ignore_for_file: unused_element
+import 'package:api_package/src/model/watch_learn_type_enum.dart';
 import 'package:built_value/json_object.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'update_only_personalize_part_term_dto.g.dart';
+part 'create_learn_mark_dto.g.dart';
 
-/// UpdateOnlyPersonalizePartTermDTO
+/// CreateLearnMarkDTO
 ///
 /// Properties:
-/// * [chooseErrorCounter] 
-/// * [writeErrorCounter] 
-/// * [choiceNegErrorCounter] 
-/// * [watchCount] 
-/// * [personalUpdatedAt] 
+/// * [termId] 
+/// * [startWatch] 
+/// * [endWatch] 
+/// * [isLearnt] 
+/// * [isLearnIterStart] 
+/// * [watchType] 
 @BuiltValue()
-abstract class UpdateOnlyPersonalizePartTermDTO implements Built<UpdateOnlyPersonalizePartTermDTO, UpdateOnlyPersonalizePartTermDTOBuilder> {
-  @BuiltValueField(wireName: r'choose_error_counter')
-  JsonObject? get chooseErrorCounter;
+abstract class CreateLearnMarkDTO implements Built<CreateLearnMarkDTO, CreateLearnMarkDTOBuilder> {
+  @BuiltValueField(wireName: r'term_id')
+  JsonObject? get termId;
 
-  @BuiltValueField(wireName: r'write_error_counter')
-  JsonObject? get writeErrorCounter;
+  @BuiltValueField(wireName: r'start_watch')
+  JsonObject? get startWatch;
 
-  @BuiltValueField(wireName: r'choice_neg_error_counter')
-  JsonObject? get choiceNegErrorCounter;
+  @BuiltValueField(wireName: r'end_watch')
+  JsonObject? get endWatch;
 
-  @BuiltValueField(wireName: r'watch_count')
-  JsonObject? get watchCount;
+  @BuiltValueField(wireName: r'is_learnt')
+  JsonObject? get isLearnt;
 
-  @BuiltValueField(wireName: r'personal_updated_at')
-  JsonObject? get personalUpdatedAt;
+  @BuiltValueField(wireName: r'is_learn_iter_start')
+  JsonObject? get isLearnIterStart;
 
-  UpdateOnlyPersonalizePartTermDTO._();
+  @BuiltValueField(wireName: r'watch_type')
+  JsonObject get watchType;
+  // enum watchTypeEnum {  choice,  reverse_choice,  write,  reverse_write,  };
 
-  factory UpdateOnlyPersonalizePartTermDTO([void updates(UpdateOnlyPersonalizePartTermDTOBuilder b)]) = _$UpdateOnlyPersonalizePartTermDTO;
+  CreateLearnMarkDTO._();
+
+  factory CreateLearnMarkDTO([void updates(CreateLearnMarkDTOBuilder b)]) = _$CreateLearnMarkDTO;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(UpdateOnlyPersonalizePartTermDTOBuilder b) => b;
+  static void _defaults(CreateLearnMarkDTOBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateOnlyPersonalizePartTermDTO> get serializer => _$UpdateOnlyPersonalizePartTermDTOSerializer();
+  static Serializer<CreateLearnMarkDTO> get serializer => _$CreateLearnMarkDTOSerializer();
 }
 
-class _$UpdateOnlyPersonalizePartTermDTOSerializer implements PrimitiveSerializer<UpdateOnlyPersonalizePartTermDTO> {
+class _$CreateLearnMarkDTOSerializer implements PrimitiveSerializer<CreateLearnMarkDTO> {
   @override
-  final Iterable<Type> types = const [UpdateOnlyPersonalizePartTermDTO, _$UpdateOnlyPersonalizePartTermDTO];
+  final Iterable<Type> types = const [CreateLearnMarkDTO, _$CreateLearnMarkDTO];
 
   @override
-  final String wireName = r'UpdateOnlyPersonalizePartTermDTO';
+  final String wireName = r'CreateLearnMarkDTO';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    UpdateOnlyPersonalizePartTermDTO object, {
+    CreateLearnMarkDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    yield r'choose_error_counter';
-    yield object.chooseErrorCounter == null ? null : serializers.serialize(
-      object.chooseErrorCounter,
+    yield r'term_id';
+    yield object.termId == null ? null : serializers.serialize(
+      object.termId,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'write_error_counter';
-    yield object.writeErrorCounter == null ? null : serializers.serialize(
-      object.writeErrorCounter,
+    yield r'start_watch';
+    yield object.startWatch == null ? null : serializers.serialize(
+      object.startWatch,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'choice_neg_error_counter';
-    yield object.choiceNegErrorCounter == null ? null : serializers.serialize(
-      object.choiceNegErrorCounter,
+    yield r'end_watch';
+    yield object.endWatch == null ? null : serializers.serialize(
+      object.endWatch,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'watch_count';
-    yield object.watchCount == null ? null : serializers.serialize(
-      object.watchCount,
+    yield r'is_learnt';
+    yield object.isLearnt == null ? null : serializers.serialize(
+      object.isLearnt,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'personal_updated_at';
-    yield object.personalUpdatedAt == null ? null : serializers.serialize(
-      object.personalUpdatedAt,
+    yield r'is_learn_iter_start';
+    yield object.isLearnIterStart == null ? null : serializers.serialize(
+      object.isLearnIterStart,
       specifiedType: const FullType.nullable(JsonObject),
+    );
+    yield r'watch_type';
+    yield serializers.serialize(
+      object.watchType,
+      specifiedType: const FullType(JsonObject),
     );
   }
 
   @override
   Object serialize(
     Serializers serializers,
-    UpdateOnlyPersonalizePartTermDTO object, {
+    CreateLearnMarkDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
@@ -98,52 +109,59 @@ class _$UpdateOnlyPersonalizePartTermDTOSerializer implements PrimitiveSerialize
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required UpdateOnlyPersonalizePartTermDTOBuilder result,
+    required CreateLearnMarkDTOBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
-        case r'choose_error_counter':
+        case r'term_id':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.chooseErrorCounter = valueDes;
+          result.termId = valueDes;
           break;
-        case r'write_error_counter':
+        case r'start_watch':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.writeErrorCounter = valueDes;
+          result.startWatch = valueDes;
           break;
-        case r'choice_neg_error_counter':
+        case r'end_watch':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.choiceNegErrorCounter = valueDes;
+          result.endWatch = valueDes;
           break;
-        case r'watch_count':
+        case r'is_learnt':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.watchCount = valueDes;
+          result.isLearnt = valueDes;
           break;
-        case r'personal_updated_at':
+        case r'is_learn_iter_start':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.personalUpdatedAt = valueDes;
+          result.isLearnIterStart = valueDes;
+          break;
+        case r'watch_type':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
+          result.watchType = valueDes;
           break;
         default:
           unhandled.add(key);
@@ -154,12 +172,12 @@ class _$UpdateOnlyPersonalizePartTermDTOSerializer implements PrimitiveSerialize
   }
 
   @override
-  UpdateOnlyPersonalizePartTermDTO deserialize(
+  CreateLearnMarkDTO deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = UpdateOnlyPersonalizePartTermDTOBuilder();
+    final result = CreateLearnMarkDTOBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

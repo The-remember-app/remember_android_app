@@ -3,74 +3,83 @@
 //
 
 // ignore_for_file: unused_element
+import 'package:api_package/src/model/error_messages.dart';
 import 'package:built_value/json_object.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'module_dto.g.dart';
+part 'http_validation_error_model.g.dart';
 
-/// ModuleDTO
+/// HTTPValidationErrorModel
 ///
 /// Properties:
-/// * [name] 
+/// * [errorType] 
+/// * [message] 
 /// * [description] 
-/// * [rootFolderId] 
-/// * [id] 
-/// * [authorId] 
-/// * [createdAt] 
-/// * [updatedAt] 
+/// * [statusCode] 
+/// * [detail] 
+/// * [body] 
 @BuiltValue()
-abstract class ModuleDTO implements Built<ModuleDTO, ModuleDTOBuilder> {
-  @BuiltValueField(wireName: r'name')
-  JsonObject? get name;
+abstract class HTTPValidationErrorModel implements Built<HTTPValidationErrorModel, HTTPValidationErrorModelBuilder> {
+  @BuiltValueField(wireName: r'error_type')
+  JsonObject? get errorType;
+
+  @BuiltValueField(wireName: r'message')
+  JsonObject? get message;
+  // enum messageEnum {  root_folder_not_found,  not_set,  };
 
   @BuiltValueField(wireName: r'description')
   JsonObject? get description;
 
-  @BuiltValueField(wireName: r'root_folder_id')
-  JsonObject? get rootFolderId;
+  @BuiltValueField(wireName: r'status_code')
+  JsonObject? get statusCode;
 
-  @BuiltValueField(wireName: r'id')
-  JsonObject? get id;
+  @BuiltValueField(wireName: r'detail')
+  JsonObject? get detail;
 
-  @BuiltValueField(wireName: r'author_id')
-  JsonObject? get authorId;
+  @BuiltValueField(wireName: r'body')
+  JsonObject? get body;
 
-  @BuiltValueField(wireName: r'created_at')
-  JsonObject? get createdAt;
+  HTTPValidationErrorModel._();
 
-  @BuiltValueField(wireName: r'updated_at')
-  JsonObject? get updatedAt;
-
-  ModuleDTO._();
-
-  factory ModuleDTO([void updates(ModuleDTOBuilder b)]) = _$ModuleDTO;
+  factory HTTPValidationErrorModel([void updates(HTTPValidationErrorModelBuilder b)]) = _$HTTPValidationErrorModel;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(ModuleDTOBuilder b) => b
-      ..description = JsonObject("");
+  static void _defaults(HTTPValidationErrorModelBuilder b) => b
+      ..errorType = JsonObject("validation")
+      ..message = JsonObject("root_folder_not_found")
+      ..statusCode = JsonObject(422);
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ModuleDTO> get serializer => _$ModuleDTOSerializer();
+  static Serializer<HTTPValidationErrorModel> get serializer => _$HTTPValidationErrorModelSerializer();
 }
 
-class _$ModuleDTOSerializer implements PrimitiveSerializer<ModuleDTO> {
+class _$HTTPValidationErrorModelSerializer implements PrimitiveSerializer<HTTPValidationErrorModel> {
   @override
-  final Iterable<Type> types = const [ModuleDTO, _$ModuleDTO];
+  final Iterable<Type> types = const [HTTPValidationErrorModel, _$HTTPValidationErrorModel];
 
   @override
-  final String wireName = r'ModuleDTO';
+  final String wireName = r'HTTPValidationErrorModel';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    ModuleDTO object, {
+    HTTPValidationErrorModel object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    yield r'name';
-    yield object.name == null ? null : serializers.serialize(
-      object.name,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
+    if (object.errorType != null) {
+      yield r'error_type';
+      yield serializers.serialize(
+        object.errorType,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    if (object.message != null) {
+      yield r'message';
+      yield serializers.serialize(
+        object.message,
+        specifiedType: const FullType(JsonObject),
+      );
+    }
     if (object.description != null) {
       yield r'description';
       yield serializers.serialize(
@@ -78,39 +87,33 @@ class _$ModuleDTOSerializer implements PrimitiveSerializer<ModuleDTO> {
         specifiedType: const FullType.nullable(JsonObject),
       );
     }
-    if (object.rootFolderId != null) {
-      yield r'root_folder_id';
+    if (object.statusCode != null) {
+      yield r'status_code';
       yield serializers.serialize(
-        object.rootFolderId,
+        object.statusCode,
         specifiedType: const FullType.nullable(JsonObject),
       );
     }
-    yield r'id';
-    yield object.id == null ? null : serializers.serialize(
-      object.id,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'author_id';
-    yield object.authorId == null ? null : serializers.serialize(
-      object.authorId,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'created_at';
-    yield object.createdAt == null ? null : serializers.serialize(
-      object.createdAt,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'updated_at';
-    yield object.updatedAt == null ? null : serializers.serialize(
-      object.updatedAt,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
+    if (object.detail != null) {
+      yield r'detail';
+      yield serializers.serialize(
+        object.detail,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    if (object.body != null) {
+      yield r'body';
+      yield serializers.serialize(
+        object.body,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
   }
 
   @override
   Object serialize(
     Serializers serializers,
-    ModuleDTO object, {
+    HTTPValidationErrorModel object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
@@ -121,20 +124,27 @@ class _$ModuleDTOSerializer implements PrimitiveSerializer<ModuleDTO> {
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required ModuleDTOBuilder result,
+    required HTTPValidationErrorModelBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
-        case r'name':
+        case r'error_type':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.name = valueDes;
+          result.errorType = valueDes;
+          break;
+        case r'message':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
+          result.message = valueDes;
           break;
         case r'description':
           final valueDes = serializers.deserialize(
@@ -144,45 +154,29 @@ class _$ModuleDTOSerializer implements PrimitiveSerializer<ModuleDTO> {
           if (valueDes == null) continue;
           result.description = valueDes;
           break;
-        case r'root_folder_id':
+        case r'status_code':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.rootFolderId = valueDes;
+          result.statusCode = valueDes;
           break;
-        case r'id':
+        case r'detail':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.id = valueDes;
+          result.detail = valueDes;
           break;
-        case r'author_id':
+        case r'body':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.authorId = valueDes;
-          break;
-        case r'created_at':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.createdAt = valueDes;
-          break;
-        case r'updated_at':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.updatedAt = valueDes;
+          result.body = valueDes;
           break;
         default:
           unhandled.add(key);
@@ -193,12 +187,12 @@ class _$ModuleDTOSerializer implements PrimitiveSerializer<ModuleDTO> {
   }
 
   @override
-  ModuleDTO deserialize(
+  HTTPValidationErrorModel deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = ModuleDTOBuilder();
+    final result = HTTPValidationErrorModelBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

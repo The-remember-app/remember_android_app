@@ -9,62 +9,20 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**createFolderAsTreeFolderCreateAsTreePost**](FoldersEntitiesApi.md#createfolderastreefoldercreateastreepost) | **POST** /folder/create/as_tree | Create Folder As Tree
-[**createFolderFolderCreatePost**](FoldersEntitiesApi.md#createfolderfoldercreatepost) | **POST** /folder/create | Create Folder
-[**deletePersonalizeFolderFolderPersonalizeDeleteDelete**](FoldersEntitiesApi.md#deletepersonalizefolderfolderpersonalizedeletedelete) | **DELETE** /folder/personalize/delete | Delete Personalize Folder
-[**getAllFoldersAsTreeFolderAllAsTreeGet**](FoldersEntitiesApi.md#getallfoldersastreefolderallastreeget) | **GET** /folder/all/as_tree | Get All Folders As Tree
-[**getAllFoldersFolderAllGet**](FoldersEntitiesApi.md#getallfoldersfolderallget) | **GET** /folder/all | Get All Folders
-[**getOneFolderAsTreeFolderFolderIdAsTreeGet**](FoldersEntitiesApi.md#getonefolderastreefolderfolderidastreeget) | **GET** /folder/{folder_id}/as_tree | Get One Folder As Tree
-[**getOneFolderFolderFolderIdGet**](FoldersEntitiesApi.md#getonefolderfolderfolderidget) | **GET** /folder/{folder_id} | Get One Folder
-[**getOneFolderWithParentsFolderFolderIdWithParentGet**](FoldersEntitiesApi.md#getonefolderwithparentsfolderfolderidwithparentget) | **GET** /folder/{folder_id}/with_parent | Get One Folder With Parents
-[**updatePersonalizeFolderFolderPersonalizeCreateOrUpdatePut**](FoldersEntitiesApi.md#updatepersonalizefolderfolderpersonalizecreateorupdateput) | **PUT** /folder/personalize/create_or_update | Update Personalize Folder
+[**createFolderCreatePost**](FoldersEntitiesApi.md#createfoldercreatepost) | **POST** /folder/create | Create Folder
+[**createPersonalizeFolderPersonalizeCreatePost**](FoldersEntitiesApi.md#createpersonalizefolderpersonalizecreatepost) | **POST** /folder/personalize/create | Create Personalize Folder
+[**existFolderExistFolderIdGet**](FoldersEntitiesApi.md#existfolderexistfolderidget) | **GET** /folder/exist/{folder_id} | Exist Folder
+[**existPersonalizeFolderPersonalizeExistFolderIdGet**](FoldersEntitiesApi.md#existpersonalizefolderpersonalizeexistfolderidget) | **GET** /folder/personalize/exist/{folder_id} | Exist Personalize Folder
+[**getAllFoldersPersonalizeAllGet**](FoldersEntitiesApi.md#getallfolderspersonalizeallget) | **GET** /folder/personalize/all | Get All Folders
+[**getOneFolderFolderIdGet**](FoldersEntitiesApi.md#getonefolderfolderidget) | **GET** /folder/{folder_id} | Get One Folder
+[**getPersonalizeFolderPersonalizeFolderIdGet**](FoldersEntitiesApi.md#getpersonalizefolderpersonalizefolderidget) | **GET** /folder/personalize/{folder_id} | Get Personalize Folder
+[**getPersonalizeSubFoldersPersonalizeFolderIdSubFoldersGet**](FoldersEntitiesApi.md#getpersonalizesubfolderspersonalizefolderidsubfoldersget) | **GET** /folder/personalize/{folder_id}/sub_folders | Get Personalize Sub Folders
+[**getSubFoldersFolderIdSubFoldersGet**](FoldersEntitiesApi.md#getsubfoldersfolderidsubfoldersget) | **GET** /folder/{folder_id}/sub_folders | Get Sub Folders
+[**updatePersonalizeFolderPersonalizeUpdateFolderIdPut**](FoldersEntitiesApi.md#updatepersonalizefolderpersonalizeupdatefolderidput) | **PUT** /folder/personalize/update/{folder_id} | Update Personalize Folder
 
 
-# **createFolderAsTreeFolderCreateAsTreePost**
-> JsonObject createFolderAsTreeFolderCreateAsTreePost(body)
-
-Create Folder As Tree
-
-### Example
-```dart
-import 'package:api_package/api.dart';
-// TODO Configure OAuth2 access token for authorization: OAuth2PasswordBearer
-//defaultApiClient.getAuthentication<OAuth>('OAuth2PasswordBearer').accessToken = 'YOUR_ACCESS_TOKEN';
-
-final api = ApiPackage().getFoldersEntitiesApi();
-final JsonObject body = ; // JsonObject | 
-
-try {
-    final response = api.createFolderAsTreeFolderCreateAsTreePost(body);
-    print(response);
-} catch on DioException (e) {
-    print('Exception when calling FoldersEntitiesApi->createFolderAsTreeFolderCreateAsTreePost: $e\n');
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | **JsonObject**|  | 
-
-### Return type
-
-[**JsonObject**](JsonObject.md)
-
-### Authorization
-
-[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **createFolderFolderCreatePost**
-> FolderDTO createFolderFolderCreatePost(createFolderDTO)
+# **createFolderCreatePost**
+> AnsFolderDTOUnionBErrorNoneType createFolderCreatePost(createFolderDTO)
 
 Create Folder
 
@@ -78,10 +36,10 @@ final api = ApiPackage().getFoldersEntitiesApi();
 final CreateFolderDTO createFolderDTO = ; // CreateFolderDTO | 
 
 try {
-    final response = api.createFolderFolderCreatePost(createFolderDTO);
+    final response = api.createFolderCreatePost(createFolderDTO);
     print(response);
 } catch on DioException (e) {
-    print('Exception when calling FoldersEntitiesApi->createFolderFolderCreatePost: $e\n');
+    print('Exception when calling FoldersEntitiesApi->createFolderCreatePost: $e\n');
 }
 ```
 
@@ -93,7 +51,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**FolderDTO**](FolderDTO.md)
+[**AnsFolderDTOUnionBErrorNoneType**](AnsFolderDTOUnionBErrorNoneType.md)
 
 ### Authorization
 
@@ -106,10 +64,10 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **deletePersonalizeFolderFolderPersonalizeDeleteDelete**
-> JsonObject deletePersonalizeFolderFolderPersonalizeDeleteDelete(body)
+# **createPersonalizeFolderPersonalizeCreatePost**
+> AnsListOnlyPersonalizePartFolderDTOUnionBErrorNoneType createPersonalizeFolderPersonalizeCreatePost(createOnlyPersonalizePartFolderDTO)
 
-Delete Personalize Folder
+Create Personalize Folder
 
 ### Example
 ```dart
@@ -118,13 +76,13 @@ import 'package:api_package/api.dart';
 //defaultApiClient.getAuthentication<OAuth>('OAuth2PasswordBearer').accessToken = 'YOUR_ACCESS_TOKEN';
 
 final api = ApiPackage().getFoldersEntitiesApi();
-final JsonObject body = ; // JsonObject | 
+final CreateOnlyPersonalizePartFolderDTO createOnlyPersonalizePartFolderDTO = ; // CreateOnlyPersonalizePartFolderDTO | 
 
 try {
-    final response = api.deletePersonalizeFolderFolderPersonalizeDeleteDelete(body);
+    final response = api.createPersonalizeFolderPersonalizeCreatePost(createOnlyPersonalizePartFolderDTO);
     print(response);
 } catch on DioException (e) {
-    print('Exception when calling FoldersEntitiesApi->deletePersonalizeFolderFolderPersonalizeDeleteDelete: $e\n');
+    print('Exception when calling FoldersEntitiesApi->createPersonalizeFolderPersonalizeCreatePost: $e\n');
 }
 ```
 
@@ -132,11 +90,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | **JsonObject**|  | 
+ **createOnlyPersonalizePartFolderDTO** | [**CreateOnlyPersonalizePartFolderDTO**](CreateOnlyPersonalizePartFolderDTO.md)|  | 
 
 ### Return type
 
-[**JsonObject**](JsonObject.md)
+[**AnsListOnlyPersonalizePartFolderDTOUnionBErrorNoneType**](AnsListOnlyPersonalizePartFolderDTOUnionBErrorNoneType.md)
 
 ### Authorization
 
@@ -149,10 +107,55 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getAllFoldersAsTreeFolderAllAsTreeGet**
-> JsonObject getAllFoldersAsTreeFolderAllAsTreeGet()
+# **existFolderExistFolderIdGet**
+> JsonObject existFolderExistFolderIdGet(folderId, rootFolderId, authorId)
 
-Get All Folders As Tree
+Exist Folder
+
+### Example
+```dart
+import 'package:api_package/api.dart';
+
+final api = ApiPackage().getFoldersEntitiesApi();
+final JsonObject folderId = ; // JsonObject | 
+final JsonObject rootFolderId = ; // JsonObject | 
+final JsonObject authorId = ; // JsonObject | 
+
+try {
+    final response = api.existFolderExistFolderIdGet(folderId, rootFolderId, authorId);
+    print(response);
+} catch on DioException (e) {
+    print('Exception when calling FoldersEntitiesApi->existFolderExistFolderIdGet: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **folderId** | [**JsonObject**](.md)|  | 
+ **rootFolderId** | [**JsonObject**](.md)|  | [optional] 
+ **authorId** | [**JsonObject**](.md)|  | [optional] 
+
+### Return type
+
+[**JsonObject**](JsonObject.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **existPersonalizeFolderPersonalizeExistFolderIdGet**
+> JsonObject existPersonalizeFolderPersonalizeExistFolderIdGet(folderId, rootFolderId)
+
+Exist Personalize Folder
 
 ### Example
 ```dart
@@ -161,17 +164,23 @@ import 'package:api_package/api.dart';
 //defaultApiClient.getAuthentication<OAuth>('OAuth2PasswordBearer').accessToken = 'YOUR_ACCESS_TOKEN';
 
 final api = ApiPackage().getFoldersEntitiesApi();
+final JsonObject folderId = ; // JsonObject | 
+final JsonObject rootFolderId = ; // JsonObject | 
 
 try {
-    final response = api.getAllFoldersAsTreeFolderAllAsTreeGet();
+    final response = api.existPersonalizeFolderPersonalizeExistFolderIdGet(folderId, rootFolderId);
     print(response);
 } catch on DioException (e) {
-    print('Exception when calling FoldersEntitiesApi->getAllFoldersAsTreeFolderAllAsTreeGet: $e\n');
+    print('Exception when calling FoldersEntitiesApi->existPersonalizeFolderPersonalizeExistFolderIdGet: $e\n');
 }
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **folderId** | [**JsonObject**](.md)|  | 
+ **rootFolderId** | [**JsonObject**](.md)|  | [optional] 
 
 ### Return type
 
@@ -188,8 +197,8 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getAllFoldersFolderAllGet**
-> JsonObject getAllFoldersFolderAllGet()
+# **getAllFoldersPersonalizeAllGet**
+> AnsListPersonalizeFolderDTOUnionBErrorNoneType getAllFoldersPersonalizeAllGet(authorOnly, limit, offset, updatedAfter)
 
 Get All Folders
 
@@ -200,52 +209,16 @@ import 'package:api_package/api.dart';
 //defaultApiClient.getAuthentication<OAuth>('OAuth2PasswordBearer').accessToken = 'YOUR_ACCESS_TOKEN';
 
 final api = ApiPackage().getFoldersEntitiesApi();
+final JsonObject authorOnly = ; // JsonObject | 
+final JsonObject limit = ; // JsonObject | 
+final JsonObject offset = ; // JsonObject | 
+final JsonObject updatedAfter = ; // JsonObject | Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет.
 
 try {
-    final response = api.getAllFoldersFolderAllGet();
+    final response = api.getAllFoldersPersonalizeAllGet(authorOnly, limit, offset, updatedAfter);
     print(response);
 } catch on DioException (e) {
-    print('Exception when calling FoldersEntitiesApi->getAllFoldersFolderAllGet: $e\n');
-}
-```
-
-### Parameters
-This endpoint does not need any parameter.
-
-### Return type
-
-[**JsonObject**](JsonObject.md)
-
-### Authorization
-
-[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **getOneFolderAsTreeFolderFolderIdAsTreeGet**
-> FolderWithNestedEntitiesDTO getOneFolderAsTreeFolderFolderIdAsTreeGet(folderId)
-
-Get One Folder As Tree
-
-### Example
-```dart
-import 'package:api_package/api.dart';
-// TODO Configure OAuth2 access token for authorization: OAuth2PasswordBearer
-//defaultApiClient.getAuthentication<OAuth>('OAuth2PasswordBearer').accessToken = 'YOUR_ACCESS_TOKEN';
-
-final api = ApiPackage().getFoldersEntitiesApi();
-final JsonObject folderId = ; // JsonObject | 
-
-try {
-    final response = api.getOneFolderAsTreeFolderFolderIdAsTreeGet(folderId);
-    print(response);
-} catch on DioException (e) {
-    print('Exception when calling FoldersEntitiesApi->getOneFolderAsTreeFolderFolderIdAsTreeGet: $e\n');
+    print('Exception when calling FoldersEntitiesApi->getAllFoldersPersonalizeAllGet: $e\n');
 }
 ```
 
@@ -253,11 +226,14 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **folderId** | [**JsonObject**](.md)|  | 
+ **authorOnly** | [**JsonObject**](.md)|  | [optional] [default to false]
+ **limit** | [**JsonObject**](.md)|  | [optional] [default to 100]
+ **offset** | [**JsonObject**](.md)|  | [optional] [default to 0]
+ **updatedAfter** | [**JsonObject**](.md)| Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет. | [optional] 
 
 ### Return type
 
-[**FolderWithNestedEntitiesDTO**](FolderWithNestedEntitiesDTO.md)
+[**AnsListPersonalizeFolderDTOUnionBErrorNoneType**](AnsListPersonalizeFolderDTOUnionBErrorNoneType.md)
 
 ### Authorization
 
@@ -270,8 +246,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getOneFolderFolderFolderIdGet**
-> FolderDTO getOneFolderFolderFolderIdGet(folderId)
+# **getOneFolderFolderIdGet**
+> AnsFolderDTOUnionBErrorNoneType getOneFolderFolderIdGet(folderId)
 
 Get One Folder
 
@@ -285,10 +261,10 @@ final api = ApiPackage().getFoldersEntitiesApi();
 final JsonObject folderId = ; // JsonObject | 
 
 try {
-    final response = api.getOneFolderFolderFolderIdGet(folderId);
+    final response = api.getOneFolderFolderIdGet(folderId);
     print(response);
 } catch on DioException (e) {
-    print('Exception when calling FoldersEntitiesApi->getOneFolderFolderFolderIdGet: $e\n');
+    print('Exception when calling FoldersEntitiesApi->getOneFolderFolderIdGet: $e\n');
 }
 ```
 
@@ -300,7 +276,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**FolderDTO**](FolderDTO.md)
+[**AnsFolderDTOUnionBErrorNoneType**](AnsFolderDTOUnionBErrorNoneType.md)
 
 ### Authorization
 
@@ -313,10 +289,10 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getOneFolderWithParentsFolderFolderIdWithParentGet**
-> FolderWithRootEntityDTO getOneFolderWithParentsFolderFolderIdWithParentGet(folderId)
+# **getPersonalizeFolderPersonalizeFolderIdGet**
+> AnsPersonalizeFolderDTOUnionBErrorNoneType getPersonalizeFolderPersonalizeFolderIdGet(folderId, authorOnly)
 
-Get One Folder With Parents
+Get Personalize Folder
 
 ### Example
 ```dart
@@ -326,12 +302,13 @@ import 'package:api_package/api.dart';
 
 final api = ApiPackage().getFoldersEntitiesApi();
 final JsonObject folderId = ; // JsonObject | 
+final JsonObject authorOnly = ; // JsonObject | 
 
 try {
-    final response = api.getOneFolderWithParentsFolderFolderIdWithParentGet(folderId);
+    final response = api.getPersonalizeFolderPersonalizeFolderIdGet(folderId, authorOnly);
     print(response);
 } catch on DioException (e) {
-    print('Exception when calling FoldersEntitiesApi->getOneFolderWithParentsFolderFolderIdWithParentGet: $e\n');
+    print('Exception when calling FoldersEntitiesApi->getPersonalizeFolderPersonalizeFolderIdGet: $e\n');
 }
 ```
 
@@ -340,10 +317,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **folderId** | [**JsonObject**](.md)|  | 
+ **authorOnly** | [**JsonObject**](.md)|  | [optional] [default to false]
 
 ### Return type
 
-[**FolderWithRootEntityDTO**](FolderWithRootEntityDTO.md)
+[**AnsPersonalizeFolderDTOUnionBErrorNoneType**](AnsPersonalizeFolderDTOUnionBErrorNoneType.md)
 
 ### Authorization
 
@@ -356,8 +334,108 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **updatePersonalizeFolderFolderPersonalizeCreateOrUpdatePut**
-> JsonObject updatePersonalizeFolderFolderPersonalizeCreateOrUpdatePut(body)
+# **getPersonalizeSubFoldersPersonalizeFolderIdSubFoldersGet**
+> AnsListPersonalizeFolderDTOUnionBErrorNoneType getPersonalizeSubFoldersPersonalizeFolderIdSubFoldersGet(folderId, authorOnly, limit, offset, updatedAfter)
+
+Get Personalize Sub Folders
+
+### Example
+```dart
+import 'package:api_package/api.dart';
+// TODO Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+//defaultApiClient.getAuthentication<OAuth>('OAuth2PasswordBearer').accessToken = 'YOUR_ACCESS_TOKEN';
+
+final api = ApiPackage().getFoldersEntitiesApi();
+final JsonObject folderId = ; // JsonObject | Установите null для получения корневых папок
+final JsonObject authorOnly = ; // JsonObject | 
+final JsonObject limit = ; // JsonObject | 
+final JsonObject offset = ; // JsonObject | 
+final JsonObject updatedAfter = ; // JsonObject | Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет.
+
+try {
+    final response = api.getPersonalizeSubFoldersPersonalizeFolderIdSubFoldersGet(folderId, authorOnly, limit, offset, updatedAfter);
+    print(response);
+} catch on DioException (e) {
+    print('Exception when calling FoldersEntitiesApi->getPersonalizeSubFoldersPersonalizeFolderIdSubFoldersGet: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **folderId** | [**JsonObject**](.md)| Установите null для получения корневых папок | 
+ **authorOnly** | [**JsonObject**](.md)|  | [optional] [default to false]
+ **limit** | [**JsonObject**](.md)|  | [optional] [default to 100]
+ **offset** | [**JsonObject**](.md)|  | [optional] [default to 0]
+ **updatedAfter** | [**JsonObject**](.md)| Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет. | [optional] 
+
+### Return type
+
+[**AnsListPersonalizeFolderDTOUnionBErrorNoneType**](AnsListPersonalizeFolderDTOUnionBErrorNoneType.md)
+
+### Authorization
+
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getSubFoldersFolderIdSubFoldersGet**
+> AnsListFolderDTOUnionBErrorNoneType getSubFoldersFolderIdSubFoldersGet(folderId, limit, offset, updatedAfter)
+
+Get Sub Folders
+
+### Example
+```dart
+import 'package:api_package/api.dart';
+// TODO Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+//defaultApiClient.getAuthentication<OAuth>('OAuth2PasswordBearer').accessToken = 'YOUR_ACCESS_TOKEN';
+
+final api = ApiPackage().getFoldersEntitiesApi();
+final JsonObject folderId = ; // JsonObject | 
+final JsonObject limit = ; // JsonObject | 
+final JsonObject offset = ; // JsonObject | 
+final JsonObject updatedAfter = ; // JsonObject | Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет.
+
+try {
+    final response = api.getSubFoldersFolderIdSubFoldersGet(folderId, limit, offset, updatedAfter);
+    print(response);
+} catch on DioException (e) {
+    print('Exception when calling FoldersEntitiesApi->getSubFoldersFolderIdSubFoldersGet: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **folderId** | [**JsonObject**](.md)|  | 
+ **limit** | [**JsonObject**](.md)|  | [optional] [default to 100]
+ **offset** | [**JsonObject**](.md)|  | [optional] [default to 0]
+ **updatedAfter** | [**JsonObject**](.md)| Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет. | [optional] 
+
+### Return type
+
+[**AnsListFolderDTOUnionBErrorNoneType**](AnsListFolderDTOUnionBErrorNoneType.md)
+
+### Authorization
+
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **updatePersonalizeFolderPersonalizeUpdateFolderIdPut**
+> AnsOnlyPersonalizePartFolderDTOUnionBErrorNoneType updatePersonalizeFolderPersonalizeUpdateFolderIdPut(folderId, updateOnlyPersonalizePartFolderDTO)
 
 Update Personalize Folder
 
@@ -368,13 +446,14 @@ import 'package:api_package/api.dart';
 //defaultApiClient.getAuthentication<OAuth>('OAuth2PasswordBearer').accessToken = 'YOUR_ACCESS_TOKEN';
 
 final api = ApiPackage().getFoldersEntitiesApi();
-final JsonObject body = ; // JsonObject | 
+final JsonObject folderId = ; // JsonObject | 
+final UpdateOnlyPersonalizePartFolderDTO updateOnlyPersonalizePartFolderDTO = ; // UpdateOnlyPersonalizePartFolderDTO | 
 
 try {
-    final response = api.updatePersonalizeFolderFolderPersonalizeCreateOrUpdatePut(body);
+    final response = api.updatePersonalizeFolderPersonalizeUpdateFolderIdPut(folderId, updateOnlyPersonalizePartFolderDTO);
     print(response);
 } catch on DioException (e) {
-    print('Exception when calling FoldersEntitiesApi->updatePersonalizeFolderFolderPersonalizeCreateOrUpdatePut: $e\n');
+    print('Exception when calling FoldersEntitiesApi->updatePersonalizeFolderPersonalizeUpdateFolderIdPut: $e\n');
 }
 ```
 
@@ -382,11 +461,12 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | **JsonObject**|  | 
+ **folderId** | [**JsonObject**](.md)|  | 
+ **updateOnlyPersonalizePartFolderDTO** | [**UpdateOnlyPersonalizePartFolderDTO**](UpdateOnlyPersonalizePartFolderDTO.md)|  | 
 
 ### Return type
 
-[**JsonObject**](JsonObject.md)
+[**AnsOnlyPersonalizePartFolderDTOUnionBErrorNoneType**](AnsOnlyPersonalizePartFolderDTOUnionBErrorNoneType.md)
 
 ### Authorization
 

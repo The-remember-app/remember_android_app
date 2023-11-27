@@ -9,12 +9,13 @@ import 'package:api_package/api.dart';
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **textData** | [**JsonObject**](.md) |  | 
-**addingTextData** | [**JsonObject**](.md) |  | 
-**dialectOrArea** | [**JsonObject**](.md) |  | 
-**addInfoType** | [**AddInfoTypeEnum**](AddInfoTypeEnum.md) |  | [default to usual_term]
-**parentAddInfoId** | [**JsonObject**](.md) |  | 
+**addingTextData** | [**JsonObject**](.md) |  | [optional] 
+**dialectOrArea** | [**JsonObject**](.md) |  | [optional] 
+**addInfoType** | [**AddInfoTypeEnum**](AddInfoTypeEnum.md) |  | [optional] [default to usual_term]
+**parentAddInfoId** | [**JsonObject**](.md) |  | [optional] 
 **termId** | [**JsonObject**](.md) |  | 
 **id** | [**JsonObject**](.md) |  | 
+**moduleId** | [**JsonObject**](.md) |  | 
 **createdAt** | [**JsonObject**](.md) |  | 
 **updatedAt** | [**JsonObject**](.md) |  | 
 

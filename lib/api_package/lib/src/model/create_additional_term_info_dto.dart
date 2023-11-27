@@ -8,9 +8,9 @@ import 'package:built_value/json_object.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'additional_term_info_dto.g.dart';
+part 'create_additional_term_info_dto.g.dart';
 
-/// AdditionalTermInfoDTO
+/// CreateAdditionalTermInfoDTO
 ///
 /// Properties:
 /// * [textData] 
@@ -19,12 +19,8 @@ part 'additional_term_info_dto.g.dart';
 /// * [addInfoType] 
 /// * [parentAddInfoId] 
 /// * [termId] 
-/// * [id] 
-/// * [moduleId] 
-/// * [createdAt] 
-/// * [updatedAt] 
 @BuiltValue()
-abstract class AdditionalTermInfoDTO implements Built<AdditionalTermInfoDTO, AdditionalTermInfoDTOBuilder> {
+abstract class CreateAdditionalTermInfoDTO implements Built<CreateAdditionalTermInfoDTO, CreateAdditionalTermInfoDTOBuilder> {
   @BuiltValueField(wireName: r'text_data')
   JsonObject? get textData;
 
@@ -35,8 +31,8 @@ abstract class AdditionalTermInfoDTO implements Built<AdditionalTermInfoDTO, Add
   JsonObject? get dialectOrArea;
 
   @BuiltValueField(wireName: r'add_info_type')
-  JsonObject get addInfoType;
-  // enum addInfoTypeEnum {  usual_term,  other_form,  help_phrase_with_word,  help_phrase_without_word,  abbreviation,  composite_word,  sound,  transcription,  };
+  JsonObject? get addInfoType;
+  // enum addInfoTypeEnum {  usual_term,  other_form,  help_phrase_with_word,  help_phrase_without_word,  dialect_or_area,  abbreviation,  composite_word,  unary_word,  sound,  transcription,  };
 
   @BuiltValueField(wireName: r'parent_add_info_id')
   JsonObject? get parentAddInfoId;
@@ -44,40 +40,28 @@ abstract class AdditionalTermInfoDTO implements Built<AdditionalTermInfoDTO, Add
   @BuiltValueField(wireName: r'term_id')
   JsonObject? get termId;
 
-  @BuiltValueField(wireName: r'id')
-  JsonObject? get id;
+  CreateAdditionalTermInfoDTO._();
 
-  @BuiltValueField(wireName: r'module_id')
-  JsonObject? get moduleId;
-
-  @BuiltValueField(wireName: r'created_at')
-  JsonObject? get createdAt;
-
-  @BuiltValueField(wireName: r'updated_at')
-  JsonObject? get updatedAt;
-
-  AdditionalTermInfoDTO._();
-
-  factory AdditionalTermInfoDTO([void updates(AdditionalTermInfoDTOBuilder b)]) = _$AdditionalTermInfoDTO;
+  factory CreateAdditionalTermInfoDTO([void updates(CreateAdditionalTermInfoDTOBuilder b)]) = _$CreateAdditionalTermInfoDTO;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(AdditionalTermInfoDTOBuilder b) => b
-      ..addInfoType = JsonObject("usual_term");
+  static void _defaults(CreateAdditionalTermInfoDTOBuilder b) => b
+      ..addInfoType = JsonObject( "usual_term");
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<AdditionalTermInfoDTO> get serializer => _$AdditionalTermInfoDTOSerializer();
+  static Serializer<CreateAdditionalTermInfoDTO> get serializer => _$CreateAdditionalTermInfoDTOSerializer();
 }
 
-class _$AdditionalTermInfoDTOSerializer implements PrimitiveSerializer<AdditionalTermInfoDTO> {
+class _$CreateAdditionalTermInfoDTOSerializer implements PrimitiveSerializer<CreateAdditionalTermInfoDTO> {
   @override
-  final Iterable<Type> types = const [AdditionalTermInfoDTO, _$AdditionalTermInfoDTO];
+  final Iterable<Type> types = const [CreateAdditionalTermInfoDTO, _$CreateAdditionalTermInfoDTO];
 
   @override
-  final String wireName = r'AdditionalTermInfoDTO';
+  final String wireName = r'CreateAdditionalTermInfoDTO';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    AdditionalTermInfoDTO object, {
+    CreateAdditionalTermInfoDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
     yield r'text_data';
@@ -118,32 +102,12 @@ class _$AdditionalTermInfoDTOSerializer implements PrimitiveSerializer<Additiona
       object.termId,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'id';
-    yield object.id == null ? null : serializers.serialize(
-      object.id,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'module_id';
-    yield object.moduleId == null ? null : serializers.serialize(
-      object.moduleId,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'created_at';
-    yield object.createdAt == null ? null : serializers.serialize(
-      object.createdAt,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'updated_at';
-    yield object.updatedAt == null ? null : serializers.serialize(
-      object.updatedAt,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
   }
 
   @override
   Object serialize(
     Serializers serializers,
-    AdditionalTermInfoDTO object, {
+    CreateAdditionalTermInfoDTO object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
@@ -154,7 +118,7 @@ class _$AdditionalTermInfoDTOSerializer implements PrimitiveSerializer<Additiona
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required AdditionalTermInfoDTOBuilder result,
+    required CreateAdditionalTermInfoDTOBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
@@ -188,8 +152,8 @@ class _$AdditionalTermInfoDTOSerializer implements PrimitiveSerializer<Additiona
         case r'add_info_type':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.addInfoType = valueDes;
           break;
         case r'parent_add_info_id':
@@ -208,38 +172,6 @@ class _$AdditionalTermInfoDTOSerializer implements PrimitiveSerializer<Additiona
           if (valueDes == null) continue;
           result.termId = valueDes;
           break;
-        case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.id = valueDes;
-          break;
-        case r'module_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.moduleId = valueDes;
-          break;
-        case r'created_at':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.createdAt = valueDes;
-          break;
-        case r'updated_at':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.updatedAt = valueDes;
-          break;
         default:
           unhandled.add(key);
           unhandled.add(value);
@@ -249,12 +181,12 @@ class _$AdditionalTermInfoDTOSerializer implements PrimitiveSerializer<Additiona
   }
 
   @override
-  AdditionalTermInfoDTO deserialize(
+  CreateAdditionalTermInfoDTO deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = AdditionalTermInfoDTOBuilder();
+    final result = CreateAdditionalTermInfoDTOBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

@@ -9,13 +9,16 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**createTermSentenceCreatePost**](SentenceEntitiesApi.md#createtermsentencecreatepost) | **POST** /sentence/create | Create Term
-[**getAllTermSentenceAllGet**](SentenceEntitiesApi.md#getalltermsentenceallget) | **GET** /sentence/all | Get All Term
-[**getOneTermSentenceSentenceIdGet**](SentenceEntitiesApi.md#getonetermsentencesentenceidget) | **GET** /sentence/{sentence_id} | Get One Term
+[**createTermCreateModuleIdTermIdPost1**](SentenceEntitiesApi.md#createtermcreatemoduleidtermidpost1) | **POST** /sentence/create/{module_id}/{term_id} | Create Term
+[**existSentenceExistGet**](SentenceEntitiesApi.md#existsentenceexistget) | **GET** /sentence/exist | Exist Sentence
+[**getAllTermAllGet**](SentenceEntitiesApi.md#getalltermallget) | **GET** /sentence/all | Get All Term
+[**getAllTermFromModuleModuleIdGet**](SentenceEntitiesApi.md#getalltermfrommodulemoduleidget) | **GET** /sentence/from_module/{module_id} | Get All Term
+[**getAllTermFromTermTermIdGet**](SentenceEntitiesApi.md#getalltermfromtermtermidget) | **GET** /sentence/from_term/{term_id} | Get All Term
+[**getOneTermSentenceIdGet**](SentenceEntitiesApi.md#getonetermsentenceidget) | **GET** /sentence/{sentence_id} | Get One Term
 
 
-# **createTermSentenceCreatePost**
-> SentenceDTO createTermSentenceCreatePost(createSentenceDTO)
+# **createTermCreateModuleIdTermIdPost1**
+> AnsSentenceDTOUnionBErrorNoneType createTermCreateModuleIdTermIdPost1(moduleId, termId, createSentenceDTO)
 
 Create Term
 
@@ -26,13 +29,15 @@ import 'package:api_package/api.dart';
 //defaultApiClient.getAuthentication<OAuth>('OAuth2PasswordBearer').accessToken = 'YOUR_ACCESS_TOKEN';
 
 final api = ApiPackage().getSentenceEntitiesApi();
+final JsonObject moduleId = ; // JsonObject | 
+final JsonObject termId = ; // JsonObject | 
 final CreateSentenceDTO createSentenceDTO = ; // CreateSentenceDTO | 
 
 try {
-    final response = api.createTermSentenceCreatePost(createSentenceDTO);
+    final response = api.createTermCreateModuleIdTermIdPost1(moduleId, termId, createSentenceDTO);
     print(response);
 } catch on DioException (e) {
-    print('Exception when calling SentenceEntitiesApi->createTermSentenceCreatePost: $e\n');
+    print('Exception when calling SentenceEntitiesApi->createTermCreateModuleIdTermIdPost1: $e\n');
 }
 ```
 
@@ -40,11 +45,13 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **moduleId** | [**JsonObject**](.md)|  | 
+ **termId** | [**JsonObject**](.md)|  | 
  **createSentenceDTO** | [**CreateSentenceDTO**](CreateSentenceDTO.md)|  | 
 
 ### Return type
 
-[**SentenceDTO**](SentenceDTO.md)
+[**AnsSentenceDTOUnionBErrorNoneType**](AnsSentenceDTOUnionBErrorNoneType.md)
 
 ### Authorization
 
@@ -57,8 +64,51 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getAllTermSentenceAllGet**
-> JsonObject getAllTermSentenceAllGet()
+# **existSentenceExistGet**
+> JsonObject existSentenceExistGet(sentenceId, termId)
+
+Exist Sentence
+
+### Example
+```dart
+import 'package:api_package/api.dart';
+
+final api = ApiPackage().getSentenceEntitiesApi();
+final JsonObject sentenceId = ; // JsonObject | 
+final JsonObject termId = ; // JsonObject | 
+
+try {
+    final response = api.existSentenceExistGet(sentenceId, termId);
+    print(response);
+} catch on DioException (e) {
+    print('Exception when calling SentenceEntitiesApi->existSentenceExistGet: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sentenceId** | [**JsonObject**](.md)|  | 
+ **termId** | [**JsonObject**](.md)|  | [optional] 
+
+### Return type
+
+[**JsonObject**](JsonObject.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getAllTermAllGet**
+> AnsListSentenceDTOUnionBErrorNoneType getAllTermAllGet(moduleIds, authorOnly, limit, offset, updatedAfter)
 
 Get All Term
 
@@ -69,21 +119,33 @@ import 'package:api_package/api.dart';
 //defaultApiClient.getAuthentication<OAuth>('OAuth2PasswordBearer').accessToken = 'YOUR_ACCESS_TOKEN';
 
 final api = ApiPackage().getSentenceEntitiesApi();
+final JsonObject moduleIds = ; // JsonObject | Список модулей, из которых будут получены предложения
+final JsonObject authorOnly = ; // JsonObject | 
+final JsonObject limit = ; // JsonObject | 
+final JsonObject offset = ; // JsonObject | 
+final JsonObject updatedAfter = ; // JsonObject | Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет.
 
 try {
-    final response = api.getAllTermSentenceAllGet();
+    final response = api.getAllTermAllGet(moduleIds, authorOnly, limit, offset, updatedAfter);
     print(response);
 } catch on DioException (e) {
-    print('Exception when calling SentenceEntitiesApi->getAllTermSentenceAllGet: $e\n');
+    print('Exception when calling SentenceEntitiesApi->getAllTermAllGet: $e\n');
 }
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **moduleIds** | [**JsonObject**](.md)| Список модулей, из которых будут получены предложения | 
+ **authorOnly** | [**JsonObject**](.md)|  | [optional] [default to false]
+ **limit** | [**JsonObject**](.md)|  | [optional] [default to 100]
+ **offset** | [**JsonObject**](.md)|  | [optional] [default to 0]
+ **updatedAfter** | [**JsonObject**](.md)| Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет. | [optional] 
 
 ### Return type
 
-[**JsonObject**](JsonObject.md)
+[**AnsListSentenceDTOUnionBErrorNoneType**](AnsListSentenceDTOUnionBErrorNoneType.md)
 
 ### Authorization
 
@@ -96,8 +158,110 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getOneTermSentenceSentenceIdGet**
-> SentenceDTO getOneTermSentenceSentenceIdGet(sentenceId)
+# **getAllTermFromModuleModuleIdGet**
+> AnsListSentenceDTOUnionBErrorNoneType getAllTermFromModuleModuleIdGet(moduleId, authorOnly, limit, offset, updatedAfter)
+
+Get All Term
+
+### Example
+```dart
+import 'package:api_package/api.dart';
+// TODO Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+//defaultApiClient.getAuthentication<OAuth>('OAuth2PasswordBearer').accessToken = 'YOUR_ACCESS_TOKEN';
+
+final api = ApiPackage().getSentenceEntitiesApi();
+final JsonObject moduleId = ; // JsonObject | 
+final JsonObject authorOnly = ; // JsonObject | 
+final JsonObject limit = ; // JsonObject | 
+final JsonObject offset = ; // JsonObject | 
+final JsonObject updatedAfter = ; // JsonObject | Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет.
+
+try {
+    final response = api.getAllTermFromModuleModuleIdGet(moduleId, authorOnly, limit, offset, updatedAfter);
+    print(response);
+} catch on DioException (e) {
+    print('Exception when calling SentenceEntitiesApi->getAllTermFromModuleModuleIdGet: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **moduleId** | [**JsonObject**](.md)|  | 
+ **authorOnly** | [**JsonObject**](.md)|  | [optional] [default to false]
+ **limit** | [**JsonObject**](.md)|  | [optional] [default to 100]
+ **offset** | [**JsonObject**](.md)|  | [optional] [default to 0]
+ **updatedAfter** | [**JsonObject**](.md)| Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет. | [optional] 
+
+### Return type
+
+[**AnsListSentenceDTOUnionBErrorNoneType**](AnsListSentenceDTOUnionBErrorNoneType.md)
+
+### Authorization
+
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getAllTermFromTermTermIdGet**
+> AnsListSentenceDTOUnionBErrorNoneType getAllTermFromTermTermIdGet(termId, authorOnly, limit, offset, updatedAfter)
+
+Get All Term
+
+### Example
+```dart
+import 'package:api_package/api.dart';
+// TODO Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+//defaultApiClient.getAuthentication<OAuth>('OAuth2PasswordBearer').accessToken = 'YOUR_ACCESS_TOKEN';
+
+final api = ApiPackage().getSentenceEntitiesApi();
+final JsonObject termId = ; // JsonObject | 
+final JsonObject authorOnly = ; // JsonObject | 
+final JsonObject limit = ; // JsonObject | 
+final JsonObject offset = ; // JsonObject | 
+final JsonObject updatedAfter = ; // JsonObject | Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет.
+
+try {
+    final response = api.getAllTermFromTermTermIdGet(termId, authorOnly, limit, offset, updatedAfter);
+    print(response);
+} catch on DioException (e) {
+    print('Exception when calling SentenceEntitiesApi->getAllTermFromTermTermIdGet: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **termId** | [**JsonObject**](.md)|  | 
+ **authorOnly** | [**JsonObject**](.md)|  | [optional] [default to false]
+ **limit** | [**JsonObject**](.md)|  | [optional] [default to 100]
+ **offset** | [**JsonObject**](.md)|  | [optional] [default to 0]
+ **updatedAfter** | [**JsonObject**](.md)| Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет. | [optional] 
+
+### Return type
+
+[**AnsListSentenceDTOUnionBErrorNoneType**](AnsListSentenceDTOUnionBErrorNoneType.md)
+
+### Authorization
+
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getOneTermSentenceIdGet**
+> AnsSentenceDTOUnionBErrorNoneType getOneTermSentenceIdGet(sentenceId)
 
 Get One Term
 
@@ -111,10 +275,10 @@ final api = ApiPackage().getSentenceEntitiesApi();
 final JsonObject sentenceId = ; // JsonObject | 
 
 try {
-    final response = api.getOneTermSentenceSentenceIdGet(sentenceId);
+    final response = api.getOneTermSentenceIdGet(sentenceId);
     print(response);
 } catch on DioException (e) {
-    print('Exception when calling SentenceEntitiesApi->getOneTermSentenceSentenceIdGet: $e\n');
+    print('Exception when calling SentenceEntitiesApi->getOneTermSentenceIdGet: $e\n');
 }
 ```
 
@@ -126,7 +290,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SentenceDTO**](SentenceDTO.md)
+[**AnsSentenceDTOUnionBErrorNoneType**](AnsSentenceDTOUnionBErrorNoneType.md)
 
 ### Authorization
 

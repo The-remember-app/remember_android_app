@@ -14,7 +14,6 @@ part 'create_sentence_dto.g.dart';
 /// Properties:
 /// * [sentence] 
 /// * [translate] 
-/// * [termId] 
 @BuiltValue()
 abstract class CreateSentenceDTO implements Built<CreateSentenceDTO, CreateSentenceDTOBuilder> {
   @BuiltValueField(wireName: r'sentence')
@@ -22,9 +21,6 @@ abstract class CreateSentenceDTO implements Built<CreateSentenceDTO, CreateSente
 
   @BuiltValueField(wireName: r'translate')
   JsonObject? get translate;
-
-  @BuiltValueField(wireName: r'term_id')
-  JsonObject? get termId;
 
   CreateSentenceDTO._();
 
@@ -57,11 +53,6 @@ class _$CreateSentenceDTOSerializer implements PrimitiveSerializer<CreateSentenc
     yield r'translate';
     yield object.translate == null ? null : serializers.serialize(
       object.translate,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'term_id';
-    yield object.termId == null ? null : serializers.serialize(
-      object.termId,
       specifiedType: const FullType.nullable(JsonObject),
     );
   }
@@ -102,14 +93,6 @@ class _$CreateSentenceDTOSerializer implements PrimitiveSerializer<CreateSentenc
           ) as JsonObject?;
           if (valueDes == null) continue;
           result.translate = valueDes;
-          break;
-        case r'term_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(JsonObject),
-          ) as JsonObject?;
-          if (valueDes == null) continue;
-          result.termId = valueDes;
           break;
         default:
           unhandled.add(key);

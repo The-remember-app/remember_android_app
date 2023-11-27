@@ -7,51 +7,66 @@ import 'package:built_value/json_object.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'update_only_personalize_part_folder_dto.g.dart';
+part 'ans_info.g.dart';
 
-/// UpdateOnlyPersonalizePartFolderDTO
+/// AnsInfo
 ///
 /// Properties:
-/// * [personalUpdatedAt] 
+/// * [apiVersion] 
+/// * [deprecated] 
 @BuiltValue()
-abstract class UpdateOnlyPersonalizePartFolderDTO implements Built<UpdateOnlyPersonalizePartFolderDTO, UpdateOnlyPersonalizePartFolderDTOBuilder> {
-  @BuiltValueField(wireName: r'personal_updated_at')
-  JsonObject? get personalUpdatedAt;
+abstract class AnsInfo implements Built<AnsInfo, AnsInfoBuilder> {
+  @BuiltValueField(wireName: r'api_version')
+  JsonObject? get apiVersion;
 
-  UpdateOnlyPersonalizePartFolderDTO._();
+  @BuiltValueField(wireName: r'deprecated')
+  JsonObject? get deprecated;
 
-  factory UpdateOnlyPersonalizePartFolderDTO([void updates(UpdateOnlyPersonalizePartFolderDTOBuilder b)]) = _$UpdateOnlyPersonalizePartFolderDTO;
+  AnsInfo._();
+
+  factory AnsInfo([void updates(AnsInfoBuilder b)]) = _$AnsInfo;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(UpdateOnlyPersonalizePartFolderDTOBuilder b) => b;
+  static void _defaults(AnsInfoBuilder b) => b
+      ..apiVersion = JsonObject('0.0.1')
+      ..deprecated = JsonObject(false);
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateOnlyPersonalizePartFolderDTO> get serializer => _$UpdateOnlyPersonalizePartFolderDTOSerializer();
+  static Serializer<AnsInfo> get serializer => _$AnsInfoSerializer();
 }
 
-class _$UpdateOnlyPersonalizePartFolderDTOSerializer implements PrimitiveSerializer<UpdateOnlyPersonalizePartFolderDTO> {
+class _$AnsInfoSerializer implements PrimitiveSerializer<AnsInfo> {
   @override
-  final Iterable<Type> types = const [UpdateOnlyPersonalizePartFolderDTO, _$UpdateOnlyPersonalizePartFolderDTO];
+  final Iterable<Type> types = const [AnsInfo, _$AnsInfo];
 
   @override
-  final String wireName = r'UpdateOnlyPersonalizePartFolderDTO';
+  final String wireName = r'AnsInfo';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    UpdateOnlyPersonalizePartFolderDTO object, {
+    AnsInfo object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    yield r'personal_updated_at';
-    yield object.personalUpdatedAt == null ? null : serializers.serialize(
-      object.personalUpdatedAt,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
+    if (object.apiVersion != null) {
+      yield r'api_version';
+      yield serializers.serialize(
+        object.apiVersion,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    if (object.deprecated != null) {
+      yield r'deprecated';
+      yield serializers.serialize(
+        object.deprecated,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
   }
 
   @override
   Object serialize(
     Serializers serializers,
-    UpdateOnlyPersonalizePartFolderDTO object, {
+    AnsInfo object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
@@ -62,20 +77,28 @@ class _$UpdateOnlyPersonalizePartFolderDTOSerializer implements PrimitiveSeriali
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required UpdateOnlyPersonalizePartFolderDTOBuilder result,
+    required AnsInfoBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
-        case r'personal_updated_at':
+        case r'api_version':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.personalUpdatedAt = valueDes;
+          result.apiVersion = valueDes;
+          break;
+        case r'deprecated':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
+          result.deprecated = valueDes;
           break;
         default:
           unhandled.add(key);
@@ -86,12 +109,12 @@ class _$UpdateOnlyPersonalizePartFolderDTOSerializer implements PrimitiveSeriali
   }
 
   @override
-  UpdateOnlyPersonalizePartFolderDTO deserialize(
+  AnsInfo deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = UpdateOnlyPersonalizePartFolderDTOBuilder();
+    final result = AnsInfoBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

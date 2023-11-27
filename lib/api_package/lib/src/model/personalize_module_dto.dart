@@ -188,16 +188,20 @@ class _$PersonalizeModuleDTOSerializer implements PrimitiveSerializer<Personaliz
       object.name,
       specifiedType: const FullType.nullable(JsonObject),
     );
-    yield r'description';
-    yield object.description == null ? null : serializers.serialize(
-      object.description,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
-    yield r'root_folder_id';
-    yield object.rootFolderId == null ? null : serializers.serialize(
-      object.rootFolderId,
-      specifiedType: const FullType.nullable(JsonObject),
-    );
+    if (object.description != null) {
+      yield r'description';
+      yield serializers.serialize(
+        object.description,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
+    if (object.rootFolderId != null) {
+      yield r'root_folder_id';
+      yield serializers.serialize(
+        object.rootFolderId,
+        specifiedType: const FullType.nullable(JsonObject),
+      );
+    }
     yield r'id';
     yield object.id == null ? null : serializers.serialize(
       object.id,
