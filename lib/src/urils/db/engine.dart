@@ -22,22 +22,21 @@ List<CollectionSchema<AbstractEntity>> allSchemes = [
   SentenceDbDSSchema
 ];
 
-enum ConnType {
-  module, folder, term, user, server_urls, term_info
-}
+enum ConnType { module, folder, term, user, server_urls, term_info }
 
-class IzarManager  {
-  static final IzarManager  instance  = IzarManager._internal();
+class IzarManager {
+  static final IzarManager instance = IzarManager._internal();
   final Map<String, int> _izarCounter = <String, int>{};
+  Future<Isar>? currOpenOfConnection;
 
-  factory IzarManager () {
-    return instance ;
+  factory IzarManager() {
+    return instance;
   }
 
   IzarManager._internal();
 
-  Future<Isar> _openIsar<T>(String name, List<CollectionSchema<T>> schemes) async {
-    final dir = await getApplicationDocumentsDirectory();
+  Future<Isar> _openIsar<T>(
+      String name, List<CollectionSchema<T>> schemes) async {
     final izar = Isar.getInstance(name);
 
     if (izar != null && izar.isOpen) {
@@ -46,8 +45,12 @@ class IzarManager  {
       return izar;
     }
 
-    _izarCounter[name] = 1;
-
+    if (_izarCounter[name] == null || _izarCounter[name] == 0) {
+      _izarCounter[name] = 1;
+    } else {
+      _izarCounter[name] = (_izarCounter[name] ?? 0) + 1;
+    }
+    final dir = await getApplicationDocumentsDirectory();
     return Isar.open(
       schemes,
       directory: dir.path,
@@ -71,20 +74,36 @@ class IzarManager  {
   }
 
   Future<Isar> openActivityDB(ConnType connName) async {
-    // return switch(connName){
-    //   ConnType.module => _openIsar('module', [TermEntityDbDSSchema, ModuleDbDSSchema, FolderDbDSSchema]),
-    //   ConnType.term => _openIsar('term', [TermEntityDbDSSchema, ModuleDbDSSchema, FolderDbDSSchema]),
-    //   ConnType.folder => _openIsar('folder', [TermEntityDbDSSchema, ModuleDbDSSchema, FolderDbDSSchema] ),
-    // };
-    return _openIsar('term',
-        allSchemes
-    );
-
-
+    // Future<Isar> res;
+    // if (currOpenOfConnection != null) {
+    //   res = currOpenOfConnection!;
+    // } else {
+    //   currOpenOfConnection = _openIsar('term', allSchemes);
+    //   res = currOpenOfConnection!;
+    //   currOpenOfConnection!.then((value) {
+    //     this.currOpenOfConnection = null;
+    //     return value;
+    //   });
+    // }
+    //
+    // return res;
+    return openActivityDBv2([]);
   }
 
-  Future<Isar> openActivityDBv2(List<CollectionSchema<AbstractEntity>> connSchemes) async {
-    return _openIsar('term', allSchemes);
+  Future<Isar> openActivityDBv2(
+      List<CollectionSchema<AbstractEntity>> connSchemes) async {
+    Future<Isar> res;
+    if (currOpenOfConnection != null) {
+      res = currOpenOfConnection!;
+    } else {
+      currOpenOfConnection = _openIsar('term', allSchemes);
+      res = currOpenOfConnection!;
+      currOpenOfConnection!.then((value) {
+        this.currOpenOfConnection = null;
+        return value;
+      });
+    }
 
+    return res;
   }
 }

@@ -6,18 +6,17 @@ import 'package:the_remember/src/ui/ui_states/await_user_screen.dart';
 import '../../domain_layer/providers/user_api_provider.dart';
 
 Widget NavigationProcessor() {
-  Future<UserDbDS?> awaitUserFunc(AwaitUserScreen widgetObj, BuildContext context) async {
+  Future<UserDbDS?> awaitUserFunc(
+      AwaitUserScreen widgetObj, BuildContext context) async {
     var awaitUserWidget = widgetObj;
 
     if (awaitUserWidget.userGetter == null) {
       var pr = Provider.of<UserApiProfile>(context, listen: false);
 
-      awaitUserWidget.userGetter = pr.awaitUser()
-          .then((value)  {
-            awaitUserWidget.userGetterCompleted = true;
-            return value;
-          });
-
+      awaitUserWidget.userGetter = pr.awaitUser().then((value) {
+        awaitUserWidget.userGetterCompleted = true;
+        return value;
+      });
     } else if (awaitUserWidget.userGetterCompleted) {
       var userPr = Provider.of<UserApiProfile>(context, listen: false);
 
@@ -39,6 +38,3 @@ Widget NavigationProcessor() {
     child: AwaitUserScreen(awaitUserFunc),
   );
 }
-
-
-
