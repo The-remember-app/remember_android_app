@@ -78,7 +78,7 @@ import 'package:api_package/api.dart';
 
 final api = ApiPackage().getModuleEntitiesApi();
 final CreateOnlyPersonalizePartModuleDTO createOnlyPersonalizePartModuleDTO = ; // CreateOnlyPersonalizePartModuleDTO | 
-final JsonObject fromFolderMicroservice = ; // JsonObject | Костыль, при переписывании взаимодействия с использованием Саги будет удалён
+final JsonObject fromFolderMicroservice = ; // JsonObject | РљРѕСЃС‚С‹Р»СЊ, РїСЂРё РїРµСЂРµРїРёСЃС‹РІР°РЅРёРё РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёСЏ СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј РЎР°РіРё Р±СѓРґРµС‚ СѓРґР°Р»С‘РЅ
 
 try {
     final response = api.createPersonalizeModulePersonalizeCreatePost(createOnlyPersonalizePartModuleDTO, fromFolderMicroservice);
@@ -93,7 +93,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **createOnlyPersonalizePartModuleDTO** | [**CreateOnlyPersonalizePartModuleDTO**](CreateOnlyPersonalizePartModuleDTO.md)|  | 
- **fromFolderMicroservice** | [**JsonObject**](.md)| Костыль, при переписывании взаимодействия с использованием Саги будет удалён | [optional] 
+ **fromFolderMicroservice** | [**JsonObject**](.md)| РљРѕСЃС‚С‹Р»СЊ, РїСЂРё РїРµСЂРµРїРёСЃС‹РІР°РЅРёРё РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёСЏ СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј РЎР°РіРё Р±СѓРґРµС‚ СѓРґР°Р»С‘РЅ | [optional] 
 
 ### Return type
 
@@ -215,7 +215,7 @@ final api = ApiPackage().getModuleEntitiesApi();
 final JsonObject authorOnly = ; // JsonObject | 
 final JsonObject limit = ; // JsonObject | 
 final JsonObject offset = ; // JsonObject | 
-final JsonObject updatedAfter = ; // JsonObject | Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет.
+final JsonObject updatedAfter = ; // JsonObject | Р‘СѓРґСѓС‚ РІРѕР·РІСЂР°С‰РµРЅС‹ Р»РёС€СЊ С‚Рµ СЃСѓС‰РЅРѕСЃС‚Рё, РѕР±РЅРѕРІР»РµРЅРёРµ РєРѕС‚РѕСЂС‹С… Р±С‹Р»Рѕ РїСЂРѕРёР·РІРµРґРµРЅРѕ РїРѕР·Р¶Рµ СѓРєР°Р·Р°РЅРЅРѕРіРѕ РІСЂРµРјРµРЅРё. Р•СЃР»Рё РїР°СЂР°РјРµС‚СЂ РЅРµ СѓРєР°Р·Р°РЅ, С‚Рѕ С„РёР»СЊС‚СЂР°С†РёСЏ РїРѕ РІСЂРµРјРµРЅРё РїСЂРѕРёР·РІРѕРґРёС‚СЊСЃСЏ РЅРµ Р±СѓРґРµС‚.
 
 try {
     final response = api.getAllModulePersonalizeAllGet(authorOnly, limit, offset, updatedAfter);
@@ -232,7 +232,7 @@ Name | Type | Description  | Notes
  **authorOnly** | [**JsonObject**](.md)|  | [optional] [default to false]
  **limit** | [**JsonObject**](.md)|  | [optional] [default to 100]
  **offset** | [**JsonObject**](.md)|  | [optional] [default to 0]
- **updatedAfter** | [**JsonObject**](.md)| Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет. | [optional] 
+ **updatedAfter** | [**JsonObject**](.md)| Р‘СѓРґСѓС‚ РІРѕР·РІСЂР°С‰РµРЅС‹ Р»РёС€СЊ С‚Рµ СЃСѓС‰РЅРѕСЃС‚Рё, РѕР±РЅРѕРІР»РµРЅРёРµ РєРѕС‚РѕСЂС‹С… Р±С‹Р»Рѕ РїСЂРѕРёР·РІРµРґРµРЅРѕ РїРѕР·Р¶Рµ СѓРєР°Р·Р°РЅРЅРѕРіРѕ РІСЂРµРјРµРЅРё. Р•СЃР»Рё РїР°СЂР°РјРµС‚СЂ РЅРµ СѓРєР°Р·Р°РЅ, С‚Рѕ С„РёР»СЊС‚СЂР°С†РёСЏ РїРѕ РІСЂРµРјРµРЅРё РїСЂРѕРёР·РІРѕРґРёС‚СЊСЃСЏ РЅРµ Р±СѓРґРµС‚. | [optional] 
 
 ### Return type
 
@@ -261,11 +261,11 @@ import 'package:api_package/api.dart';
 //defaultApiClient.getAuthentication<OAuth>('OAuth2PasswordBearer').accessToken = 'YOUR_ACCESS_TOKEN';
 
 final api = ApiPackage().getModuleEntitiesApi();
-final JsonObject folderId = ; // JsonObject | Установите null для получения корневых модулей
+final JsonObject folderId = ; // JsonObject | РЈСЃС‚Р°РЅРѕРІРёС‚Рµ null РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РєРѕСЂРЅРµРІС‹С… РјРѕРґСѓР»РµР№
 final JsonObject authorOnly = ; // JsonObject | 
 final JsonObject limit = ; // JsonObject | 
 final JsonObject offset = ; // JsonObject | 
-final JsonObject updatedAfter = ; // JsonObject | Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет.
+final JsonObject updatedAfter = ; // JsonObject | Р‘СѓРґСѓС‚ РІРѕР·РІСЂР°С‰РµРЅС‹ Р»РёС€СЊ С‚Рµ СЃСѓС‰РЅРѕСЃС‚Рё, РѕР±РЅРѕРІР»РµРЅРёРµ РєРѕС‚РѕСЂС‹С… Р±С‹Р»Рѕ РїСЂРѕРёР·РІРµРґРµРЅРѕ РїРѕР·Р¶Рµ СѓРєР°Р·Р°РЅРЅРѕРіРѕ РІСЂРµРјРµРЅРё. Р•СЃР»Рё РїР°СЂР°РјРµС‚СЂ РЅРµ СѓРєР°Р·Р°РЅ, С‚Рѕ С„РёР»СЊС‚СЂР°С†РёСЏ РїРѕ РІСЂРµРјРµРЅРё РїСЂРѕРёР·РІРѕРґРёС‚СЊСЃСЏ РЅРµ Р±СѓРґРµС‚.
 
 try {
     final response = api.getAllModulePersonalizeFromFolderFolderIdGet(folderId, authorOnly, limit, offset, updatedAfter);
@@ -279,11 +279,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **folderId** | [**JsonObject**](.md)| Установите null для получения корневых модулей | 
+ **folderId** | [**JsonObject**](.md)| РЈСЃС‚Р°РЅРѕРІРёС‚Рµ null РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РєРѕСЂРЅРµРІС‹С… РјРѕРґСѓР»РµР№ | 
  **authorOnly** | [**JsonObject**](.md)|  | [optional] [default to false]
  **limit** | [**JsonObject**](.md)|  | [optional] [default to 100]
  **offset** | [**JsonObject**](.md)|  | [optional] [default to 0]
- **updatedAfter** | [**JsonObject**](.md)| Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет. | [optional] 
+ **updatedAfter** | [**JsonObject**](.md)| Р‘СѓРґСѓС‚ РІРѕР·РІСЂР°С‰РµРЅС‹ Р»РёС€СЊ С‚Рµ СЃСѓС‰РЅРѕСЃС‚Рё, РѕР±РЅРѕРІР»РµРЅРёРµ РєРѕС‚РѕСЂС‹С… Р±С‹Р»Рѕ РїСЂРѕРёР·РІРµРґРµРЅРѕ РїРѕР·Р¶Рµ СѓРєР°Р·Р°РЅРЅРѕРіРѕ РІСЂРµРјРµРЅРё. Р•СЃР»Рё РїР°СЂР°РјРµС‚СЂ РЅРµ СѓРєР°Р·Р°РЅ, С‚Рѕ С„РёР»СЊС‚СЂР°С†РёСЏ РїРѕ РІСЂРµРјРµРЅРё РїСЂРѕРёР·РІРѕРґРёС‚СЊСЃСЏ РЅРµ Р±СѓРґРµС‚. | [optional] 
 
 ### Return type
 
@@ -358,7 +358,7 @@ final api = ApiPackage().getModuleEntitiesApi();
 final JsonObject folderId = ; // JsonObject | 
 final JsonObject limit = ; // JsonObject | 
 final JsonObject offset = ; // JsonObject | 
-final JsonObject updatedAfter = ; // JsonObject | Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет.
+final JsonObject updatedAfter = ; // JsonObject | Р‘СѓРґСѓС‚ РІРѕР·РІСЂР°С‰РµРЅС‹ Р»РёС€СЊ С‚Рµ СЃСѓС‰РЅРѕСЃС‚Рё, РѕР±РЅРѕРІР»РµРЅРёРµ РєРѕС‚РѕСЂС‹С… Р±С‹Р»Рѕ РїСЂРѕРёР·РІРµРґРµРЅРѕ РїРѕР·Р¶Рµ СѓРєР°Р·Р°РЅРЅРѕРіРѕ РІСЂРµРјРµРЅРё. Р•СЃР»Рё РїР°СЂР°РјРµС‚СЂ РЅРµ СѓРєР°Р·Р°РЅ, С‚Рѕ С„РёР»СЊС‚СЂР°С†РёСЏ РїРѕ РІСЂРµРјРµРЅРё РїСЂРѕРёР·РІРѕРґРёС‚СЊСЃСЏ РЅРµ Р±СѓРґРµС‚.
 
 try {
     final response = api.getModulesFromFolderFromFolderFolderIdGet(folderId, limit, offset, updatedAfter);
@@ -375,7 +375,7 @@ Name | Type | Description  | Notes
  **folderId** | [**JsonObject**](.md)|  | 
  **limit** | [**JsonObject**](.md)|  | [optional] [default to 100]
  **offset** | [**JsonObject**](.md)|  | [optional] [default to 0]
- **updatedAfter** | [**JsonObject**](.md)| Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет. | [optional] 
+ **updatedAfter** | [**JsonObject**](.md)| Р‘СѓРґСѓС‚ РІРѕР·РІСЂР°С‰РµРЅС‹ Р»РёС€СЊ С‚Рµ СЃСѓС‰РЅРѕСЃС‚Рё, РѕР±РЅРѕРІР»РµРЅРёРµ РєРѕС‚РѕСЂС‹С… Р±С‹Р»Рѕ РїСЂРѕРёР·РІРµРґРµРЅРѕ РїРѕР·Р¶Рµ СѓРєР°Р·Р°РЅРЅРѕРіРѕ РІСЂРµРјРµРЅРё. Р•СЃР»Рё РїР°СЂР°РјРµС‚СЂ РЅРµ СѓРєР°Р·Р°РЅ, С‚Рѕ С„РёР»СЊС‚СЂР°С†РёСЏ РїРѕ РІСЂРµРјРµРЅРё РїСЂРѕРёР·РІРѕРґРёС‚СЊСЃСЏ РЅРµ Р±СѓРґРµС‚. | [optional] 
 
 ### Return type
 

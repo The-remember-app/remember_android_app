@@ -9,6 +9,7 @@ import 'package:dio/dio.dart';
 
 import 'package:api_package/src/api_util.dart';
 import 'package:api_package/src/model/ans_learn_mark_dto_union_b_error_none_type.dart';
+import 'package:api_package/src/model/ans_list_learn_mark_dto_union_b_error_none_type.dart';
 import 'package:api_package/src/model/create_learn_mark_dto.dart';
 import 'package:api_package/src/model/err_only_auth_error.dart';
 import 'package:api_package/src/model/err_only_http_validation_error_model.dart';

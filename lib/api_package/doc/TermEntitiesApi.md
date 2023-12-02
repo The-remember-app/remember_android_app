@@ -28,7 +28,7 @@ Method | HTTP request | Description
 
 SYSTEM ONLY
 
-этот роут будет удалён с внедрением Саги
+СЌС‚РѕС‚ СЂРѕСѓС‚ Р±СѓРґРµС‚ СѓРґР°Р»С‘РЅ СЃ РІРЅРµРґСЂРµРЅРёРµРј РЎР°РіРё
 
 ### Example
 ```dart
@@ -38,7 +38,7 @@ import 'package:api_package/api.dart';
 
 final api = ApiPackage().getTermEntitiesApi();
 final CreateOnlyPersonalizePartTermDTO createOnlyPersonalizePartTermDTO = ; // CreateOnlyPersonalizePartTermDTO | 
-final JsonObject fromModuleMicroservice = ; // JsonObject | Костыль, при переписывании взаимодействия с использованием Саги будет удалён
+final JsonObject fromModuleMicroservice = ; // JsonObject | РљРѕСЃС‚С‹Р»СЊ, РїСЂРё РїРµСЂРµРїРёСЃС‹РІР°РЅРёРё РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёСЏ СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј РЎР°РіРё Р±СѓРґРµС‚ СѓРґР°Р»С‘РЅ
 
 try {
     final response = api.createPersonalizeTermPersonalizeCreatePost(createOnlyPersonalizePartTermDTO, fromModuleMicroservice);
@@ -53,7 +53,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **createOnlyPersonalizePartTermDTO** | [**CreateOnlyPersonalizePartTermDTO**](CreateOnlyPersonalizePartTermDTO.md)|  | 
- **fromModuleMicroservice** | [**JsonObject**](.md)| Костыль, при переписывании взаимодействия с использованием Саги будет удалён | [optional] 
+ **fromModuleMicroservice** | [**JsonObject**](.md)| РљРѕСЃС‚С‹Р»СЊ, РїСЂРё РїРµСЂРµРїРёСЃС‹РІР°РЅРёРё РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёСЏ СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј РЎР°РіРё Р±СѓРґРµС‚ СѓРґР°Р»С‘РЅ | [optional] 
 
 ### Return type
 
@@ -219,7 +219,7 @@ final JsonObject moduleId = ; // JsonObject |
 final JsonObject authorOnly = ; // JsonObject | 
 final JsonObject limit = ; // JsonObject | 
 final JsonObject offset = ; // JsonObject | 
-final JsonObject updatedAfter = ; // JsonObject | Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет.
+final JsonObject updatedAfter = ; // JsonObject | Р‘СѓРґСѓС‚ РІРѕР·РІСЂР°С‰РµРЅС‹ Р»РёС€СЊ С‚Рµ СЃСѓС‰РЅРѕСЃС‚Рё, РѕР±РЅРѕРІР»РµРЅРёРµ РєРѕС‚РѕСЂС‹С… Р±С‹Р»Рѕ РїСЂРѕРёР·РІРµРґРµРЅРѕ РїРѕР·Р¶Рµ СѓРєР°Р·Р°РЅРЅРѕРіРѕ РІСЂРµРјРµРЅРё. Р•СЃР»Рё РїР°СЂР°РјРµС‚СЂ РЅРµ СѓРєР°Р·Р°РЅ, С‚Рѕ С„РёР»СЊС‚СЂР°С†РёСЏ РїРѕ РІСЂРµРјРµРЅРё РїСЂРѕРёР·РІРѕРґРёС‚СЊСЃСЏ РЅРµ Р±СѓРґРµС‚.
 
 try {
     final response = api.getAllPersonalizeTermFromModulePersonalizeFromModuleModuleIdGet(moduleId, authorOnly, limit, offset, updatedAfter);
@@ -237,7 +237,7 @@ Name | Type | Description  | Notes
  **authorOnly** | [**JsonObject**](.md)|  | [optional] [default to false]
  **limit** | [**JsonObject**](.md)|  | [optional] [default to 100]
  **offset** | [**JsonObject**](.md)|  | [optional] [default to 0]
- **updatedAfter** | [**JsonObject**](.md)| Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет. | [optional] 
+ **updatedAfter** | [**JsonObject**](.md)| Р‘СѓРґСѓС‚ РІРѕР·РІСЂР°С‰РµРЅС‹ Р»РёС€СЊ С‚Рµ СЃСѓС‰РЅРѕСЃС‚Рё, РѕР±РЅРѕРІР»РµРЅРёРµ РєРѕС‚РѕСЂС‹С… Р±С‹Р»Рѕ РїСЂРѕРёР·РІРµРґРµРЅРѕ РїРѕР·Р¶Рµ СѓРєР°Р·Р°РЅРЅРѕРіРѕ РІСЂРµРјРµРЅРё. Р•СЃР»Рё РїР°СЂР°РјРµС‚СЂ РЅРµ СѓРєР°Р·Р°РЅ, С‚Рѕ С„РёР»СЊС‚СЂР°С†РёСЏ РїРѕ РІСЂРµРјРµРЅРё РїСЂРѕРёР·РІРѕРґРёС‚СЊСЃСЏ РЅРµ Р±СѓРґРµС‚. | [optional] 
 
 ### Return type
 
@@ -311,11 +311,11 @@ import 'package:api_package/api.dart';
 //defaultApiClient.getAuthentication<OAuth>('OAuth2PasswordBearer').accessToken = 'YOUR_ACCESS_TOKEN';
 
 final api = ApiPackage().getTermEntitiesApi();
-final JsonObject moduleIds = ; // JsonObject | Список модулей, из которых будут получены термины
+final JsonObject moduleIds = ; // JsonObject | РЎРїРёСЃРѕРє РјРѕРґСѓР»РµР№, РёР· РєРѕС‚РѕСЂС‹С… Р±СѓРґСѓС‚ РїРѕР»СѓС‡РµРЅС‹ С‚РµСЂРјРёРЅС‹
 final JsonObject authorOnly = ; // JsonObject | 
 final JsonObject limit = ; // JsonObject | 
 final JsonObject offset = ; // JsonObject | 
-final JsonObject updatedAfter = ; // JsonObject | Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет.
+final JsonObject updatedAfter = ; // JsonObject | Р‘СѓРґСѓС‚ РІРѕР·РІСЂР°С‰РµРЅС‹ Р»РёС€СЊ С‚Рµ СЃСѓС‰РЅРѕСЃС‚Рё, РѕР±РЅРѕРІР»РµРЅРёРµ РєРѕС‚РѕСЂС‹С… Р±С‹Р»Рѕ РїСЂРѕРёР·РІРµРґРµРЅРѕ РїРѕР·Р¶Рµ СѓРєР°Р·Р°РЅРЅРѕРіРѕ РІСЂРµРјРµРЅРё. Р•СЃР»Рё РїР°СЂР°РјРµС‚СЂ РЅРµ СѓРєР°Р·Р°РЅ, С‚Рѕ С„РёР»СЊС‚СЂР°С†РёСЏ РїРѕ РІСЂРµРјРµРЅРё РїСЂРѕРёР·РІРѕРґРёС‚СЊСЃСЏ РЅРµ Р±СѓРґРµС‚.
 
 try {
     final response = api.getAllPersonalizeTermPersonalizeAllGet(moduleIds, authorOnly, limit, offset, updatedAfter);
@@ -329,11 +329,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **moduleIds** | [**JsonObject**](.md)| Список модулей, из которых будут получены термины | 
+ **moduleIds** | [**JsonObject**](.md)| РЎРїРёСЃРѕРє РјРѕРґСѓР»РµР№, РёР· РєРѕС‚РѕСЂС‹С… Р±СѓРґСѓС‚ РїРѕР»СѓС‡РµРЅС‹ С‚РµСЂРјРёРЅС‹ | 
  **authorOnly** | [**JsonObject**](.md)|  | [optional] [default to false]
  **limit** | [**JsonObject**](.md)|  | [optional] [default to 100]
  **offset** | [**JsonObject**](.md)|  | [optional] [default to 0]
- **updatedAfter** | [**JsonObject**](.md)| Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет. | [optional] 
+ **updatedAfter** | [**JsonObject**](.md)| Р‘СѓРґСѓС‚ РІРѕР·РІСЂР°С‰РµРЅС‹ Р»РёС€СЊ С‚Рµ СЃСѓС‰РЅРѕСЃС‚Рё, РѕР±РЅРѕРІР»РµРЅРёРµ РєРѕС‚РѕСЂС‹С… Р±С‹Р»Рѕ РїСЂРѕРёР·РІРµРґРµРЅРѕ РїРѕР·Р¶Рµ СѓРєР°Р·Р°РЅРЅРѕРіРѕ РІСЂРµРјРµРЅРё. Р•СЃР»Рё РїР°СЂР°РјРµС‚СЂ РЅРµ СѓРєР°Р·Р°РЅ, С‚Рѕ С„РёР»СЊС‚СЂР°С†РёСЏ РїРѕ РІСЂРµРјРµРЅРё РїСЂРѕРёР·РІРѕРґРёС‚СЊСЃСЏ РЅРµ Р±СѓРґРµС‚. | [optional] 
 
 ### Return type
 
@@ -452,7 +452,7 @@ final JsonObject moduleId = ; // JsonObject |
 final JsonObject authorOnly = ; // JsonObject | 
 final JsonObject limit = ; // JsonObject | 
 final JsonObject offset = ; // JsonObject | 
-final JsonObject updatedAfter = ; // JsonObject | Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет.
+final JsonObject updatedAfter = ; // JsonObject | Р‘СѓРґСѓС‚ РІРѕР·РІСЂР°С‰РµРЅС‹ Р»РёС€СЊ С‚Рµ СЃСѓС‰РЅРѕСЃС‚Рё, РѕР±РЅРѕРІР»РµРЅРёРµ РєРѕС‚РѕСЂС‹С… Р±С‹Р»Рѕ РїСЂРѕРёР·РІРµРґРµРЅРѕ РїРѕР·Р¶Рµ СѓРєР°Р·Р°РЅРЅРѕРіРѕ РІСЂРµРјРµРЅРё. Р•СЃР»Рё РїР°СЂР°РјРµС‚СЂ РЅРµ СѓРєР°Р·Р°РЅ, С‚Рѕ С„РёР»СЊС‚СЂР°С†РёСЏ РїРѕ РІСЂРµРјРµРЅРё РїСЂРѕРёР·РІРѕРґРёС‚СЊСЃСЏ РЅРµ Р±СѓРґРµС‚.
 
 try {
     final response = api.getTermsFromModuleFromModuleModuleIdGet(moduleId, authorOnly, limit, offset, updatedAfter);
@@ -470,7 +470,7 @@ Name | Type | Description  | Notes
  **authorOnly** | [**JsonObject**](.md)|  | [optional] [default to false]
  **limit** | [**JsonObject**](.md)|  | [optional] [default to 100]
  **offset** | [**JsonObject**](.md)|  | [optional] [default to 0]
- **updatedAfter** | [**JsonObject**](.md)| Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет. | [optional] 
+ **updatedAfter** | [**JsonObject**](.md)| Р‘СѓРґСѓС‚ РІРѕР·РІСЂР°С‰РµРЅС‹ Р»РёС€СЊ С‚Рµ СЃСѓС‰РЅРѕСЃС‚Рё, РѕР±РЅРѕРІР»РµРЅРёРµ РєРѕС‚РѕСЂС‹С… Р±С‹Р»Рѕ РїСЂРѕРёР·РІРµРґРµРЅРѕ РїРѕР·Р¶Рµ СѓРєР°Р·Р°РЅРЅРѕРіРѕ РІСЂРµРјРµРЅРё. Р•СЃР»Рё РїР°СЂР°РјРµС‚СЂ РЅРµ СѓРєР°Р·Р°РЅ, С‚Рѕ С„РёР»СЊС‚СЂР°С†РёСЏ РїРѕ РІСЂРµРјРµРЅРё РїСЂРѕРёР·РІРѕРґРёС‚СЊСЃСЏ РЅРµ Р±СѓРґРµС‚. | [optional] 
 
 ### Return type
 
@@ -499,11 +499,11 @@ import 'package:api_package/api.dart';
 //defaultApiClient.getAuthentication<OAuth>('OAuth2PasswordBearer').accessToken = 'YOUR_ACCESS_TOKEN';
 
 final api = ApiPackage().getTermEntitiesApi();
-final JsonObject moduleIds = ; // JsonObject | Список модулей, из которых будут получены термины
+final JsonObject moduleIds = ; // JsonObject | РЎРїРёСЃРѕРє РјРѕРґСѓР»РµР№, РёР· РєРѕС‚РѕСЂС‹С… Р±СѓРґСѓС‚ РїРѕР»СѓС‡РµРЅС‹ С‚РµСЂРјРёРЅС‹
 final JsonObject authorOnly = ; // JsonObject | 
 final JsonObject limit = ; // JsonObject | 
 final JsonObject offset = ; // JsonObject | 
-final JsonObject updatedAfter = ; // JsonObject | Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет.
+final JsonObject updatedAfter = ; // JsonObject | Р‘СѓРґСѓС‚ РІРѕР·РІСЂР°С‰РµРЅС‹ Р»РёС€СЊ С‚Рµ СЃСѓС‰РЅРѕСЃС‚Рё, РѕР±РЅРѕРІР»РµРЅРёРµ РєРѕС‚РѕСЂС‹С… Р±С‹Р»Рѕ РїСЂРѕРёР·РІРµРґРµРЅРѕ РїРѕР·Р¶Рµ СѓРєР°Р·Р°РЅРЅРѕРіРѕ РІСЂРµРјРµРЅРё. Р•СЃР»Рё РїР°СЂР°РјРµС‚СЂ РЅРµ СѓРєР°Р·Р°РЅ, С‚Рѕ С„РёР»СЊС‚СЂР°С†РёСЏ РїРѕ РІСЂРµРјРµРЅРё РїСЂРѕРёР·РІРѕРґРёС‚СЊСЃСЏ РЅРµ Р±СѓРґРµС‚.
 
 try {
     final response = api.getTermsFromModuleListAllGet(moduleIds, authorOnly, limit, offset, updatedAfter);
@@ -517,11 +517,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **moduleIds** | [**JsonObject**](.md)| Список модулей, из которых будут получены термины | 
+ **moduleIds** | [**JsonObject**](.md)| РЎРїРёСЃРѕРє РјРѕРґСѓР»РµР№, РёР· РєРѕС‚РѕСЂС‹С… Р±СѓРґСѓС‚ РїРѕР»СѓС‡РµРЅС‹ С‚РµСЂРјРёРЅС‹ | 
  **authorOnly** | [**JsonObject**](.md)|  | [optional] [default to false]
  **limit** | [**JsonObject**](.md)|  | [optional] [default to 100]
  **offset** | [**JsonObject**](.md)|  | [optional] [default to 0]
- **updatedAfter** | [**JsonObject**](.md)| Будут возвращены лишь те сущности, обновление которых было произведено позже указанного времени. Если параметр не указан, то фильтрация по времени производиться не будет. | [optional] 
+ **updatedAfter** | [**JsonObject**](.md)| Р‘СѓРґСѓС‚ РІРѕР·РІСЂР°С‰РµРЅС‹ Р»РёС€СЊ С‚Рµ СЃСѓС‰РЅРѕСЃС‚Рё, РѕР±РЅРѕРІР»РµРЅРёРµ РєРѕС‚РѕСЂС‹С… Р±С‹Р»Рѕ РїСЂРѕРёР·РІРµРґРµРЅРѕ РїРѕР·Р¶Рµ СѓРєР°Р·Р°РЅРЅРѕРіРѕ РІСЂРµРјРµРЅРё. Р•СЃР»Рё РїР°СЂР°РјРµС‚СЂ РЅРµ СѓРєР°Р·Р°РЅ, С‚Рѕ С„РёР»СЊС‚СЂР°С†РёСЏ РїРѕ РІСЂРµРјРµРЅРё РїСЂРѕРёР·РІРѕРґРёС‚СЊСЃСЏ РЅРµ Р±СѓРґРµС‚. | [optional] 
 
 ### Return type
 

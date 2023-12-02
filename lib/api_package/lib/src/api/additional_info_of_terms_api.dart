@@ -233,7 +233,9 @@ class AdditionalInfoOfTermsApi {
   /// Throws [DioException] if API call or serialization fails
   Future<Response<AnsListAdditionalTermInfoDTOUnionBErrorNoneType>> getAllAddTermInfoAllGet({ 
     required JsonObject moduleIds,
-
+    bool? authorOnly = false,
+    int? limit = 100,
+    int? offset = 0,
     JsonObject? updatedAfter,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -241,9 +243,6 @@ class AdditionalInfoOfTermsApi {
     ValidateStatus? validateStatus,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
-    bool? authorOnly = false,
-    int? limit = 100,
-    int? offset = 0,
   }) async {
     final _path = r'/term/add_info/all';
     final _options = Options(
