@@ -1,18 +1,17 @@
 import 'package:built_value/json_object.dart';
 import 'package:dio/dio.dart';
 import 'package:isar/isar.dart';
+import 'package:the_remember/network_processor/url_controller/auth_extension.dart';
+import 'package:the_remember/network_processor/url_controller/main.dart';
 
 import '../src/repositoris/db_data_source/http_utils.dart';
 import '../src/repositoris/db_data_source/user.dart';
 import '../src/urils/db/dbMixins.dart';
+import 'network_errors.dart';
 
 Future<void> runNetworkIsolate() async {
   var networkProcessor = NetworkProcessor();
   networkProcessor.run();
-}
-
-class UserNotActiveException implements Exception {
-  UserNotActiveException();
 }
 
 class NetworkProcessor with OpenAndClose {
@@ -45,7 +44,7 @@ class NetworkProcessor with OpenAndClose {
     await closeConn();
   }
 
-  Future<void> findActiveUserInDb(isar)async{
+  Future<void> findActiveUserInDb(isar) async {
     var activeUsers = (await isar
         .collection<UserDbDS>()
         .filter()
@@ -58,9 +57,7 @@ class NetworkProcessor with OpenAndClose {
     }
   }
 
-
   Future<void> userActiveControlLoopRun(Isar isar) async {
-
     while (true) {
       // TODO: Подписаться на изменение таблицы пользователей
       //  и при появлении активного пользователя делать запросы
@@ -74,7 +71,9 @@ class NetworkProcessor with OpenAndClose {
   Future<void> multiUsersLoop(Isar isar) async {
     while (true) {
       try {
-        // code that may cause an exception
+        var urlsGen = await getConnectionUrls(isar);
+        await getAuthHeaders(urlsGen);
+        await updateDbEntitiesFromServer(isar, urlsGen);
       } catch (UserNotActiveException) {
         // TODO: ждём сообщения от главного потока
         //  с логином и паролем пользователя
@@ -82,41 +81,55 @@ class NetworkProcessor with OpenAndClose {
     }
   }
 
-  Stream<Future<void>> getConnectionUrls(Isar isar)async*{
-    var serverUrlsEntities = (await isar
-        .collection<HttpUtilsDbDS>()
-        .where()
-        .findAll());
+  Future<Stream<UnaryUrlController> Function()> getConnectionUrls(
+      Isar isar) async {
+    var serverUrlsEntities =
+        (await isar.collection<HttpUtilsDbDS>().where().findAll());
     // var user = (await conn[ConnType.user]!
     //     .collection<UserDbDS>()
     //     .getByUuid(userApi!.user!.uuid));
-    var serverUrls = [for (var i in serverUrlsEntities) i.httpUrl];
+    var urlsController = UrlsController(serverUrlsEntities);
+
+    return urlsController.activeApis;
+    // var futures = [for (var i in serverUrls) webProtocolDecorator() ]
+    // serverUrls.forEach((url) async => await testServerUrl(
+    //     url, goodUrlFounded, username, password, userApi, onErrorCallback));
   }
 
+  Future<void> getAuthHeaders(
+      Stream<UnaryUrlController> Function() urlsGen) async {
+    List<Map<String, String>> res = [];
 
-  Future<T> webProtocolDecorator<T extends Response<JsonObject>>(
-      Future<T> networkQuery, {int targetStatusCode = 200} ) async {
-    var networkQueryNew =  networkQuery
-        .then((value) {
-      if (value.statusCode == targetStatusCode) {
-        return Future<T?>.value(value);
+    await for (var urlC in urlsGen()) {
+      try {
+        res.add(await urlC.auth(activeUser.username, activeUser.password));
+      } catch (AuthErrorUserPasswordNotCorrect) {
+        // TODO: если  ни от одной ссылки  не вернулось ответа 200,
+        //  то возвращаем сообщение в главный поток о том,
+        //  что неверный username или password
+      } catch (AuthErrorUserPasswordNotCorrect) {
+        // FIXME: отлавливать ошибк connection timeout.
+        //  поидее тут таких быть не должно,
+        //  т.к. мы итерируемся только по активным ссылкам,
+        //  но вдруг попадётся
       }
-      throw 'Bad';
-    }).catchError((error, stackTrace)
-    {
-      return null;
-    }, test: (error) {
-      if (error is UserNotActiveException){
-        return false;
-      }
-      else if (error is DioException){
-        return true;
-      }
-      return (error is int && error >= 400);
 
-    });
-    return networkQuery;
+      if (res.isEmpty) {
+        // TODO: возвращаем сообщение в главный поток о том,
+        //  что неверный username или password
+        throw UserNotActiveException();
+      }
+    }
   }
 
+  Future<void> updateDbEntitiesFromServer(
+      Isar isar, Stream<UnaryUrlController> Function() urlsGen) async {
+    folders_update();
+    modules_update();
+    terms_update();
+    sentenses_update();
+    add_term_info_update();
+    term_marks_update();
 
+  }
 }

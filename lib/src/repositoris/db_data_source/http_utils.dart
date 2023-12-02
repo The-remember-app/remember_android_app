@@ -9,10 +9,13 @@ class HttpUtilsDbDS extends AbstractEntity {
   // get isarId => fastHash(id!);
   @Name("id")
   Id get isarId => AbstractEntity.fastHash(httpUrl) ;
+
   @Index(unique: true, replace: true, caseSensitive: false)
   @Name("http_url")
   late String httpUrl;
 
+  @Name("last_sync")
+  late DateTime? lastSync;
 
 // Folder.genId(name) : this(Uuid(), name);
 //
