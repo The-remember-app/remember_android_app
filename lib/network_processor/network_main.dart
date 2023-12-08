@@ -32,6 +32,7 @@ import '../src/urils/db/engine.dart';
 // }
 
 Future<void> networkProcessor(UserApiProfile? userApi) async {
+  return;
   if (userApi?.baseApi == null && userApi?.user != null) {
     var conn = (await OpenAndClose3.openConnStatic(
         [CollectionSchema<HttpUtilsDbDS>, CollectionSchema<UserDbDS>]));

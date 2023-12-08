@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:built_value/json_object.dart';
 import 'package:dio/dio.dart';
 import 'package:observable/observable.dart';
@@ -17,7 +16,9 @@ class UrlsController {
   late List<UnaryUrlController> _processingUrls = [];
 
   UrlsController(this._urlObjects) {
-    _processingUrls = [for (var urlObject in _urlObjects) UnaryUrlController(urlObject)];
+    _processingUrls = [
+      for (var urlObject in _urlObjects) UnaryUrlController(urlObject)
+    ];
     _startedUrls = [for (var urlObject in _urlObjects) urlObject.httpUrl];
   }
 
@@ -69,8 +70,8 @@ class UnaryUrlController {
   late Dio dio;
   late ApiPackage apiContainersContainer;
   late AuthApi authApi;
+  late FoldersEntitiesApi folderApi;
   late Future<Map<String, String>>? authFuture;
-
 
   UnaryUrlController(this.urlObj) {
     url = urlObj.httpUrl;
@@ -78,12 +79,12 @@ class UnaryUrlController {
     apiContainersContainer =
         ApiPackage(dio: dio, serializers: standardSerializers);
     authApi = apiContainersContainer.getAuthApi();
+    folderApi = apiContainersContainer.getFoldersEntitiesApi();
     healthCheckFuture =
         webProtocolDecorator(authApi.healthcheckGetHealthcheckGet());
   }
 
-  Future<T?> webProtocolDecorator<T extends Response>(
-      Future<T> networkQuery,
+  Future<T?> webProtocolDecorator<T extends Response>(Future<T> networkQuery,
       {int targetStatusCode = 200}) async {
     var networkQueryNew = networkQuery.then((value) {
       if (value.statusCode == targetStatusCode) {
@@ -103,7 +104,56 @@ class UnaryUrlController {
     return networkQueryNew;
   }
 
+  Stream<Future<Response<T>?>> pagination<T>(
+      Future<Response<T>> Function() paginateFunc,
+      bool Function(Response<T>?, int) isContinue,
+      {int limit = 100}) async* {
+    var offset = 0;
+    Response<T>? respData;
+    var authHeaders = await authFuture!;
+    do {
+      var rawRes = Function.apply(paginateFunc, [], {
+        #limit: limit,
+        #offset: offset,
+        #headers: authHeaders,
+        #authorOnly: false,
+        #updatedAfter: urlObj.lastSync
+      });
+
+      var res =
+          webProtocolDecorator<Response<T>>(rawRes as Future<Response<T>>);
+
+      yield res;
+      var respData = await res;
+    } while (isContinue(respData, limit));
+  }
+
   static bool testConnection(Response<JsonObject>? answer) {
     return answer?.data != null && (answer!.data as bool) == true;
   }
 }
+
+// typedef VarArgsCallback = Future<T> Function<T extends Response>(
+//     List<dynamic> args, Map<String, dynamic> kwargs);
+//
+// class VarArgsFunction {
+//   final VarArgsCallback callback;
+//   static var _offset = 'Symbol("'.length;
+//
+//   VarArgsFunction(this.callback);
+//
+//   void call() => callback([], {});
+//
+//   @override
+//   dynamic noSuchMethod(Invocation inv) {
+//     return callback(
+//       inv.positionalArguments,
+//       inv.namedArguments.map(
+//         (_k, v) {
+//           var k = _k.toString();
+//           return MapEntry(k.substring(_offset, k.length - 2), v);
+//         },
+//       ),
+//     );
+//   }
+// }

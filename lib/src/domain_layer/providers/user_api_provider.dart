@@ -5,8 +5,10 @@ import '../../../api_package/lib/api_package.dart';
 import '../../../network_processor/network_main.dart';
 import '../../repositoris/db_data_source/user.dart';
 import '../../urils/profilers/abstract.dart';
+import 'isolates/network.dart';
 
 class UserApiProfile extends ModChangeNotifier {
+  final NetworkIsolateProfile networkPr;
   late UserDbDS? _user ;
   late bool _firstUserInit ;
   late ApiPackage? _baseApi ;
@@ -18,12 +20,14 @@ class UserApiProfile extends ModChangeNotifier {
         return _user;
       };
 
-  UserApiProfile() : super() {
+  UserApiProfile({required this.networkPr}) : super() {
+    print("UserApiProfile");
     // init();
   }
 
   @override
   void init({bool isRealInit = false}) {
+    parentProvidersList[networkPr.runtimeType] = networkPr;
      _user = null;
      _firstUserInit = true;
      _baseApi = null;

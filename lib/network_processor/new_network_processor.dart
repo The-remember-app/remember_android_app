@@ -1,6 +1,9 @@
+import 'dart:isolate';
+
 import 'package:built_value/json_object.dart';
 import 'package:dio/dio.dart';
 import 'package:isar/isar.dart';
+import 'package:the_remember/network_processor/entities_update/folder_update.dart';
 import 'package:the_remember/network_processor/url_controller/auth_extension.dart';
 import 'package:the_remember/network_processor/url_controller/main.dart';
 
@@ -9,9 +12,11 @@ import '../src/repositoris/db_data_source/user.dart';
 import '../src/urils/db/dbMixins.dart';
 import 'network_errors.dart';
 
-Future<void> runNetworkIsolate() async {
+Future<void> runNetworkIsolate(SendPort callerSendPort) async {
+  ReceivePort newIsolateReceivePort = ReceivePort();
+  callerSendPort.send(newIsolateReceivePort.sendPort);
   var networkProcessor = NetworkProcessor();
-  networkProcessor.run();
+  networkProcessor.run(callerSendPort, newIsolateReceivePort);
 }
 
 class NetworkProcessor with OpenAndClose {
@@ -36,7 +41,7 @@ class NetworkProcessor with OpenAndClose {
     return instance;
   }
 
-  Future<void> run() async {
+  Future<void> run(SendPort callerSendPort, ReceivePort newIsolateReceivePort) async {
     var isar = await openConn();
     await findActiveUserInDb(isar);
     userActiveControlLoopRun(isar);
@@ -124,12 +129,13 @@ class NetworkProcessor with OpenAndClose {
 
   Future<void> updateDbEntitiesFromServer(
       Isar isar, Stream<UnaryUrlController> Function() urlsGen) async {
-    folders_update();
-    modules_update();
-    terms_update();
-    sentenses_update();
-    add_term_info_update();
-    term_marks_update();
+    folderUpdate(isar, urlsGen);
+    // modules_update();
+    // terms_update();
+    // sentenses_update();
+    // add_term_info_update();
+    // term_marks_update();
+    throw UnimplementedError();
 
   }
 }

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:the_remember/src/repositoris/db_data_source/user.dart';
 import 'package:the_remember/src/ui/ui_states/await_user_screen.dart';
 
+import '../../domain_layer/providers/isolates/network.dart';
 import '../../domain_layer/providers/user_api_provider.dart';
 
 Widget NavigationProcessor() {
@@ -31,10 +32,32 @@ Widget NavigationProcessor() {
   }
 
   return MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (context) => UserApiProfile()),
-      // Provider(create: (context) => SomeOtherClass()),
-    ],
-    child: AwaitUserScreen(awaitUserFunc),
-  );
+      providers: [
+        ChangeNotifierProvider(create: (context) =>
+            NetworkIsolateProfile()
+        ),
+      ],
+      child: UserApiProfileAddWidget( awaitUserFunc: awaitUserFunc,));
+}
+
+class UserApiProfileAddWidget extends StatelessWidget{
+  final Future<UserDbDS?> Function(AwaitUserScreen, BuildContext) awaitUserFunc;
+
+  const UserApiProfileAddWidget({super.key, required this.awaitUserFunc});
+
+
+  @override
+  Widget build(BuildContext context) {
+    var networkPr =  Provider.of<NetworkIsolateProfile>(context, listen: false);
+    return  MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserApiProfile(
+            networkPr: networkPr
+        )),
+        // Provider(create: (context) => SomeOtherClass()),
+      ],
+      child: AwaitUserScreen(awaitUserFunc),
+    );
+  }
+
 }
