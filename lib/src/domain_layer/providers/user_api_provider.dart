@@ -21,7 +21,7 @@ class UserApiProfile extends ModChangeNotifier {
       };
 
   UserApiProfile({required this.networkPr}) : super() {
-    print("UserApiProfile");
+    // print("UserApiProfile");
     // init();
   }
 

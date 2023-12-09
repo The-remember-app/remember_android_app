@@ -128,8 +128,4 @@ class FolderDbDS extends AbstractEntity implements FolderOrModule {
 
     return entForUpdating;
   }
-
-
-
-
 }

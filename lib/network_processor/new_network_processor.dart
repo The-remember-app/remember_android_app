@@ -1,20 +1,23 @@
 import 'dart:isolate';
 
-import 'package:built_value/json_object.dart';
-import 'package:dio/dio.dart';
 import 'package:isar/isar.dart';
 import 'package:the_remember/network_processor/entities_update/folder_update.dart';
 import 'package:the_remember/network_processor/url_controller/auth_extension.dart';
 import 'package:the_remember/network_processor/url_controller/main.dart';
 
+import '../src/domain_layer/providers/isolates/network.dart';
 import '../src/repositoris/db_data_source/http_utils.dart';
 import '../src/repositoris/db_data_source/user.dart';
 import '../src/urils/db/dbMixins.dart';
+import '../src/urils/db/engine.dart';
 import 'network_errors.dart';
 
 Future<void> runNetworkIsolate(SendPort callerSendPort) async {
   ReceivePort newIsolateReceivePort = ReceivePort();
   callerSendPort.send(newIsolateReceivePort.sendPort);
+
+  CrossIsolatesMessage dbPath =  await newIsolateReceivePort.first as CrossIsolatesMessage;
+  IzarManager.instance.dbExternalPath = dbPath.message as String;
   var networkProcessor = NetworkProcessor();
   networkProcessor.run(callerSendPort, newIsolateReceivePort);
 }
@@ -49,12 +52,18 @@ class NetworkProcessor with OpenAndClose {
     await closeConn();
   }
 
-  Future<void> findActiveUserInDb(isar) async {
-    var activeUsers = (await isar
+  Future<void> findActiveUserInDb(Isar isar) async {
+    // await Future.delayed(Duration(seconds: 1000));
+    // IsarCollectionImpl<UserDbDS> userQu = isar.collection<UserDbDS>();
+    // userQu.wh
+    // userQu.
+    List<UserDbDS> activeUsers = (await isar
         .collection<UserDbDS>()
+        // .where()
         .filter()
         .activeEqualTo(true)
         .findAll());
+    activeUsers = activeUsers.where((element) => element.active).toList();
     if (activeUsers.length == 1 && activeUsers[0].active) {
       activeUser = activeUsers[0];
     } else {
@@ -64,6 +73,7 @@ class NetworkProcessor with OpenAndClose {
 
   Future<void> userActiveControlLoopRun(Isar isar) async {
     while (true) {
+      await Future.delayed(Duration(seconds: 1000));
       // TODO: Подписаться на изменение таблицы пользователей
       //  и при появлении активного пользователя делать запросы
       //  ко всем возможным апишкам. для получения токена доступа.

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:the_remember/src/repositoris/db_data_source/sentence.dart';
@@ -28,6 +29,9 @@ class IzarManager {
   static final IzarManager instance = IzarManager._internal();
   final Map<String, int> _izarCounter = <String, int>{};
   Future<Isar>? currOpenOfConnection;
+  late Future<String> getDbPath;
+  late String dbExternalPath = "";
+
 
   factory IzarManager() {
     return instance;
@@ -50,10 +54,17 @@ class IzarManager {
     } else {
       _izarCounter[name] = (_izarCounter[name] ?? 0) + 1;
     }
-    final dir = await getApplicationDocumentsDirectory();
+    // ServicesBinding ;
+    if (ServicesBinding.rootIsolateToken == null){
+      getDbPath = (() async => dbExternalPath)();
+    } else {
+      getDbPath =
+          getApplicationDocumentsDirectory().then((value) => value.path);
+    }
+    final dir = await getDbPath;
     return Isar.open(
       schemes,
-      directory: dir.path,
+      directory: dir,
       name: name,
       inspector: true,
     );
