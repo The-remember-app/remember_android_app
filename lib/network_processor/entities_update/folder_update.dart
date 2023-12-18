@@ -18,6 +18,7 @@ extension FolderNetworkProcessorExt on NetworkProcessor {
     // Получение обновлений с серверов
     // и слияние этих изменений с тем, что уже есть в БД
     await for (var conn in urlsGen()) {
+      print(conn.url);
       await for (var foldersPack in conn.getFolders()) {
         var newEnt = {
           for (var ent in [

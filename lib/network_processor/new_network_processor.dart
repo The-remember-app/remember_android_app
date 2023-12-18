@@ -10,6 +10,7 @@ import '../src/repositoris/db_data_source/http_utils.dart';
 import '../src/repositoris/db_data_source/user.dart';
 import '../src/urils/db/dbMixins.dart';
 import '../src/urils/db/engine.dart';
+import 'isolate_ listner.dart';
 import 'network_errors.dart';
 
 Future<void> runNetworkIsolate(SendPort callerSendPort) async {
@@ -18,12 +19,17 @@ Future<void> runNetworkIsolate(SendPort callerSendPort) async {
 
   CrossIsolatesMessage dbPath =  await newIsolateReceivePort.first as CrossIsolatesMessage;
   IzarManager.instance.dbExternalPath = dbPath.message as String;
+
+  newIsolateReceivePort.listen(IsolateMessageListener.instance.mainListener);
+
   var networkProcessor = NetworkProcessor();
   networkProcessor.run(callerSendPort, newIsolateReceivePort);
 }
 
 class NetworkProcessor with OpenAndClose {
   static final NetworkProcessor instance = NetworkProcessor._internal();
+
+  late final  Stream<CrossIsolatesMessage<>> userPassListener ;
 
   UserDbDS? _activeUser;
 

@@ -7,13 +7,19 @@ import '../../../../network_processor/new_network_processor.dart';
 import '../../../urils/db/engine.dart';
 import '../../../urils/profilers/abstract.dart';
 
+enum CrossIsolatesMessageType{
+  noSet, userAndPassword,
+}
+
 class CrossIsolatesMessage<T> {
   final SendPort sender;
   final T message;
+  final CrossIsolatesMessageType msgType;
 
   CrossIsolatesMessage({
     required this.sender,
     required this.message,
+    this.msgType = CrossIsolatesMessageType.noSet
   });
 }
 
