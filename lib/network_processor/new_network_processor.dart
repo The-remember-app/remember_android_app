@@ -10,7 +10,9 @@ import '../src/repositoris/db_data_source/http_utils.dart';
 import '../src/repositoris/db_data_source/user.dart';
 import '../src/urils/db/dbMixins.dart';
 import '../src/urils/db/engine.dart';
-import 'isolate_ listner.dart';
+import '../src/urils/isolate/base_msg.dart';
+import '../src/urils/isolate/msgs/login_user.dart';
+import '../src/urils/isolate/isolate_ listner.dart';
 import 'network_errors.dart';
 
 Future<void> runNetworkIsolate(SendPort callerSendPort) async {
@@ -29,7 +31,7 @@ Future<void> runNetworkIsolate(SendPort callerSendPort) async {
 class NetworkProcessor with OpenAndClose {
   static final NetworkProcessor instance = NetworkProcessor._internal();
 
-  late final  Stream<CrossIsolatesMessage<>> userPassListener ;
+  late final  Stream<CrossIsolatesMessage<LoginUserIsolateMsg>> userPassListener ;
 
   UserDbDS? _activeUser;
 
@@ -44,7 +46,9 @@ class NetworkProcessor with OpenAndClose {
     _activeUser = value;
   }
 
-  NetworkProcessor._internal();
+  NetworkProcessor._internal(){
+    userPassListener = IsolateMessageListener.instance.getMessageStream<LoginUserIsolateMsg>(CrossIsolatesMessageType.userAndPassword);
+  }
 
   factory NetworkProcessor() {
     return instance;

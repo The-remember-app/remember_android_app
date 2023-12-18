@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../network_processor/network_main.dart';
 import '../../../domain_layer/providers/auth/auth_screen_provider.dart';
+import '../../../domain_layer/providers/isolates/network.dart';
 import '../../../domain_layer/providers/user_api_provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -22,6 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     var authProvider = Provider.of<AuthScreenProvider>(context, listen: false);
     var userPr = Provider.of<UserApiProfile>(context, listen: false);
+    var networkPr = Provider.of<NetworkIsolateProfile>(context, listen: false);
     return Scaffold(
       backgroundColor: Color(0xffffffff),
       body: Align(
@@ -274,6 +276,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             loginUser(
                               username,
                               password,
+                              networkPr,
                               serverUrls:
                                   (serverUrl.isEmpty ? null : [serverUrl]),
                               userApi: userPr,

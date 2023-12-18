@@ -5,23 +5,9 @@ import 'package:the_remember/src/urils/db/abstract_entity.dart';
 
 import '../../../../network_processor/new_network_processor.dart';
 import '../../../urils/db/engine.dart';
+import '../../../urils/isolate/base_msg.dart';
+import '../../../urils/isolate/isolate_ listner.dart';
 import '../../../urils/profilers/abstract.dart';
-
-enum CrossIsolatesMessageType{
-  noSet, userAndPassword,
-}
-
-class CrossIsolatesMessage<T> {
-  final SendPort sender;
-  final T message;
-  final CrossIsolatesMessageType msgType;
-
-  CrossIsolatesMessage({
-    required this.sender,
-    required this.message,
-    this.msgType = CrossIsolatesMessageType.noSet
-  });
-}
 
 class NetworkIsolateProfile extends ModChangeNotifier {
   late final SendPort _newIsolateSendPort;
@@ -48,15 +34,36 @@ class NetworkIsolateProfile extends ModChangeNotifier {
       _receivePort.sendPort,
     );
     _newIsolateSendPort = await _receivePort.first;
-    _newIsolateSendPort.send(
-        CrossIsolatesMessage<String>(
-          sender: _receivePort.sendPort,
-          message: await IzarManager.instance.getDbPath,
-        )
-    );
+    _newIsolateSendPort.send(CrossIsolatesMessage<String>(
+      sender: _receivePort.sendPort,
+      message: await IzarManager.instance.getDbPath,
+    ));
+    _receivePort.listen(IsolateMessageListener.instance.mainListener);
     await Future.delayed(Duration(seconds: 1000));
     await closeConn();
     return _newIsolateSendPort;
+  }
+
+  Future<SendPort> sendToNetworkIsolate<T>(
+      T msg, CrossIsolatesMessageType msgType) async {
+    _newIsolateSendPort.send(CrossIsolatesMessage<T>(
+      sender: _receivePort.sendPort,
+      message: msg,
+      msgType: msgType,
+    ));
+    return _newIsolateSendPort;
+  }
+
+  Future<CrossIsolatesMessage<TAns>> sendToNetworkIsolateWithAnswer<T, TAns>(
+    T msg,
+    CrossIsolatesMessageType msgType,
+    CrossIsolatesMessageType ansMsgType,
+  ) async {
+    await sendToNetworkIsolate<T>(msg, msgType);
+    CrossIsolatesMessage<TAns> answer = await IsolateMessageListener.instance
+        .getMessageStream<TAns>(ansMsgType)
+        .first;
+    return answer;
   }
 
   // set user(UserDbDS? user) {

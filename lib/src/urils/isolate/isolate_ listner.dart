@@ -2,7 +2,8 @@
 
 import 'package:collection/collection.dart';
 
-import '../src/domain_layer/providers/isolates/network.dart';
+import '../../domain_layer/providers/isolates/network.dart';
+import 'base_msg.dart';
 
 class IsolateMessageListener{
   static final IsolateMessageListener instance = IsolateMessageListener._internal();

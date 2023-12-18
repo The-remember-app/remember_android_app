@@ -11,12 +11,15 @@ import 'package:the_remember/src/repositoris/db_data_source/sentence.dart';
 import 'package:the_remember/src/repositoris/db_data_source/term.dart';
 import 'package:the_remember/src/repositoris/db_data_source/user.dart';
 
+import '../src/domain_layer/providers/isolates/network.dart';
 import '../src/domain_layer/providers/user_api_provider.dart';
 import '../src/repositoris/db_data_source/folder.dart';
 import '../src/repositoris/db_data_source/http_utils.dart';
 import '../src/repositoris/db_data_source/term_adding_info.dart';
 import '../src/urils/db/dbMixins.dart';
 import '../src/urils/db/engine.dart';
+import '../src/urils/isolate/base_msg.dart';
+import '../src/urils/isolate/msgs/login_user.dart';
 
 // Future<FolderDTO> loadPet() async {
 //   final Dio dio = Dio(BaseOptions(baseUrl: 'http://192.168.0.105:10010'));
@@ -33,308 +36,308 @@ import '../src/urils/db/engine.dart';
 
 Future<void> networkProcessor(UserApiProfile? userApi) async {
   return;
-  if (userApi?.baseApi == null && userApi?.user != null) {
-    var conn = (await OpenAndClose3.openConnStatic(
-        [CollectionSchema<HttpUtilsDbDS>, CollectionSchema<UserDbDS>]));
-
-    var serverUrlsEntities = (await conn[ConnType.server_urls]!
-        .collection<HttpUtilsDbDS>()
-        .where()
-        .findAll());
-    // var user = (await conn[ConnType.user]!
-    //     .collection<UserDbDS>()
-    //     .getByUuid(userApi!.user!.uuid));
-    var serverUrls = [for (var i in serverUrlsEntities) i.httpUrl];
-
-    await OpenAndClose3.closeConnStatic(conn);
-    await loginUser(userApi!.user!.username, userApi.user!.password,
-        serverUrls: serverUrls, userApi: userApi);
-    return;
-  } else if (userApi?.baseApi == null && userApi?.user == null) {
-    // var conn = (await OpenAndClose3.openConnStatic(
-    //     [CollectionSchema<HttpUtilsDbDS>, CollectionSchema<UserDbDS>]));
-    //
-    // var serverUrlsEntities = (await conn[ConnType.server_urls]!
-    //     .collection<HttpUtilsDbDS>()
-    //     .where()
-    //     .findAll());
-    // // var user = (await conn[ConnType.user]!
-    // //     .collection<UserDbDS>()
-    // //     .getByUuid(userApi!.user!.uuid));
-    // var serverUrls = [for (var i in serverUrlsEntities) i.httpUrl];
-    //
-    // await OpenAndClose3.closeConnStatic(conn);
-    // await loginUser(userApi!.user!.username, userApi.user!.password,
-    //     serverUrls: serverUrls, userApi: userApi);
-    return;
-  }
-  print("networkProcessor(userApi) started!!!!!!!!!!!!");
-  var baseApi = userApi!.baseApi!;
-  var authHeaders = userApi.authHeaders;
-  // final Dio dio = Dio(BaseOptions(baseUrl: serverUrl));
-  // final ApiPackage authApi =
-  //     ApiPackage(dio: dio, serializers: standardSerializers);
-  // final AuthApi realAuthApi = authApi.getAuthApi();
-  // final authData = await realAuthApi.loginForAccessTokenAuthTokenPost(
-  //     username: JsonObject("1"), password: JsonObject("1"));
-  // authApi.setBearerAuth(
-  //     "Authorization", "Bearer ${authData.data!.accessToken!.asString}");
-
-  final FoldersEntitiesApi folderApi = baseApi.getFoldersEntitiesApi();
-  final ModuleEntitiesApi moduleApi = baseApi.getModuleEntitiesApi();
-  final TermEntitiesApi termApi = baseApi.getTermEntitiesApi();
-  final SentenceEntitiesApi sentenceApi = baseApi.getSentenceEntitiesApi();
-  // JsonObject("string");
-  late Map<ConnType, Isar> conn;
-  late Map<String, FolderDbDS> foldersFromDb;
-  late Map<String, ModuleDbDS> modulesFromDb;
-  late Map<String, TermEntityDbDS> termsFromDb;
-  late Map<String, TermAddingInfoDbDS> addInfoTermsFromDb;
-  late Map<String, SentenceDbDS> sentenceFromDb;
-
-  var coro = (() async {
-    // await Future.delayed(Duration(seconds: 5));
-    conn = (await OpenAndClose3.openConnStatic([
-      CollectionSchema<FolderDbDS>,
-      CollectionSchema<ModuleDbDS>,
-      CollectionSchema<TermEntityDbDS>,
-      CollectionSchema<TermAddingInfoDbDS>,
-    ]));
-
-    foldersFromDb = {
-      for (var ent in await conn[ConnType.term]!
-          .collection<FolderDbDS>()
-          .filter()
-          .userUuidEqualTo(userApi!.user!.uuid)
-          .findAll())
-        ent.uuid: ent
-    };
-    modulesFromDb = {
-      for (var ent in await conn[ConnType.term]!
-          .collection<ModuleDbDS>()
-          .filter()
-          .userUuidEqualTo(userApi.user!.uuid)
-          .findAll())
-        ent.uuid: ent
-    };
-    termsFromDb = {
-      for (var ent in await conn[ConnType.term]!
-          .collection<TermEntityDbDS>()
-          .filter()
-          .userUuidEqualTo(userApi.user!.uuid)
-          .findAll())
-        ent.uuid: ent
-    };
-    addInfoTermsFromDb = {
-      for (var ent in await conn[ConnType.term]!
-          .collection<TermAddingInfoDbDS>()
-          .filter()
-          .userUuidEqualTo(userApi.user!.uuid)
-          .findAll())
-        ent.uuid: ent
-    };
-    sentenceFromDb = {
-      for (var ent in await conn[ConnType.term]!
-          .collection<SentenceDbDS>()
-          .filter()
-          .userUuidEqualTo(userApi.user!.uuid)
-          .findAll())
-        ent.uuid: ent
-    };
-  })();
-  return;
-  // TODO: Переписать всю работу с сетью
-  // final foldersCoro = folderApi.getAllFoldersFolderAllGet(headers: authHeaders);
-  // final modulesCoro = moduleApi.getAllModuleModuleAllGet(headers: authHeaders);
-  // final termsCoro = termApi.getAllTermTermAllGet(headers: authHeaders);
-  // final addInfoCoro =
-  //     termApi.getAllAddTermInfoTermAddInfoAllGet(headers: authHeaders);
-  // final sentenceCoro =
-  //     sentenceApi.getAllTermSentenceAllGet(headers: authHeaders);
+  // if (userApi?.baseApi == null && userApi?.user != null) {
+  //   var conn = (await OpenAndClose3.openConnStatic(
+  //       [CollectionSchema<HttpUtilsDbDS>, CollectionSchema<UserDbDS>]));
   //
-  // final folders = await foldersCoro;
+  //   var serverUrlsEntities = (await conn[ConnType.server_urls]!
+  //       .collection<HttpUtilsDbDS>()
+  //       .where()
+  //       .findAll());
+  //   // var user = (await conn[ConnType.user]!
+  //   //     .collection<UserDbDS>()
+  //   //     .getByUuid(userApi!.user!.uuid));
+  //   var serverUrls = [for (var i in serverUrlsEntities) i.httpUrl];
   //
-  // // const _type = FullType(FolderDTO);
-  // var test = standardSerializers.deserialize(
-  //   folders.data!.asList[0],
-  //   specifiedType: const FullType(FolderDTO),
-  // ) as FolderDTO;
-  // // standardSerializers.serialize(, specifiedType: _type);
-  //
-  // // FolderDTO.serializer.
-  //
-  // // var test = FolderDTO.serializer.deserialize(standardSerializers, folders.data!.asList[0]);
-  // var res = await coro;
-  // var foldersToDb = {
-  //   for (var ent in [
-  //     for (var folder in folders.data!.asList)
-  //       FolderDbDS.fromJson(standardSerializers.deserialize(folder,
-  //               specifiedType: const FullType(PersonalizeFolderDTO))
-  //           as PersonalizeFolderDTO)
-  //   ])
-  //     ent.uuid: ent
-  // };
-  // for (var ent in foldersToDb.values) {
-  //   if (ent.rootFolderUuid != null) {
-  //     ent.rootFolder.value = foldersToDb[ent.rootFolderUuid]!;
-  //   }
+  //   await OpenAndClose3.closeConnStatic(conn);
+  //   await loginUser(userApi!.user!.username, userApi.user!.password,
+  //       serverUrls: serverUrls, userApi: userApi);
+  //   return;
+  // } else if (userApi?.baseApi == null && userApi?.user == null) {
+  //   // var conn = (await OpenAndClose3.openConnStatic(
+  //   //     [CollectionSchema<HttpUtilsDbDS>, CollectionSchema<UserDbDS>]));
+  //   //
+  //   // var serverUrlsEntities = (await conn[ConnType.server_urls]!
+  //   //     .collection<HttpUtilsDbDS>()
+  //   //     .where()
+  //   //     .findAll());
+  //   // // var user = (await conn[ConnType.user]!
+  //   // //     .collection<UserDbDS>()
+  //   // //     .getByUuid(userApi!.user!.uuid));
+  //   // var serverUrls = [for (var i in serverUrlsEntities) i.httpUrl];
+  //   //
+  //   // await OpenAndClose3.closeConnStatic(conn);
+  //   // await loginUser(userApi!.user!.username, userApi.user!.password,
+  //   //     serverUrls: serverUrls, userApi: userApi);
+  //   return;
   // }
+  // print("networkProcessor(userApi) started!!!!!!!!!!!!");
+  // var baseApi = userApi!.baseApi!;
+  // var authHeaders = userApi.authHeaders;
+  // // final Dio dio = Dio(BaseOptions(baseUrl: serverUrl));
+  // // final ApiPackage authApi =
+  // //     ApiPackage(dio: dio, serializers: standardSerializers);
+  // // final AuthApi realAuthApi = authApi.getAuthApi();
+  // // final authData = await realAuthApi.loginForAccessTokenAuthTokenPost(
+  // //     username: JsonObject("1"), password: JsonObject("1"));
+  // // authApi.setBearerAuth(
+  // //     "Authorization", "Bearer ${authData.data!.accessToken!.asString}");
   //
-  // ModuleDbDS moduleTransform(ModuleDbDS networkModule) {
-  //   networkModule.rootFolder.value = foldersToDb[networkModule.rootFolderUuid];
-  //   if (modulesFromDb[networkModule.uuid] != null) {
-  //     var dbModule = modulesFromDb[networkModule.uuid]!;
-  //     if (networkModule.personalUpdatedAt
-  //         .isBefore(dbModule.personalUpdatedAt)) {
-  //       networkModule
-  //         // FIXME:
-  //         ..isReverseDefinitionWrite = dbModule.isReverseDefinitionWrite
-  //         ..standardAndReverseWrite = dbModule.standardAndReverseWrite
-  //         ..isReverseDefinitionChoice = dbModule.isReverseDefinitionChoice
-  //         ..standardAndReverseChoice = dbModule.standardAndReverseChoice
-  //         ..maxIterationLen= dbModule.maxIterationLen
-  //         ..minIterationLen= dbModule.minIterationLen
-  //         ..minWatchCount= dbModule.minWatchCount
-  //         ..knownTermPart= dbModule.knownTermPart
-  //         ..choicesCount= dbModule.choicesCount
-  //         ..isLearnt= dbModule.isLearnt
-  //         ..personalUpdatedAt = dbModule.personalUpdatedAt;
-  //     }
-  //   }
-  //   return networkModule;
-  // }
+  // final FoldersEntitiesApi folderApi = baseApi.getFoldersEntitiesApi();
+  // final ModuleEntitiesApi moduleApi = baseApi.getModuleEntitiesApi();
+  // final TermEntitiesApi termApi = baseApi.getTermEntitiesApi();
+  // final SentenceEntitiesApi sentenceApi = baseApi.getSentenceEntitiesApi();
+  // // JsonObject("string");
+  // late Map<ConnType, Isar> conn;
+  // late Map<String, FolderDbDS> foldersFromDb;
+  // late Map<String, ModuleDbDS> modulesFromDb;
+  // late Map<String, TermEntityDbDS> termsFromDb;
+  // late Map<String, TermAddingInfoDbDS> addInfoTermsFromDb;
+  // late Map<String, SentenceDbDS> sentenceFromDb;
   //
-  // final modules = await modulesCoro;
-  // var modulesToDb = {
-  //   for (var ent in [
-  //     for (var module in modules.data!.asList)
-  //       ModuleDbDS.fromJson(standardSerializers.deserialize(module,
-  //               specifiedType: const FullType(PersonalizeModuleDTO))
-  //           as PersonalizeModuleDTO)
-  //   ])
-  //     ent.uuid: moduleTransform(ent)
-  // };
+  // var coro = (() async {
+  //   // await Future.delayed(Duration(seconds: 5));
+  //   conn = (await OpenAndClose3.openConnStatic([
+  //     CollectionSchema<FolderDbDS>,
+  //     CollectionSchema<ModuleDbDS>,
+  //     CollectionSchema<TermEntityDbDS>,
+  //     CollectionSchema<TermAddingInfoDbDS>,
+  //   ]));
   //
-  // final terms = await termsCoro;
-  // var termsToDb = {
-  //   for (var ent in [
-  //     for (var term in terms.data!.asList)
-  //       TermEntityDbDS.fromJson(standardSerializers.deserialize(term,
-  //               specifiedType: const FullType(PersonalizeTermDTO))
-  //           as PersonalizeTermDTO)
-  //   ])
-  //     ent.uuid: ent
-  // };
-  //
-  // List<TermEntityDbDS> serverUpdatesTerm = [];
-  //
-  // for (var networkTerm in termsToDb.values) {
-  //   networkTerm.module.value = modulesToDb[networkTerm.moduleUuid]!;
-  //   if (termsFromDb[networkTerm.uuid] != null) {
-  //     var dbTerm = termsFromDb[networkTerm.uuid]!;
-  //     if (networkTerm.personalUpdatedAt.isBefore(dbTerm.personalUpdatedAt)) {
-  //       networkTerm
-  //         ..chooseErrorCounter = dbTerm.chooseErrorCounter
-  //         ..writeErrorCounter = dbTerm.writeErrorCounter
-  //         ..choiceNegErrorCounter = dbTerm.choiceNegErrorCounter
-  //         ..watchCount=dbTerm.watchCount
-  //         ..personalUpdatedAt = dbTerm.personalUpdatedAt;
-  //     } else if (networkTerm.personalUpdatedAt
-  //         .isAfter(dbTerm.personalUpdatedAt)) {
-  //       serverUpdatesTerm.add(dbTerm);
-  //     }
-  //   }
-  // }
-  // var serverTermUpdateCoro =
-  //     updatePersonalizedTerms(serverUpdatesTerm, userApi);
-  //
-  // final addInfoTerms = await addInfoCoro;
-  // var addInfoTermsToDb = {
-  //   for (var ent in [
-  //     for (var ait in addInfoTerms.data!.asList)
-  //       TermAddingInfoDbDS.fromJson(
-  //           standardSerializers.deserialize(ait,
-  //               specifiedType: const FullType(AdditionalTermInfoDTO)
-  //               // ..["add_info_type"]=[ait["add_info_type"]],
-  //               //     specifiedType: const FullType(AdditionalTermInfoDTO)
-  //               ) as AdditionalTermInfoDTO,
-  //           userApi.user!.uuid)
-  //   ])
-  //     ent.uuid: ent
-  // };
-  //
-  // for (var networkAIT in addInfoTermsToDb.values) {
-  //   networkAIT.termEntity.value = termsToDb[networkAIT.termUuid]!;
-  //   if (addInfoTermsFromDb[networkAIT.uuid] != null) {
-  //     var dbAIT = addInfoTermsFromDb[networkAIT.uuid]!;
-  //     if (networkAIT.updatedAt.isBefore(dbAIT.updatedAt)) {
-  //       networkAIT = dbAIT;
-  //     }
-  //   }
-  // }
-  //
-  // final sentences = await sentenceCoro;
-  // var sentencesToDb = {
-  //   for (var ent in [
-  //     for (var ait in sentences.data!.asList)
-  //       SentenceDbDS.fromJson(
-  //           standardSerializers.deserialize(ait,
-  //               specifiedType: const FullType(SentenceDTO)
-  //             // ..["add_info_type"]=[ait["add_info_type"]],
-  //             //     specifiedType: const FullType(AdditionalTermInfoDTO)
-  //           ) as SentenceDTO,
-  //           userApi.user!.uuid)
-  //   ])
-  //     ent.uuid: ent
-  // };
-  //
-  // for (var networkSentences in sentencesToDb.values) {
-  //   networkSentences.termEntity.value = termsToDb[networkSentences.termUuid]!;
-  //   if (sentenceFromDb[networkSentences.uuid] != null) {
-  //     var dbSentence = sentenceFromDb[networkSentences.uuid]!;
-  //     if (networkSentences.updatedAt.isBefore(dbSentence.updatedAt)) {
-  //       networkSentences = dbSentence;
-  //     }
-  //   }
-  // }
-  //
-  //
-  // conn[ConnType.term]!.writeTxnSync(() {
-  //   conn[ConnType.term]!
-  //       .collection<FolderDbDS>()
-  //       .putAllSync(foldersToDb.values.toList());
-  //   conn[ConnType.term]!
-  //       .collection<ModuleDbDS>()
-  //       .putAllSync(modulesToDb.values.toList());
-  //   conn[ConnType.term]!
-  //       .collection<TermEntityDbDS>()
-  //       .putAllSync(termsToDb.values.toList());
-  //   conn[ConnType.term]!
-  //       .collection<TermAddingInfoDbDS>()
-  //       .putAllSync(addInfoTermsToDb.values.toList());
-  //   conn[ConnType.term]!
-  //       .collection<SentenceDbDS>()
-  //       .putAllSync(sentencesToDb.values.toList());
-  // });
-  // var res1 = conn[ConnType.term]!
-  //     .collection<FolderDbDS>()
-  //     .filter()
-  //     .rootFolderIsNull()
-  //     .findAllSync();
-  // // var res2 = conn[ConnType.term]!
-  // //     .collection<TermAddingInfoDbDS>()
-  // //     .where()
-  // //     .findAllSync();
-  // print(res1);
-  //
-  // await OpenAndClose3.closeConnStatic(conn);
-  // await serverTermUpdateCoro;
-  //
-  // // final folders = await mainApi.getAllFoldersFolderAllGet(headers: authHeaders);
-  //
-  // // final modules = await mainApi.getAllModuleModuleAllGet(headers: authHeaders);
+  //   foldersFromDb = {
+  //     for (var ent in await conn[ConnType.term]!
+  //         .collection<FolderDbDS>()
+  //         .filter()
+  //         .userUuidEqualTo(userApi!.user!.uuid)
+  //         .findAll())
+  //       ent.uuid: ent
+  //   };
+  //   modulesFromDb = {
+  //     for (var ent in await conn[ConnType.term]!
+  //         .collection<ModuleDbDS>()
+  //         .filter()
+  //         .userUuidEqualTo(userApi.user!.uuid)
+  //         .findAll())
+  //       ent.uuid: ent
+  //   };
+  //   termsFromDb = {
+  //     for (var ent in await conn[ConnType.term]!
+  //         .collection<TermEntityDbDS>()
+  //         .filter()
+  //         .userUuidEqualTo(userApi.user!.uuid)
+  //         .findAll())
+  //       ent.uuid: ent
+  //   };
+  //   addInfoTermsFromDb = {
+  //     for (var ent in await conn[ConnType.term]!
+  //         .collection<TermAddingInfoDbDS>()
+  //         .filter()
+  //         .userUuidEqualTo(userApi.user!.uuid)
+  //         .findAll())
+  //       ent.uuid: ent
+  //   };
+  //   sentenceFromDb = {
+  //     for (var ent in await conn[ConnType.term]!
+  //         .collection<SentenceDbDS>()
+  //         .filter()
+  //         .userUuidEqualTo(userApi.user!.uuid)
+  //         .findAll())
+  //       ent.uuid: ent
+  //   };
+  // })();
+  // return;
+  // // TODO: Переписать всю работу с сетью
+  // // final foldersCoro = folderApi.getAllFoldersFolderAllGet(headers: authHeaders);
+  // // final modulesCoro = moduleApi.getAllModuleModuleAllGet(headers: authHeaders);
+  // // final termsCoro = termApi.getAllTermTermAllGet(headers: authHeaders);
+  // // final addInfoCoro =
+  // //     termApi.getAllAddTermInfoTermAddInfoAllGet(headers: authHeaders);
+  // // final sentenceCoro =
+  // //     sentenceApi.getAllTermSentenceAllGet(headers: authHeaders);
   // //
-  // // final terms = await mainApi.getAllTermTermAllGet(headers: authHeaders);
+  // // final folders = await foldersCoro;
+  // //
+  // // // const _type = FullType(FolderDTO);
+  // // var test = standardSerializers.deserialize(
+  // //   folders.data!.asList[0],
+  // //   specifiedType: const FullType(FolderDTO),
+  // // ) as FolderDTO;
+  // // // standardSerializers.serialize(, specifiedType: _type);
+  // //
+  // // // FolderDTO.serializer.
+  // //
+  // // // var test = FolderDTO.serializer.deserialize(standardSerializers, folders.data!.asList[0]);
+  // // var res = await coro;
+  // // var foldersToDb = {
+  // //   for (var ent in [
+  // //     for (var folder in folders.data!.asList)
+  // //       FolderDbDS.fromJson(standardSerializers.deserialize(folder,
+  // //               specifiedType: const FullType(PersonalizeFolderDTO))
+  // //           as PersonalizeFolderDTO)
+  // //   ])
+  // //     ent.uuid: ent
+  // // };
+  // // for (var ent in foldersToDb.values) {
+  // //   if (ent.rootFolderUuid != null) {
+  // //     ent.rootFolder.value = foldersToDb[ent.rootFolderUuid]!;
+  // //   }
+  // // }
+  // //
+  // // ModuleDbDS moduleTransform(ModuleDbDS networkModule) {
+  // //   networkModule.rootFolder.value = foldersToDb[networkModule.rootFolderUuid];
+  // //   if (modulesFromDb[networkModule.uuid] != null) {
+  // //     var dbModule = modulesFromDb[networkModule.uuid]!;
+  // //     if (networkModule.personalUpdatedAt
+  // //         .isBefore(dbModule.personalUpdatedAt)) {
+  // //       networkModule
+  // //         // FIXME:
+  // //         ..isReverseDefinitionWrite = dbModule.isReverseDefinitionWrite
+  // //         ..standardAndReverseWrite = dbModule.standardAndReverseWrite
+  // //         ..isReverseDefinitionChoice = dbModule.isReverseDefinitionChoice
+  // //         ..standardAndReverseChoice = dbModule.standardAndReverseChoice
+  // //         ..maxIterationLen= dbModule.maxIterationLen
+  // //         ..minIterationLen= dbModule.minIterationLen
+  // //         ..minWatchCount= dbModule.minWatchCount
+  // //         ..knownTermPart= dbModule.knownTermPart
+  // //         ..choicesCount= dbModule.choicesCount
+  // //         ..isLearnt= dbModule.isLearnt
+  // //         ..personalUpdatedAt = dbModule.personalUpdatedAt;
+  // //     }
+  // //   }
+  // //   return networkModule;
+  // // }
+  // //
+  // // final modules = await modulesCoro;
+  // // var modulesToDb = {
+  // //   for (var ent in [
+  // //     for (var module in modules.data!.asList)
+  // //       ModuleDbDS.fromJson(standardSerializers.deserialize(module,
+  // //               specifiedType: const FullType(PersonalizeModuleDTO))
+  // //           as PersonalizeModuleDTO)
+  // //   ])
+  // //     ent.uuid: moduleTransform(ent)
+  // // };
+  // //
+  // // final terms = await termsCoro;
+  // // var termsToDb = {
+  // //   for (var ent in [
+  // //     for (var term in terms.data!.asList)
+  // //       TermEntityDbDS.fromJson(standardSerializers.deserialize(term,
+  // //               specifiedType: const FullType(PersonalizeTermDTO))
+  // //           as PersonalizeTermDTO)
+  // //   ])
+  // //     ent.uuid: ent
+  // // };
+  // //
+  // // List<TermEntityDbDS> serverUpdatesTerm = [];
+  // //
+  // // for (var networkTerm in termsToDb.values) {
+  // //   networkTerm.module.value = modulesToDb[networkTerm.moduleUuid]!;
+  // //   if (termsFromDb[networkTerm.uuid] != null) {
+  // //     var dbTerm = termsFromDb[networkTerm.uuid]!;
+  // //     if (networkTerm.personalUpdatedAt.isBefore(dbTerm.personalUpdatedAt)) {
+  // //       networkTerm
+  // //         ..chooseErrorCounter = dbTerm.chooseErrorCounter
+  // //         ..writeErrorCounter = dbTerm.writeErrorCounter
+  // //         ..choiceNegErrorCounter = dbTerm.choiceNegErrorCounter
+  // //         ..watchCount=dbTerm.watchCount
+  // //         ..personalUpdatedAt = dbTerm.personalUpdatedAt;
+  // //     } else if (networkTerm.personalUpdatedAt
+  // //         .isAfter(dbTerm.personalUpdatedAt)) {
+  // //       serverUpdatesTerm.add(dbTerm);
+  // //     }
+  // //   }
+  // // }
+  // // var serverTermUpdateCoro =
+  // //     updatePersonalizedTerms(serverUpdatesTerm, userApi);
+  // //
+  // // final addInfoTerms = await addInfoCoro;
+  // // var addInfoTermsToDb = {
+  // //   for (var ent in [
+  // //     for (var ait in addInfoTerms.data!.asList)
+  // //       TermAddingInfoDbDS.fromJson(
+  // //           standardSerializers.deserialize(ait,
+  // //               specifiedType: const FullType(AdditionalTermInfoDTO)
+  // //               // ..["add_info_type"]=[ait["add_info_type"]],
+  // //               //     specifiedType: const FullType(AdditionalTermInfoDTO)
+  // //               ) as AdditionalTermInfoDTO,
+  // //           userApi.user!.uuid)
+  // //   ])
+  // //     ent.uuid: ent
+  // // };
+  // //
+  // // for (var networkAIT in addInfoTermsToDb.values) {
+  // //   networkAIT.termEntity.value = termsToDb[networkAIT.termUuid]!;
+  // //   if (addInfoTermsFromDb[networkAIT.uuid] != null) {
+  // //     var dbAIT = addInfoTermsFromDb[networkAIT.uuid]!;
+  // //     if (networkAIT.updatedAt.isBefore(dbAIT.updatedAt)) {
+  // //       networkAIT = dbAIT;
+  // //     }
+  // //   }
+  // // }
+  // //
+  // // final sentences = await sentenceCoro;
+  // // var sentencesToDb = {
+  // //   for (var ent in [
+  // //     for (var ait in sentences.data!.asList)
+  // //       SentenceDbDS.fromJson(
+  // //           standardSerializers.deserialize(ait,
+  // //               specifiedType: const FullType(SentenceDTO)
+  // //             // ..["add_info_type"]=[ait["add_info_type"]],
+  // //             //     specifiedType: const FullType(AdditionalTermInfoDTO)
+  // //           ) as SentenceDTO,
+  // //           userApi.user!.uuid)
+  // //   ])
+  // //     ent.uuid: ent
+  // // };
+  // //
+  // // for (var networkSentences in sentencesToDb.values) {
+  // //   networkSentences.termEntity.value = termsToDb[networkSentences.termUuid]!;
+  // //   if (sentenceFromDb[networkSentences.uuid] != null) {
+  // //     var dbSentence = sentenceFromDb[networkSentences.uuid]!;
+  // //     if (networkSentences.updatedAt.isBefore(dbSentence.updatedAt)) {
+  // //       networkSentences = dbSentence;
+  // //     }
+  // //   }
+  // // }
+  // //
+  // //
+  // // conn[ConnType.term]!.writeTxnSync(() {
+  // //   conn[ConnType.term]!
+  // //       .collection<FolderDbDS>()
+  // //       .putAllSync(foldersToDb.values.toList());
+  // //   conn[ConnType.term]!
+  // //       .collection<ModuleDbDS>()
+  // //       .putAllSync(modulesToDb.values.toList());
+  // //   conn[ConnType.term]!
+  // //       .collection<TermEntityDbDS>()
+  // //       .putAllSync(termsToDb.values.toList());
+  // //   conn[ConnType.term]!
+  // //       .collection<TermAddingInfoDbDS>()
+  // //       .putAllSync(addInfoTermsToDb.values.toList());
+  // //   conn[ConnType.term]!
+  // //       .collection<SentenceDbDS>()
+  // //       .putAllSync(sentencesToDb.values.toList());
+  // // });
+  // // var res1 = conn[ConnType.term]!
+  // //     .collection<FolderDbDS>()
+  // //     .filter()
+  // //     .rootFolderIsNull()
+  // //     .findAllSync();
+  // // // var res2 = conn[ConnType.term]!
+  // // //     .collection<TermAddingInfoDbDS>()
+  // // //     .where()
+  // // //     .findAllSync();
+  // // print(res1);
+  // //
+  // // await OpenAndClose3.closeConnStatic(conn);
+  // // await serverTermUpdateCoro;
+  // //
+  // // // final folders = await mainApi.getAllFoldersFolderAllGet(headers: authHeaders);
+  // //
+  // // // final modules = await mainApi.getAllModuleModuleAllGet(headers: authHeaders);
+  // // //
+  // // // final terms = await mainApi.getAllTermTermAllGet(headers: authHeaders);
 }
 
 Future<void> getUserFromServer(
@@ -443,51 +446,75 @@ Future testServerUrl(
 
 Future<void> loginUser(
   String username,
-  String password, {
+  String password,
+  NetworkIsolateProfile networkPr, {
   List<String>? serverUrls,
   required UserApiProfile? userApi,
   Function(String?)? onErrorCallback = null,
 }) async {
-  List<bool> goodUrlFounded = [false];
+  var res = await networkPr.sendToNetworkIsolateWithAnswer<LoginUserIsolateMsg,
+          LoginUserAnsIsolateMsg>(
+      LoginUserIsolateMsg(
+          username, password, (serverUrls == null ? null : serverUrls[0])
+      ),
+      CrossIsolatesMessageType.userAndPassword,
+      CrossIsolatesMessageType.loginUserAnsIsolateMsg);
 
-  if (userApi?.baseApi == null) {
-    if (serverUrls == null) {
-      var conn = (await OpenAndClose3.openConnStatic(
-          [CollectionSchema<HttpUtilsDbDS>]));
+  if (res.message.data){
+    var conn = (await OpenAndClose3.openConnStatic([CollectionSchema<UserDbDS>]));
 
-      var serverUrlsEntities = (await conn[ConnType.server_urls]!
-          .collection<HttpUtilsDbDS>()
-          .where()
-          .findAll());
-      serverUrls = [for (var i in serverUrlsEntities) i.httpUrl];
+    var user = (await conn[ConnType.user]!.collection<UserDbDS>().getByUsername(username));
+    userApi?.user = user;
 
-      await OpenAndClose3.closeConnStatic(conn);
-    } else {
-      var conn = (await OpenAndClose3.openConnStatic(
-          [CollectionSchema<HttpUtilsDbDS>]));
-
-      var serverUrlsEntities = [
-        for (var i in serverUrls) HttpUtilsDbDS()..httpUrl = i
-      ];
-      conn[ConnType.server_urls]!.writeTxnSync(() => conn[ConnType.server_urls]!
-          .collection<HttpUtilsDbDS>()
-          .putAllSync(serverUrlsEntities));
-
-      // serverUrls = [for (var i in serverUrlsEntities) i.httpUrl];
-
-      await OpenAndClose3.closeConnStatic(conn);
-    }
-
-    serverUrls.forEach((url) async => await testServerUrl(
-        url, goodUrlFounded, username, password, userApi, onErrorCallback));
-  } else if (userApi?.authHeaders == null ||
-      (userApi?.authHeaders != null && userApi!.authHeaders.isEmpty)) {
-    await getAuthHeaders(await userApi!.baseApi!.getAuthApi(), "<unnamed>",
-        userApi.baseApi!, username, password, userApi, onErrorCallback);
+    await OpenAndClose3.closeConnStatic(conn);
   } else {
-    await getUserFromServer(
-        userApi?.baseApi, userApi?.authHeaders, username, password, userApi);
+    if (onErrorCallback != null) {
+      onErrorCallback(
+          "На сервере пользователя с таким логином и паролем не найдено. Код ${res.message.statusCode}");
+    }
   }
+  }
+
+  // List<bool> goodUrlFounded = [false];
+  //
+  // if (userApi?.baseApi == null) {
+  //   if (serverUrls == null) {
+  //     var conn = (await OpenAndClose3.openConnStatic(
+  //         [CollectionSchema<HttpUtilsDbDS>]));
+  //
+  //     var serverUrlsEntities = (await conn[ConnType.server_urls]!
+  //         .collection<HttpUtilsDbDS>()
+  //         .where()
+  //         .findAll());
+  //     serverUrls = [for (var i in serverUrlsEntities) i.httpUrl];
+  //
+  //     await OpenAndClose3.closeConnStatic(conn);
+  //   } else {
+  //     var conn = (await OpenAndClose3.openConnStatic(
+  //         [CollectionSchema<HttpUtilsDbDS>]));
+  //
+  //     var serverUrlsEntities = [
+  //       for (var i in serverUrls) HttpUtilsDbDS()..httpUrl = i
+  //     ];
+  //     conn[ConnType.server_urls]!.writeTxnSync(() => conn[ConnType.server_urls]!
+  //         .collection<HttpUtilsDbDS>()
+  //         .putAllSync(serverUrlsEntities));
+  //
+  //     // serverUrls = [for (var i in serverUrlsEntities) i.httpUrl];
+  //
+  //     await OpenAndClose3.closeConnStatic(conn);
+  //   }
+  //
+  //   serverUrls.forEach((url) async => await testServerUrl(
+  //       url, goodUrlFounded, username, password, userApi, onErrorCallback));
+  // } else if (userApi?.authHeaders == null ||
+  //     (userApi?.authHeaders != null && userApi!.authHeaders.isEmpty)) {
+  //   await getAuthHeaders(await userApi!.baseApi!.getAuthApi(), "<unnamed>",
+  //       userApi.baseApi!, username, password, userApi, onErrorCallback);
+  // } else {
+  //   await getUserFromServer(
+  //       userApi?.baseApi, userApi?.authHeaders, username, password, userApi);
+  // }
 
   return;
 }
