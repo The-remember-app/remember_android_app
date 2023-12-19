@@ -19,7 +19,8 @@ Future<void> runNetworkIsolate(SendPort callerSendPort) async {
   ReceivePort newIsolateReceivePort = ReceivePort();
   callerSendPort.send(newIsolateReceivePort.sendPort);
 
-  CrossIsolatesMessage dbPath =  await newIsolateReceivePort.first as CrossIsolatesMessage;
+  CrossIsolatesMessage dbPath =
+      await newIsolateReceivePort.first as CrossIsolatesMessage;
   IzarManager.instance.dbExternalPath = dbPath.message as String;
 
   newIsolateReceivePort.listen(IsolateMessageListener.instance.mainListener);
@@ -31,7 +32,9 @@ Future<void> runNetworkIsolate(SendPort callerSendPort) async {
 class NetworkProcessor with OpenAndClose {
   static final NetworkProcessor instance = NetworkProcessor._internal();
 
-  late final  Stream<CrossIsolatesMessage<LoginUserIsolateMsg>> userPassListener ;
+  late final Stream<CrossIsolatesMessage<LoginUserIsolateMsg>> userPassListener;
+  late final SendPort callerSendPort;
+  late final ReceivePort receivePort;
 
   UserDbDS? _activeUser;
 
@@ -46,17 +49,22 @@ class NetworkProcessor with OpenAndClose {
     _activeUser = value;
   }
 
-  NetworkProcessor._internal(){
-    userPassListener = IsolateMessageListener.instance.getMessageStream<LoginUserIsolateMsg>(CrossIsolatesMessageType.userAndPassword);
+  NetworkProcessor._internal() {
+    userPassListener = IsolateMessageListener.instance
+        .getMessageStream<LoginUserIsolateMsg>(
+            CrossIsolatesMessageType.userAndPassword);
   }
 
   factory NetworkProcessor() {
     return instance;
   }
 
-  Future<void> run(SendPort callerSendPort, ReceivePort newIsolateReceivePort) async {
+  Future<void> run(
+      SendPort callerSendPort_, ReceivePort newIsolateReceivePort) async {
+    callerSendPort = callerSendPort_;
+    receivePort = newIsolateReceivePort;
     var isar = await openConn();
-    await findActiveUserInDb(isar);
+    // await findActiveUserInDb(isar);
     userActiveControlLoopRun(isar);
     await multiUsersLoop(isar);
     await closeConn();
@@ -82,26 +90,58 @@ class NetworkProcessor with OpenAndClose {
   }
 
   Future<void> userActiveControlLoopRun(Isar isar) async {
-    while (true) {
-      await Future.delayed(Duration(seconds: 1000));
-      // TODO: Подписаться на изменение таблицы пользователей
-      //  и при появлении активного пользователя делать запросы
-      //  ко всем возможным апишкам. для получения токена доступа.
-      //  При деактивации (выходе из аккаунта) удалять
-      //  все существующие апи ключи, отменять все запросы
-      throw UnimplementedError();
-    }
+    var query = isar.collection<UserDbDS>().filter().activeEqualTo(true);
+    var activeUserStream = query.build().watch(fireImmediately: true);
+    var activeUserStreamController = activeUserStream.listen((activeUsers) {
+      if (activeUsers.length == 1) {
+        activeUser = activeUsers[0];
+      } else {
+        activeUser = null;
+      }
+    });
   }
 
   Future<void> multiUsersLoop(Isar isar) async {
+    var urlsGen = await getConnectionUrls(isar);
     while (true) {
+
       try {
-        var urlsGen = await getConnectionUrls(isar);
-        await getAuthHeaders(urlsGen);
+        await getAuthHeaders(activeUser.username, activeUser.password, urlsGen).last;
         await updateDbEntitiesFromServer(isar, urlsGen);
+        // TODO: в конце переходим в фон и ждём, наверно
       } catch (UserNotActiveException) {
-        // TODO: ждём сообщения от главного потока
-        //  с логином и паролем пользователя
+        var msg = await userPassListener.firstWhere((element) => true);
+
+        late List<HttpUtilsDbDS> currConnUrls;
+        if (msg.message.serverUrl != null) {
+          var currConnUrl = await isar.httpUtilsDbDSs
+              .filter()
+              .httpUrlEqualTo(msg.message.serverUrl!)
+              .findFirst();
+          if (currConnUrl != null) {
+            currConnUrls = [currConnUrl];
+          } else {
+            currConnUrl = HttpUtilsDbDS()..httpUrl = msg.message.serverUrl!;
+            isar.writeTxnSync(
+                () => {isar.httpUtilsDbDSs.putSync(currConnUrl!)});
+            currConnUrls = [currConnUrl];
+          }
+          urlsGen = UrlsController(currConnUrls).activeApis;
+        }
+
+        // TODO: обработать ошибку, если поток пуст
+        var urlObj = await getAuthHeaders(
+            msg.message.username, msg.message.password, urlsGen).first;
+
+        msg.sender.send(
+            CrossIsolatesMessage<LoginUserAnsIsolateMsg>(
+              sender: receivePort.sendPort,
+              // TODO: если без ошибок
+              message: LoginUserAnsIsolateMsg(200, true),
+              msgType: CrossIsolatesMessageType.loginUserAnsIsolateMsg,
+            )
+        );
+
       }
     }
   }
@@ -121,13 +161,15 @@ class NetworkProcessor with OpenAndClose {
     //     url, goodUrlFounded, username, password, userApi, onErrorCallback));
   }
 
-  Future<void> getAuthHeaders(
-      Stream<UnaryUrlController> Function() urlsGen) async {
+  Stream<UnaryUrlController> getAuthHeaders(String username, String password,
+      Stream<UnaryUrlController> Function() urlsGen) async* {
     List<Map<String, String>> res = [];
 
     await for (var urlC in urlsGen()) {
       try {
-        res.add(await urlC.auth(activeUser.username, activeUser.password));
+        var authHeaders = await urlC.auth(username, password);
+        res.add(authHeaders);
+        yield urlC;
       } catch (AuthErrorUserPasswordNotCorrect) {
         // TODO: если  ни от одной ссылки  не вернулось ответа 200,
         //  то возвращаем сообщение в главный поток о том,
@@ -156,6 +198,5 @@ class NetworkProcessor with OpenAndClose {
     // add_term_info_update();
     // term_marks_update();
     throw UnimplementedError();
-
   }
 }

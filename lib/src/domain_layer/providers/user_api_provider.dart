@@ -4,15 +4,21 @@ import 'package:the_remember/src/urils/db/abstract_entity.dart';
 import '../../../api_package/lib/api_package.dart';
 import '../../../network_processor/network_main.dart';
 import '../../repositoris/db_data_source/user.dart';
+import '../../urils/isolate/base_msg.dart';
+import '../../urils/isolate/msgs/login_user.dart';
 import '../../urils/profilers/abstract.dart';
 import 'isolates/network.dart';
 
 class UserApiProfile extends ModChangeNotifier {
   final NetworkIsolateProfile networkPr;
-  late UserDbDS? _user ;
-  late bool _firstUserInit ;
-  late ApiPackage? _baseApi ;
-  late Map<String, String> _authHeaders ;
+  late UserDbDS? _user;
+
+  late bool _firstUserInit;
+
+  late ApiPackage? _baseApi;
+
+  late Map<String, String> _authHeaders;
+
   late Future _awaitUser;
 
   Future<UserDbDS?> Function() get awaitUser => () async {
@@ -28,10 +34,10 @@ class UserApiProfile extends ModChangeNotifier {
   @override
   void init({bool isRealInit = false}) {
     parentProvidersList[networkPr.runtimeType] = networkPr;
-     _user = null;
-     _firstUserInit = true;
-     _baseApi = null;
-     _authHeaders = {};
+    _user = null;
+    _firstUserInit = true;
+    _baseApi = null;
+    _authHeaders = {};
     getUser();
     super.init(isRealInit: isRealInit);
   }
@@ -118,6 +124,49 @@ class UserApiProfile extends ModChangeNotifier {
       _user = currentUser;
       notifyListeners();
       return _user;
+    }
+  }
+
+  Future<void> loginUser(
+      String username,
+      String password,
+      String? serverUrl,
+      {Function(String?)? onErrorCallback}
+      ) async {
+    var res = await networkPr.sendToNetworkIsolateWithAnswer<
+            LoginUserIsolateMsg, LoginUserAnsIsolateMsg>(
+        LoginUserIsolateMsg(username, password, serverUrl),
+        CrossIsolatesMessageType.userAndPassword,
+        CrossIsolatesMessageType.loginUserAnsIsolateMsg
+    );
+
+    if (res.message.data) {
+      var isar = await openConn();
+
+      var query = isar
+          .collection<UserDbDS>()
+          .filter()
+          .usernameEqualTo(username);
+
+      var userStream = query.build().watch(fireImmediately: true);
+      user = (await userStream.firstWhere((element) => element.isNotEmpty))[0];
+
+      // await for (var usersList in userStream){
+      //   for (var currUser in usersList){
+      //     this.user = currUser;
+      //     break;
+      //   }
+      //   if (this.user != null){
+      //     break;
+      //   }
+      // }
+
+      await closeConn();
+    } else {
+      if (onErrorCallback != null) {
+        onErrorCallback(
+            "На сервере пользователя с таким логином и паролем не найдено. Код ${res.message.statusCode}");
+      }
     }
   }
 

@@ -444,36 +444,7 @@ Future testServerUrl(
       userApi, onErrorCallback);
 }
 
-Future<void> loginUser(
-  String username,
-  String password,
-  NetworkIsolateProfile networkPr, {
-  List<String>? serverUrls,
-  required UserApiProfile? userApi,
-  Function(String?)? onErrorCallback = null,
-}) async {
-  var res = await networkPr.sendToNetworkIsolateWithAnswer<LoginUserIsolateMsg,
-          LoginUserAnsIsolateMsg>(
-      LoginUserIsolateMsg(
-          username, password, (serverUrls == null ? null : serverUrls[0])
-      ),
-      CrossIsolatesMessageType.userAndPassword,
-      CrossIsolatesMessageType.loginUserAnsIsolateMsg);
 
-  if (res.message.data){
-    var conn = (await OpenAndClose3.openConnStatic([CollectionSchema<UserDbDS>]));
-
-    var user = (await conn[ConnType.user]!.collection<UserDbDS>().getByUsername(username));
-    userApi?.user = user;
-
-    await OpenAndClose3.closeConnStatic(conn);
-  } else {
-    if (onErrorCallback != null) {
-      onErrorCallback(
-          "На сервере пользователя с таким логином и паролем не найдено. Код ${res.message.statusCode}");
-    }
-  }
-  }
 
   // List<bool> goodUrlFounded = [false];
   //
@@ -516,8 +487,8 @@ Future<void> loginUser(
   //       userApi?.baseApi, userApi?.authHeaders, username, password, userApi);
   // }
 
-  return;
-}
+//   return;
+// }
 
 Future<void> updatePersonalizedTerms(
     List<TermEntityDbDS> terms, UserApiProfile userApi) async {

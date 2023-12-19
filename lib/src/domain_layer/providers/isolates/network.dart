@@ -39,7 +39,7 @@ class NetworkIsolateProfile extends ModChangeNotifier {
       message: await IzarManager.instance.getDbPath,
     ));
     _receivePort.listen(IsolateMessageListener.instance.mainListener);
-    await Future.delayed(Duration(seconds: 1000));
+    // await Future.delayed(Duration(seconds: 1000));
     await closeConn();
     return _newIsolateSendPort;
   }

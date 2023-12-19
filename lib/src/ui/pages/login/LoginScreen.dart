@@ -273,13 +273,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         flex: 1,
                         child: MaterialButton(
                           onPressed: () {
-                            loginUser(
+                            userPr.loginUser(
                               username,
                               password,
-                              networkPr,
-                              serverUrls:
-                                  (serverUrl.isEmpty ? null : [serverUrl]),
-                              userApi: userPr,
+                              serverUrl,
                               onErrorCallback: (test) {
                                 inputFieldsColor = Color(0xfff19393);
                                 authProvider.isLoading = false;
